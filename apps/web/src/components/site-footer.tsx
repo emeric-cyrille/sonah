@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { NdopBand } from './ndop-band';
+import { Logo } from './logo';
+import { PatternFill } from './patterns/african-patterns';
 
 export function SiteFooter(): JSX.Element | null {
   const pathname = usePathname();
@@ -10,12 +11,15 @@ export function SiteFooter(): JSX.Element | null {
   if (pathname.startsWith('/chat')) return null;
 
   return (
-    <footer className="bg-ink text-paper/80">
-      <NdopBand id="ndop-footer" className="h-6" />
+    <footer className="bg-velvet text-paper/80">
+      <PatternFill name="toghu" id="toghu-footer" className="h-10 w-full" />
       <div className="container-page grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <p className="font-display text-3xl text-paper">Sonah</p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-paper/60">
+          <div className="flex items-center gap-3">
+            <Logo className="h-10 w-10" />
+            <p className="font-display text-3xl text-paper">Sonah</p>
+          </div>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-paper/55">
             Système d&apos;Orientation Nationale et d&apos;Accompagnement Harmonisé. Les réponses de
             Sonah sont indicatives : en cas de doute, l&apos;administration concernée fait foi.
           </p>
@@ -56,8 +60,9 @@ export function SiteFooter(): JSX.Element | null {
           </ul>
         </div>
       </div>
-      <div className="container-page border-t border-paper/10 py-6 text-xs text-paper/40">
-        Fait au Cameroun · {new Date().getFullYear()}
+      <div className="container-page flex flex-col gap-2 border-t border-paper/10 py-6 text-xs text-paper/40 sm:flex-row sm:justify-between">
+        <span>Fait au Cameroun · {new Date().getFullYear()}</span>
+        <span>Motifs : ndop, toghu, kente, bogolan</span>
       </div>
     </footer>
   );

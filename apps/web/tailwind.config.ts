@@ -13,6 +13,10 @@ const config: Config = {
         clay: { DEFAULT: '#c4532d', soft: '#f0c9b6' },
         leaf: { DEFAULT: '#0f6b4f', deep: '#0b5540' },
         line: '#e0d6c2',
+        night: { DEFAULT: '#0b0d22', soft: '#141838' },
+        kente: { red: '#b3261e', green: '#0f6b4f', gold: '#e8a317' },
+        earth: '#3b2416',
+        velvet: '#0d0b0a',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],

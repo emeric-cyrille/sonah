@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { SonahBot } from '@/components/sonah-bot';
+import { OrbAvatar } from '@/components/orb-avatar';
 
 export default function NotFound(): JSX.Element {
   return (
-    <main className="container-page flex flex-1 flex-col items-center py-20 text-center">
-      <SonahBot className="w-40" animated={false} title="Sonah" />
-      <p className="eyebrow mt-8">Erreur 404</p>
+    <main className="container-page flex flex-1 flex-col items-center py-24 text-center">
+      <OrbAvatar className="h-32 w-32" />
+      <p className="eyebrow mt-10">Erreur 404</p>
       <h1 className="mt-3 font-display text-4xl font-medium tracking-tight">
         Je ne trouve pas cette page.
       </h1>

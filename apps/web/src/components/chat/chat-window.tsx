@@ -2,8 +2,9 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
-import { Logo } from '@/components/logo';
-import { SonahBot } from '@/components/sonah-bot';
+import { OrbAvatar } from '@/components/orb-avatar';
+import { PatternFill } from '@/components/patterns/african-patterns';
+import { SonahOrb } from '@/components/three/sonah-orb';
 import { useChatStore, type ChatEntry } from '@/store/chat-store';
 
 const SUGGESTIONS = [
@@ -19,14 +20,14 @@ const MAX_TEXTAREA_HEIGHT = 180;
 function AssistantMessage({ message }: { readonly message: ChatEntry }): JSX.Element {
   return (
     <div className="flex gap-3 sm:gap-4">
-      <Logo className="mt-0.5 h-9 w-9 shrink-0" />
+      <OrbAvatar className="mt-0.5 h-9 w-9" />
       <div className="min-w-0 flex-1 pt-1.5">
-        <p className="text-sm font-semibold">Sonah</p>
+        <p className="text-sm font-semibold text-sun">Sonah</p>
         <div
           className={`mt-1.5 whitespace-pre-wrap text-[16px] leading-relaxed ${
             message.isError
-              ? 'rounded-2xl border border-clay/30 bg-clay-soft/40 px-4 py-3 text-ink'
-              : 'text-ink'
+              ? 'rounded-2xl border border-sun/25 bg-sun/[0.08] px-4 py-3 text-paper/90'
+              : 'text-paper/90'
           }`}
         >
           {message.content}
@@ -39,7 +40,7 @@ function AssistantMessage({ message }: { readonly message: ChatEntry }): JSX.Ele
                   href={source.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-paper-soft px-3 py-1 text-xs text-ink-soft hover:border-ink/30"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-paper/70 hover:border-sun/50"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-leaf" aria-hidden="true" />
                   {source.title}
@@ -100,21 +101,23 @@ export function ChatWindow(): JSX.Element {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex h-[calc(100dvh-68px)] flex-col">
-      <div className="flex-1 overflow-y-auto" aria-live="polite">
+    <div className="grain relative flex h-[calc(100dvh-68px)] flex-col overflow-hidden bg-night text-paper">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.05]">
+        <PatternFill name="bogolan" id="bogolan-chat" />
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-[-20%] h-[60vmin] w-[60vmin] -translate-x-1/2 rounded-full bg-sun/15 blur-[120px]"
+      />
+      <div className="relative flex-1 overflow-y-auto" aria-live="polite">
         <div className="container-page max-w-3xl py-8">
           {isEmpty ? (
             <div className="flex flex-col items-center pt-4 text-center sm:pt-8">
-              <div className="relative">
-                <SonahBot className="w-40 sm:w-48" />
-                <span className="bubble-pop absolute -left-10 top-4 rounded-2xl rounded-br-sm border-2 border-ink bg-paper-soft px-3 py-1.5 font-display text-lg italic shadow-[3px_3px_0_#181b34]">
-                  Coucou&nbsp;!
-                </span>
-              </div>
-              <h1 className="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl">
+              <SonahOrb className="h-56 w-56 sm:h-72 sm:w-72" compact />
+              <h1 className="mt-2 font-display text-4xl font-medium tracking-tight sm:text-5xl">
                 Qu&apos;est-ce qui vous amène&nbsp;?
               </h1>
-              <p className="mt-3 max-w-md text-ink-soft">
+              <p className="mt-3 max-w-md text-paper/60">
                 Décrivez votre situation avec vos mots. Je vous indique les démarches à suivre.
               </p>
               <ul className="mt-10 flex max-w-2xl flex-wrap justify-center gap-2.5">
@@ -122,7 +125,7 @@ export function ChatWindow(): JSX.Element {
                   <li key={suggestion}>
                     <button
                       type="button"
-                      className="rounded-full border border-line bg-paper-soft px-4 py-2.5 text-[15px] text-ink-soft transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink"
+                      className="rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 text-[15px] text-paper/75 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-sun/60 hover:text-paper"
                       onClick={() => void send(suggestion)}
                     >
                       {suggestion}
@@ -132,44 +135,51 @@ export function ChatWindow(): JSX.Element {
               </ul>
             </div>
           ) : (
-            <ol className="space-y-8">
-              {messages.map((message) => (
-                <li key={message.id} className="animate-fade-up">
-                  {message.role === 'user' ? (
-                    <div className="flex justify-end">
-                      <p className="max-w-[85%] whitespace-pre-wrap rounded-[22px] rounded-br-md bg-ink px-5 py-3 text-[16px] leading-relaxed text-paper-soft">
-                        {message.content}
-                      </p>
-                    </div>
-                  ) : (
-                    <AssistantMessage message={message} />
-                  )}
-                </li>
-              ))}
-              {isSending && (
-                <li className="flex items-center gap-4">
-                  <Logo className="h-9 w-9 shrink-0" />
-                  <span className="flex items-center gap-1.5" aria-label="Sonah réfléchit…">
-                    <span className="typing-dot h-2 w-2 rounded-full bg-ink" />
-                    <span className="typing-dot h-2 w-2 rounded-full bg-ink [animation-delay:0.15s]" />
-                    <span className="typing-dot h-2 w-2 rounded-full bg-ink [animation-delay:0.3s]" />
-                  </span>
-                </li>
-              )}
-            </ol>
+            <>
+              <SonahOrb
+                className="mx-auto -mt-4 mb-2 h-32 w-32"
+                compact
+                energy={isSending ? 1 : 0}
+              />
+              <ol className="space-y-8">
+                {messages.map((message) => (
+                  <li key={message.id} className="animate-fade-up">
+                    {message.role === 'user' ? (
+                      <div className="flex justify-end">
+                        <p className="max-w-[85%] whitespace-pre-wrap rounded-[22px] rounded-br-md bg-paper px-5 py-3 text-[16px] leading-relaxed text-ink">
+                          {message.content}
+                        </p>
+                      </div>
+                    ) : (
+                      <AssistantMessage message={message} />
+                    )}
+                  </li>
+                ))}
+                {isSending && (
+                  <li className="flex items-center gap-4">
+                    <OrbAvatar className="h-9 w-9" thinking />
+                    <span className="flex items-center gap-1.5" aria-label="Sonah réfléchit…">
+                      <span className="typing-dot h-2 w-2 rounded-full bg-sun" />
+                      <span className="typing-dot h-2 w-2 rounded-full bg-sun [animation-delay:0.15s]" />
+                      <span className="typing-dot h-2 w-2 rounded-full bg-sun [animation-delay:0.3s]" />
+                    </span>
+                  </li>
+                )}
+              </ol>
+            </>
           )}
           <div ref={bottomRef} />
         </div>
       </div>
 
-      <div className="bg-gradient-to-t from-paper via-paper to-paper/0 pt-2">
+      <div className="relative bg-gradient-to-t from-night via-night to-night/0 pt-2">
         <form onSubmit={submit} className="container-page max-w-3xl">
-          <div className="flex items-end gap-2 rounded-[26px] border border-ink/15 bg-paper-soft p-2 shadow-[0_12px_40px_-20px_rgba(24,27,52,0.5)] focus-within:border-ink/40">
+          <div className="flex items-end gap-2 rounded-[26px] border border-white/15 bg-white/[0.06] p-2 shadow-[0_20px_60px_-25px_rgba(240,180,41,0.4)] backdrop-blur-xl focus-within:border-sun/60">
             {!isEmpty && (
               <button
                 type="button"
                 onClick={reset}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-paper-deep hover:text-ink"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-paper/60 hover:bg-white/10 hover:text-paper"
                 aria-label="Nouvelle conversation"
                 title="Nouvelle conversation"
               >
@@ -195,11 +205,11 @@ export function ChatWindow(): JSX.Element {
               rows={1}
               maxLength={MAX_LENGTH}
               placeholder="Écrivez à Sonah…"
-              className="min-h-[44px] flex-1 resize-none bg-transparent px-3 py-2.5 text-base leading-6 placeholder:text-ink-muted/80 focus:outline-none"
+              className="min-h-[44px] flex-1 resize-none bg-transparent px-3 py-2.5 text-base leading-6 text-paper placeholder:text-paper/40 focus:outline-none"
             />
             <button
               type="submit"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun text-ink transition-colors hover:bg-[#d99610] disabled:bg-paper-deep disabled:text-ink-muted"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun text-ink transition-colors hover:bg-[#d99610] disabled:bg-white/10 disabled:text-paper/40"
               disabled={isSending || draft.trim().length === 0}
               aria-label="Envoyer"
             >
@@ -215,7 +225,7 @@ export function ChatWindow(): JSX.Element {
               </svg>
             </button>
           </div>
-          <p className="py-3 text-center text-xs text-ink-muted">
+          <p className="py-3 text-center text-xs text-paper/40">
             Les réponses sont indicatives : l&apos;administration concernée fait foi.
           </p>
         </form>

@@ -18,7 +18,7 @@ export function AskBox({ placeholder }: { readonly placeholder: string }): JSX.E
   return (
     <form
       onSubmit={onSubmit}
-      className="group flex w-full items-center gap-2 rounded-full border border-ink/15 bg-paper-soft p-1.5 pl-5 shadow-[0_10px_40px_-18px_rgba(24,27,52,0.45)] transition-shadow focus-within:border-ink/40"
+      className="relative flex w-full items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] p-1.5 pl-5 shadow-[0_20px_60px_-25px_rgba(240,180,41,0.45)] backdrop-blur-md transition-colors focus-within:border-sun/60"
     >
       <label htmlFor="ask" className="sr-only">
         Votre question
@@ -31,9 +31,9 @@ export function AskBox({ placeholder }: { readonly placeholder: string }): JSX.E
         maxLength={MAX_LENGTH}
         placeholder={placeholder}
         autoComplete="off"
-        className="min-w-0 flex-1 bg-transparent py-2.5 text-base placeholder:text-ink-muted/80 focus:outline-none"
+        className="min-w-0 flex-1 bg-transparent py-2.5 text-base text-paper placeholder:text-paper/45 focus:outline-none"
       />
-      <button type="submit" className="btn-ink shrink-0 px-5 py-3">
+      <button type="submit" className="btn-sun shrink-0 px-5 py-3">
         Demander
         <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
           <path

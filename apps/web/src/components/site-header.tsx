@@ -16,10 +16,10 @@ export function SiteHeader(): JSX.Element {
   const isChat = pathname.startsWith('/chat');
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-paper/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-white/[0.07] bg-night/[0.94] text-paper backdrop-blur-xl">
       <div className="container-page flex h-[68px] items-center justify-between">
         <Link href="/" className="group flex items-center gap-2.5" onClick={() => setIsOpen(false)}>
-          <Logo className="h-9 w-9 transition-transform duration-300 group-hover:-rotate-6" />
+          <Logo className="h-9 w-9 transition-transform duration-500 group-hover:rotate-45" />
           <span className="font-display text-[22px] font-semibold tracking-tight">Sonah</span>
         </Link>
 
@@ -29,13 +29,13 @@ export function SiteHeader(): JSX.Element {
               key={link.href}
               href={link.href}
               aria-current={pathname === link.href ? 'page' : undefined}
-              className="text-[15px] font-medium text-ink-soft transition-colors hover:text-ink aria-[current=page]:text-ink"
+              className="text-[15px] font-medium text-paper/70 transition-colors hover:text-paper aria-[current=page]:text-sun"
             >
               {link.label}
             </Link>
           ))}
           {!isChat && (
-            <Link href="/chat" className="btn-ink px-5 py-2.5 text-sm">
+            <Link href="/chat" className="btn-sun px-5 py-2.5 text-sm">
               Parler à Sonah
             </Link>
           )}
@@ -50,10 +50,10 @@ export function SiteHeader(): JSX.Element {
           onClick={() => setIsOpen((open) => !open)}
         >
           <span
-            className={`h-0.5 w-6 rounded bg-ink transition-transform duration-200 ${isOpen ? 'translate-y-1 rotate-45' : ''}`}
+            className={`h-0.5 w-6 rounded bg-paper transition-transform duration-200 ${isOpen ? 'translate-y-1 rotate-45' : ''}`}
           />
           <span
-            className={`h-0.5 w-6 rounded bg-ink transition-transform duration-200 ${isOpen ? '-translate-y-1 -rotate-45' : ''}`}
+            className={`h-0.5 w-6 rounded bg-paper transition-transform duration-200 ${isOpen ? '-translate-y-1 -rotate-45' : ''}`}
           />
         </button>
       </div>
@@ -61,7 +61,7 @@ export function SiteHeader(): JSX.Element {
       {isOpen && (
         <nav
           id="mobile-nav"
-          className="border-t border-line md:hidden"
+          className="border-t border-white/10 md:hidden"
           aria-label="Navigation mobile"
         >
           <ul className="container-page flex flex-col gap-1 py-4">
@@ -77,7 +77,7 @@ export function SiteHeader(): JSX.Element {
               </li>
             ))}
             <li className="pt-3">
-              <Link href="/chat" className="btn-ink w-full" onClick={() => setIsOpen(false)}>
+              <Link href="/chat" className="btn-sun w-full" onClick={() => setIsOpen(false)}>
                 Parler à Sonah
               </Link>
             </li>
