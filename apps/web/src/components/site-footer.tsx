@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from './logo';
-import { PatternFill } from './patterns/african-patterns';
+import { PatternFill } from './patterns/cameroon-patterns';
 
 export function SiteFooter(): JSX.Element | null {
   const pathname = usePathname();
@@ -62,7 +62,7 @@ export function SiteFooter(): JSX.Element | null {
       </div>
       <div className="container-page flex flex-col gap-2 border-t border-paper/10 py-6 text-xs text-paper/40 sm:flex-row sm:justify-between">
         <span>Fait au Cameroun · {new Date().getFullYear()}</span>
-        <span>Motifs : ndop, toghu, kente, bogolan</span>
+        <span>Motifs : ndop, toghu, perlage bamiléké, teleuk mousgoum</span>
       </div>
     </footer>
   );

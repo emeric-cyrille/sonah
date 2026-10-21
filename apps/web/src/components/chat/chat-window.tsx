@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { OrbAvatar } from '@/components/orb-avatar';
-import { PatternFill } from '@/components/patterns/african-patterns';
+import { PatternFill } from '@/components/patterns/cameroon-patterns';
 import { SonahOrb } from '@/components/three/sonah-orb';
 import { useChatStore, type ChatEntry } from '@/store/chat-store';
 
@@ -103,7 +103,7 @@ export function ChatWindow(): JSX.Element {
   return (
     <div className="grain relative flex h-[calc(100dvh-68px)] flex-col overflow-hidden bg-night text-paper">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.05]">
-        <PatternFill name="bogolan" id="bogolan-chat" />
+        <PatternFill name="ndop-line" id="ndop-chat" ink="#f6f1e7" />
       </div>
       <div
         aria-hidden="true"
@@ -137,7 +137,7 @@ export function ChatWindow(): JSX.Element {
           ) : (
             <>
               <SonahOrb
-                className="mx-auto -mt-4 mb-2 h-32 w-32"
+                className="mx-auto -mb-2 -mt-8 h-44 w-44"
                 compact
                 energy={isSending ? 1 : 0}
               />

@@ -78,6 +78,7 @@ uniform vec3 uMid;
 uniform vec3 uGold;
 uniform vec3 uClay;
 uniform vec3 uGreen;
+uniform vec3 uRed;
 varying vec3 vWorldPos;
 varying vec2 vUv;
 varying float vDisp;
@@ -92,13 +93,15 @@ float ndop(vec2 p) {
   return clamp(outer + inner + center, 0.0, 1.0);
 }
 
-// Bogolan : zigzag et rangée de points
-float bogolan(vec2 p) {
+// Toghu : triangles brodés, zigzag blanc et points
+float toghu(vec2 p, out float triangle) {
   vec2 g = fract(p);
-  float zig = abs(fract(p.x * 2.0) - 0.5) * 0.5 + 0.25;
-  float line = smoothstep(0.05, 0.0, abs(g.y - zig));
-  vec2 dp = fract(vec2(p.x * 3.0, p.y) ) - vec2(0.5, 0.82);
-  float dots = smoothstep(0.1, 0.05, length(dp * vec2(1.0, 1.6)));
+  float zig = abs(fract(p.x * 2.0) - 0.5) * 0.36 + 0.32;
+  float line = smoothstep(0.045, 0.0, abs(g.y - zig));
+  float edge = abs(g.x - 0.5) * 2.0;
+  triangle = step(g.y, (1.0 - edge) * 0.24) + step(1.0 - (1.0 - edge) * 0.24, g.y);
+  vec2 dp = fract(vec2(p.x * 2.0, p.y)) - vec2(0.5, 0.5);
+  float dots = smoothstep(0.09, 0.05, length(dp * vec2(1.0, 1.4)));
   return clamp(line + dots, 0.0, 1.0);
 }
 
@@ -110,15 +113,22 @@ void main() {
   float diff = max(dot(N, L), 0.0);
   float spec = pow(max(dot(reflect(-L, N), V), 0.0), 90.0);
 
-  // Bandes de latitude alternant ndop et bogolan, défilement lent
+  // Bandes de latitude alternant ndop et toghu, défilement lent
   vec2 uv = vec2(vUv.x + uTime * 0.012, vUv.y);
   vec2 cell = vec2(uv.x * 28.0, uv.y * 14.0);
   float band = floor(uv.y * 7.0);
   float isNdop = mod(band, 2.0);
-  float motif = mix(bogolan(cell), ndop(cell), isNdop);
+  float triangle = 0.0;
+  float toghuLines = toghu(cell, triangle);
+  float motif = mix(toghuLines, ndop(cell), isNdop);
+  // Triangles toghu : rouge, or, vert selon la cellule
+  float pick = mod(floor(cell.x), 3.0);
+  vec3 triColor = pick < 1.0 ? uRed : (pick < 2.0 ? uGold : uGreen);
+  float triMask = triangle * (1.0 - isNdop);
   float seam = smoothstep(0.03, 0.0, abs(fract(uv.y * 7.0) - 0.0)) + smoothstep(0.03, 0.0, abs(fract(uv.y * 7.0) - 1.0));
   float poleFade = smoothstep(0.04, 0.16, vUv.y) * smoothstep(0.96, 0.84, vUv.y);
   motif = clamp(motif + seam, 0.0, 1.0) * poleFade;
+  triMask *= poleFade;
 
   // Onde lumineuse qui parcourt les motifs (accélère quand Sonah réfléchit)
   float wave = 0.5 + 0.5 * sin(vUv.y * 26.0 - uTime * (1.6 + uEnergy * 4.0) + vUv.x * 6.2831);
@@ -126,7 +136,7 @@ void main() {
 
   vec3 base = mix(uDeep, uMid, diff * 0.85 + heat * 0.35);
   vec3 thread = mix(uGold, uClay, isNdop * 0.35 + (1.0 - wave) * 0.25);
-  vec3 col = base;
+  vec3 col = mix(base, triColor * (0.55 + 0.45 * diff), triMask * 0.85);
   col += thread * motif * (0.28 + 0.9 * wave) * (0.75 + uEnergy * 0.8);
   col += mix(uClay, uGold, fres) * fres * 1.1;
   col += uGreen * smoothstep(0.6, 1.0, fres) * 0.25;
@@ -146,7 +156,7 @@ void main() {
 }
 `;
 
-/** Anneau kente : blocs de couleurs tissés le long du tore. */
+/** Anneau brodé aux couleurs toghu (rouge, or, vert sur velours noir). */
 export const RING_FRAGMENT = /* glsl */ `
 uniform float uTime;
 uniform vec3 uGold;

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ScrollMotion } from '@/components/motion/scroll-motion';
-import { PatternFill } from '@/components/patterns/african-patterns';
+import { PatternFill } from '@/components/patterns/cameroon-patterns';
 import { CATEGORY_LABELS, PROCEDURES, type ProcedureCategory } from '@/lib/procedures';
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function ProceduresPage(): JSX.Element {
       <main className="pb-24">
         <header className="grain relative -mt-[68px] overflow-hidden bg-night pt-[68px] text-paper">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.07]">
-            <PatternFill name="bogolan" id="bogolan-demarches" />
+            <PatternFill name="ndop-line" id="ndop-demarches" ink="#f6f1e7" />
           </div>
           <div className="container-page relative pb-16 pt-14 md:pb-24 md:pt-20">
             <p className="eyebrow text-sun/90">Démarches</p>
@@ -36,7 +36,7 @@ export default function ProceduresPage(): JSX.Element {
               votre question à Sonah.
             </p>
           </div>
-          <PatternFill name="kente" id="kente-demarches" className="relative h-8 w-full" />
+          <PatternFill name="toghu" id="toghu-demarches" className="relative h-10 w-full" />
         </header>
 
         <div className="container-page mt-16 space-y-16">

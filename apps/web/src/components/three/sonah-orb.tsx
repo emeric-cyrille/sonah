@@ -24,7 +24,7 @@ interface SonahOrbProps extends Pick<SonahOrbSceneProps, 'energy' | 'compact'> {
 }
 
 /**
- * Sonah en 3D : orbe gravé de motifs ndop et bogolan, anneaux kente et poussière d'or.
+ * Sonah en 3D : orbe gravé de motifs ndop et toghu, anneaux brodés aux couleurs toghu et poussière d'or.
  * Charge three.js à la demande, se met en pause hors écran et respecte « mouvement réduit ».
  */
 export function SonahOrb({ className, energy = 0, compact = false }: SonahOrbProps): JSX.Element {

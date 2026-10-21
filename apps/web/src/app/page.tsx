@@ -3,7 +3,7 @@ import { AskBox } from '@/components/ask-box';
 import { ScrollMotion } from '@/components/motion/scroll-motion';
 import { TiltCard } from '@/components/motion/tilt-card';
 import { OrbAvatar } from '@/components/orb-avatar';
-import { PATTERN_SWATCHES, PatternFill } from '@/components/patterns/african-patterns';
+import { PATTERN_SWATCHES, PatternFill } from '@/components/patterns/cameroon-patterns';
 import { SonahOrb } from '@/components/three/sonah-orb';
 
 const FREQUENT_QUESTIONS = [
@@ -34,7 +34,7 @@ const PROMISES = [
   {
     title: 'Gratuit, vraiment.',
     text: "Rien à payer, ni à Sonah ni à un intermédiaire. L'information administrative appartient à tout le monde.",
-    pattern: 'kente',
+    pattern: 'perles',
   },
   {
     title: 'Un seul interlocuteur.',
@@ -77,7 +77,7 @@ export default function HomePage(): JSX.Element {
         {/* ─── Accueil : Sonah en 3D ──────────────────────────── */}
         <section className="grain relative -mt-[68px] overflow-hidden bg-night pt-[68px] text-paper">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.07]">
-            <PatternFill name="bogolan" id="bogolan-hero" />
+            <PatternFill name="ndop-line" id="ndop-hero" ink="#f6f1e7" />
           </div>
           <div
             aria-hidden="true"
@@ -85,7 +85,7 @@ export default function HomePage(): JSX.Element {
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-[-20%] left-[-10%] h-[50vmin] w-[50vmin] rounded-full bg-kente-green/30 blur-[120px]"
+            className="pointer-events-none absolute bottom-[-20%] left-[-10%] h-[50vmin] w-[50vmin] rounded-full bg-flag-green/30 blur-[120px]"
           />
 
           <div className="container-page relative grid min-h-[calc(100svh-68px)] items-center gap-6 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:py-0">
@@ -130,10 +130,10 @@ export default function HomePage(): JSX.Element {
           </div>
         </section>
 
-        {/* ─── Bande kente ─────────────────────────────────────── */}
+        {/* ─── Bande toghu ─────────────────────────────────────── */}
         <div className="overflow-hidden bg-velvet" aria-hidden="true">
           <div data-parallax="260" className="w-[220%]">
-            <PatternFill name="kente" id="kente-divider" className="h-10 w-full" />
+            <PatternFill name="toghu" id="toghu-divider" className="h-10 w-full" />
           </div>
         </div>
 
@@ -196,12 +196,12 @@ export default function HomePage(): JSX.Element {
           aria-labelledby="motifs-title"
         >
           <div className="container-page" data-reveal>
-            <p className="eyebrow text-sun/80">Tissé en Afrique</p>
+            <p className="eyebrow text-sun/80">Patrimoine camerounais</p>
             <h2
               id="motifs-title"
               className="mt-4 max-w-2xl font-display text-4xl font-medium leading-tight sm:text-5xl"
             >
-              Sonah porte les motifs du continent.
+              Sonah porte les motifs du Cameroun.
             </h2>
           </div>
           <div className="marquee mt-12">
@@ -215,7 +215,6 @@ export default function HomePage(): JSX.Element {
                 <li
                   key={`${swatch.name}-${index}`}
                   className="relative h-48 w-72 shrink-0 overflow-hidden rounded-3xl ring-1 ring-white/10 sm:h-56 sm:w-80"
-                  style={{ background: swatch.background }}
                   aria-hidden={index >= PATTERN_SWATCHES.length}
                 >
                   <PatternFill name={swatch.name} id={`swatch-${swatch.name}-${index}`} />
@@ -291,14 +290,14 @@ export default function HomePage(): JSX.Element {
         <section className="py-20 md:py-28">
           <div className="container-page">
             <div
-              data-scale-in
+              data-reveal
               className="grain relative grid items-center gap-10 overflow-hidden rounded-[40px] bg-night px-6 py-14 text-paper sm:px-14 md:grid-cols-[1fr_auto]"
             >
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 opacity-[0.08]"
               >
-                <PatternFill name="bogolan" id="bogolan-cta" />
+                <PatternFill name="ndop-line" id="ndop-cta" ink="#f6f1e7" />
               </div>
               <div className="relative">
                 <h2 className="font-display text-4xl font-medium leading-tight tracking-tight sm:text-6xl">

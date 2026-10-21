@@ -48,6 +48,7 @@ function Orb({ energy }: { energy: number }): JSX.Element {
       uGold: { value: color(PALETTE.gold) },
       uClay: { value: color(PALETTE.clay) },
       uGreen: { value: color(PALETTE.green) },
+      uRed: { value: color(PALETTE.red) },
     }),
     [],
   );
@@ -81,7 +82,7 @@ function Orb({ energy }: { energy: number }): JSX.Element {
   );
 }
 
-function KenteRing({
+function ToghuRing({
   radius,
   rotation,
   speed,
@@ -204,8 +205,8 @@ export default function SonahOrbScene({
     >
       <Rig>
         <Orb energy={energy} />
-        <KenteRing radius={1.6} rotation={[1.25, 0.15, 0]} speed={0.25} />
-        <KenteRing radius={1.92} rotation={[1.45, -0.55, 0.35]} speed={-0.16} />
+        <ToghuRing radius={1.6} rotation={[1.25, 0.15, 0]} speed={0.25} />
+        <ToghuRing radius={1.92} rotation={[1.45, -0.55, 0.35]} speed={-0.16} />
         <GoldDust count={compact ? 1200 : 3200} energy={energy} />
       </Rig>
     </Canvas>
