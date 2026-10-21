@@ -5,26 +5,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Palette inspirée du drapeau camerounais, ajustée pour le contraste
-        brand: {
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          500: '#0a8a5f',
-          600: '#007a5e',
-          700: '#00634c',
-          800: '#044d3c',
-          900: '#05382d',
-        },
-        sun: { 400: '#fcd116', 500: '#e8b800' },
-        flag: { red: '#ce1126' },
-        ink: { 900: '#0f172a', 700: '#334155', 500: '#64748b' },
+        // Papier crème, encre indigo (tissu ndop), ocre, terre cuite, vert forêt
+        paper: { DEFAULT: '#f6f1e7', soft: '#fbf8f2', deep: '#ede5d4' },
+        ink: { DEFAULT: '#181b34', soft: '#3d3f57', muted: '#6b6878' },
+        indigo: { DEFAULT: '#26306b', deep: '#1a2150' },
+        sun: { DEFAULT: '#e8a317', soft: '#f6d68a' },
+        clay: { DEFAULT: '#c4532d', soft: '#f0c9b6' },
+        leaf: { DEFAULT: '#0f6b4f', deep: '#0b5540' },
+        line: '#e0d6c2',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
       },
       maxWidth: {
-        content: '72rem',
+        content: '76rem',
+      },
+      keyframes: {
+        'fade-up': {
+          from: { opacity: '0', transform: 'translateY(12px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-up': 'fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both',
       },
     },
   },

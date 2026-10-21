@@ -15,22 +15,8 @@ export const chatResponseSchema = z.object({
   sources: z.array(sourceSchema).optional(),
 });
 
-export const searchResultSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  content: z.string(),
-  category: z.string(),
-  source: z.string(),
-  score: z.number(),
-});
-
-export const searchResponseSchema = z.object({
-  results: z.array(searchResultSchema),
-});
-
 export type Source = z.infer<typeof sourceSchema>;
 export type ChatResponse = z.infer<typeof chatResponseSchema>;
-export type SearchResult = z.infer<typeof searchResultSchema>;
 
 /** Le service n'est pas joignable ou la fonctionnalité n'est pas encore déployée. */
 export class ApiUnavailableError extends Error {
@@ -87,8 +73,4 @@ async function postJson<T>(path: string, body: unknown, schema: z.ZodType<T>): P
 
 export function sendChatMessage(message: string, conversationId?: string): Promise<ChatResponse> {
   return postJson('/chat', { message, conversationId }, chatResponseSchema);
-}
-
-export function searchLegalTexts(query: string, topK = 5): Promise<SearchResult[]> {
-  return postJson('/search', { query, topK }, searchResponseSchema).then((data) => data.results);
 }

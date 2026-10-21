@@ -9,28 +9,164 @@
   }
 
   body {
-    @apply bg-white text-ink-900 antialiased;
+    @apply bg-paper font-sans text-ink antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  ::selection {
+    @apply bg-sun-soft text-ink;
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-brand-500 ring-offset-2;
+    @apply rounded-sm outline outline-2 outline-offset-2 outline-indigo;
   }
 }
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-content px-4 sm:px-6;
+    @apply mx-auto w-full max-w-content px-4 sm:px-8;
   }
 
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-3 font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50;
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted;
   }
 
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 font-semibold text-ink-900 transition-colors hover:bg-slate-50;
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold transition-[background-color,transform,box-shadow] duration-200 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-40;
   }
 
-  .card {
-    @apply rounded-xl border border-slate-200 bg-white p-6 shadow-sm;
+  .btn-ink {
+    @apply btn bg-ink text-paper-soft shadow-[0_1px_0_rgba(255,255,255,0.15)_inset,0_6px_20px_-8px_rgba(24,27,52,0.6)] hover:bg-indigo-deep;
+  }
+
+  .btn-sun {
+    @apply btn bg-sun text-ink hover:bg-[#d99610];
+  }
+
+  .link-underline {
+    @apply underline decoration-line decoration-2 underline-offset-4 transition-colors hover:decoration-sun;
+  }
+}
+
+/* ─── Sonah, le robot ─────────────────────────────────────────── */
+
+.bot-float {
+  animation: bot-float 6s ease-in-out infinite;
+}
+
+.bot-arm {
+  transform-box: view-box;
+  transform-origin: 219px 210px;
+  animation: bot-wave 2.8s ease-in-out infinite;
+}
+
+.bot-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bot-blink 5.5s infinite;
+}
+
+.bot-star {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bot-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes bot-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes bot-wave {
+  0%,
+  55%,
+  100% {
+    transform: rotate(0deg);
+  }
+  8% {
+    transform: rotate(16deg);
+  }
+  18% {
+    transform: rotate(-8deg);
+  }
+  28% {
+    transform: rotate(16deg);
+  }
+  38% {
+    transform: rotate(-6deg);
+  }
+  46% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes bot-blink {
+  0%,
+  91%,
+  97%,
+  100% {
+    transform: scaleY(1);
+  }
+  94% {
+    transform: scaleY(0.12);
+  }
+}
+
+@keyframes bot-twinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.12) rotate(8deg);
+  }
+}
+
+@keyframes bubble-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.bubble-pop {
+  animation: bubble-pop 0.5s 0.4s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+
+@keyframes typing {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.typing-dot {
+  animation: typing 1.2s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bot-float,
+  .bot-arm,
+  .bot-eyes,
+  .bot-star,
+  .bubble-pop,
+  .typing-dot,
+  .animate-fade-up {
+    animation: none !important;
   }
 }

@@ -18,10 +18,11 @@ interface ChatState {
 }
 
 const UNAVAILABLE_MESSAGE =
-  "L'assistant est en cours de mise en service et ne peut pas encore répondre. " +
-  'Consultez la liste des démarches en attendant, puis réessayez plus tard.';
+  'Je suis encore en train de me préparer et je ne peux pas répondre pour le moment. ' +
+  'Revenez très bientôt : votre question m’intéresse !';
 
-const GENERIC_ERROR_MESSAGE = 'Une erreur est survenue. Merci de réessayer dans quelques instants.';
+const GENERIC_ERROR_MESSAGE =
+  "Oups, quelque chose s'est mal passé de mon côté. Pouvez-vous réessayer dans un instant ?";
 
 function createId(): string {
   return typeof crypto !== 'undefined' && 'randomUUID' in crypto

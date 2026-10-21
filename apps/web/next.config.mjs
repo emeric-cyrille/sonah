@@ -17,6 +17,9 @@ const nextConfig = {
   async rewrites() {
     return [{ source: '/api/v1/:path*', destination: `${API_PROXY_URL}/api/v1/:path*` }];
   },
+  async redirects() {
+    return [{ source: '/droits', destination: '/chat', permanent: false }];
+  },
   async headers() {
     return [
       {
