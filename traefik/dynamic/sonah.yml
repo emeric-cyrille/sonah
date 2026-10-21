@@ -1,0 +1,57 @@
+# Route Traefik pour SONAH
+# À copier dans /home/deploy/portfolio/traefik/dynamic/ sur le VPS
+# IMPORTANT : Faire une copie de backup avant (.bak-AAAAMMJJ)
+
+http:
+  routers:
+    # API Backend
+    sonah-api:
+      rule: "Host(`api.sonah.fokamemeric.com`)"
+      service: sonah-api
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: le
+      middlewares:
+        - sonah-api-cors
+
+    # Frontend (si hébergé sur VPS, sinon utiliser Vercel)
+    # sonah-web:
+    #   rule: "Host(`sonah.fokamemeric.com`)"
+    #   service: sonah-web
+    #   entryPoints:
+    #     - websecure
+    #   tls:
+    #     certResolver: le
+
+  services:
+    # API sur le port 3006 de l'hôte
+    sonah-api:
+      loadBalancer:
+        servers:
+          - url: "http://172.23.0.1:3006"
+
+    # Frontend (décommenter si hébergé sur VPS)
+    # sonah-web:
+    #   loadBalancer:
+    #     servers:
+    #       - url: "http://172.23.0.1:3007"
+
+  middlewares:
+    # CORS pour l'API
+    sonah-api-cors:
+      headers:
+        accessControlAllowOriginList:
+          - "https://sonah.fokamemeric.com"
+          - "http://localhost:3000"
+        accessControlAllowMethods:
+          - "GET"
+          - "POST"
+          - "PUT"
+          - "DELETE"
+          - "PATCH"
+          - "OPTIONS"
+        accessControlAllowHeaders:
+          - "Content-Type"
+          - "Authorization"
+        accessControlMaxAge: 3600

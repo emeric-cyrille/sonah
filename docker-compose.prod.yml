@@ -1,28 +1,12 @@
 version: '3.8'
 
-services:
-  traefik:
-    image: traefik:v2.10
-    container_name: sonah-traefik
-    restart: unless-stopped
-    command:
-      - "--api.dashboard=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencrypt.acme.email=fokamemeric@gmail.com"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik-letsencrypt:/letsencrypt
-    networks:
-      - sonah-network
+# Configuration pour VPS partagé (seazone - 51.254.137.22)
+# Ports utilisés : 3006 (API), 5433 (PostgreSQL), 7475/7688 (Neo4j), 6380 (Redis), 5673/15673 (RabbitMQ)
+# IMPORTANT : Ne PAS exposer les ports 80/443 - Traefik du portfolio les gère déjà
 
+name: sonah
+
+services:
   postgres:
     image: pgvector/pgvector:pg16
     container_name: sonah-postgres
@@ -31,8 +15,11 @@ services:
       POSTGRES_USER: sonah_user
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: sonah_prod
+    ports:
+      - "5433:5432"  # Port hôte 5433 pour éviter conflit
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - sonah-network
     healthcheck:
@@ -40,6 +27,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 1g
 
   neo4j:
     image: neo4j:5-community
@@ -48,6 +36,11 @@ services:
     environment:
       NEO4J_AUTH: neo4j/${NEO4J_PASSWORD}
       NEO4J_PLUGINS: '["apoc", "graph-data-science"]'
+      NEO4J_dbms_memory_heap_max__size: 512m
+      NEO4J_dbms_memory_pagecache_size: 256m
+    ports:
+      - "7475:7474"  # HTTP Browser (port hôte 7475)
+      - "7688:7687"  # Bolt (port hôte 7688)
     volumes:
       - neo4j_data:/data
     networks:
@@ -57,12 +50,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 1g
 
   redis:
     image: redis:7-alpine
     container_name: sonah-redis
     restart: unless-stopped
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "6380:6379"  # Port hôte 6380
     volumes:
       - redis_data:/data
     networks:
@@ -72,6 +68,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 256m
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -80,6 +77,9 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5673:5672"   # AMQP (port hôte 5673)
+      - "15673:15672" # Management UI (port hôte 15673)
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
@@ -89,6 +89,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 512m
 
   api:
     build:
@@ -96,14 +97,15 @@ services:
       dockerfile: docker/Dockerfile.api.prod
     container_name: sonah-api
     restart: unless-stopped
+    ports:
+      - "3006:4000"  # Port hôte 3006 (libre après 3005 de ghomala-translate)
     env_file:
       - .env.production
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`api.sonah.fokamemeric.com`)"
-      - "traefik.http.routers.api.entrypoints=websecure"
-      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
-      - "traefik.http.services.api.loadbalancer.server.port=4000"
+    environment:
+      - DATABASE_URL=postgresql://sonah_user:${POSTGRES_PASSWORD}@postgres:5432/sonah_prod
+      - NEO4J_URI=bolt://neo4j:7687
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672
     depends_on:
       postgres:
         condition: service_healthy
@@ -115,28 +117,12 @@ services:
         condition: service_healthy
     networks:
       - sonah-network
+    mem_limit: 2g
 
-  web:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.web.prod
-    container_name: sonah-web
-    restart: unless-stopped
-    env_file:
-      - .env.production
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.web.rule=Host(`sonah.fokamemeric.com`)"
-      - "traefik.http.routers.web.entrypoints=websecure"
-      - "traefik.http.routers.web.tls.certresolver=letsencrypt"
-      - "traefik.http.services.web.loadbalancer.server.port=3000"
-    depends_on:
-      - api
-    networks:
-      - sonah-network
+  # Note: Le frontend sera servi par un service externe (Vercel/Netlify)
+  # ou via une route Traefik si besoin de l'héberger sur le VPS
 
 volumes:
-  traefik-letsencrypt:
   postgres_data:
   neo4j_data:
   redis_data:
