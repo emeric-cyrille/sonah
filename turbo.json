@@ -18,6 +18,10 @@
       "outputs": []
     },
     "test": {
+      "outputs": ["coverage/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
       "outputs": []
     }
   }

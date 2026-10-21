@@ -14,12 +14,15 @@
     "build": "turbo run build",
     "start": "turbo run start",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,mjs,json,yml,yaml,css}\"",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "db:migrate": "pnpm --filter @sonah/database prisma migrate dev",
     "db:seed": "pnpm --filter @sonah/database prisma db seed",
-    "db:studio": "pnpm --filter @sonah/database prisma studio"
+    "db:studio": "pnpm --filter @sonah/database prisma studio",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mjs,json,yml,yaml,css}\""
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

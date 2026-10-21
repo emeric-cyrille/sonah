@@ -76,3 +76,8 @@ logs
 
 # Turbo
 .turbo
+
+# Deploy
+.env.production
+.deployed-tag
+backup-*.sql
