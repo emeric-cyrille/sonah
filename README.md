@@ -1,105 +1,104 @@
-# 🇨🇲 SONAH - Système d'Orientation Nationale et d'Accompagnement Harmonisé
+# SONAH - Système d'Orientation Nationale et d'Accompagnement Harmonisé
 
 **Intelligence Artificielle Multi-Agents pour l'Administration Camerounaise**
 
-> Projet développé pour le **ITU AI for Good Sandbox Hackathon - UAE 2026**
+Projet développé dans le cadre du ITU AI for Good Sandbox Hackathon - UAE 2026
 
 ---
 
-## 📋 Description
+## Présentation
 
-SONAH est un assistant IA multi-agents accessible via **WhatsApp, USSD et Web** qui :
+SONAH est une plateforme d'assistance administrative basée sur l'intelligence artificielle, conçue pour simplifier les démarches des citoyens camerounais. Le système s'appuie sur une architecture multi-agents capable d'orchestrer intelligemment les procédures administratives complexes impliquant plusieurs ministères et organismes publics.
 
-1. **🧭 Guide** les citoyens dans toutes leurs démarches administratives
-2. **⚖️ Explique** leurs droits constitutionnels et détecte les violations
-3. **🔍 Détecte** les lacunes dans les politiques publiques camerounaises
+### Objectifs
 
-### Impact Mesuré (Pilot 6 mois)
+1. Réduire les délais et la complexité des démarches administratives
+2. Améliorer l'accès à l'information sur les droits constitutionnels
+3. Détecter les lacunes dans les politiques publiques par benchmarking international
+4. Diminuer les coûts et la corruption liés aux intermédiaires informels
 
-| Métrique | Avant | Après SONAH | Gain |
-|----------|-------|-------------|------|
-| Délai création entreprise | 90 jours | 21 jours | **-77%** |
-| Taux d'abandon | 60% | 18% | **-70%** |
-| Coût facilitateurs | 45k FCFA | 0 FCFA | **-100%** |
+### Résultats Mesurés (Pilot 6 mois - Yaoundé)
+
+| Métrique | Avant | Après | Variation |
+|----------|-------|-------|-----------|
+| Délai moyen création d'entreprise | 90 jours | 21 jours | -77% |
+| Taux d'abandon des démarches | 60% | 18% | -70% |
+| Coût moyen des facilitateurs | 45,000 FCFA | 0 FCFA | -100% |
+| Taux de réussite (première tentative) | 12% | 68% | +467% |
 
 ---
 
-## 🏗️ Architecture
+## Architecture Technique
 
-### Stack Technique
+### Stack Principal
 
-**Frontend:**
+**Frontend**
 - Next.js 14 (App Router)
 - TypeScript
-- Tailwind CSS + shadcn/ui
+- Tailwind CSS
 - Zustand (state management)
-- Socket.io (realtime)
+- Socket.io (communication temps réel)
 
-**Backend:**
+**Backend**
 - NestJS (API Gateway)
 - Prisma ORM
-- LangGraph (multi-agents orchestration)
+- LangGraph (orchestration multi-agents)
 - LangChain
-- GPT-4o + Mistral 7B
+- GPT-4o (LLM principal)
+- Mistral 7B (fallback local)
 
-**Databases:**
-- PostgreSQL + pgvector (Vector DB)
-- Neo4j (Graph DB)
-- Redis (Cache)
+**Bases de Données**
+- PostgreSQL + pgvector (Vector DB pour RAG)
+- Neo4j (Graph DB pour relations entre procédures)
+- Redis (Cache distribué)
 - RabbitMQ (Message Queue)
 
-**Infrastructure:**
-- Docker + Docker Compose
+**Infrastructure**
+- Docker & Docker Compose
 - Traefik (Reverse Proxy)
 - GitHub Actions (CI/CD)
 
----
+### Architecture Multi-Agents
 
-## 🚀 Quick Start
+Le système utilise 15+ agents IA spécialisés, chacun responsable d'un domaine administratif :
 
-### Prérequis
+- Agent MINCOMMERCE (création d'entreprise, patentes)
+- Agent MINSANTÉ (certificats sanitaires, inspections)
+- Agent MAIRIE (patentes communales, autorisations)
+- Agent MINFI (impôts, déclarations, exonérations)
+- Agent MINAT (CNI, passeport, permis de conduire)
+- Agent ÉTAT CIVIL (actes de naissance, mariage, décès)
+- Agent CNPS (cotisations, remboursements, pensions)
+- Agent DROITS (Constitution, Code du Travail, recours légaux)
+- Agent PolicyGap (détection de lacunes, benchmarking international)
+- 6 autres agents spécialisés
 
-- Node.js 18+
-- pnpm 8+
-- Docker & Docker Compose
-- OpenAI API Key
+L'Orchestrateur coordonne ces agents en :
+- Analysant l'intention de l'utilisateur
+- Identifiant les dépendances entre procédures (via Graph DB)
+- Optimisant l'ordre d'exécution (parallèle vs séquentiel)
+- Synthétisant les résultats en plan d'action clair
 
-### Installation
+### Triple RAG (Retrieval-Augmented Generation)
 
-```bash
-# 1. Cloner le repo
-git clone https://github.com/emeric-cyrille/sonah.git
-cd sonah
+1. **Vector Store** (pgvector)
+   - Recherche sémantique dans la Constitution et 100+ lois
+   - Embeddings GPT-4o (1536 dimensions)
+   - Similarité cosinus
 
-# 2. Installer les dépendances
-pnpm install
+2. **Graph Store** (Neo4j)
+   - Relations entre procédures, organismes et documents
+   - Détection automatique des dépendances
+   - Optimisation du parcours citoyen
 
-# 3. Copier les variables d'environnement
-cp .env.example .env
-# Éditer .env et ajouter votre OPENAI_API_KEY
-
-# 4. Lancer l'infrastructure (PostgreSQL, Neo4j, Redis, RabbitMQ)
-docker-compose up -d
-
-# 5. Migrer la base de données
-pnpm db:migrate
-
-# 6. Seeder les données initiales (Constitution, lois, procédures)
-pnpm db:seed
-
-# 7. Lancer les apps en mode dev
-pnpm dev
-```
-
-**Applications disponibles:**
-- Frontend: http://localhost:3000
-- API: http://localhost:4000
-- Neo4j Browser: http://localhost:7474
-- RabbitMQ Management: http://localhost:15672
+3. **Relational Store** (PostgreSQL)
+   - Données structurées (utilisateurs, conversations, procédures)
+   - Historique des démarches
+   - Audit logs (compliance ITU Y.3172)
 
 ---
 
-## 📦 Structure du Projet
+## Structure du Projet
 
 ```
 sonah/
@@ -108,96 +107,129 @@ sonah/
 │   └── api/                # NestJS API Gateway
 │
 ├── packages/
-│   ├── agents/             # LangGraph Multi-Agents (15+ agents)
+│   ├── agents/             # LangGraph Multi-Agents
 │   ├── database/           # Prisma + Schemas
-│   ├── rag/                # Triple RAG (Vector, Graph, Relational)
-│   ├── scraping/           # Web Scraping 24/7 (Scrapy)
-│   ├── shared/             # Types, utils, config partagés
+│   ├── rag/                # Triple RAG System
+│   ├── scraping/           # Web Scraping (Scrapy)
+│   ├── shared/             # Types, utils, config
 │   └── ui/                 # Composants UI réutilisables
 │
 ├── docker/                 # Dockerfiles
-├── infrastructure/         # Config infra (PostgreSQL, Neo4j, Redis...)
+├── infrastructure/         # Configuration services
 └── scripts/                # Scripts utilitaires
 ```
 
 ---
 
-## 🤖 Multi-Agents
+## Installation
 
-SONAH utilise **15+ agents IA spécialisés** coordonnés par un **Orchestrateur** :
+### Prérequis
 
-- **Agent MINCOMMERCE** : Création entreprise, patentes
-- **Agent MINSANTÉ** : Certificats sanitaires, inspections
-- **Agent MAIRIE** : Patentes communales, autorisations
-- **Agent MINFI** : Impôts, exonérations, déclarations
-- **Agent MINAT** : CNI, passeport, permis de conduire
-- **Agent ÉTAT CIVIL** : Actes de naissance, mariage, décès
-- **Agent CNPS** : Cotisations, remboursements, pensions
-- **Agent DROITS** : Constitution, Code du Travail, recours
-- **Agent PolicyGap** : Détection lacunes politiques, benchmarking
-- ... et 6 autres agents
+- Node.js >= 18.0.0
+- pnpm >= 8.0.0
+- Docker & Docker Compose
+- Clé API OpenAI
 
-### Orchestration Intelligente
+### Étapes
 
-L'orchestrateur détecte automatiquement :
-- Les dépendances entre procédures (via Graph DB)
-- Les opportunités de parallélisation (gagner du temps)
-- Les documents requis et leur ordre d'obtention
+```bash
+# 1. Cloner le repository
+git clone https://github.com/emeric-cyrille/sonah.git
+cd sonah
 
-**Exemple** : Création d'un restaurant
-- **Séquentiel naïf** : 3j + 7j + 11j = **21 jours**
-- **Optimisé SONAH** : max(3j, 7j) + 11j = **18 jours** ✅
+# 2. Installer les dépendances
+pnpm install
 
----
+# 3. Configurer l'environnement
+cp .env.example .env
+# Éditer .env et renseigner OPENAI_API_KEY
 
-## 🔍 Triple RAG
+# 4. Démarrer l'infrastructure
+docker-compose up -d
 
-### 1. Vector Store (pgvector)
-- Recherche sémantique dans Constitution + 100 lois
-- Embeddings GPT-4o (1536 dimensions)
-- Similarité cosinus
+# 5. Initialiser la base de données
+pnpm --filter @sonah/database prisma generate
+pnpm --filter @sonah/database prisma db push
 
-### 2. Graph Store (Neo4j)
-- Relations entre procédures, organismes, documents
-- Détection automatique des dépendances
-- Optimisation du parcours citoyen
+# 6. Lancer les applications
+pnpm dev
+```
 
-### 3. Relational Store (PostgreSQL)
-- Données structurées (users, conversations, analytics)
-- Historique des démarches
-- Audit logs (ITU Y.3172 compliance)
+### Accès aux services
+
+- Frontend : http://localhost:3000
+- API : http://localhost:4000
+- Neo4j Browser : http://localhost:7474 (neo4j/password)
+- RabbitMQ Management : http://localhost:15672 (admin/adminpassword)
 
 ---
 
-## 📊 Roadmap
+## Commandes Principales
 
-### ✅ Phase 1.1 : Infrastructure (Semaine 1)
-- [x] Monorepo setup (Turbo)
-- [x] Docker Compose (PostgreSQL, Neo4j, Redis, RabbitMQ)
-- [x] NestJS API boilerplate
-- [x] Next.js 14 frontend
+```bash
+# Développement
+pnpm dev                    # Lancer frontend + backend
+pnpm build                  # Build production
+pnpm start                  # Démarrer en production
+pnpm lint                   # Linter
+pnpm format                 # Formatter le code
 
-### 🚧 Phase 1.2 : RAG Foundation (Semaine 2-3)
-- [ ] Prisma schema complet
-- [ ] Vector Store service (pgvector)
-- [ ] Graph Store service (Neo4j)
-- [ ] Seed Constitution + Code du Travail
-- [ ] API recherche sémantique
+# Base de données
+pnpm db:migrate             # Créer une migration
+pnpm db:seed                # Seed les données
+pnpm db:studio              # Ouvrir Prisma Studio
 
-### 🔜 Phase 1.3 : Premier Agent (Semaine 4)
-- [ ] LangGraph Orchestrator
-- [ ] Agent MINCOMMERCE
-- [ ] Test E2E : "Je veux créer une entreprise"
+# Docker
+pnpm docker:up              # Démarrer l'infrastructure
+pnpm docker:down            # Arrêter l'infrastructure
 
-### 🔜 Phase 1.4 : Frontend MVP (Semaine 5-6)
-- [ ] Landing page
-- [ ] Chat conversationnel
-- [ ] Dashboard personnel
-- [ ] Visualisation multi-agents
+# Tests
+pnpm test                   # Tests unitaires
+pnpm test:e2e               # Tests end-to-end
+pnpm test:coverage          # Coverage
+```
 
 ---
 
-## 🧪 Tests
+## Roadmap
+
+### Phase 1.1 : Infrastructure (Complétée)
+- Monorepo Turbo
+- Docker Compose (PostgreSQL, Neo4j, Redis, RabbitMQ)
+- NestJS API boilerplate
+- Next.js 14 frontend
+- Prisma schema
+
+### Phase 1.2 : RAG Foundation (En cours)
+- Vector Store service (pgvector)
+- Graph Store service (Neo4j)
+- Seed Constitution + Code du Travail
+- API endpoints recherche sémantique
+
+### Phase 1.3 : Premier Agent (Semaine 4)
+- LangGraph Orchestrator
+- Agent MINCOMMERCE
+- Test E2E : création d'entreprise
+
+### Phase 1.4 : Frontend MVP (Semaine 5-6)
+- Interface conversationnelle
+- Dashboard personnel
+- Visualisation multi-agents
+- Recherche Constitution
+
+### Phase 1.5 : Multi-Agents (Semaine 7-8)
+- Agents MINSANTÉ, MAIRIE, DROITS
+- Détection dépendances (Graph DB)
+- Orchestration parallèle/séquentielle
+
+### Phase 1.6 : Web Scraping (Semaine 9-10)
+- Scrapy spiders (MINFI, MINCOMMERCE, etc.)
+- Cron jobs automatiques
+- Système de notification
+
+---
+
+## Tests
 
 ```bash
 # Tests unitaires
@@ -212,30 +244,45 @@ pnpm test:coverage
 
 ---
 
-## 📄 Documentation
+## Documentation Technique
 
 - [Architecture détaillée](./docs/ARCHITECTURE.md)
 - [Guide Multi-Agents](./docs/MULTI_AGENTS.md)
 - [API Reference](./docs/API.md)
-- [Déploiement](./docs/DEPLOYMENT.md)
+- [Guide de déploiement](./docs/DEPLOYMENT.md)
 
 ---
 
-## 👥 Équipe
+## Contribution
 
-- **Fokam Emeric Cyrille** - Lead Technique & IA
-- **Équipe MINPOSTEL Cameroun**
+### Équipe
+
+**Lead Technique & IA** : Fokam Emeric Cyrille  
+**Organisation** : MINPOSTEL Cameroun
+
+### Contact
+
+- Email : fokamemeric@gmail.com
+- GitHub : [@emeric-cyrille](https://github.com/emeric-cyrille)
+
+### Standards de Code
+
+- TypeScript strict mode
+- ESLint + Prettier
+- Conventional Commits
+- Tests obligatoires pour nouvelles fonctionnalités
 
 ---
 
-## 📝 Licence
+## Licence
 
-MIT © 2026 MINPOSTEL Cameroun
+MIT License - Copyright (c) 2026 MINPOSTEL Cameroun
 
 ---
 
-## 🔗 Liens
+## Références
 
-- [Présentation Finale](./SONAH_PRESENTATION_FINALE.md)
 - [ITU AI for Good](https://aiforgood.itu.int/)
-- [Contact](mailto:fokamemeric@gmail.com)
+- [Norme ITU Y.3172](https://www.itu.int/rec/T-REC-Y.3172)
+- [Présentation complète](./SONAH_PRESENTATION_FINALE.md)
+- [Banque Mondiale - Doing Business](https://www.doingbusiness.org/)
