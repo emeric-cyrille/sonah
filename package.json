@@ -1,0 +1,35 @@
+{
+  "name": "sonah",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Système d'Orientation Nationale et d'Accompagnement Harmonisé - Intelligence Artificielle Multi-Agents pour l'Administration Camerounaise",
+  "author": "Fokam Emeric Cyrille <fokamemeric@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "db:migrate": "pnpm --filter @sonah/database prisma migrate dev",
+    "db:seed": "pnpm --filter @sonah/database prisma db seed",
+    "db:studio": "pnpm --filter @sonah/database prisma studio"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "prettier": "^3.1.0",
+    "turbo": "^1.11.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}

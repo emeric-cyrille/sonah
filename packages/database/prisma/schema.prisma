@@ -1,0 +1,229 @@
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+// User Model
+model User {
+  id            String         @id @default(uuid())
+  phone         String?        @unique
+  email         String?        @unique
+  name          String?
+  role          UserRole       @default(CITIZEN)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  conversations Conversation[]
+  procedures    Procedure[]
+  alerts        Alert[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  CITIZEN
+  ADMIN
+  MINISTRY
+}
+
+// Conversation Model
+model Conversation {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+  status    ConversationStatus @default(ACTIVE)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("conversations")
+}
+
+enum ConversationStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+// Message Model
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String       @db.Text
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+
+  @@map("messages")
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+// Procedure Model (démarches administratives)
+model Procedure {
+  id          String          @id @default(uuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id])
+  type        ProcedureType
+  title       String
+  description String?         @db.Text
+  status      ProcedureStatus @default(PENDING)
+  steps       Step[]
+  progress    Int             @default(0) // 0-100
+  startedAt   DateTime        @default(now())
+  completedAt DateTime?
+  metadata    Json?
+
+  @@map("procedures")
+}
+
+enum ProcedureType {
+  BUSINESS_CREATION
+  IDENTITY_DOCUMENT
+  CIVIL_STATUS
+  HEALTH_CNPS
+  TAXES
+  JUSTICE
+  LAND
+  EDUCATION
+  OTHER
+}
+
+enum ProcedureStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+  BLOCKED
+}
+
+// Step Model (étapes d'une procédure)
+model Step {
+  id          String      @id @default(uuid())
+  procedureId String
+  procedure   Procedure   @relation(fields: [procedureId], references: [id], onDelete: Cascade)
+  agent       String // Agent responsable (mincommerce, minsante, etc.)
+  title       String
+  description String?     @db.Text
+  order       Int
+  status      StepStatus  @default(PENDING)
+  documents   String[] // Documents requis
+  cost        Int? // Coût en FCFA
+  duration    Int? // Durée estimée en jours
+  startedAt   DateTime?
+  completedAt DateTime?
+  metadata    Json?
+
+  @@map("steps")
+}
+
+enum StepStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  BLOCKED
+}
+
+// Document Model (documents légaux, lois, Constitution)
+model Document {
+  id         String                  @id @default(uuid())
+  type       DocumentType
+  title      String
+  content    String                  @db.Text
+  source     String // URL ou référence
+  category   String // Constitution, Code du Travail, etc.
+  embedding  Unsupported("vector")? // pgvector embedding
+  metadata   Json?
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
+
+  @@map("documents")
+}
+
+enum DocumentType {
+  CONSTITUTION
+  LAW
+  DECREE
+  PROCEDURE
+  FORM
+  OTHER
+}
+
+// Alert Model (nouvelles lois, opportunités)
+model Alert {
+  id          String      @id @default(uuid())
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id])
+  type        AlertType
+  title       String
+  description String      @db.Text
+  link        String?
+  priority    AlertPriority @default(MEDIUM)
+  isRead      Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+
+  @@map("alerts")
+}
+
+enum AlertType {
+  NEW_LAW
+  POLICY_UPDATE
+  OPPORTUNITY
+  DEADLINE
+  VIOLATION
+}
+
+enum AlertPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// PolicyGap Model (lacunes détectées)
+model PolicyGap {
+  id                String   @id @default(uuid())
+  category          String
+  title             String
+  description       String   @db.Text
+  cameroonSituation String   @db.Text
+  benchmarkCountry  String
+  benchmarkValue    String
+  gapAnalysis       String   @db.Text
+  recommendations   Json // Array of recommendations
+  impact            String
+  priority          String
+  status            String   @default("DETECTED")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("policy_gaps")
+}
+
+// AuditLog Model (traçabilité complète)
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String
+  metadata  Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}

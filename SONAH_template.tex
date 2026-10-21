@@ -1,0 +1,323 @@
+% Template LaTeX professionnel pour SONAH
+% Utilisation: pandoc document.md -o document.pdf --template=SONAH_template.tex
+
+\documentclass[11pt,a4paper]{report}
+
+% Packages essentiels
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Configuration des marges
+\geometry{
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm,
+  headheight=15pt
+}
+
+% Couleurs SONAH
+\definecolor{sonah-blue}{HTML}{1E40AF}
+\definecolor{sonah-green}{HTML}{059669}
+\definecolor{sonah-orange}{HTML}{F59E0B}
+\definecolor{sonah-gray}{HTML}{6B7280}
+\definecolor{sonah-lightgray}{HTML}{F9FAFB}
+
+% Configuration des liens
+\hypersetup{
+  colorlinks=true,
+  linkcolor=sonah-blue,
+  urlcolor=sonah-blue,
+  citecolor=sonah-blue,
+  pdfborder={0 0 0}
+}
+
+% En-têtes et pieds de page
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{sonah-blue}{\small SONAH}}
+\fancyhead[R]{\textcolor{sonah-gray}{\small \leftmark}}
+\fancyfoot[C]{\textcolor{sonah-gray}{\thepage}}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{sonah-blue}\leaders\hrule height \headrulewidth\hfill}}
+
+% Style des titres
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{sonah-blue}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sonah-blue}}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{sonah-green}}
+  {\thesubsection}{1em}{}
+
+% Boîtes colorées pour les remarques
+\newtcolorbox{infobox}{
+  colback=sonah-lightgray,
+  colframe=sonah-blue,
+  fonttitle=\bfseries,
+  title=Information
+}
+
+\newtcolorbox{warningbox}{
+  colback=yellow!10,
+  colframe=sonah-orange,
+  fonttitle=\bfseries,
+  title=Attention
+}
+
+% Métadonnées (seront remplacées par Pandoc)
+$if(title)$
+\title{$title$}
+$endif$
+
+$if(author)$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+$endif$
+
+$if(date)$
+\date{$date$}
+$endif$
+
+\begin{document}
+
+% ============================================
+% PAGE DE COUVERTURE
+% ============================================
+
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture,overlay]
+    % Fond bleu en haut
+    \fill[sonah-blue] (current page.north west) rectangle ([yshift=-8cm]current page.north east);
+
+    % Bande verte
+    \fill[sonah-green] ([yshift=-8cm]current page.north west) rectangle ([yshift=-8.5cm]current page.north east);
+
+    % Logo Cameroun (cercle tricolore)
+    \node[circle, minimum size=3cm, fill=white, drop shadow] at ([xshift=0cm, yshift=-4cm]current page.north) {
+      \begin{tikzpicture}
+        \fill[green!60!black] (0,0) -- (0,1) arc (90:210:1) -- cycle;
+        \fill[red!80!black] (0,0) -- (0,1) arc (90:-30:1) -- cycle;
+        \fill[yellow!80!orange] (0,0) -- (210:1) arc (210:330:1) -- cycle;
+        \node[yellow!80!orange] at (0,0.3) {\Large\bfseries \textsf{★}};
+      \end{tikzpicture}
+    };
+  \end{tikzpicture}
+
+  \vspace{5cm}
+
+  \begin{center}
+    % Titre principal
+    {\Huge\bfseries\color{white} SONAH}
+
+    \vspace{0.5cm}
+
+    {\LARGE\color{white} Système d'Orientation Nationale}
+
+    {\LARGE\color{white} et d'Accompagnement Harmonisé}
+
+    \vspace{2cm}
+
+    % Sous-titre
+    $if(subtitle)$
+    {\Large\bfseries\color{sonah-blue} $subtitle$}
+    $endif$
+
+    \vspace{3cm}
+
+    % Informations
+    \begin{tcolorbox}[
+      width=0.8\textwidth,
+      colback=white,
+      colframe=sonah-blue,
+      arc=5mm,
+      boxrule=1pt
+    ]
+      \centering
+      $if(event)$
+      {\large $event$}\\[0.3cm]
+      $endif$
+
+      $if(author)$
+      {\bfseries Porteur du Projet :}\\
+      $for(author)$
+      $author$\\
+      $endfor$
+      \vspace{0.2cm}
+      $endif$
+
+      $if(organization)$
+      {\bfseries Organisation :}\\
+      $organization$\\
+      \vspace{0.2cm}
+      $endif$
+
+      $if(date)$
+      {\bfseries Date :}\\
+      $date$
+      $endif$
+    \end{tcolorbox}
+
+    \vfill
+
+    % Pied de page
+    {\small\color{sonah-gray}
+      $if(version)$Version $version$ | $endif$
+      Document Confidentiel\\
+      © 2026 MINPOSTEL Cameroun
+    }
+  \end{center}
+\end{titlepage}
+
+% ============================================
+% PAGE BLANCHE (verso de couverture)
+% ============================================
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+% ============================================
+% INFORMATIONS DU DOCUMENT
+% ============================================
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{2cm}
+
+\begin{center}
+  {\LARGE\bfseries\color{sonah-blue} Informations du Document}
+\end{center}
+
+\vspace{1cm}
+
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  \textbf{Titre} & $if(title)$$title$$endif$ \\
+  \midrule
+  $if(subtitle)$
+  \textbf{Sous-titre} & $subtitle$ \\
+  \midrule
+  $endif$
+  $if(version)$
+  \textbf{Version} & $version$ \\
+  \midrule
+  $endif$
+  $if(date)$
+  \textbf{Date} & $date$ \\
+  \midrule
+  $endif$
+  $if(author)$
+  \textbf{Auteur(s)} & $for(author)$$author$$sep$, $endfor$ \\
+  \midrule
+  $endif$
+  $if(organization)$
+  \textbf{Organisation} & $organization$ \\
+  \midrule
+  $endif$
+  $if(contact)$
+  \textbf{Contact} & $contact$ \\
+  $endif$
+  \bottomrule
+\end{tabular}
+
+\vspace{2cm}
+
+$if(abstract)$
+\begin{tcolorbox}[
+  colback=sonah-lightgray,
+  colframe=sonah-blue,
+  title={\bfseries Résumé Exécutif},
+  fonttitle=\Large
+]
+  $abstract$
+\end{tcolorbox}
+$endif$
+
+\vfill
+
+\begin{center}
+  \textcolor{sonah-gray}{\small
+    Ce document est la propriété de MINPOSTEL Cameroun.\\
+    Toute reproduction, même partielle, est interdite sans autorisation.
+  }
+\end{center}
+
+% ============================================
+% TABLE DES MATIÈRES
+% ============================================
+
+\newpage
+\tableofcontents
+
+% ============================================
+% CONTENU DU DOCUMENT
+% ============================================
+
+\newpage
+\setcounter{page}{1}
+
+$body$
+
+% ============================================
+% PAGE DE FIN
+% ============================================
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{\fill}
+
+\begin{center}
+  \begin{tikzpicture}
+    \fill[sonah-blue, opacity=0.1] (-8,-4) rectangle (8,4);
+
+    \node[align=center] at (0,2) {
+      \Huge\bfseries\color{sonah-blue} SONAH
+    };
+
+    \node[align=center] at (0,0.5) {
+      \Large\color{sonah-green} Transformons l'Administration Camerounaise
+    };
+
+    \node[align=center] at (0,-1) {
+      \large\color{sonah-gray}
+      $if(contact)$$contact$$endif$
+    };
+
+    \node[align=center] at (0,-2.5) {
+      \color{sonah-gray}
+      $if(website)$$website$$endif$
+    };
+  \end{tikzpicture}
+\end{center}
+
+\vspace*{\fill}
+
+\begin{center}
+  \textcolor{sonah-gray}{\small
+    © 2026 MINPOSTEL Cameroun - Tous droits réservés
+  }
+\end{center}
+
+\end{document}

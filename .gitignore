@@ -1,0 +1,78 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Next.js
+.next/
+out/
+build
+dist
+
+# Production
+dist/
+build/
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local env files
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docker
+docker-compose.override.yml
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+postgres-data/
+neo4j-data/
+redis-data/
+
+# Prisma
+migrations/
+!prisma/migrations/.gitkeep
+
+# Python (scraping)
+__pycache__/
+*.py[cod]
+*$py.class
+.scrapy/
+.venv/
+venv/
+
+# Logs
+logs
+*.log
+
+# Turbo
+.turbo
