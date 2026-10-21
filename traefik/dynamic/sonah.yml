@@ -1,57 +1,68 @@
-# Route Traefik pour SONAH
-# À copier dans /home/deploy/portfolio/traefik/dynamic/ sur le VPS
-# IMPORTANT : Faire une copie de backup avant (.bak-AAAAMMJJ)
+# ═══════════════════════════════════════════════════════════════════
+# sonah.yml — route Traefik de SONAH (fichier SÉPARÉ de routes.yml)
+# À copier dans /home/deploy/portfolio/traefik/dynamic/ — rechargé à chaud, sans redémarrer Traefik.
+# Les conteneurs sonah-web et sonah-api sont rattachés au réseau portfolio-net :
+# Traefik les joint par leur nom.
+#
+# Un seul domaine : /api/v1/* → API NestJS, tout le reste → Next.js (pas de CORS nécessaire).
+# ═══════════════════════════════════════════════════════════════════
 
 http:
+  middlewares:
+    sonah-security:
+      headers:
+        stsSeconds: 31536000
+        stsIncludeSubdomains: false
+        forceSTSHeader: true
+        contentTypeNosniff: true
+        frameDeny: true
+        referrerPolicy: 'strict-origin-when-cross-origin'
+
+    sonah-api-ratelimit:
+      rateLimit:
+        average: 20
+        period: 1s
+        burst: 40
+
   routers:
-    # API Backend
     sonah-api:
-      rule: "Host(`api.sonah.fokamemeric.com`)"
-      service: sonah-api
+      rule: 'Host(`sonah.fokamemeric.com`) && PathPrefix(`/api/v1`)'
+      priority: 100
       entryPoints:
         - websecure
+      service: sonah-api
+      middlewares:
+        - sonah-security
+        - sonah-api-ratelimit
       tls:
         certResolver: le
-      middlewares:
-        - sonah-api-cors
 
-    # Frontend (si hébergé sur VPS, sinon utiliser Vercel)
-    # sonah-web:
-    #   rule: "Host(`sonah.fokamemeric.com`)"
-    #   service: sonah-web
-    #   entryPoints:
-    #     - websecure
-    #   tls:
-    #     certResolver: le
+    sonah-web:
+      rule: 'Host(`sonah.fokamemeric.com`)'
+      priority: 10
+      entryPoints:
+        - websecure
+      service: sonah-web
+      middlewares:
+        - sonah-security
+      tls:
+        certResolver: le
 
   services:
-    # API sur le port 3006 de l'hôte
+    sonah-web:
+      loadBalancer:
+        servers:
+          - url: 'http://sonah-web:3000'
+        healthCheck:
+          path: /healthz
+          interval: 30s
+          timeout: 5s
+
     sonah-api:
       loadBalancer:
         servers:
-          - url: "http://172.23.0.1:3006"
-
-    # Frontend (décommenter si hébergé sur VPS)
-    # sonah-web:
-    #   loadBalancer:
-    #     servers:
-    #       - url: "http://172.23.0.1:3007"
-
-  middlewares:
-    # CORS pour l'API
-    sonah-api-cors:
-      headers:
-        accessControlAllowOriginList:
-          - "https://sonah.fokamemeric.com"
-          - "http://localhost:3000"
-        accessControlAllowMethods:
-          - "GET"
-          - "POST"
-          - "PUT"
-          - "DELETE"
-          - "PATCH"
-          - "OPTIONS"
-        accessControlAllowHeaders:
-          - "Content-Type"
-          - "Authorization"
-        accessControlMaxAge: 3600
+          - url: 'http://sonah-api:4000'
+        healthCheck:
+          path: /api/v1/health
+          interval: 30s
+          timeout: 5s

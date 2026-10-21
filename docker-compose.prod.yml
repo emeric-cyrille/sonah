@@ -1,126 +1,128 @@
-version: '3.8'
-
-# Configuration pour VPS partagé (seazone - 51.254.137.22)
-# Ports utilisés : 3006 (API), 5433 (PostgreSQL), 7475/7688 (Neo4j), 6380 (Redis), 5673/15673 (RabbitMQ)
-# IMPORTANT : Ne PAS exposer les ports 80/443 - Traefik du portfolio les gère déjà
+# Production — VPS partagé seazone (51.254.137.22)
+#
+# - Les conteneurs web et api rejoignent le réseau externe `portfolio-net` :
+#   Traefik (portfolio-traefik) les joint par leur nom, aucun port n'est publié sur l'hôte.
+# - Les images sont construites par la CI et publiées sur GHCR (voir .github/workflows/deploy.yml).
+# - Les services de données sont dans le profil `data` : ils ne démarrent qu'avec
+#   `docker compose --profile data up -d`, une fois le RAG (Phase 1.2) prêt à les utiliser.
 
 name: sonah
 
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '3'
+
 services:
+  web:
+    image: ghcr.io/emeric-cyrille/sonah-web:${IMAGE_TAG:-latest}
+    container_name: sonah-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+    networks:
+      - portfolio-net
+    mem_limit: 512m
+    logging: *default-logging
+
+  api:
+    image: ghcr.io/emeric-cyrille/sonah-api:${IMAGE_TAG:-latest}
+    container_name: sonah-api
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+      API_PORT: 4000
+      APP_VERSION: ${IMAGE_TAG:-latest}
+    networks:
+      - portfolio-net
+      - sonah-internal
+    mem_limit: 1g
+    logging: *default-logging
+
   postgres:
+    profiles: ['data']
     image: pgvector/pgvector:pg16
     container_name: sonah-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: sonah_user
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-}
       POSTGRES_DB: sonah_prod
-    ports:
-      - "5433:5432"  # Port hôte 5433 pour éviter conflit
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
-      - sonah-network
+      - sonah-internal
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sonah_user"]
+      test: ['CMD-SHELL', 'pg_isready -U sonah_user -d sonah_prod']
       interval: 10s
       timeout: 5s
       retries: 5
     mem_limit: 1g
+    logging: *default-logging
 
   neo4j:
+    profiles: ['data']
     image: neo4j:5-community
     container_name: sonah-neo4j
     restart: unless-stopped
     environment:
-      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD}
-      NEO4J_PLUGINS: '["apoc", "graph-data-science"]'
-      NEO4J_dbms_memory_heap_max__size: 512m
-      NEO4J_dbms_memory_pagecache_size: 256m
-    ports:
-      - "7475:7474"  # HTTP Browser (port hôte 7475)
-      - "7688:7687"  # Bolt (port hôte 7688)
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_server_memory_heap_max__size: 512m
+      NEO4J_server_memory_pagecache_size: 256m
     volumes:
       - neo4j_data:/data
     networks:
-      - sonah-network
+      - sonah-internal
     healthcheck:
-      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:7474 || exit 1"]
+      test: ['CMD-SHELL', 'wget --quiet --tries=1 --spider http://localhost:7474 || exit 1']
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
     mem_limit: 1g
+    logging: *default-logging
 
   redis:
+    profiles: ['data']
     image: redis:7-alpine
     container_name: sonah-redis
     restart: unless-stopped
-    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
-    ports:
-      - "6380:6379"  # Port hôte 6380
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
     volumes:
       - redis_data:/data
     networks:
-      - sonah-network
+      - sonah-internal
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD:-}', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
     mem_limit: 256m
+    logging: *default-logging
 
   rabbitmq:
+    profiles: ['data']
     image: rabbitmq:3-management-alpine
     container_name: sonah-rabbitmq
     restart: unless-stopped
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
-    ports:
-      - "5673:5672"   # AMQP (port hôte 5673)
-      - "15673:15672" # Management UI (port hôte 15673)
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-}
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - sonah-network
+      - sonah-internal
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      test: ['CMD', 'rabbitmq-diagnostics', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
     mem_limit: 512m
-
-  api:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.api.prod
-    container_name: sonah-api
-    restart: unless-stopped
-    ports:
-      - "3006:4000"  # Port hôte 3006 (libre après 3005 de ghomala-translate)
-    env_file:
-      - .env.production
-    environment:
-      - DATABASE_URL=postgresql://sonah_user:${POSTGRES_PASSWORD}@postgres:5432/sonah_prod
-      - NEO4J_URI=bolt://neo4j:7687
-      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
-      - RABBITMQ_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672
-    depends_on:
-      postgres:
-        condition: service_healthy
-      neo4j:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    networks:
-      - sonah-network
-    mem_limit: 2g
-
-  # Note: Le frontend sera servi par un service externe (Vercel/Netlify)
-  # ou via une route Traefik si besoin de l'héberger sur le VPS
+    logging: *default-logging
 
 volumes:
   postgres_data:
@@ -129,5 +131,7 @@ volumes:
   rabbitmq_data:
 
 networks:
-  sonah-network:
+  portfolio-net:
+    external: true
+  sonah-internal:
     driver: bridge

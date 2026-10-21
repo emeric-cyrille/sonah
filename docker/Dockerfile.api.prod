@@ -1,33 +1,31 @@
-FROM node:20-alpine AS builder
-
+# syntax=docker/dockerfile:1.7
+FROM node:20-alpine AS base
+RUN corepack enable && corepack prepare pnpm@8.15.0 --activate
 WORKDIR /app
 
-RUN npm install -g pnpm@8.15.0
-
+FROM base AS builder
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/api/package.json ./apps/api/
-COPY packages/*/package.json ./packages/
-
-RUN pnpm install --frozen-lockfile
-
-COPY . .
-
-RUN pnpm --filter @sonah/database prisma generate
-RUN pnpm --filter @sonah/api build
+COPY apps/api/package.json apps/api/
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --filter @sonah/api...
+COPY apps/api apps/api
+RUN pnpm --filter @sonah/api build \
+ && pnpm --filter @sonah/api deploy --prod /out \
+ && cp -r apps/api/dist /out/dist
 
 FROM node:20-alpine AS runner
-
 WORKDIR /app
+ENV NODE_ENV=production \
+    API_PORT=4000
 
-RUN npm install -g pnpm@8.15.0
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
 
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/packages ./packages
+COPY --from=builder --chown=nestjs:nodejs /out ./
 
-ENV NODE_ENV=production
-
+USER nestjs
 EXPOSE 4000
 
-CMD ["node", "dist/main"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:4000/api/v1/health > /dev/null || exit 1
+
+CMD ["node", "dist/main.js"]
