@@ -16,8 +16,10 @@ Internet ──443──▶ portfolio-traefik (Let's Encrypt)
   (même modèle que `omega.yml` et `ghomala.yml`).
 - La route Traefik est un fichier séparé, `traefik/dynamic/sonah.yml`, copié dans
   `/home/deploy/portfolio/traefik/dynamic/` et rechargé à chaud. `routes.yml` n'est jamais modifié.
-- Les services de données (PostgreSQL/pgvector, Neo4j, Redis, RabbitMQ) sont dans le profil Compose `data`
-  et ne tournent pas tant que l'API ne les utilise pas (Phase 1.2).
+- **PostgreSQL + pgvector** tourne en permanence (conversations, base vectorielle). Le mot de passe est généré
+  automatiquement par `scripts/deploy.sh` dans `.env.production` au premier déploiement.
+- **Neo4j** est dans le profil `graph` : il démarre si `NEO4J_URI=bolt://neo4j:7687` est présent dans `.env.production`.
+- **Redis / RabbitMQ** sont dans le profil `queue` (orchestration multi-agents, à venir).
 
 ## Pipeline CI/CD
 
@@ -28,10 +30,12 @@ Internet ──443──▶ portfolio-traefik (Let's Encrypt)
 
 Le déploiement exécute `scripts/deploy.sh <sha>` sur le VPS :
 
-1. installe la route Traefik si elle a changé (sauvegarde `sonah.yml.bak-AAAAMMJJ-HHMMSS`) ;
-2. `docker compose pull` puis `up -d` pour `web` et `api` ;
-3. attend que les deux conteneurs soient `healthy` (2 min max) ;
-4. en cas d'échec, **rollback automatique** vers le tag précédent (`.deployed-tag`).
+1. génère les secrets manquants et installe la route Traefik si elle a changé (sauvegarde horodatée) ;
+2. démarre PostgreSQL (et Neo4j si activé), applique les migrations Prisma (`prisma migrate deploy`) ;
+3. `docker compose pull` puis `up -d` pour `web` et `api` ;
+4. attend que les deux conteneurs soient `healthy` (2 min max), sinon **rollback automatique** vers le tag précédent ;
+5. indexe la Constitution et le Code du travail si aucun article n'est indexé pour le modèle d'embedding courant
+   (premier déploiement, ou ajout de la clé OpenAI).
 
 ### Secrets GitHub (environnement `production`)
 
@@ -79,9 +83,16 @@ docker compose -f docker-compose.prod.yml logs -f --tail 100 api
 # Redéployer un tag précis (ex. rollback manuel)
 bash scripts/deploy.sh <sha>
 
-# Démarrer les services de données (Phase 1.2) — POSTGRES_PASSWORD, NEO4J_PASSWORD,
-# REDIS_PASSWORD, RABBITMQ_USER et RABBITMQ_PASSWORD doivent être définis dans .env.production
-docker compose -f docker-compose.prod.yml --env-file .env.production --profile data up -d
+# Activer GPT-4o : ajouter la clé, redémarrer l'API, réindexer avec les embeddings OpenAI
+echo 'OPENAI_API_KEY=sk-...' >> .env.production
+docker compose -f docker-compose.prod.yml --env-file .env.production up -d api
+docker compose -f docker-compose.prod.yml --env-file .env.production exec api node dist/scripts/seed.js --if-empty
+
+# Réindexer les textes officiels (idempotent)
+docker compose -f docker-compose.prod.yml --env-file .env.production exec api node dist/scripts/seed.js
+
+# État des dépendances (base, graphe, modèle, nombre d'articles indexés)
+curl -s https://sonah.fokamemeric.com/api/v1/health/ready
 ```
 
 Déploiement manuel depuis GitHub : *Actions → Deploy → Run workflow*.
