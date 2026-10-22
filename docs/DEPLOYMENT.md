@@ -35,7 +35,7 @@ Le déploiement exécute `scripts/deploy.sh <sha>` sur le VPS :
 3. `docker compose pull` puis `up -d` pour `web` et `api` ;
 4. attend que les deux conteneurs soient `healthy` (2 min max), sinon **rollback automatique** vers le tag précédent ;
 5. indexe la Constitution et le Code du travail si aucun article n'est indexé pour le modèle d'embedding courant
-   (premier déploiement, ou ajout de la clé OpenAI).
+   (premier déploiement, ou ajout d'une clé Gemini ou OpenAI).
 
 ### Secrets GitHub (environnement `production`)
 
@@ -83,8 +83,8 @@ docker compose -f docker-compose.prod.yml logs -f --tail 100 api
 # Redéployer un tag précis (ex. rollback manuel)
 bash scripts/deploy.sh <sha>
 
-# Activer GPT-4o : ajouter la clé, redémarrer l'API, réindexer avec les embeddings OpenAI
-echo 'OPENAI_API_KEY=sk-...' >> .env.production
+# Activer Gemini : ajouter la clé, redémarrer l'API, réindexer avec les embeddings Gemini
+echo 'GEMINI_API_KEY=AIza...' >> .env.production
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d api
 docker compose -f docker-compose.prod.yml --env-file .env.production exec api node dist/scripts/seed.js --if-empty
 

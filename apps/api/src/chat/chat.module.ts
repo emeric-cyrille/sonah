@@ -4,7 +4,43 @@ import type { Env } from '../config/env';
 import { RagModule } from '../rag/rag.module';
 import { ChatController } from './chat.controller';
 import { ChatService } from './chat.service';
-import { LANGUAGE_MODEL, OpenAILanguageModel, type LanguageModel } from './language-model';
+import {
+  GEMINI_OPENAI_BASE_URL,
+  LANGUAGE_MODEL,
+  OpenAICompatibleLanguageModel,
+  type LanguageModel,
+} from './language-model';
+
+/** Gemini (palier gratuit) si sa clé est présente, sinon OpenAI, sinon réponses extractives. */
+export function createLanguageModel(
+  config: Pick<ConfigService<Env, true>, 'get'>,
+): LanguageModel | null {
+  const logger = new Logger('ChatModule');
+  const geminiKey = config.get('GEMINI_API_KEY', { infer: true });
+  const openaiKey = config.get('OPENAI_API_KEY', { infer: true });
+
+  let model: LanguageModel | null = null;
+  if (geminiKey) {
+    model = new OpenAICompatibleLanguageModel({
+      apiKey: geminiKey,
+      model: config.get('GEMINI_CHAT_MODEL', { infer: true }),
+      baseURL: GEMINI_OPENAI_BASE_URL,
+      reasoningEffort: 'none',
+    });
+  } else if (openaiKey) {
+    model = new OpenAICompatibleLanguageModel({
+      apiKey: openaiKey,
+      model: config.get('OPENAI_CHAT_MODEL', { infer: true }),
+    });
+  }
+
+  if (model) logger.log(`Rédaction des réponses avec ${model.name}`);
+  else
+    logger.warn(
+      'Aucune clé GEMINI_API_KEY ni OPENAI_API_KEY : Sonah cite les textes, sans rédaction',
+    );
+  return model;
+}
 
 @Module({
   imports: [RagModule],
@@ -14,17 +50,8 @@ import { LANGUAGE_MODEL, OpenAILanguageModel, type LanguageModel } from './langu
     {
       provide: LANGUAGE_MODEL,
       inject: [ConfigService],
-      useFactory: (config: ConfigService<Env, true>): LanguageModel | null => {
-        const apiKey = config.get('OPENAI_API_KEY', { infer: true });
-        const logger = new Logger('ChatModule');
-        if (!apiKey) {
-          logger.warn('OPENAI_API_KEY absente : Sonah répond en citant les textes, sans rédaction');
-          return null;
-        }
-        const model = config.get('OPENAI_CHAT_MODEL', { infer: true });
-        logger.log(`Rédaction des réponses avec ${model}`);
-        return new OpenAILanguageModel(apiKey, model);
-      },
+      useFactory: (config: ConfigService<Env, true>): LanguageModel | null =>
+        createLanguageModel(config),
     },
   ],
   exports: [LANGUAGE_MODEL],

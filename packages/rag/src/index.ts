@@ -5,7 +5,13 @@ export {
   type ChunkerOptions,
 } from './chunking/legal-chunker';
 export { normalizeLegalText } from './chunking/text-normalizer';
-export { EMBEDDING_DIMENSIONS, type Embedder } from './embeddings/embedder';
+export {
+  EMBEDDING_DIMENSIONS,
+  withRelevanceThreshold,
+  type Embedder,
+  type EmbeddingPurpose,
+} from './embeddings/embedder';
+export { GeminiEmbedder, formatForGemini } from './embeddings/gemini-embedder';
 export { HashingEmbedder } from './embeddings/hashing-embedder';
 export { OpenAIEmbedder } from './embeddings/openai-embedder';
 export { createEmbedder, type EmbedderConfig } from './embeddings/create-embedder';

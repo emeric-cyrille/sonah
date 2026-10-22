@@ -1,6 +1,6 @@
 import { Prisma, type PrismaClient } from '@sonah/database';
 import { z } from 'zod';
-import { assertDimensions, type Embedder } from './embeddings/embedder';
+import { assertDimensions, type Embedder, type EmbeddingPurpose } from './embeddings/embedder';
 import {
   consoleLogger,
   type DocumentInput,
@@ -77,9 +77,9 @@ export class VectorStoreService {
     return this.embedder.relevanceThreshold;
   }
 
-  /** Calcule l'embedding d'un texte. */
-  async createEmbedding(text: string): Promise<number[]> {
-    const [vector] = await this.embedder.embed([text]);
+  /** Calcule l'embedding d'un texte (une question de recherche par défaut). */
+  async createEmbedding(text: string, purpose: EmbeddingPurpose = 'query'): Promise<number[]> {
+    const [vector] = await this.embedder.embed([text], purpose);
     if (!vector) throw new Error('Aucun embedding retourné par le modèle');
     return vector;
   }
@@ -105,7 +105,10 @@ export class VectorStoreService {
         embeddingText: item.embeddingText ?? item.doc.content,
       }));
       try {
-        const vectors = await this.embedder.embed(batch.map((item) => item.embeddingText));
+        const vectors = await this.embedder.embed(
+          batch.map((item) => item.embeddingText),
+          'document',
+        );
         assertDimensions(vectors);
         const batchIds = await this.prisma.$transaction(
           batch.map(({ doc }, index) => this.upsertQuery(doc, vectors[index] ?? [])),

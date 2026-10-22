@@ -13,9 +13,17 @@ export const envSchema = z.object({
   NEO4J_USER: z.string().default('neo4j'),
   NEO4J_PASSWORD: z.string().default(''),
 
+  /** Google Gemini (palier gratuit) : prioritaire sur OpenAI si les deux clés sont présentes. */
+  GEMINI_API_KEY: z.string().optional(),
+  GEMINI_CHAT_MODEL: z.string().default('gemini-2.5-flash'),
+  GEMINI_EMBEDDING_MODEL: z.string().default('gemini-embedding-2'),
+
   OPENAI_API_KEY: z.string().optional(),
   OPENAI_CHAT_MODEL: z.string().default('gpt-4o'),
   OPENAI_EMBEDDING_MODEL: z.string().default('text-embedding-3-small'),
+
+  /** Seuil de pertinence calibré (pnpm --filter @sonah/rag calibrate). Absent : valeur par défaut du modèle. */
+  EMBEDDING_RELEVANCE_THRESHOLD: z.coerce.number().min(-1).max(1).optional(),
 
   /** Jeton requis pour ajouter des documents (POST /documents). Absent : ajout désactivé. */
   ADMIN_TOKEN: z.string().min(24).optional(),

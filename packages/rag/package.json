@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint \"src/**/*.ts\" \"scripts/**/*.ts\" --max-warnings 0",
     "test": "jest",
-    "seed": "ts-node --transpile-only scripts/seed-legal.ts"
+    "seed": "ts-node --transpile-only scripts/seed-legal.ts",
+    "calibrate": "ts-node --transpile-only scripts/calibrate-threshold.ts"
   },
   "jest": {
     "moduleFileExtensions": [

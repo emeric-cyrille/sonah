@@ -3,7 +3,7 @@
  * En production : docker compose exec api node dist/scripts/seed.js [--if-empty]
  *
  * --if-empty : n'indexe que si aucun document n'existe pour le modèle d'embedding courant
- * (premier déploiement, ou changement de modèle après ajout d'OPENAI_API_KEY).
+ * (premier déploiement, ou changement de modèle après ajout d'une clé Gemini ou OpenAI).
  */
 import { Logger } from '@nestjs/common';
 import { createPrismaClient } from '@sonah/database';
@@ -23,7 +23,12 @@ async function main(): Promise<void> {
 
   const prisma = createPrismaClient();
   const embedder = createEmbedder(
-    { openaiApiKey: env.OPENAI_API_KEY, openaiEmbeddingModel: env.OPENAI_EMBEDDING_MODEL },
+    {
+      geminiApiKey: env.GEMINI_API_KEY,
+      geminiEmbeddingModel: env.GEMINI_EMBEDDING_MODEL,
+      openaiApiKey: env.OPENAI_API_KEY,
+      openaiEmbeddingModel: env.OPENAI_EMBEDDING_MODEL,
+    },
     logger,
   );
   const graphStore = env.NEO4J_URI
