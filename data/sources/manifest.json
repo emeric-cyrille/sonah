@@ -1,0 +1,26 @@
+{
+  "sources": [
+    {
+      "id": "constitution-1996",
+      "file": "constitution-1996.pdf",
+      "title": "Constitution de la République du Cameroun (loi n° 96-06 du 18 janvier 1996)",
+      "shortTitle": "Constitution",
+      "type": "CONSTITUTION",
+      "category": "Constitution",
+      "url": "https://faolex.fao.org/docs/pdf/cmr117236.pdf",
+      "note": "Texte de 1996. Certains articles ont été modifiés depuis, notamment par la loi n° 2008-1 du 14 avril 2008 : vérifier la version consolidée en vigueur.",
+      "noisePatterns": []
+    },
+    {
+      "id": "code-du-travail-1992",
+      "file": "code-du-travail-1992.pdf",
+      "title": "Code du travail (loi n° 92-007 du 14 août 1992)",
+      "shortTitle": "Code du travail",
+      "type": "LAW",
+      "category": "Code du travail",
+      "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+      "note": "Texte de 1992 publié par Droit-Afrique. Des textes d'application et modifications ultérieures peuvent compléter certaines dispositions.",
+      "noisePatterns": ["^www\\.Droit-Afrique\\.com", "^Code du travail \\d+/\\d+$"]
+    }
+  ]
+}
