@@ -58,9 +58,6 @@ postgres-data/
 neo4j-data/
 redis-data/
 
-# Prisma
-migrations/
-!prisma/migrations/.gitkeep
 
 # Python (scraping)
 __pycache__/
@@ -81,3 +78,6 @@ logs
 .env.production
 .deployed-tag
 backup-*.sql
+
+# Prisma client généré
+packages/database/generated/

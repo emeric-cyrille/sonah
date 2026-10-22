@@ -3,8 +3,10 @@
 # - Les conteneurs web et api rejoignent le réseau externe `portfolio-net` :
 #   Traefik (portfolio-traefik) les joint par leur nom, aucun port n'est publié sur l'hôte.
 # - Les images sont construites par la CI et publiées sur GHCR (voir .github/workflows/deploy.yml).
-# - Les services de données sont dans le profil `data` : ils ne démarrent qu'avec
-#   `docker compose --profile data up -d`, une fois le RAG (Phase 1.2) prêt à les utiliser.
+# - PostgreSQL (pgvector) démarre toujours : conversations et base vectorielle de Sonah.
+# - Neo4j est dans le profil `graph` (graphe des démarches, ~800 Mo de RAM) : activé avec
+#   `--profile graph` et NEO4J_URI=bolt://neo4j:7687 dans .env.production.
+# - Redis et RabbitMQ sont dans le profil `queue` (orchestration multi-agents, à venir).
 
 name: sonah
 
@@ -36,6 +38,10 @@ services:
       NODE_ENV: production
       API_PORT: 4000
       APP_VERSION: ${IMAGE_TAG:-latest}
+      DATABASE_URL: postgresql://sonah_user:${POSTGRES_PASSWORD:-}@postgres:5432/sonah_prod
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - portfolio-net
       - sonah-internal
@@ -43,7 +49,6 @@ services:
     logging: *default-logging
 
   postgres:
-    profiles: ['data']
     image: pgvector/pgvector:pg16
     container_name: sonah-postgres
     restart: unless-stopped
@@ -51,6 +56,7 @@ services:
       POSTGRES_USER: sonah_user
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-}
       POSTGRES_DB: sonah_prod
+    command: postgres -c shared_buffers=96MB -c max_connections=40
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -61,25 +67,25 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    mem_limit: 1g
+    mem_limit: 512m
     logging: *default-logging
 
   neo4j:
-    profiles: ['data']
+    profiles: ['graph']
     image: neo4j:5-community
     container_name: sonah-neo4j
     restart: unless-stopped
     environment:
       NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-}
       NEO4J_PLUGINS: '["apoc"]'
-      NEO4J_server_memory_heap_max__size: 512m
-      NEO4J_server_memory_pagecache_size: 256m
+      NEO4J_server_memory_heap_max__size: 384m
+      NEO4J_server_memory_pagecache_size: 128m
     volumes:
       - neo4j_data:/data
     networks:
       - sonah-internal
     healthcheck:
-      test: ['CMD-SHELL', 'wget --quiet --tries=1 --spider http://localhost:7474 || exit 1']
+      test: ['CMD-SHELL', 'cypher-shell -u neo4j -p "$${NEO4J_AUTH#neo4j/}" "RETURN 1" || exit 1']
       interval: 10s
       timeout: 5s
       retries: 10
@@ -87,7 +93,7 @@ services:
     logging: *default-logging
 
   redis:
-    profiles: ['data']
+    profiles: ['queue']
     image: redis:7-alpine
     container_name: sonah-redis
     restart: unless-stopped
@@ -105,7 +111,7 @@ services:
     logging: *default-logging
 
   rabbitmq:
-    profiles: ['data']
+    profiles: ['queue']
     image: rabbitmq:3-management-alpine
     container_name: sonah-rabbitmq
     restart: unless-stopped

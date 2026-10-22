@@ -1,26 +1,35 @@
 # syntax=docker/dockerfile:1.7
 FROM node:20-alpine AS base
-RUN corepack enable && corepack prepare pnpm@8.15.0 --activate
+RUN apk add --no-cache openssl && corepack enable && corepack prepare pnpm@8.15.0 --activate
 WORKDIR /app
 
 FROM base AS builder
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/
+COPY packages/database/package.json packages/database/
+COPY packages/rag/package.json packages/rag/
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --filter @sonah/api...
+COPY packages/database packages/database
+COPY packages/rag packages/rag
 COPY apps/api apps/api
-RUN pnpm --filter @sonah/api build \
+RUN pnpm --filter @sonah/database build \
+ && pnpm --filter @sonah/rag build \
+ && pnpm --filter @sonah/api build \
  && pnpm --filter @sonah/api deploy --prod /out \
  && cp -r apps/api/dist /out/dist
 
 FROM node:20-alpine AS runner
+RUN apk add --no-cache openssl
 WORKDIR /app
 ENV NODE_ENV=production \
-    API_PORT=4000
+    API_PORT=4000 \
+    SOURCES_DIR=/app/data/sources
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
 
 COPY --from=builder --chown=nestjs:nodejs /out ./
+COPY --chown=nestjs:nodejs data/sources ./data/sources
 
 USER nestjs
 EXPOSE 4000
