@@ -4,6 +4,8 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
+  output          = "../generated/client"
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -37,8 +39,9 @@ enum UserRole {
 // Conversation Model
 model Conversation {
   id        String    @id @default(uuid())
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Conversations anonymes autorisées : pas de compte requis pour parler à Sonah
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages  Message[]
   status    ConversationStatus @default(ACTIVE)
   createdAt DateTime  @default(now())
@@ -137,19 +140,25 @@ enum StepStatus {
   BLOCKED
 }
 
-// Document Model (documents légaux, lois, Constitution)
+// Document Model : un fragment de texte officiel (en général un article), indexé pour la recherche
 model Document {
-  id         String                  @id @default(uuid())
-  type       DocumentType
-  title      String
-  content    String                  @db.Text
-  source     String // URL ou référence
-  category   String // Constitution, Code du Travail, etc.
-  embedding  Unsupported("vector")? // pgvector embedding
-  metadata   Json?
-  createdAt  DateTime                @default(now())
-  updatedAt  DateTime                @updatedAt
+  id             String                  @id @default(uuid())
+  // Clé stable du fragment (ex. "constitution-1996:art-26:1") : rend l'indexation idempotente
+  chunkKey       String                  @unique
+  sourceId       String // Identifiant du texte source (ex. "constitution-1996")
+  type           DocumentType
+  title          String // Titre du texte source
+  reference      String? // Référence dans le texte (ex. "Article 26")
+  content        String                  @db.Text
+  source         String // URL ou référence de publication
+  category       String // Constitution, Code du travail, etc.
+  embedding      Unsupported("vector(1536)")?
+  embeddingModel String?
+  metadata       Json?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
 
+  @@index([sourceId])
   @@map("documents")
 }
 
