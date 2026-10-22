@@ -19,7 +19,7 @@ export function SiteHeader(): JSX.Element {
     <header className="sticky top-0 z-40 border-b border-white/[0.07] bg-night/[0.94] text-paper backdrop-blur-xl">
       <div className="container-page flex h-[68px] items-center justify-between">
         <Link href="/" className="group flex items-center gap-2.5" onClick={() => setIsOpen(false)}>
-          <Logo className="h-9 w-9 transition-transform duration-500 group-hover:rotate-45" />
+          <Logo className="h-9 w-9 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105" />
           <span className="font-display text-[22px] font-semibold tracking-tight">Sonah</span>
         </Link>
 
