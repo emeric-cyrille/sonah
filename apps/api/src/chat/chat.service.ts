@@ -64,15 +64,20 @@ export class ChatService {
     );
     const sources = this.uniqueSources(results);
 
-    let reply: string;
-    let model: string;
+    let reply: string | undefined;
+    let model = 'extractif';
     if (this.languageModel) {
-      reply = await this.languageModel.complete(this.buildTurns(message, history, results));
-      model = this.languageModel.name;
-    } else {
-      reply = this.extractiveReply(results);
-      model = 'extractif';
+      try {
+        reply = await this.languageModel.complete(this.buildTurns(message, history, results));
+        model = this.languageModel.name;
+      } catch (error) {
+        // Clé refusée, quota épuisé, panne du fournisseur : Sonah cite les textes plutôt que d'échouer
+        this.logger.warn(
+          `Modèle ${this.languageModel.name} indisponible, réponse extractive : ${error instanceof Error ? error.message : String(error)}`,
+        );
+      }
     }
+    reply ??= this.extractiveReply(results);
 
     await this.prisma.message.create({
       data: {

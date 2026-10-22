@@ -15,7 +15,8 @@ export const envSchema = z.object({
 
   /** Google Gemini (palier gratuit) : prioritaire sur OpenAI si les deux clés sont présentes. */
   GEMINI_API_KEY: z.string().optional(),
-  GEMINI_CHAT_MODEL: z.string().default('gemini-2.5-flash'),
+  // gemini-2.5-flash n'est plus ouvert aux nouveaux comptes : Google recommande gemini-3.8-flash
+  GEMINI_CHAT_MODEL: z.string().default('gemini-3.8-flash'),
   GEMINI_EMBEDDING_MODEL: z.string().default('gemini-embedding-2'),
 
   OPENAI_API_KEY: z.string().optional(),

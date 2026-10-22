@@ -148,6 +148,20 @@ describe('ChatService', () => {
     expect(response.reply).toContain('⚠️ Code du travail : Texte de 1992.');
   });
 
+  it('cite les textes si le modèle de langage échoue (clé refusée, quota)', async () => {
+    const { prisma, messages } = memoryPrisma();
+    const failing: LanguageModel = {
+      name: 'gemini-3.8-flash',
+      complete: async () => {
+        throw new Error('403 Your project has been denied access');
+      },
+    };
+    const service = new ChatService(prisma, fakeVectorStore([ARTICLE]).store, failing);
+    const response = await service.reply('Le travail forcé est-il interdit ?');
+    expect(response.reply).toContain('1. Code du travail, Article 2');
+    expect((messages[1]?.metadata as { model: string }).model).toBe('extractif');
+  });
+
   it('écarte les extraits sous le seuil de pertinence', async () => {
     const { prisma } = memoryPrisma();
     const offTopic: SearchResult = { ...ARTICLE, id: '2', reference: 'Article 124', score: 0.07 };

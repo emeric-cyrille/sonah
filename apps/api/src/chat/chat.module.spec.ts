@@ -5,7 +5,7 @@ import { createLanguageModel } from './chat.module';
 
 function config(values: Partial<Env>): Pick<ConfigService<Env, true>, 'get'> {
   const defaults: Partial<Env> = {
-    GEMINI_CHAT_MODEL: 'gemini-2.5-flash',
+    GEMINI_CHAT_MODEL: 'gemini-3.8-flash',
     OPENAI_CHAT_MODEL: 'gpt-4o',
     GEMINI_EMBEDDING_MODEL: 'gemini-embedding-2',
     OPENAI_EMBEDDING_MODEL: 'text-embedding-3-small',
@@ -15,9 +15,9 @@ function config(values: Partial<Env>): Pick<ConfigService<Env, true>, 'get'> {
 }
 
 describe('choix du modèle de Sonah', () => {
-  it('utilise Gemini 2.5 Flash quand la clé Gemini est présente, même avec une clé OpenAI', () => {
+  it('utilise Gemini Flash quand la clé Gemini est présente, même avec une clé OpenAI', () => {
     expect(createLanguageModel(config({ GEMINI_API_KEY: 'g', OPENAI_API_KEY: 'o' }))?.name).toBe(
-      'gemini-2.5-flash',
+      'gemini-3.8-flash',
     );
   });
 

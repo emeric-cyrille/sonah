@@ -19,10 +19,10 @@ export interface ChatModelOptions {
   readonly model: string;
   readonly baseURL?: string;
   /**
-   * Niveau de réflexion interne (« none » désactive la réflexion des modèles Gemini 2.5 :
-   * réponses plus rapides et quota gratuit mieux utilisé).
+   * Niveau de réflexion interne des modèles Gemini (« none » pour 2.5, « minimal » au plus bas pour 3) :
+   * réponses plus rapides et quota gratuit mieux utilisé.
    */
-  readonly reasoningEffort?: 'none' | 'low' | 'medium' | 'high';
+  readonly reasoningEffort?: 'none' | 'minimal' | 'low' | 'medium' | 'high';
 }
 
 /** Modèle de chat via le SDK OpenAI : OpenAI directement, ou Gemini par sa couche de compatibilité. */
@@ -49,7 +49,7 @@ export class OpenAICompatibleLanguageModel implements LanguageModel {
       temperature: 0.2,
       max_tokens: 1200,
     };
-    // « none » n'est pas dans les types du SDK mais est accepté par Gemini
+    // « none » et « minimal » ne sont pas tous dans les types du SDK mais sont acceptés par Gemini
     const body = this.reasoningEffort
       ? { ...params, reasoning_effort: this.reasoningEffort }
       : params;

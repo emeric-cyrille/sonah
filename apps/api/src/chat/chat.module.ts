@@ -25,7 +25,8 @@ export function createLanguageModel(
       apiKey: geminiKey,
       model: config.get('GEMINI_CHAT_MODEL', { infer: true }),
       baseURL: GEMINI_OPENAI_BASE_URL,
-      reasoningEffort: 'none',
+      // La réflexion ne peut pas être désactivée sur Gemini 3 : niveau minimal pour la rapidité et le quota
+      reasoningEffort: 'minimal',
     });
   } else if (openaiKey) {
     model = new OpenAICompatibleLanguageModel({
