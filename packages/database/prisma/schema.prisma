@@ -202,37 +202,58 @@ enum AlertPriority {
   URGENT
 }
 
-// PolicyGap Model (lacunes détectées)
-model PolicyGap {
-  id                String   @id @default(uuid())
-  category          String
-  title             String
-  description       String   @db.Text
-  cameroonSituation String   @db.Text
-  benchmarkCountry  String
-  benchmarkValue    String
-  gapAnalysis       String   @db.Text
-  recommendations   Json // Array of recommendations
-  impact            String
-  priority          String
-  status            String   @default("DETECTED")
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+// Trace Model : journal d'audit chaîné par hachage (une trace par requête ou par réponse d'agent).
+// Ajout seul : une trace n'est jamais modifiée ni supprimée (garanti par un déclencheur SQL).
+model Trace {
+  id             String   @id
+  // Ordre d'insertion dans la chaîne, utilisé pour la vérification
+  sequence       Int      @unique @default(autoincrement())
+  createdAt      DateTime
+  kind           String // "chat" | "scenario"
+  conversationId String?
+  scenarioRunId  String?
+  agentId        String?
+  verdict        String
+  promptVersion  String?
+  model          String?
+  // Étapes ordonnées : entrée, recherche, contrôle, agents, modèle, repli, coordination, sortie
+  steps          Json
+  // sha256(prevHash + JSON canonique de la trace)
+  prevHash       String
+  hash           String   @unique
 
-  @@map("policy_gaps")
+  @@index([conversationId])
+  @@index([scenarioRunId])
+  @@map("traces")
 }
 
-// AuditLog Model (traçabilité complète)
-model AuditLog {
-  id        String   @id @default(uuid())
-  userId    String?
-  action    String
-  entity    String
-  entityId  String
-  metadata  Json?
-  ipAddress String?
-  userAgent String?
-  createdAt DateTime @default(now())
+// ScenarioRun Model : exécution d'un scénario d'erreur, publiée étape par étape
+model ScenarioRun {
+  id          String            @id @default(uuid())
+  scenarioId  String
+  totalSteps  Int
+  language    String            @default("en")
+  // Nombre d'étapes déjà publiées
+  currentStep Int               @default(0)
+  status      String            @default("RUNNING") // RUNNING | COMPLETED
+  steps       ScenarioRunStep[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
-  @@map("audit_logs")
+  @@map("scenario_runs")
+}
+
+// ScenarioRunStep Model : une étape publiée (événement, réponses des agents, lacunes)
+model ScenarioRunStep {
+  id         String      @id @default(uuid())
+  runId      String
+  run        ScenarioRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  step       Int
+  event      Json
+  responses  Json
+  gaps       Json
+  injectedAt DateTime    @default(now())
+
+  @@unique([runId, step])
+  @@map("scenario_run_steps")
 }
