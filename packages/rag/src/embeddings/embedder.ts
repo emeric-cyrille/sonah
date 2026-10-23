@@ -1,3 +1,5 @@
+import type { EmbeddingTextStyle } from '../types';
+
 /** Dimension des vecteurs stockés (colonne vector(1536)). */
 export const EMBEDDING_DIMENSIONS = 1536;
 
@@ -16,6 +18,8 @@ export interface Embedder {
    * Dépend du modèle : les embeddings lexicaux donnent des scores plus bas que les embeddings neuronaux.
    */
   readonly relevanceThreshold: number;
+  /** Forme du texte vectorisé à l'indexation (défaut : « context »). */
+  readonly embeddingTextStyle?: EmbeddingTextStyle;
   embed(texts: readonly string[], purpose?: EmbeddingPurpose): Promise<number[][]>;
 }
 
@@ -24,6 +28,7 @@ export function withRelevanceThreshold(embedder: Embedder, relevanceThreshold: n
   return {
     model: embedder.model,
     relevanceThreshold,
+    embeddingTextStyle: embedder.embeddingTextStyle,
     embed: (texts, purpose) => embedder.embed(texts, purpose),
   };
 }

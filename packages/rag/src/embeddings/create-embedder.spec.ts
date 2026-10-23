@@ -33,4 +33,15 @@ describe('createEmbedder', () => {
     expect(embedder.relevanceThreshold).toBe(0.42);
     expect(embedder.model).toBe('hashing-fr-v1');
   });
+
+  it('modèle local : indexation sous forme courte, conservée avec un seuil calibré', () => {
+    expect(createEmbedder({ provider: 'local' }, silentLogger).embeddingTextStyle).toBe(
+      'reference',
+    );
+    const calibrated = createEmbedder({ provider: 'local', relevanceThreshold: 0.8 }, silentLogger);
+    expect(calibrated.embeddingTextStyle).toBe('reference');
+    expect(
+      createEmbedder({ provider: 'hashing' }, silentLogger).embeddingTextStyle,
+    ).toBeUndefined();
+  });
 });

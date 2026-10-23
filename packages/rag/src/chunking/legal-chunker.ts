@@ -1,4 +1,4 @@
-import type { ChunkingConfig, LegalChunk } from '../types';
+import type { ChunkingConfig, EmbeddingTextStyle, LegalChunk } from '../types';
 import { PAGE_MARKER } from './text-normalizer';
 
 export interface ChunkerOptions extends Partial<ChunkingConfig> {
@@ -394,8 +394,17 @@ export function chunkLegalText(
   return chunks;
 }
 
-/** Texte envoyé au modèle d'embedding : le contexte (texte, titre, article) améliore la recherche. */
-export function chunkToEmbeddingText(chunk: LegalChunk, shortTitle: string): string {
+/**
+ * Texte envoyé au modèle d'embedding. La forme « reference » est retenue pour le modèle local
+ * (multilingual-e5-small, 512 jetons) : la longue hiérarchie y dilue le contenu et rapproche des
+ * questions sans rapport les fragments qui partagent le même chapitre (mesures dans local-embedder.ts).
+ */
+export function chunkToEmbeddingText(
+  chunk: LegalChunk,
+  shortTitle: string,
+  style: EmbeddingTextStyle = 'context',
+): string {
+  if (style === 'reference') return `${chunk.reference}\n${chunk.content}`;
   const context = [shortTitle, ...chunk.path, chunk.reference].join(' › ');
   return `${context}\n${chunk.content}`;
 }

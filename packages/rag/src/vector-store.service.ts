@@ -5,6 +5,8 @@ import {
   consoleLogger,
   DOCUMENT_TYPES,
   type DocumentInput,
+  type DocumentType,
+  type EmbeddingTextStyle,
   type RagLogger,
   type SearchResult,
   type StoredDocument,
@@ -35,8 +37,41 @@ export interface SearchOptions {
    * pour une requête contenant un numéro (« Article 12 », « 2010/012 ») est conservé même en dessous.
    */
   readonly minScore?: number;
-  /** Recherche hybride vectorielle + plein texte (défaut : true). */
+  /** Restreint la recherche à certains types de textes (ex. textes contraignants seulement). */
+  readonly types?: readonly DocumentType[];
+  /**
+   * Fusion avec la recherche plein texte (Reciprocal Rank Fusion) :
+   *  - absent (défaut) : automatique, seulement si la requête cite une référence explicite
+   *    (« Article 12 », « Section 28 », « loi n° 2010/012 ») ; sinon recherche purement vectorielle ;
+   *  - true : toujours hybride ;
+   *  - false : toujours purement vectorielle (score = similarité cosinus, ordre décroissant).
+   * Mesuré sur eval/questions.jsonl : la fusion systématique dégrade les questions en langage naturel
+   * (les mots courants du plein texte remontent des articles sans rapport).
+   */
   readonly hybrid?: boolean;
+}
+
+/**
+ * Vrai si la requête cite une référence explicite : numéro d'article, de section ou d'alinéa
+ * (« Article 12 », « art. 47 bis », « Section 28 »), numéro de texte (« loi n° 2010/012 », « 96-06 »),
+ * ou « Article premier ».
+ */
+export function hasExplicitReference(query: string): boolean {
+  const text = query
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+  return (
+    /\b(articles?|art\.?|sections?|alineas?|paragraphes?|paragraphs?|chapitres?|chapters?|titres?|titles?)\s*(n[°o.]?\s*)?\d/.test(
+      text,
+    ) ||
+    /\barticle (premier|1er)\b/.test(text) ||
+    /\b(loi|law|decret|decree|ordonnance|ordinance|arrete|order)\s*(n[°o.]?|no\.?|number)?\s*\d/.test(
+      text,
+    ) ||
+    /\bn[°o]\s*\d/.test(text) ||
+    /(?<![\d/])\d{2,4}\s*[/-]\s*\d{2,4}(?![\d/])/.test(text)
+  );
 }
 
 /** Constante k de la Reciprocal Rank Fusion (valeur usuelle). */
@@ -138,6 +173,11 @@ export class VectorStoreService {
     return this.embedder.model;
   }
 
+  /** Forme du texte vectorisé à l'indexation, propre au modèle d'embedding. */
+  get embeddingTextStyle(): EmbeddingTextStyle {
+    return this.embedder.embeddingTextStyle ?? 'context';
+  }
+
   /** Score minimal conseillé pour considérer un résultat comme pertinent. */
   get relevanceThreshold(): number {
     return this.embedder.relevanceThreshold;
@@ -217,21 +257,27 @@ export class VectorStoreService {
   }
 
   /**
-   * Recherche hybride : similarité vectorielle (pgvector) et plein texte (PostgreSQL, configurations
-   * « french » et « simple »), fusionnées par Reciprocal Rank Fusion. La recherche plein texte retrouve
+   * Recherche sémantique (pgvector, similarité cosinus). Quand la requête cite une référence explicite
+   * (voir `hasExplicitReference`) ou avec `hybrid: true`, elle est fusionnée par Reciprocal Rank Fusion
+   * avec la recherche plein texte (PostgreSQL, configurations « french » et « simple »), qui retrouve
    * les références exactes (« Article 12 », « Loi n° 2010/012 ») que l'embedding peut manquer.
-   * `score` reste la similarité cosinus du fragment ; l'ordre est celui de la fusion.
-   * `hybrid: false` revient à la recherche purement vectorielle.
+   * `score` reste toujours la similarité cosinus du fragment ; en mode hybride, l'ordre est celui de
+   * la fusion. `hybrid: false` force la recherche purement vectorielle.
    */
   async search(query: string, topK = 5, options: SearchOptions = {}): Promise<SearchResult[]> {
     const input = searchSchema.parse({ query, topK });
     try {
       const vector = await this.createEmbedding(input.query);
       const literal = toVectorLiteral(vector);
-      const sourceFilter =
+      const sourceFilter = Prisma.sql`${
         options.sourceIds && options.sourceIds.length > 0
           ? Prisma.sql`AND "sourceId" IN (${Prisma.join([...options.sourceIds])})`
-          : Prisma.empty;
+          : Prisma.empty
+      } ${
+        options.types && options.types.length > 0
+          ? Prisma.sql`AND "type"::text IN (${Prisma.join([...options.types])})`
+          : Prisma.empty
+      }`;
       const minScore = options.minScore ?? -1;
       const toResult = (row: SearchRow): SearchResult => ({
         ...row,
@@ -239,7 +285,8 @@ export class VectorStoreService {
         metadata: asRecord(row.metadata),
       });
 
-      if (options.hybrid === false) {
+      const hybrid = options.hybrid ?? hasExplicitReference(input.query);
+      if (!hybrid) {
         const rows = await this.prisma.$queryRaw<SearchRow[]>`
           SELECT "id", "sourceId", "title", "reference", "content", "category", "source", "metadata",
                  1 - ("embedding" <=> ${literal}::vector) AS "score"
