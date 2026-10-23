@@ -15,3 +15,6 @@ docs
 *.tex
 backups
 **/generated
+
+# Textes non redistribuables téléchargés en local : jamais dans les images
+data/sources/.cache

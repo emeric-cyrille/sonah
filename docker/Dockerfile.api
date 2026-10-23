@@ -1,4 +1,7 @@
-FROM node:20-alpine AS base
+# Debian (glibc) : onnxruntime-node (embeddings locaux) ne fonctionne pas sous Alpine (musl)
+FROM node:20-bookworm-slim AS base
+RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
+ENV ONNXRUNTIME_NODE_INSTALL_CUDA=skip
 
 # Install pnpm
 RUN npm install -g pnpm@8.15.0
