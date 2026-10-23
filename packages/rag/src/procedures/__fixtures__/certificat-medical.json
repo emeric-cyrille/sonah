@@ -1,0 +1,54 @@
+{
+  "id": "certificat-medical",
+  "title_fr": "Certificat médical",
+  "title_en": "Medical certificate",
+  "category": "sante",
+  "keywords_fr": [
+    "certificat médical",
+    "visite médicale",
+    "aptitude physique",
+    "certificat d'aptitude"
+  ],
+  "keywords_en": ["medical certificate", "fitness certificate", "medical examination"],
+  "authority": { "name": "Médecin agréé ou formation sanitaire publique", "level": "local" },
+  "where": [
+    "Hôpital de district ou centre médical d'arrondissement",
+    "Cabinet d'un médecin inscrit à l'Ordre national des médecins du Cameroun"
+  ],
+  "who_can_apply": "Toute personne qui doit justifier de son état de santé (concours, emploi, permis, sport).",
+  "documents": ["Pièce d'identité", "Carnet de santé, si vous en avez un"],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Se présenter à la formation sanitaire ou chez le médecin avec sa pièce d'identité."
+    },
+    {
+      "order": 2,
+      "description": "Passer l'examen médical demandé (consultation, éventuellement analyses)."
+    },
+    { "order": 3, "description": "Retirer le certificat signé et cacheté par le médecin." }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Variable selon la formation sanitaire et les examens demandés."
+  },
+  "delay": "Le jour même pour une simple consultation",
+  "validity": null,
+  "legal_basis": [],
+  "tips": [
+    "Demandez à l'organisme qui exige le certificat s'il impose un modèle ou un médecin agréé."
+  ],
+  "sources": [
+    {
+      "title": "FIXTURE DE TEST — source fictive",
+      "url": "https://example.org/fixtures/certificat-medical",
+      "publisher": "Tests SONAH"
+    }
+  ],
+  "verified_at": "2026-10-01",
+  "unverified": [
+    { "field": "cost", "note": "Tarif non publié : variable selon l'établissement." },
+    { "field": "validity", "note": "Durée de validité fixée par l'organisme demandeur." }
+  ],
+  "language_versions": ["fr"]
+}

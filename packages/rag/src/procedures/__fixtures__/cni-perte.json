@@ -1,0 +1,63 @@
+{
+  "id": "cni-perte",
+  "title_fr": "Carte nationale d'identité : renouvellement après perte",
+  "title_en": "National identity card: replacement after loss",
+  "category": "identite",
+  "keywords_fr": [
+    "carte nationale d'identité",
+    "CNI",
+    "perte de CNI",
+    "CNI perdue",
+    "renouvellement CNI",
+    "carte d'identité"
+  ],
+  "keywords_en": ["national identity card", "ID card", "lost ID card", "identity card replacement"],
+  "authority": { "name": "Délégation générale à la Sûreté nationale (DGSN)", "level": "national" },
+  "where": ["Poste d'identification du commissariat de votre lieu de résidence"],
+  "who_can_apply": "Tout Camerounais âgé d'au moins 18 ans.",
+  "documents": [
+    "Déclaration de perte délivrée par le commissariat",
+    "Copie certifiée de l'acte de naissance",
+    "Certificat de nationalité",
+    "Timbre fiscal"
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Déclarer la perte au commissariat le plus proche et obtenir une déclaration de perte."
+    },
+    {
+      "order": 2,
+      "description": "Se présenter au poste d'identification avec les pièces demandées."
+    },
+    {
+      "order": 3,
+      "description": "Faire la capture des empreintes et de la photo, puis conserver le récépissé."
+    },
+    {
+      "order": 4,
+      "description": "Retirer la carte au poste d'identification sur présentation du récépissé."
+    }
+  ],
+  "cost": { "amount_fcfa": 2800, "description": "Timbre de 2 800 FCFA" },
+  "delay": null,
+  "validity": "10 ans",
+  "legal_basis": [
+    {
+      "sourceId": "decret-cni-fixture",
+      "reference": "Article 3",
+      "title": "Décret fixant les caractéristiques de la CNI (FIXTURE)"
+    }
+  ],
+  "tips": ["Le récépissé tient lieu de pièce d'identité provisoire."],
+  "sources": [
+    {
+      "title": "FIXTURE DE TEST — source fictive",
+      "url": "https://example.org/fixtures/cni",
+      "publisher": "Tests SONAH"
+    }
+  ],
+  "verified_at": "2026-10-01",
+  "unverified": [{ "field": "delay", "note": "Délai de délivrance variable selon le poste." }],
+  "language_versions": ["fr"]
+}
