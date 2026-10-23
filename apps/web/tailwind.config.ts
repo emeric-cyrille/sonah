@@ -7,7 +7,7 @@ const config: Config = {
       colors: {
         // Papier crème, encre indigo (tissu ndop), ocre, terre cuite, vert forêt
         paper: { DEFAULT: '#f6f1e7', soft: '#fbf8f2', deep: '#ede5d4' },
-        ink: { DEFAULT: '#181b34', soft: '#3d3f57', muted: '#6b6878' },
+        ink: { DEFAULT: '#181b34', soft: '#3d3f57', muted: '#5e5b6b' },
         indigo: { DEFAULT: '#26306b', deep: '#1a2150' },
         sun: { DEFAULT: '#e8a317', soft: '#f6d68a' },
         clay: { DEFAULT: '#c4532d', soft: '#f0c9b6' },
