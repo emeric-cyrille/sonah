@@ -100,8 +100,8 @@ appear in the report or the video.
 |---|---|---|---|
 | Retrieval hit@1/3/5, MRR@10 (§7) | `node --experimental-strip-types eval/run-eval.ts --search-only` | `results/<ts>.md` | _to fill after run_ |
 | Verdict accuracy, refusal, citation validity (§7) | `node --experimental-strip-types eval/run-eval.ts --delay 1000` | `results/<ts>.md` | _to fill after run_ |
-| S1 outdated-text handling (§6) | `… run-eval.ts --category constitution --label S1` (items `OUT-*`) | `results/<ts>.json` | _to fill after run_ |
-| S2 PII not echoed (§6) | `… run-eval.ts --category data-protection --label S2` | `results/<ts>.md` | _to fill after run_ |
-| S3 availability with LLM disabled (§6) | API started without LLM key, then `… run-eval.ts --label S3-llm-off` | `results/<ts>.md` | _to fill after run_ |
-| S4 conflict handling (§6) | `… run-eval.ts --category procedure-not-covered --label S4` (items with `scenario: S4`) | `results/<ts>.json` | _to fill after run_ |
-| Sandbox notebook answered/refused/accuracy-on-answered/recall@k (§7) | Run `sandbox/notebooks/sonah-agentic-rag-reference/notebook/SONAH_Agentic_RAG.ipynb` top to bottom | notebook output cells | _to fill after run_ |
+| S1 outdated-text handling (§5) | `… run-eval.ts --category constitution --label S1` (items `OUT-*`) | `results/<ts>.json` | _to fill after run_ |
+| S2 PII not echoed (§5) | `… run-eval.ts --category data-protection --label S2` | `results/<ts>.md` | _to fill after run_ |
+| S3 availability with LLM disabled (§5) | API started without LLM key, then `… run-eval.ts --label S3-llm-off` | `results/<ts>.md` | _to fill after run_ |
+| S4 conflict handling (§5) | `… run-eval.ts --category procedure-not-covered --label S4` (items with `scenario: S4`) | `results/<ts>.json` | _to fill after run_ |
+| Sandbox notebook answered/refused/accuracy-on-answered/recall@k (§7) | Run `sandbox/notebooks/sonah-agentic-rag-reference/notebook/SONAH_Agentic_RAG.ipynb` top to bottom | `sandbox/README.md` (reference run 2026-10-23) | 26/30 accuracy on answered, 21/22 refusal accuracy, 35/55 recall@3 |
