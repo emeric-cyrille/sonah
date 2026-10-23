@@ -1,0 +1,203 @@
+# SONAH mapped onto the ITU-T Y.3172 (06/2019) machine-learning pipeline.
+# Human-readable version: docs/itu/y3172-mapping.md
+# status: live = on main / deployed; branch = on an unmerged feature branch;
+#         in_progress = designed, being implemented in parallel (planned path, verify after merge)
+standard:
+  id: ITU-T Y.3172
+  title: Architectural framework for machine learning in future networks including IMT-2020
+  edition: '06/2019'
+  url: https://www.itu.int/rec/T-REC-Y.3172/en
+related:
+  - id: ITU-T Y.3181
+    title: Architectural framework for machine learning sandbox in future networks including IMT-2020
+    url: https://www.itu.int/rec/T-REC-Y.3181/en
+  - id: ITU-T Y.3173
+    title: Framework for evaluating intelligence levels of future networks including IMT-2020
+    url: https://www.itu.int/rec/T-REC-Y.3173/en
+use_case: Citizen legal-information assistant for Cameroon (public-service AI), bilingual FR/EN
+pipeline:
+  - node: SRC
+    definition: 'the source of data that can be used as input to the ML pipeline'
+    sonah:
+      - component: Official legal texts + manifest (id, url, version note, noise patterns)
+        paths:
+          [
+            data/sources/manifest.json,
+            data/sources/constitution-1996.pdf,
+            data/sources/code-du-travail-1992.pdf,
+          ]
+        status: live
+      - component: Additional texts (Law 2008/001, 2010/012, 2010/013, 2024/017, civil status, AU/UNESCO/OECD/EU AI Act)
+        paths: [data/sources/]
+        status: in_progress
+      - component: Citizen question (PWA)
+        paths: [apps/web/src/components/chat/chat-window.tsx, apps/web/src/components/ask-box.tsx]
+        status: live
+  - node: C
+    definition: 'responsible for collecting data from one or more SRC nodes'
+    sonah:
+      - component: Manifest loader (zod-validated), per-page PDF extraction, idempotent seeding
+        paths:
+          [
+            packages/rag/src/ingestion/sources.ts,
+            packages/rag/src/ingestion/pdf.ts,
+            packages/rag/src/ingestion/seed-legal.ts,
+            apps/api/src/scripts/seed.ts,
+          ]
+        status: live
+      - component: API intake (chat, search, admin-guarded document upsert)
+        paths:
+          [
+            apps/api/src/chat/chat.controller.ts,
+            apps/api/src/rag/rag.controller.ts,
+            apps/api/src/common/admin-token.guard.ts,
+          ]
+        status: live
+  - node: PP
+    definition: 'cleaning data, aggregating data or performing any other preprocessing needed'
+    sonah:
+      - component: Noise removal and article-level legal chunker (hierarchy path, stable keys)
+        paths:
+          [packages/rag/src/chunking/text-normalizer.ts, packages/rag/src/chunking/legal-chunker.ts]
+        status: live
+      - component: Embeddings (OpenAI | offline hashing; Gemini on branch)
+        paths:
+          [
+            packages/rag/src/embeddings/openai-embedder.ts,
+            packages/rag/src/embeddings/hashing-embedder.ts,
+            packages/rag/src/embeddings/gemini-embedder.ts,
+          ]
+        status: live / branch (feat/gemini)
+      - component: Follow-up query rewriting
+        paths: [apps/api/src/chat/chat.service.ts]
+        status: live
+      - component: PII redaction of citizen messages (scenario S2)
+        paths: [apps/api/src/policy/]
+        status: in_progress
+  - node: M
+    definition: 'a machine learning model, in a form which is usable in a machine learning pipeline'
+    sonah:
+      - component: Retriever - pgvector cosine (HNSW), filtered by embedding model
+        paths: [packages/rag/src/vector-store.service.ts, packages/database/prisma/schema.prisma]
+        status: live
+      - component: Hybrid lexical retrieval (Postgres full-text search)
+        paths: [packages/rag/src/vector-store.service.ts]
+        status: in_progress
+      - component: Legal / procedure graph (Neo4j; REQUIRES, PRECEDES, RELATED_TO, GOVERNED_BY)
+        paths: [packages/rag/src/graph-store.service.ts]
+        status: live
+      - component: LLM writer (OpenAI; Gemini on branch) with citation-only prompt; deterministic extractive fallback
+        paths:
+          [
+            apps/api/src/chat/language-model.ts,
+            apps/api/src/chat/sonah-prompt.ts,
+            apps/api/src/chat/chat.service.ts,
+          ]
+        status: live
+  - node: P
+    definition: 'enables the application of policies to the output of the model node'
+    blocking: true
+    sonah:
+      - component: Relevance threshold (drops off-topic extracts before generation)
+        paths: [apps/api/src/chat/chat.service.ts, packages/rag/src/embeddings/embedder.ts]
+        status: live
+      - component: Deterministic citation & policy gate with typed verdicts
+        verdicts:
+          [
+            ANSWERED_WITH_CITATIONS,
+            INSUFFICIENT_EVIDENCE,
+            CONFLICT_BETWEEN_TEXTS,
+            OUTDATED_TEXT,
+            REFER_TO_HUMAN,
+            OUT_OF_SCOPE,
+          ]
+        rules:
+          - every cited reference must belong to the retrieved set
+          - a source with a version note / known amendment yields OUTDATED_TEXT
+          - contradictory retrieved sources yield CONFLICT_BETWEEN_TEXTS
+          - no evidence above threshold yields INSUFFICIENT_EVIDENCE
+          - high-stakes or personal-danger cases yield REFER_TO_HUMAN
+          - off-domain requests yield OUT_OF_SCOPE
+          - any failing check downgrades the verdict; never fails open
+        paths: [apps/api/src/policy/]
+        status: in_progress
+  - node: D
+    definition: 'identifying the SINK(s) and distributing the output of the M node to the corresponding SINK nodes'
+    sonah:
+      - component: Response assembly {reply, verdict, citations[], traceId}
+        paths: [apps/api/src/chat/chat.service.ts]
+        status: live (legacy contract {reply, sources}); gated contract in_progress
+      - component: Coordinator agent routing to sonah, legal-adviser, regulator-minpostel, data-protection-authority, ministry-business
+        paths: [apps/api/src/agents/]
+        status: in_progress
+  - node: SINK
+    definition: 'the target of the ML output on which it takes action'
+    sonah:
+      - component: Citizen PWA (answer, citations, verdict)
+        paths: [apps/web/src/components/chat/chat-window.tsx, apps/web/src/store/chat-store.ts]
+        status: live
+      - component: Conversation persistence (model, embedding model, sources in Message.metadata)
+        paths: [packages/database/prisma/schema.prisma, apps/api/src/chat/chat.service.ts]
+        status: live
+      - component: Hash-chained audit trail with per-step traces (traceId)
+        paths: [apps/api/src/audit/]
+        status: in_progress
+      - component: Referral to a human / competent authority
+        paths: [apps/api/src/agents/]
+        status: in_progress
+mlfo:
+  definition: 'manage and orchestrate the nodes of ML pipelines based on ML Intent and/or dynamic network conditions'
+  sonah:
+    - component: Config-driven selection of embedder and LLM, fallback on LLM failure/quota (S3), readiness probe
+      paths:
+        [
+          apps/api/src/config/env.ts,
+          packages/rag/src/embeddings/create-embedder.ts,
+          apps/api/src/chat/chat.module.ts,
+          apps/api/src/health/health.controller.ts,
+        ]
+      status: live; LLM-failure fallback on branch feat/gemini
+sandbox:
+  definition: 'an isolated domain which allows the hosting of separate ML pipelines to train, test and evaluate them before deploying them'
+  sonah:
+    - component: Colab notebook reproducing the pipeline on public FAOLEX texts, no API key, P-node threshold
+      paths: [sandbox/notebooks/sonah-agentic-rag-reference/notebook/SONAH_Agentic_RAG.ipynb]
+      status: live
+    - component: Packaged agent (retrieve / answer / refuse)
+      paths: [sandbox/agents/sonah-legal-agent/agent/agent.py]
+      status: live
+    - component: Gold set + runner + scenarios S1-S4
+      paths: [eval/questions.jsonl, eval/run-eval.ts]
+      status: live
+    - component: Local stack
+      paths: [docker-compose.yml]
+      status: live
+scenarios:
+  - {
+      id: S1,
+      name: outdated law served to citizen,
+      injected_at: SRC,
+      caught_by: P,
+      expected: OUTDATED_TEXT,
+    }
+  - {
+      id: S2,
+      name: citizen shares personal data,
+      injected_at: SRC,
+      caught_by: PP,
+      expected: answer without PII echo/storage,
+    }
+  - {
+      id: S3,
+      name: LLM outage / quota exhaustion,
+      injected_at: M,
+      caught_by: [MLFO, P],
+      expected: extractive answer or INSUFFICIENT_EVIDENCE,
+    }
+  - {
+      id: S4,
+      name: conflicting ministry requirements (restaurant),
+      injected_at: M,
+      caught_by: [P, D],
+      expected: CONFLICT_BETWEEN_TEXTS or REFER_TO_HUMAN,
+    }

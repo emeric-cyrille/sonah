@@ -1,26 +1,1214 @@
 {
+  "$schema": "./manifest.schema.json",
   "sources": [
     {
       "id": "constitution-1996",
-      "file": "constitution-1996.pdf",
+      "docId": "CMR-PRC-CONSTITUTION-1996",
+      "issuingBody": "Présidence de la République du Cameroun (Assemblée nationale)",
       "title": "Constitution de la République du Cameroun (loi n° 96-06 du 18 janvier 1996)",
+      "titleFr": "Loi n° 96-06 du 18 janvier 1996 portant révision de la Constitution du 2 juin 1972",
+      "titleEn": "Law No. 96-06 of 18 January 1996 to amend the Constitution of 2 June 1972",
       "shortTitle": "Constitution",
       "type": "CONSTITUTION",
       "category": "Constitution",
-      "url": "https://faolex.fao.org/docs/pdf/cmr117236.pdf",
-      "note": "Texte de 1996. Certains articles ont été modifiés depuis, notamment par la loi n° 2008-1 du 14 avril 2008 : vérifier la version consolidée en vigueur.",
-      "noisePatterns": []
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Copie certifiée conforme du texte de 1996 publiée par la Présidence (OCR), non consolidée ; articles modifiés signalés (lois n° 2008/001 et n° 2026/002)",
+      "date": "1996-01-18",
+      "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+      "accessedAt": "2026-10-23",
+      "sha256": "db0d698d9f372167c35428eb3a2df45fc08a4f8e3c1fa7a0c6bbb273e3bc6aea",
+      "license": "Texte législatif officiel publié par la Présidence de la République (domaine public de fait).",
+      "redistribution": "redistributable",
+      "domains": ["constitution", "gouvernance", "droits-fondamentaux"],
+      "ituDimensions": ["ai_policies", "human_impact"],
+      "ituFolder": "AI_Strategies",
+      "file": "constitution-1996.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": "Préambule"
+      },
+      "note": "Texte de 1996 non consolidé. Les articles 5, 6, 7, 10, 14, 15, 51, 53, 66 et 67 ont été modifiés (lois n° 2008/001 du 14 avril 2008 et n° 2026/002 du 14 avril 2026) : leurs fragments renvoient à la rédaction en vigueur. Texte obtenu par OCR.",
+      "derivation": "OCR (Apple Vision, fr-FR, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": [
+        "^[^a-z]*(E[SB]IDEN[CG]|ECRETA|CARD ?I[ND]|STATUTORY|LEGI[A-Z]{0,3}ATI|LEOISLAT|CONFORME|CERTIFI|FICHI?ER|EGLEMENTAIRE|TRUE COPY|SERVICE$|SERVIC$)[^a-z]*$",
+        "^(GENERA|CHERAL|VENTAIRE|COPY|COPIE|CERTIFIED|PATRIE|TEROUN|\\*|•)$",
+        "^www\\.",
+        "^\\d{1,3}$",
+        "^\\.\\.\\. ?/ ?\\.\\.\\.$",
+        "^(ROSIDEN|SERVICEAI :)$"
+      ],
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        },
+        {
+          "pattern": "^Article 1\\.-\\n\\(1\\) Le Président de la République élu",
+          "replacement": "Article 7.-\n(1) Le Président de la République élu"
+        },
+        {
+          "pattern": "^Article 5g\\.-",
+          "replacement": "Article 59.-"
+        },
+        {
+          "pattern": "^CHAPITRE !!:",
+          "replacement": "CHAPITRE II :"
+        },
+        {
+          "pattern": "GOUUERNEMENT",
+          "replacement": "GOUVERNEMENT"
+        },
+        {
+          "pattern": "^TITRE II\\nDU POUVOIR LÉGISLATIF",
+          "replacement": "TITRE III\nDU POUVOIR LÉGISLATIF"
+        },
+        {
+          "pattern": "^TITRE IU$",
+          "replacement": "TITRE IV"
+        },
+        {
+          "pattern": "^TITRE U$",
+          "replacement": "TITRE V"
+        },
+        {
+          "pattern": "^TITRE DI\\nDES TRAITES",
+          "replacement": "TITRE VI\nDES TRAITES"
+        },
+        {
+          "pattern": "^TITRE DI\\nDU CONSEIL CONSTITUTIONNEL",
+          "replacement": "TITRE VII\nDU CONSEIL CONSTITUTIONNEL"
+        },
+        {
+          "pattern": "^TITRE UIII$",
+          "replacement": "TITRE VIII"
+        },
+        {
+          "pattern": "^TITRE IX\\nDE LA RÉDISION",
+          "replacement": "TITRE XI\nDE LA RÉVISION"
+        },
+        {
+          "pattern": "^CHAPITRE !:",
+          "replacement": "CHAPITRE I :"
+        },
+        {
+          "pattern": "COLLECTIDITÉS",
+          "replacement": "COLLECTIVITÉS"
+        }
+      ],
+      "segment": {
+        "start": "^PR[ÉE]AMBULE$"
+      }
+    },
+    {
+      "id": "constitution-2008-amendment",
+      "docId": "CMR-PRC-LOI-2008-001",
+      "issuingBody": "Présidence de la République du Cameroun (Assemblée nationale)",
+      "title": "Loi n° 2008/001 du 14 avril 2008 modifiant et complétant certaines dispositions de la loi n° 96/06 du 18 janvier 1996 portant révision de la Constitution du 2 juin 1972",
+      "titleFr": "Loi n° 2008/001 du 14 avril 2008 modifiant et complétant certaines dispositions de la loi n° 96/06 du 18 janvier 1996 portant révision de la Constitution du 2 juin 1972",
+      "titleEn": "Law No. 2008/001 of 14 April 2008 to amend and supplement some provisions of Law No. 96/6 of 18 January 1996 to amend the Constitution of 2 June 1972",
+      "shortTitle": "Loi constitutionnelle n° 2008/001",
+      "type": "CONSTITUTION",
+      "category": "Constitution",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Copie certifiée conforme publiée par la Présidence (OCR)",
+      "date": "2008-04-14",
+      "url": "https://www.prc.cm/fr/multimedia/documents/6284-loi-n-2008-001-du-14-04-2008-modifian-constitution-1972-fr",
+      "accessedAt": "2026-10-23",
+      "sha256": "1429f93fc3118e537e366a4d1e14e10398efa4081b48c970a9698af103793507",
+      "license": "Texte législatif officiel publié par la Présidence de la République (domaine public de fait).",
+      "redistribution": "redistributable",
+      "domains": ["constitution", "gouvernance"],
+      "ituDimensions": ["ai_policies"],
+      "ituFolder": "AI_Strategies",
+      "file": "loi-2008-001-revision-constitution.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/fr/multimedia/documents/6284-loi-n-2008-001-du-14-04-2008-modifian-constitution-1972-fr",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        }
+      ],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "amends": {
+        "sourceId": "constitution-1996",
+        "articles": {
+          "6": ["2", "4"],
+          "14": ["3 a"],
+          "15": ["4"],
+          "51": ["1"],
+          "53": [],
+          "67": ["6"]
+        }
+      },
+      "note": "Les articles 6 et 53 ont depuis été réécrits par la loi n° 2026/002 du 14 avril 2026. Texte obtenu par OCR.",
+      "derivation": "OCR (Apple Vision, fr-FR, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": [
+        "^[^a-z]*(E[SB]IDEN[CG]|ECRETA|CARD ?I[ND]|STATUTORY|LEGI[A-Z]{0,3}ATI|LEOISLAT|CONFORME|CERTIFI|FICHI?ER|EGLEMENTAIRE|TRUE COPY|SERVICE$|SERVIC$)[^a-z]*$",
+        "^(GENERA|CHERAL|VENTAIRE|COPY|COPIE|CERTIFIED|PATRIE|TEROUN|\\*|•)$",
+        "^www\\.",
+        "^\\d{1,3}$"
+      ]
+    },
+    {
+      "id": "constitution-2026-amendment",
+      "docId": "CMR-PRC-LOI-2026-002",
+      "issuingBody": "Présidence de la République du Cameroun (Parlement réuni en Congrès)",
+      "title": "Loi n° 2026/002 du 14 avril 2026 modifiant et complétant certaines dispositions de la Constitution du 2 juin 1972, modifiée et complétée par la loi n° 96/06 du 18 janvier 1996 et la loi n° 2008/001 du 14 avril 2008",
+      "titleFr": "Loi n° 2026/002 du 14 avril 2026 modifiant et complétant certaines dispositions de la Constitution du 2 juin 1972, modifiée et complétée par la loi n° 96/06 du 18 janvier 1996 et la loi n° 2008/001 du 14 avril 2008",
+      "titleEn": "Law No. 2026/002 of 14 April 2026 to amend and supplement the Constitution of 2 June 1972, as amended and supplemented by Law No. 96-06 of 18 January 1996 and Law No. 2008/001 of 14 April 2008",
+      "shortTitle": "Loi constitutionnelle n° 2026/002",
+      "type": "CONSTITUTION",
+      "category": "Constitution",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Copie certifiée conforme publiée par la Présidence (texte reconnu par OCR)",
+      "date": "2026-04-14",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/8244-loi-n-2026-002-du-14-avril-2026-modifiant-et-completant-certaines-dispositions-de-la-constitution-du-02-juin-1972-modifiee-et-completee-par-la-loi-n-96-06-du-18-janvier-1996-et-la-loi-n-2008-001-du-14-avril-2008",
+      "accessedAt": "2026-10-23",
+      "sha256": "c5e9693654271ef3c50f53c945f9f99a320317805102168d472b6943df485427",
+      "license": "Texte législatif officiel publié par la Présidence de la République (domaine public de fait).",
+      "redistribution": "redistributable",
+      "domains": ["constitution", "gouvernance"],
+      "ituDimensions": ["ai_policies"],
+      "ituFolder": "AI_Strategies",
+      "file": "loi-2026-002-revision-constitution.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/fr/multimedia/documents/10679-loi-2026-002-du-14-04-2026",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "derivation": "OCR (Apple Vision, fr-FR, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": ["^(?!ARTICLE)[A-Z0-9 .,'/&|_()*«»-]{1,45}$", "^www\\.", "^\\d{1,3}$"],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "amends": {
+        "sourceId": "constitution-1996",
+        "articles": {
+          "5": [],
+          "6": [],
+          "7": [],
+          "10": [],
+          "53": [],
+          "66": []
+        }
+      },
+      "note": "Texte obtenu par reconnaissance optique de caractères (OCR) : vérifier les chiffres sur le PDF officiel avant toute citation sensible.",
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        },
+        {
+          "pattern": "^\\(3\\) II peut",
+          "replacement": "(3) Il peut"
+        }
+      ]
     },
     {
       "id": "code-du-travail-1992",
-      "file": "code-du-travail-1992.pdf",
+      "docId": "CMR-LOI-1992-007-CODE-TRAVAIL",
+      "issuingBody": "Assemblée nationale du Cameroun (édition Droit-Afrique)",
       "title": "Code du travail (loi n° 92-007 du 14 août 1992)",
+      "titleFr": "Loi n° 92/007 du 14 août 1992 portant Code du travail",
+      "titleEn": "Law No. 92/007 of 14 August 1992 to institute the Labour Code",
       "shortTitle": "Code du travail",
       "type": "LAW",
       "category": "Code du travail",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Texte de 1992 (édition Droit-Afrique), non consolidé",
+      "date": "1992-08-14",
       "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
-      "note": "Texte de 1992 publié par Droit-Afrique. Des textes d'application et modifications ultérieures peuvent compléter certaines dispositions.",
-      "noisePatterns": ["^www\\.Droit-Afrique\\.com", "^Code du travail \\d+/\\d+$"]
+      "accessedAt": "2026-10-23",
+      "sha256": "0651ea42a61f892296a18e60641642c8919245f2953668e2bf0beebd45142c4b",
+      "license": "Texte législatif officiel ; mise en forme Droit-Afrique, copie FAOLEX (FAO), redistribuée avec mention de la source.",
+      "redistribution": "redistributable",
+      "domains": ["travail", "emploi", "droits-sociaux"],
+      "ituDimensions": ["human_impact", "ai_inclusion"],
+      "ituFolder": "AI_Strategies",
+      "file": "code-du-travail-1992.pdf",
+      "fetch": {
+        "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+        "format": "pdf"
+      },
+      "noisePatterns": ["^www\\.Droit-Afrique\\.com", "^Code du travail \\d+/\\d+$"],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "note": "Texte de 1992 publié par Droit-Afrique. Des textes d'application et modifications ultérieures peuvent compléter certaines dispositions."
+    },
+    {
+      "id": "labour-code-1992-en",
+      "docId": "CMR-LAW-1992-007-LABOUR-CODE-EN",
+      "issuingBody": "National Assembly of Cameroon (English version, ILO NATLEX)",
+      "title": "Labour Code (Law No. 92/007 of 14 August 1992)",
+      "titleFr": "Code du travail (loi n° 92/007 du 14 août 1992), version anglaise",
+      "titleEn": "Labour Code (Law No. 92/007 of 14 August 1992)",
+      "shortTitle": "Labour Code",
+      "type": "LAW",
+      "category": "Code du travail",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "en",
+      "version": "English text of 1992 as published in ILO NATLEX (not consolidated)",
+      "date": "1992-08-14",
+      "url": "https://www.ilo.org/dyn/natlex/docs/WEBTEXT/31629/64867/E92CMR01.htm",
+      "accessedAt": "2026-10-23",
+      "sha256": "07f18aa0fcbf950f0a4207eeac6ee8e3882727c3cdba9aea3c35532d82e363b4",
+      "license": "Official legislative text; HTML edition by ILO NATLEX. Not redistributed: fetched at indexing time.",
+      "redistribution": "fetch-only",
+      "domains": ["travail", "emploi", "droits-sociaux"],
+      "ituDimensions": ["human_impact", "ai_inclusion"],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://web.archive.org/web/20220926103412id_/https://www.ilo.org/dyn/natlex/docs/WEBTEXT/31629/64867/E92CMR01.htm",
+        "format": "html",
+        "encoding": "windows-1252"
+      },
+      "derivation": "Conversion HTML → texte de la page NATLEX (instantané Internet Archive du 26/09/2022 ; le site NATLEX bloque les téléchargements automatisés).",
+      "segment": {
+        "start": "^Section 1\\s*:"
+      },
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "en-section",
+        "preambleLabel": null,
+        "stopPattern": "^International Labour Organization$"
+      },
+      "note": "English version of the 1992 Labour Code (Cameroon is bilingual; English and French texts are equally authentic). Later implementing texts may supplement some provisions.",
+      "replacements": [
+        {
+          "pattern": "^Section l(\\d+)",
+          "replacement": "Section 1$1"
+        }
+      ]
+    },
+    {
+      "id": "loi-2010-012-cybersecurite",
+      "docId": "CMR-LOI-2010-012-CYBERSECURITE",
+      "issuingBody": "Présidence de la République du Cameroun ; publication : Agence de Régulation des Télécommunications (ART)",
+      "title": "Loi n° 2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité au Cameroun",
+      "titleFr": "Loi n° 2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité au Cameroun",
+      "titleEn": "Law No. 2010/012 of 21 December 2010 relating to cybersecurity and cybercriminality in Cameroon",
+      "shortTitle": "Loi cybersécurité 2010/012",
+      "type": "LAW",
+      "category": "Numérique et cybersécurité",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Texte d'origine du 21 décembre 2010 (publié par l'ART)",
+      "date": "2010-12-21",
+      "url": "https://www.art.cm/sites/default/files/documents/Loi_2010-012_cybersecurite_cybercriminalite.pdf",
+      "accessedAt": "2026-10-23",
+      "sha256": "7c964708430fe050315dc0291d8eeef1a5991ced496d58e452311758e5df640c",
+      "license": "Texte législatif officiel publié par le régulateur (ART) ; redistribué avec mention de la source.",
+      "redistribution": "redistributable",
+      "domains": ["cybersecurite", "numerique", "signature-electronique", "donnees-personnelles"],
+      "ituDimensions": ["ai_policies", "digital_infrastructure", "human_impact"],
+      "ituFolder": "AI_Strategies",
+      "file": "loi-2010-012-cybersecurite.pdf",
+      "fetch": {
+        "url": "https://www.art.cm/sites/default/files/documents/Loi_2010-012_cybersecurite_cybercriminalite.pdf",
+        "format": "pdf"
+      },
+      "noisePatterns": ["^\\d{1,3}$", "^-+\\s+-+$"],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "note": "Texte d'origine. La loi n° 2024/017 du 23 décembre 2024 sur la protection des données à caractère personnel encadre désormais aussi la vie privée en ligne."
+    },
+    {
+      "id": "loi-2010-013-communications-electroniques",
+      "docId": "CMR-LOI-2010-013-COMMUNICATIONS-ELECTRONIQUES",
+      "issuingBody": "Présidence de la République du Cameroun ; publication : Agence de Régulation des Télécommunications (ART)",
+      "title": "Loi n° 2010/013 du 21 décembre 2010 régissant les communications électroniques au Cameroun",
+      "titleFr": "Loi n° 2010/013 du 21 décembre 2010 régissant les communications électroniques au Cameroun",
+      "titleEn": "Law No. 2010/013 of 21 December 2010 governing electronic communications in Cameroon",
+      "shortTitle": "Loi communications électroniques 2010/013",
+      "type": "LAW",
+      "category": "Numérique et cybersécurité",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Texte d'origine du 21 décembre 2010 ; articles modifiés par la loi n° 2015/006 signalés",
+      "date": "2010-12-21",
+      "url": "https://www.art.cm/sites/default/files/documents/Loi_2010-013_communications_electroniques.pdf",
+      "accessedAt": "2026-10-23",
+      "sha256": "849f64c6dab77eb4746566dec6b7b904e6c657dffa613cb7ee9e1935107f8d87",
+      "license": "Texte législatif officiel publié par le régulateur (ART) ; redistribué avec mention de la source.",
+      "redistribution": "redistributable",
+      "domains": ["telecommunications", "numerique", "regulation"],
+      "ituDimensions": ["digital_infrastructure", "ai_policies"],
+      "ituFolder": "AI_Strategies",
+      "file": "loi-2010-013-communications-electroniques.pdf",
+      "fetch": {
+        "url": "https://www.art.cm/sites/default/files/documents/Loi_2010-013_communications_electroniques.pdf",
+        "format": "pdf"
+      },
+      "noisePatterns": ["^\\d{1,3}$", "^-+\\s+-+$"],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "note": "Texte d'origine. Les articles 5, 6, 9, 10, 14, 20, 34, 36, 50, 56, 81, 83, 84 et 94 ont été modifiés par la loi n° 2015/006 du 20 avril 2015."
+    },
+    {
+      "id": "loi-2015-006-communications-electroniques",
+      "docId": "CMR-LOI-2015-006-COMMUNICATIONS-ELECTRONIQUES",
+      "issuingBody": "Présidence de la République du Cameroun ; publication : Agence de Régulation des Télécommunications (ART)",
+      "title": "Loi n° 2015/006 du 20 avril 2015 modifiant et complétant certaines dispositions de la loi n° 2010/013 du 21 décembre 2010 régissant les communications électroniques au Cameroun",
+      "titleFr": "Loi n° 2015/006 du 20 avril 2015 modifiant et complétant certaines dispositions de la loi n° 2010/013 du 21 décembre 2010 régissant les communications électroniques au Cameroun",
+      "titleEn": "Law No. 2015/006 of 20 April 2015 to amend and supplement some provisions of Law No. 2010/013 of 21 December 2010 governing electronic communications in Cameroon",
+      "shortTitle": "Loi n° 2015/006 (communications électroniques)",
+      "type": "LAW",
+      "category": "Numérique et cybersécurité",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Texte du 20 avril 2015 (publié par l'ART)",
+      "date": "2015-04-20",
+      "url": "https://www.art.cm/sites/default/files/documents/LOI%20N%C2%B02015%20006%20DU%2020%20AVRIL%202015%20MODIFIANT%20ET%20COMPLETANT%20CERTAINES%20DISPOSITIONS%20DE%20LA%20LOI%20%20DE%202010%20LCE.pdf",
+      "accessedAt": "2026-10-23",
+      "sha256": "35d81ac3176b745ab7fc1978ae9cdf5f2106da98cb9a983c34dc2f99f13b7bbe",
+      "license": "Texte législatif officiel publié par le régulateur (ART) ; redistribué avec mention de la source.",
+      "redistribution": "redistributable",
+      "domains": ["telecommunications", "numerique", "regulation"],
+      "ituDimensions": ["digital_infrastructure", "ai_policies"],
+      "ituFolder": "AI_Strategies",
+      "file": "loi-2015-006-communications-electroniques.pdf",
+      "fetch": {
+        "url": "https://www.art.cm/sites/default/files/documents/LOI%20N%C2%B02015%20006%20DU%2020%20AVRIL%202015%20MODIFIANT%20ET%20COMPLETANT%20CERTAINES%20DISPOSITIONS%20DE%20LA%20LOI%20%20DE%202010%20LCE.pdf",
+        "format": "pdf"
+      },
+      "noisePatterns": ["^\\d{1,3}$", "^-+\\s+-+$"],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "amends": {
+        "sourceId": "loi-2010-013-communications-electroniques",
+        "articles": {
+          "5": ["5", "15", "20", "33"],
+          "6": [],
+          "9": [],
+          "10": [],
+          "14": [],
+          "20": [],
+          "34": [],
+          "36": [],
+          "50": [],
+          "56": [],
+          "81": [],
+          "83": [],
+          "84": [],
+          "94": []
+        }
+      }
+    },
+    {
+      "id": "loi-2024-017-donnees-personnelles",
+      "docId": "CMR-PRC-LOI-2024-017-DONNEES-PERSONNELLES",
+      "issuingBody": "Présidence de la République du Cameroun (Parlement)",
+      "title": "Loi n° 2024/017 du 23 décembre 2024 relative à la protection des données à caractère personnel au Cameroun",
+      "titleFr": "Loi n° 2024/017 du 23 décembre 2024 relative à la protection des données à caractère personnel au Cameroun",
+      "titleEn": "Law No. 2024/017 of 23 December 2024 relating to the protection of personal data in Cameroon",
+      "shortTitle": "Loi données personnelles 2024/017",
+      "type": "LAW",
+      "category": "Données personnelles",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Copie certifiée conforme publiée par la Présidence (texte reconnu par OCR)",
+      "date": "2024-12-23",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+      "accessedAt": "2026-10-23",
+      "sha256": "3fd7aea48aa88c6987ce1a1801d27c9632d3e52e1d2c940e90312e12f85f74de",
+      "license": "Texte législatif officiel publié par la Présidence de la République (domaine public de fait).",
+      "redistribution": "redistributable",
+      "domains": ["donnees-personnelles", "numerique", "vie-privee"],
+      "ituDimensions": ["data_marketplace", "ai_policies", "human_impact"],
+      "ituFolder": "AI_Strategies",
+      "file": "loi-2024-017-donnees-personnelles.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/fr/multimedia/documents/10258-loi-n-2024-017-du-23-12-2024-web",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "derivation": "OCR (Apple Vision, fr-FR, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": [
+        "^[^a-z]*(E[SB]IDEN[CG]|ECRETA|CARD ?I[ND]|STATUTORY|LEGI[A-Z]{0,3}ATI|LEOISLAT|CONFORME|CERTIFI|FICHI?ER|EGLEMENTAIRE|TRUE COPY|SERVICE$|SERVIC$)[^a-z]*$",
+        "^(GENERA|CHERAL|VENTAIRE|COPY|COPIE|CERTIFIED|PATRIE|TEROUN|\\*|•)$",
+        "^www\\.",
+        "^\\d{1,3}$"
+      ],
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        },
+        {
+          "pattern": " CERTIFIEE CONOPY$",
+          "replacement": ""
+        },
+        {
+          "pattern": " ETALI$",
+          "replacement": ""
+        }
+      ],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "note": "Article 73 : les responsables de traitement disposent de dix-huit mois à compter de la promulgation (23 décembre 2024) pour se mettre en conformité. Texte obtenu par OCR : vérifier les chiffres sur le PDF officiel."
+    },
+    {
+      "id": "loi-2024-016-etat-civil",
+      "docId": "CMR-PRC-LOI-2024-016-ETAT-CIVIL",
+      "issuingBody": "Présidence de la République du Cameroun (Parlement)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "titleFr": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "titleEn": "Law No. 2024/016 of 23 December 2024 to organise the civil status registration system in Cameroon",
+      "shortTitle": "Loi état civil 2024/016",
+      "type": "LAW",
+      "category": "État civil",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Copie certifiée conforme publiée par la Présidence (texte reconnu par OCR)",
+      "date": "2024-12-23",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7589-loi-n-2024-016-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-10",
+      "accessedAt": "2026-10-23",
+      "sha256": "7edef45e1ed4cc224f5e795ef16136cb20788570d6bcc1e34174f23abe83dbd1",
+      "license": "Texte législatif officiel publié par la Présidence de la République (domaine public de fait).",
+      "redistribution": "redistributable",
+      "domains": ["etat-civil", "identite", "services-publics", "numerique"],
+      "ituDimensions": ["data_marketplace", "ai_integration", "digital_infrastructure"],
+      "ituFolder": "AI_Strategies",
+      "file": "loi-2024-016-etat-civil.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/fr/multimedia/documents/10257-loi-n-2024-016-du-23-12-2024-web",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "derivation": "OCR (Apple Vision, fr-FR, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": [
+        "^[^a-z]*(E[SB]IDEN[CG]|ECRETA|CARD ?I[ND]|STATUTORY|LEGI[A-Z]{0,3}ATI|LEOISLAT|CONFORME|CERTIFI|FICHI?ER|EGLEMENTAIRE|TRUE COPY|SERVICE$|SERVIC$)[^a-z]*$",
+        "^(GENERA|CHERAL|VENTAIRE|COPY|COPIE|CERTIFIED|PATRIE|TEROUN|\\*|•)$",
+        "^www\\.",
+        "^\\d{1,3}$"
+      ],
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        }
+      ],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": null
+      },
+      "note": "Remplace, pour l'état civil, l'ordonnance n° 81-02 du 29 juin 1981 modifiée par la loi n° 2011/011 du 6 mai 2011 (article 129). Texte obtenu par OCR : vérifier les chiffres sur le PDF officiel."
+    },
+    {
+      "id": "decret-2017-0877-pm-cfce",
+      "docId": "CMR-SPM-DECRET-2017-0877-PM",
+      "issuingBody": "Services du Premier Ministre du Cameroun",
+      "title": "Décret n° 2017/0877/PM du 28 février 2017 fixant les modalités d'authentification des statuts de la SARL établis sous seing privé dans les Centres de Formalités de Création d'Entreprises (CFCE)",
+      "titleFr": "Décret n° 2017/0877/PM du 28 février 2017 fixant les modalités d'authentification des statuts de la Société à Responsabilité Limitée établis sous seing privé dans les Centres de Formalités de Création d'Entreprises au Cameroun",
+      "titleEn": "Decree No. 2017/0877/PM of 28 February 2017 laying down the procedure for authenticating private-deed articles of association of limited liability companies at the Business Creation Formalities Centres (CFCE)",
+      "shortTitle": "Décret CFCE 2017/0877/PM",
+      "type": "DECREE",
+      "category": "Création d'entreprise",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Texte signé du 28 février 2017 (scan publié par les Services du Premier Ministre, reconnu par OCR)",
+      "date": "2017-02-28",
+      "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+      "accessedAt": "2026-10-23",
+      "sha256": "40168f2a9c9fc3f489d451ff2c89912d4d648a199dfdd1eecd4be32f22792dd3",
+      "license": "Texte réglementaire officiel publié par les Services du Premier Ministre (domaine public de fait).",
+      "redistribution": "redistributable",
+      "domains": ["creation-entreprise", "services-publics", "ohada"],
+      "ituDimensions": ["ai_integration", "granular_priorities"],
+      "ituFolder": "AI_Use_Cases",
+      "file": "decret-2017-0877-pm-cfce.ocr.txt",
+      "fetch": {
+        "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+        "format": "pdf"
+      },
+      "derivation": "OCR (Apple Vision, fr-FR, 300 dpi) du PDF scanné publié sur spm.gov.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": ["^\\d{1,3}$", "^__\\.$", "^•$"],
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        },
+        {
+          "pattern": "Cheí",
+          "replacement": "Chef"
+        }
+      ],
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": "Visas"
+      },
+      "note": "Pris en application de l'article 3(3) de la loi n° 2016/014 du 14 décembre 2016 (SARL). Texte obtenu par OCR : vérifier les montants sur le PDF officiel."
+    },
+    {
+      "issuingBody": "Presidency of the Republic of Cameroon",
+      "type": "CONSTITUTION",
+      "category": "Constitution",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "en",
+      "accessedAt": "2026-10-23",
+      "license": "Official legislative text published by the Presidency of the Republic (public domain in practice).",
+      "redistribution": "redistributable",
+      "domains": ["constitution", "gouvernance", "droits-fondamentaux"],
+      "ituDimensions": ["ai_policies", "human_impact"],
+      "ituFolder": "AI_Strategies",
+      "derivation": "OCR (Apple Vision, en-US, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": [
+        "^[^a-z]*(E[SB]IDEN[CG]|ECRETA|CARD ?I[ND]|STATUTORY|LEGI[A-Z]{0,3}ATI|LEOISLAT|CONFORME|CERTIFI|FICHI?ER|EGLEMENTAIRE|TRUE COPY|SERVICE$|SERVIC$)[^a-z]*$",
+        "^(GENERA|CHERAL|VENTAIRE|COPY|COPIE|CERTIFIED|PATRIE|TEROUN|\\*|•)$",
+        "^www\\.",
+        "^\\d{1,3}$"
+      ],
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        },
+        {
+          "pattern": "^Article (\\d+)\\((\\d+)\\)",
+          "replacement": "Article $1. ($2)"
+        }
+      ],
+      "id": "constitution-1996-en",
+      "docId": "CMR-PRC-CONSTITUTION-1996-EN",
+      "title": "Constitution of the Republic of Cameroon (Law No. 96-06 of 18 January 1996)",
+      "titleFr": "Constitution de la République du Cameroun (loi n° 96-06 du 18 janvier 1996), version anglaise",
+      "titleEn": "Law No. 96-06 of 18 January 1996 to amend the Constitution of 2 June 1972",
+      "shortTitle": "Constitution (English)",
+      "version": "1996 English text (certified true copy, OCR); amended articles flagged (Laws No. 2008/001 and 2026/002)",
+      "date": "1996-01-18",
+      "url": "https://www.prc.cm/en/multimedia/documents/6285-loi-n-96-06-du-18-01-1996-revision-constitution-1972-en",
+      "sha256": "b7861566f89cee8e758650f24d52bb449331fde94aea8bd10c0a401400237176",
+      "file": "constitution-1996-en.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/en/multimedia/documents/6285-loi-n-96-06-du-18-01-1996-revision-constitution-1972-en",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "fr",
+        "preambleLabel": "Preamble"
+      },
+      "note": "1996 text, not consolidated: Articles 5, 6, 7, 10, 14, 15, 51, 53, 66 and 67 were amended by Laws No. 2008/001 and No. 2026/002. Text obtained by OCR.",
+      "segment": {
+        "start": "^PREAMBLE$"
+      }
+    },
+    {
+      "issuingBody": "Presidency of the Republic of Cameroon",
+      "type": "CONSTITUTION",
+      "category": "Constitution",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "en",
+      "accessedAt": "2026-10-23",
+      "license": "Official legislative text published by the Presidency of the Republic (public domain in practice).",
+      "redistribution": "redistributable",
+      "domains": ["constitution", "gouvernance"],
+      "ituDimensions": ["ai_policies"],
+      "ituFolder": "AI_Strategies",
+      "derivation": "OCR (Apple Vision, en-US, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": [
+        "^[^a-z]*(E[SB]IDEN[CG]|ECRETA|CARD ?I[ND]|STATUTORY|LEGI[A-Z]{0,3}ATI|LEOISLAT|CONFORME|CERTIFI|FICHI?ER|EGLEMENTAIRE|TRUE COPY|SERVICE$|SERVIC$)[^a-z]*$",
+        "^(GENERA|CHERAL|VENTAIRE|COPY|COPIE|CERTIFIED|PATRIE|TEROUN|\\*|•)$",
+        "^www\\.",
+        "^\\d{1,3}$"
+      ],
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        }
+      ],
+      "id": "constitution-2008-amendment-en",
+      "docId": "CMR-PRC-LAW-2008-001-EN",
+      "title": "Law No. 2008/001 of 14 April 2008 to amend and supplement some provisions of Law No. 96/6 of 18 January 1996 to amend the Constitution of 2 June 1972",
+      "titleFr": "Loi n° 2008/001 du 14 avril 2008 modifiant et complétant certaines dispositions de la loi n° 96/06 du 18 janvier 1996 portant révision de la Constitution du 2 juin 1972 (version anglaise)",
+      "titleEn": "Law No. 2008/001 of 14 April 2008 to amend and supplement some provisions of Law No. 96/6 of 18 January 1996 to amend the Constitution of 2 June 1972",
+      "shortTitle": "Constitutional Law No. 2008/001",
+      "version": "English text (certified true copy, OCR)",
+      "date": "2008-04-14",
+      "url": "https://www.prc.cm/en/multimedia/documents/6282-loi-n-2008-001-du-14-04-2008-modifian-constitution-1972-en",
+      "sha256": "bb8e0edce32846dbbbd07f0db7a1771d1dafaebb11af1443414819ced9e2ee46",
+      "file": "law-2008-001-constitution-amendment-en.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/en/multimedia/documents/6282-loi-n-2008-001-du-14-04-2008-modifian-constitution-1972-en",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "en-section",
+        "preambleLabel": null
+      },
+      "amends": {
+        "sourceId": "constitution-1996-en",
+        "articles": {
+          "6": ["2", "4"],
+          "14": ["3 a"],
+          "15": ["4"],
+          "51": ["1"],
+          "53": [],
+          "67": ["6"]
+        }
+      },
+      "note": "Section 1 of the English text lists Article 15(1) whereas the amended paragraph is 15(4), as in the French text. Articles 6 and 53 were rewritten again by Law No. 2026/002."
+    },
+    {
+      "issuingBody": "Presidency of the Republic of Cameroon",
+      "type": "CONSTITUTION",
+      "category": "Constitution",
+      "jurisdiction": "CM",
+      "binding": "binding",
+      "language": "en",
+      "accessedAt": "2026-10-23",
+      "license": "Official legislative text published by the Presidency of the Republic (public domain in practice).",
+      "redistribution": "redistributable",
+      "domains": ["constitution", "gouvernance"],
+      "ituDimensions": ["ai_policies"],
+      "ituFolder": "AI_Strategies",
+      "derivation": "OCR (Apple Vision, en-US, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».",
+      "noisePatterns": [
+        "^[^a-z]*(E[SB]IDEN[CG]|ECRETA|CARD ?I[ND]|STATUTORY|LEGI[A-Z]{0,3}ATI|LEOISLAT|CONFORME|CERTIFI|FICHI?ER|EGLEMENTAIRE|TRUE COPY|SERVICE$|SERVIC$)[^a-z]*$",
+        "^(GENERA|CHERAL|VENTAIRE|COPY|COPIE|CERTIFIED|PATRIE|TEROUN|\\*|•)$",
+        "^www\\.",
+        "^\\d{1,3}$"
+      ],
+      "replacements": [
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?[/!]$",
+          "replacement": "$1 I"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!$",
+          "replacement": "$1 II"
+        },
+        {
+          "pattern": "^(SECTION|CHAPITRE|TITRE|PART|CHAPTER) ?!!!$",
+          "replacement": "$1 III"
+        },
+        {
+          "pattern": "^SECTIONI$",
+          "replacement": "SECTION I"
+        },
+        {
+          "pattern": "^SECTION IL$",
+          "replacement": "SECTION II"
+        },
+        {
+          "pattern": "^ARTICLE 1[º°]r?\\s*[-.]",
+          "replacement": "ARTICLE 1er.-"
+        },
+        {
+          "pattern": "\\|\\| ",
+          "replacement": "Il "
+        }
+      ],
+      "id": "constitution-2026-amendment-en",
+      "docId": "CMR-PRC-LAW-2026-002-EN",
+      "title": "Law No. 2026/002 of 14 April 2026 to amend and supplement the Constitution of 2 June 1972, as amended and supplemented by Law No. 96-06 of 18 January 1996 and Law No. 2008/001 of 14 April 2008",
+      "titleFr": "Loi n° 2026/002 du 14 avril 2026 modifiant et complétant certaines dispositions de la Constitution (version anglaise)",
+      "titleEn": "Law No. 2026/002 of 14 April 2026 to amend and supplement the Constitution of 2 June 1972, as amended and supplemented by Law No. 96-06 of 18 January 1996 and Law No. 2008/001 of 14 April 2008",
+      "shortTitle": "Constitutional Law No. 2026/002",
+      "version": "English text (certified true copy, OCR)",
+      "date": "2026-04-14",
+      "url": "https://www.prc.cm/en/news/the-acts/laws/8241-law-no-2026-002-of-14-april-2026-to-amend-and-supplement-the-constitution-of-2-june-1972-as-amended-and-supplemented-by-law-no-96-06-of-18-january-1996-and-law-no-2008-001-of-14-april-2008",
+      "sha256": "05ec9d038e426c898ad5c84c0a2b2407bd832fb46efc9d109b2bfd59c6294943",
+      "file": "law-2026-002-constitution-amendment-en.ocr.txt",
+      "fetch": {
+        "url": "https://www.prc.cm/en/multimedia/documents/10676-law-2026-002-of-14-04-2026",
+        "format": "pdf",
+        "resolver": "prc-cm"
+      },
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "en-section",
+        "preambleLabel": null
+      },
+      "amends": {
+        "sourceId": "constitution-1996-en",
+        "articles": {
+          "5": [],
+          "6": [],
+          "7": [],
+          "10": [],
+          "53": [],
+          "66": []
+        }
+      },
+      "note": "Text obtained by OCR: check figures against the official PDF."
+    },
+    {
+      "id": "cameroun-numerique-2020",
+      "docId": "CMR-MINPOSTEL-PLAN-CAMEROUN-NUMERIQUE-2020",
+      "issuingBody": "Ministère des Postes et Télécommunications (MINPOSTEL)",
+      "title": "Plan stratégique Cameroun numérique 2020",
+      "titleFr": "Plan stratégique Cameroun numérique 2020",
+      "titleEn": "Digital Cameroon 2020 Strategic Plan",
+      "shortTitle": "Cameroun numérique 2020",
+      "type": "STRATEGY",
+      "category": "Stratégie numérique",
+      "jurisdiction": "CM",
+      "binding": "advisory",
+      "language": "fr",
+      "version": "Édition de mai 2016 (horizon 2020, non actualisée)",
+      "date": "2016-05-01",
+      "url": "https://database.cyberpolicyportal.org/api/files/1663765272354m2yzhkaqkp.pdf",
+      "accessedAt": "2026-10-23",
+      "sha256": "d0f7db05a2f469e8afa6a95ab6a507f2c0d7ba6322801e700998076edf319f1b",
+      "license": "Document gouvernemental (MINPOSTEL) diffusé par le Cyber Policy Portal (UNIDIR) ; conditions de rediffusion non précisées : non redistribué, téléchargé à l'indexation.",
+      "redistribution": "fetch-only",
+      "domains": ["numerique", "strategie", "infrastructures", "services-publics"],
+      "ituDimensions": ["strategy_alignment", "digital_infrastructure", "ai_inclusion"],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://database.cyberpolicyportal.org/api/files/1663765272354m2yzhkaqkp.pdf",
+        "format": "pdf"
+      },
+      "noisePatterns": ["^Plan stratégique Cameroun numérique 2020$", "^\\d{1,3}$"],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": "Introduction",
+        "maxChars": 1800
+      },
+      "note": "Plan à l'horizon 2020, échu : utile pour l'historique et l'analyse d'écarts, pas comme politique en vigueur. Aucune stratégie nationale d'IA officiellement publiée n'a été trouvée (octobre 2026)."
+    },
+    {
+      "id": "au-continental-ai-strategy-2024",
+      "docId": "AU-CONTINENTAL-AI-STRATEGY-2024",
+      "issuingBody": "African Union Commission",
+      "title": "Continental Artificial Intelligence Strategy: Harnessing AI for Africa's Development and Prosperity",
+      "titleFr": "Stratégie continentale de l'Union africaine sur l'intelligence artificielle (juillet 2024)",
+      "titleEn": "Continental Artificial Intelligence Strategy: Harnessing AI for Africa's Development and Prosperity (July 2024)",
+      "shortTitle": "AU Continental AI Strategy",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "AU",
+      "binding": "advisory",
+      "language": "en",
+      "version": "July 2024 (adopted by the AU Executive Council, 45th Ordinary Session, Accra, 18-19 July 2024)",
+      "date": "2024-07-19",
+      "url": "https://au.int/en/documents/20240809/continental-artificial-intelligence-strategy",
+      "accessedAt": "2026-10-23",
+      "sha256": "c5429f73786c0a0c170a78278016339ab86f914b239290ba1d6623cc07734e3f",
+      "license": "© African Union; no open licence stated: not redistributed, fetched at indexing time.",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "strategie", "gouvernance-ia", "afrique"],
+      "ituDimensions": ["strategy_alignment", "ai_policies", "ai_inclusion", "contextualization"],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://au.int/sites/default/files/documents/44004-doc-EN-_Continental_AI_Strategy_July_2024.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^Executive Summary$"
+      },
+      "noisePatterns": ["^\\d{1,3}$"],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": null,
+        "unitPatterns": [
+          "^Executive Summary$",
+          "^\\d+(\\.\\d+)*\\.? [A-Z][^.]{2,100}$",
+          "^[ivx]+\\. [A-Z][^.]{2,100}$",
+          "^(Vision|Mission|Annex|Abbreviations)$"
+        ],
+        "maxChars": 1800
+      }
+    },
+    {
+      "id": "unesco-ethics-ai-2021",
+      "docId": "UNESCO-RECOMMENDATION-ETHICS-AI-2021",
+      "issuingBody": "UNESCO General Conference",
+      "title": "Recommendation on the Ethics of Artificial Intelligence",
+      "titleFr": "Recommandation sur l'éthique de l'intelligence artificielle (UNESCO, 2021)",
+      "titleEn": "Recommendation on the Ethics of Artificial Intelligence (UNESCO, 2021)",
+      "shortTitle": "UNESCO AI Ethics Recommendation",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "INT",
+      "binding": "advisory",
+      "language": "en",
+      "version": "Adopted 23 November 2021 (41st General Conference); 2022 publication SHS/BIO/PI/2021/1",
+      "date": "2021-11-23",
+      "url": "https://unesdoc.unesco.org/ark:/48223/pf0000381137",
+      "accessedAt": "2026-10-23",
+      "sha256": "389a5f4316b980b88b22546cdc7f519bcd2e1ee7b9ccfd026ade4a572955fae4",
+      "license": "CC BY-NC-SA 3.0 IGO (UNESCO Open Access). This PDF is redistributed unaltered under its own licence (attribution, non-commercial, share-alike); it is not covered by the repository's MIT licence.",
+      "redistribution": "redistributable",
+      "domains": ["ia", "ethique-ia", "droits-fondamentaux"],
+      "ituDimensions": ["ai_policies", "human_impact", "ai_inclusion"],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://unesdoc.unesco.org/in/rest/annotationSVC/DownloadWatermarkedAttachment/attach_import_e86c4b5d-5af9-4e15-be60-82f1a09956fd?_=380455fre.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^The General Conference of the United Nations Educational,"
+      },
+      "noisePatterns": ["^\\d{1,3}$"],
+      "chunking": {
+        "mode": "numbered-paragraphs",
+        "preambleLabel": "Preamble",
+        "headingPatterns": ["^[IVX]+\\.$", "^[IVX]+\\. [A-Z]", "^III\\.\\d ", "^POLICY AREA \\d+"],
+        "stopPattern": "^Social and Human Sciences Sector$"
+      },
+      "file": "unesco-recommendation-ethics-ai-2021.pdf"
+    },
+    {
+      "id": "ocde-recommandation-ia",
+      "docId": "OECD-LEGAL-0449",
+      "issuingBody": "Conseil de l'OCDE",
+      "title": "Recommandation du Conseil sur l'intelligence artificielle (OECD/LEGAL/0449)",
+      "titleFr": "Recommandation du Conseil sur l'intelligence artificielle (OECD/LEGAL/0449)",
+      "titleEn": "Recommendation of the Council on Artificial Intelligence (OECD/LEGAL/0449)",
+      "shortTitle": "Recommandation de l'OCDE sur l'IA",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "INT",
+      "binding": "advisory",
+      "language": "fr",
+      "version": "Adoptée le 22 mai 2019, révisée le 3 mai 2024 (version française officielle)",
+      "date": "2024-05-03",
+      "url": "https://legalinstruments.oecd.org/fr/instruments/OECD-LEGAL-0449",
+      "accessedAt": "2026-10-23",
+      "sha256": "110dd38c89bddbf6db55628ce35962b65fb2085faaf48ee94f57378d93c2b10f",
+      "license": "© OCDE : reproduction et diffusion gratuites autorisées sans modification (mention figurant dans le document).",
+      "redistribution": "redistributable",
+      "domains": ["ia", "gouvernance-ia", "ethique-ia"],
+      "ituDimensions": ["ai_policies", "strategy_alignment", "collaboration"],
+      "ituFolder": "AI_Strategies",
+      "file": "ocde-recommandation-ia.pdf",
+      "fetch": {
+        "url": "https://legalinstruments.oecd.org/api/print?ids=648&lang=fr",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^LE CONSEIL,$",
+        "end": "^À propos de l'OCDE$"
+      },
+      "noisePatterns": ["^\\d{1,3}$", "^OECD/LEGAL/0449$"],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": "Visas",
+        "unitPatterns": ["^[IVX]+\\. [A-ZÉÈ]{4,}", "^\\d\\.\\d\\. "],
+        "headingPatterns": ["^Section \\d :"]
+      }
+    },
+    {
+      "id": "eu-ai-act-2024-1689",
+      "docId": "EU-REGULATION-2024-1689-AI-ACT",
+      "issuingBody": "Parlement européen et Conseil de l'Union européenne",
+      "title": "Règlement (UE) 2024/1689 du Parlement européen et du Conseil du 13 juin 2024 établissant des règles harmonisées concernant l'intelligence artificielle (règlement sur l'intelligence artificielle)",
+      "titleFr": "Règlement (UE) 2024/1689 du 13 juin 2024 établissant des règles harmonisées concernant l'intelligence artificielle (règlement sur l'IA)",
+      "titleEn": "Regulation (EU) 2024/1689 of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)",
+      "shortTitle": "Règlement européen sur l'IA",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "EU",
+      "binding": "binding",
+      "language": "fr",
+      "version": "Version publiée au JO L du 12 juillet 2024 (non consolidée ; considérants non indexés)",
+      "date": "2024-06-13",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=fr",
+      "accessedAt": "2026-10-23",
+      "sha256": "d8b1a7775f597dc8d49a2bdc91af0dca3bc12ac558b97504685f9534660bb44e",
+      "license": "© Union européenne (EUR-Lex) : réutilisation autorisée avec mention de la source (décision 2011/833/UE) ; téléchargé à l'indexation pour limiter la taille du dépôt.",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "regulation-ia", "transparence", "droits-fondamentaux"],
+      "ituDimensions": ["ai_policies", "human_interface", "generated_content"],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "http://publications.europa.eu/resource/celex/32024R1689",
+        "format": "html",
+        "headers": {
+          "Accept": "application/xhtml+xml",
+          "Accept-Language": "fra"
+        }
+      },
+      "derivation": "Conversion XHTML → texte du Journal officiel (Office des publications de l'UE, CELEX 32024R1689, négociation de contenu en français).",
+      "chunking": {
+        "mode": "articles",
+        "articleStyle": "line",
+        "preambleLabel": null,
+        "unitPatterns": ["^ANNEXE [IVXLC]+$"]
+      },
+      "note": "Règlement de l'UE (non applicable au Cameroun) : référence comparative, notamment l'article 50 sur les obligations de transparence. Version d'origine non consolidée : vérifier les modifications ultérieures sur EUR-Lex.",
+      "replacements": [
+        {
+          "pattern": "^Fait à Bruxelles, le 13 juin 2024\\.[\\s\\S]*?(?=^ANNEXE I$)",
+          "replacement": "",
+          "flags": "m"
+        }
+      ]
+    },
+    {
+      "id": "itu-t-y3172",
+      "docId": "ITU-T-Y.3172-201906",
+      "issuingBody": "ITU-T (Study Group 13)",
+      "title": "ITU-T Y.3172: Architectural framework for machine learning in future networks including IMT-2020",
+      "titleFr": "UIT-T Y.3172 : Cadre architectural pour l'apprentissage automatique dans les réseaux futurs, y compris les IMT-2020",
+      "titleEn": "ITU-T Y.3172: Architectural framework for machine learning in future networks including IMT-2020",
+      "shortTitle": "ITU-T Y.3172",
+      "type": "INTERNATIONAL",
+      "category": "Norme internationale",
+      "jurisdiction": "INT",
+      "binding": "advisory",
+      "language": "en",
+      "version": "Y.3172 (06/19), approved 2019-06-22, in force",
+      "date": "2019-06-22",
+      "url": "https://www.itu.int/rec/T-REC-Y.3172-201906-I/en",
+      "accessedAt": "2026-10-23",
+      "license": "© ITU; freely downloadable from itu.int but not redistributed: cited by reference only.",
+      "redistribution": "metadata-only",
+      "domains": ["ia", "normalisation", "reseaux"],
+      "ituDimensions": ["ai_integration", "digital_infrastructure", "cross_domain"],
+      "ituFolder": "AI_Use_Cases",
+      "chunking": {
+        "mode": "sections"
+      },
+      "note": "Référence citée uniquement (non indexée) : pipeline ML (SRC → C → PP → M → P → D → SINK), orchestrateur MLFO et bac à sable ML."
     }
   ]
 }

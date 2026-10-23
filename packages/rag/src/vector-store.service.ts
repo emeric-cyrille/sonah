@@ -1,9 +1,12 @@
 import { Prisma, type PrismaClient } from '@sonah/database';
 import { z } from 'zod';
-import { assertDimensions, type Embedder } from './embeddings/embedder';
+import { assertDimensions, type Embedder, type EmbeddingPurpose } from './embeddings/embedder';
 import {
   consoleLogger,
+  DOCUMENT_TYPES,
   type DocumentInput,
+  type DocumentType,
+  type EmbeddingTextStyle,
   type RagLogger,
   type SearchResult,
   type StoredDocument,
@@ -12,7 +15,7 @@ import {
 const documentInputSchema = z.object({
   chunkKey: z.string().min(1).max(200),
   sourceId: z.string().min(1).max(100),
-  type: z.enum(['CONSTITUTION', 'LAW', 'DECREE', 'PROCEDURE', 'FORM', 'OTHER']),
+  type: z.enum(DOCUMENT_TYPES),
   title: z.string().min(1).max(300),
   reference: z.string().max(100).optional(),
   content: z.string().min(1).max(20_000),
@@ -29,8 +32,106 @@ const searchSchema = z.object({
 export interface SearchOptions {
   /** Restreint la recherche à certains textes (ex. ["constitution-1996"]). */
   readonly sourceIds?: readonly string[];
-  /** Score minimal (similarité cosinus, de -1 à 1). */
+  /**
+   * Score minimal (similarité cosinus, de -1 à 1). En mode hybride, un fragment retrouvé en plein texte
+   * pour une requête contenant un numéro (« Article 12 », « 2010/012 ») est conservé même en dessous.
+   */
   readonly minScore?: number;
+  /** Restreint la recherche à certains types de textes (ex. textes contraignants seulement). */
+  readonly types?: readonly DocumentType[];
+  /**
+   * Fusion avec la recherche plein texte (Reciprocal Rank Fusion) :
+   *  - absent (défaut) : automatique, seulement si la requête cite une référence explicite
+   *    (« Article 12 », « Section 28 », « loi n° 2010/012 ») ; sinon recherche purement vectorielle ;
+   *  - true : toujours hybride ;
+   *  - false : toujours purement vectorielle (score = similarité cosinus, ordre décroissant).
+   * Mesuré sur eval/questions.jsonl : la fusion systématique dégrade les questions en langage naturel
+   * (les mots courants du plein texte remontent des articles sans rapport).
+   */
+  readonly hybrid?: boolean;
+}
+
+/**
+ * Vrai si la requête cite une référence explicite : numéro d'article, de section ou d'alinéa
+ * (« Article 12 », « art. 47 bis », « Section 28 »), numéro de texte (« loi n° 2010/012 », « 96-06 »),
+ * ou « Article premier ».
+ */
+export function hasExplicitReference(query: string): boolean {
+  const text = query
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+  return (
+    /\b(articles?|art\.?|sections?|alineas?|paragraphes?|paragraphs?|chapitres?|chapters?|titres?|titles?)\s*(n[°o.]?\s*)?\d/.test(
+      text,
+    ) ||
+    /\barticle (premier|1er)\b/.test(text) ||
+    /\b(loi|law|decret|decree|ordonnance|ordinance|arrete|order)\s*(n[°o.]?|no\.?|number)?\s*\d/.test(
+      text,
+    ) ||
+    /\bn[°o]\s*\d/.test(text) ||
+    /(?<![\d/])\d{2,4}\s*[/-]\s*\d{2,4}(?![\d/])/.test(text)
+  );
+}
+
+/** Constante k de la Reciprocal Rank Fusion (valeur usuelle). */
+export const RRF_K = 60;
+
+/** Fusionne plusieurs classements : score = somme des 1 / (k + rang). */
+export function reciprocalRankFusion(
+  rankings: ReadonlyArray<readonly string[]>,
+  k = RRF_K,
+): Array<{ id: string; score: number }> {
+  const scores = new Map<string, number>();
+  for (const ranking of rankings) {
+    ranking.forEach((id, index) => scores.set(id, (scores.get(id) ?? 0) + 1 / (k + index + 1)));
+  }
+  return [...scores.entries()]
+    .map(([id, score]) => ({ id, score }))
+    .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+}
+
+/** Termes de la requête plein texte : mots (config « french ») et numéros (config « simple »). */
+export interface TextQueryTerms {
+  readonly words: string[];
+  readonly numbers: string[];
+}
+
+/**
+ * Extrait les termes d'une requête : mots de 2 lettres ou plus, et références numériques
+ * (« 12 », « 2010/012 », « 96-06 »). Seuls lettres, chiffres, « / » et « - » sont conservés :
+ * la chaîne transmise à to_tsquery ne peut pas contenir d'opérateur.
+ */
+export function extractQueryTerms(query: string): TextQueryTerms {
+  const tokens = query
+    .normalize('NFC')
+    .split(/[^\p{L}\p{N}/-]+/u)
+    .map((token) => token.replace(/^[-/]+|[-/]+$/g, ''))
+    .filter((token) => token.length > 0);
+  const numbers = [...new Set(tokens.filter((token) => /\d/.test(token)))].slice(0, 10);
+  const words = [
+    ...new Set(
+      tokens.filter((token) => !/\d/.test(token) && token.length >= 2).map((t) => t.toLowerCase()),
+    ),
+  ].slice(0, 30);
+  return { words, numbers };
+}
+
+function orQuery(terms: readonly string[]): string {
+  return terms.map((term) => `'${term}'`).join(' | ');
+}
+
+/** Sous-requête SQL produisant la tsquery (OU logique entre les termes), ou null si aucun terme. */
+function buildTextQuery(query: string): { sql: Prisma.Sql; hasNumbers: boolean } | null {
+  const { words, numbers } = extractQueryTerms(query);
+  const parts: Prisma.Sql[] = [];
+  if (words.length > 0) parts.push(Prisma.sql`to_tsquery('french', ${orQuery(words)})`);
+  if (numbers.length > 0) parts.push(Prisma.sql`to_tsquery('simple', ${orQuery(numbers)})`);
+  if (parts.length === 0) return null;
+  return {
+    sql: Prisma.sql`(SELECT ${Prisma.join(parts, ' || ')} AS query)`,
+    hasNumbers: numbers.length > 0,
+  };
 }
 
 interface SearchRow {
@@ -72,14 +173,19 @@ export class VectorStoreService {
     return this.embedder.model;
   }
 
+  /** Forme du texte vectorisé à l'indexation, propre au modèle d'embedding. */
+  get embeddingTextStyle(): EmbeddingTextStyle {
+    return this.embedder.embeddingTextStyle ?? 'context';
+  }
+
   /** Score minimal conseillé pour considérer un résultat comme pertinent. */
   get relevanceThreshold(): number {
     return this.embedder.relevanceThreshold;
   }
 
-  /** Calcule l'embedding d'un texte. */
-  async createEmbedding(text: string): Promise<number[]> {
-    const [vector] = await this.embedder.embed([text]);
+  /** Calcule l'embedding d'un texte (une question de recherche par défaut). */
+  async createEmbedding(text: string, purpose: EmbeddingPurpose = 'query'): Promise<number[]> {
+    const [vector] = await this.embedder.embed([text], purpose);
     if (!vector) throw new Error('Aucun embedding retourné par le modèle');
     return vector;
   }
@@ -105,7 +211,10 @@ export class VectorStoreService {
         embeddingText: item.embeddingText ?? item.doc.content,
       }));
       try {
-        const vectors = await this.embedder.embed(batch.map((item) => item.embeddingText));
+        const vectors = await this.embedder.embed(
+          batch.map((item) => item.embeddingText),
+          'document',
+        );
         assertDimensions(vectors);
         const batchIds = await this.prisma.$transaction(
           batch.map(({ doc }, index) => this.upsertQuery(doc, vectors[index] ?? [])),
@@ -147,31 +256,99 @@ export class VectorStoreService {
       RETURNING "id"`;
   }
 
-  /** Recherche sémantique : les `topK` fragments les plus proches de la requête. */
+  /**
+   * Recherche sémantique (pgvector, similarité cosinus). Quand la requête cite une référence explicite
+   * (voir `hasExplicitReference`) ou avec `hybrid: true`, elle est fusionnée par Reciprocal Rank Fusion
+   * avec la recherche plein texte (PostgreSQL, configurations « french » et « simple »), qui retrouve
+   * les références exactes (« Article 12 », « Loi n° 2010/012 ») que l'embedding peut manquer.
+   * `score` reste toujours la similarité cosinus du fragment ; en mode hybride, l'ordre est celui de
+   * la fusion. `hybrid: false` force la recherche purement vectorielle.
+   */
   async search(query: string, topK = 5, options: SearchOptions = {}): Promise<SearchResult[]> {
     const input = searchSchema.parse({ query, topK });
     try {
       const vector = await this.createEmbedding(input.query);
       const literal = toVectorLiteral(vector);
-      const sourceFilter =
+      const sourceFilter = Prisma.sql`${
         options.sourceIds && options.sourceIds.length > 0
           ? Prisma.sql`AND "sourceId" IN (${Prisma.join([...options.sourceIds])})`
-          : Prisma.empty;
+          : Prisma.empty
+      } ${
+        options.types && options.types.length > 0
+          ? Prisma.sql`AND "type"::text IN (${Prisma.join([...options.types])})`
+          : Prisma.empty
+      }`;
+      const minScore = options.minScore ?? -1;
+      const toResult = (row: SearchRow): SearchResult => ({
+        ...row,
+        score: Number(row.score),
+        metadata: asRecord(row.metadata),
+      });
 
-      const rows = await this.prisma.$queryRaw<SearchRow[]>`
-        SELECT "id", "sourceId", "title", "reference", "content", "category", "source", "metadata",
-               1 - ("embedding" <=> ${literal}::vector) AS "score"
+      const hybrid = options.hybrid ?? hasExplicitReference(input.query);
+      if (!hybrid) {
+        const rows = await this.prisma.$queryRaw<SearchRow[]>`
+          SELECT "id", "sourceId", "title", "reference", "content", "category", "source", "metadata",
+                 1 - ("embedding" <=> ${literal}::vector) AS "score"
+          FROM "documents"
+          WHERE "embedding" IS NOT NULL
+            AND "embeddingModel" = ${this.embedder.model}
+            ${sourceFilter}
+          ORDER BY "embedding" <=> ${literal}::vector
+          LIMIT ${input.topK}`;
+        return rows.map(toResult).filter((row) => row.score >= minScore);
+      }
+
+      const candidates = Math.min(Math.max(input.topK * 4, 20), 100);
+      const vectorRows = await this.prisma.$queryRaw<Array<{ id: string }>>`
+        SELECT "id"
         FROM "documents"
         WHERE "embedding" IS NOT NULL
           AND "embeddingModel" = ${this.embedder.model}
           ${sourceFilter}
         ORDER BY "embedding" <=> ${literal}::vector
-        LIMIT ${input.topK}`;
+        LIMIT ${candidates}`;
 
-      const minScore = options.minScore ?? -1;
-      return rows
-        .map((row) => ({ ...row, score: Number(row.score), metadata: asRecord(row.metadata) }))
-        .filter((row) => row.score >= minScore);
+      const terms = buildTextQuery(input.query);
+      const textRows = terms
+        ? await this.prisma.$queryRaw<Array<{ id: string }>>`
+            SELECT "id"
+            FROM "documents", ${terms.sql} AS q
+            WHERE "embedding" IS NOT NULL
+              AND "embeddingModel" = ${this.embedder.model}
+              AND "search_vector" @@ q.query
+              ${sourceFilter}
+            ORDER BY ts_rank_cd("search_vector", q.query, 1) DESC, "chunkKey"
+            LIMIT ${candidates}`
+        : [];
+
+      const fused = reciprocalRankFusion([
+        vectorRows.map((row) => row.id),
+        textRows.map((row) => row.id),
+      ]);
+      if (fused.length === 0) return [];
+      const textRank = new Map(textRows.map((row, index) => [row.id, index + 1]));
+
+      const rows = await this.prisma.$queryRaw<SearchRow[]>`
+        SELECT "id", "sourceId", "title", "reference", "content", "category", "source", "metadata",
+               1 - ("embedding" <=> ${literal}::vector) AS "score"
+        FROM "documents"
+        WHERE "id" IN (${Prisma.join(fused.map((entry) => entry.id))})`;
+      const byId = new Map(rows.map((row) => [row.id, toResult(row)]));
+
+      // Seuil : appliqué à la similarité cosinus, sauf pour une référence exacte trouvée en plein texte
+      // (requête contenant un numéro d'article ou de loi, fragment classé parmi les premiers)
+      const exactReference = Boolean(terms?.hasNumbers);
+      return fused
+        .map((entry) => byId.get(entry.id))
+        .filter((row): row is SearchResult => row !== undefined)
+        .filter((row) => {
+          const rank = textRank.get(row.id);
+          return (
+            row.score >= minScore || (exactReference && rank !== undefined && rank <= input.topK)
+          );
+        })
+        .slice(0, input.topK);
     } catch (error) {
       this.logger.error(
         `Échec de la recherche « ${input.query.slice(0, 80)} »`,
@@ -179,6 +356,17 @@ export class VectorStoreService {
       );
       throw error;
     }
+  }
+
+  /**
+   * Supprime les fragments d'un texte qui ne font plus partie de son indexation (texte corrigé,
+   * redécoupé ou segmenté autrement). Retourne le nombre de fragments supprimés.
+   */
+  async deleteStaleChunks(sourceId: string, keepKeys: readonly string[]): Promise<number> {
+    const { count } = await this.prisma.document.deleteMany({
+      where: { sourceId, chunkKey: { notIn: [...keepKeys] } },
+    });
+    return count;
   }
 
   /** Récupère un document par son identifiant, ou null s'il n'existe pas. */

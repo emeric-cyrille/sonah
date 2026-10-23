@@ -1,0 +1,3 @@
+# Cache local des textes non redistribuables (téléchargés par kb:fetch -- --cache ou par le seed)
+*
+!.gitignore

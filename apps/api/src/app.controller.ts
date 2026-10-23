@@ -18,6 +18,10 @@ export class AppController {
       status: 'active',
       endpoints: {
         health: '/api/v1/health',
+        chat: '/api/v1/chat',
+        agents: '/api/v1/agents',
+        scenarios: '/api/v1/scenarios',
+        audit: '/api/v1/audit/traces',
       },
     };
   }

@@ -118,4 +118,15 @@ describe('chunkToEmbeddingText', () => {
       'Code du travail › Titre 4 - Du salaire › Article 61\nLe salaire est payé en monnaie.',
     );
   });
+
+  it('forme courte « reference » : la référence puis le contenu, sans la hiérarchie', () => {
+    const [chunk] = chunkLegalText(
+      'code',
+      'Titre 4 - Du salaire\nArt.61.- Le salaire est payé en monnaie.',
+      { preambleLabel: null },
+    );
+    expect(chunk && chunkToEmbeddingText(chunk, 'Code du travail', 'reference')).toBe(
+      'Article 61\nLe salaire est payé en monnaie.',
+    );
+  });
 });

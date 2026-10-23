@@ -1,78 +1,139 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import type { SearchResult, VectorStoreService } from '@sonah/rag';
+import { Injectable, Logger } from '@nestjs/common';
+import { getAgent } from '../agents/agent-registry';
+import { AnswerEngine } from '../agents/answer-engine.service';
+import { AuditService } from '../audit/audit.service';
+import { TraceRecorder } from '../audit/trace-recorder';
+import { buildRetrievalQuery } from '../policy/follow-up';
+import { detectLanguage } from '../policy/language';
+import { maskPii, piiNotice } from '../policy/pii';
+import type { Citation, Language } from '../policy/policy.types';
 import { PrismaService } from '../prisma/prisma.service';
-import { VECTOR_STORE } from '../rag/rag.tokens';
 import type { ChatResponse, ChatSource } from './chat.schemas';
-import { LANGUAGE_MODEL, type ChatTurn, type LanguageModel } from './language-model';
-import { formatContext, SONAH_SYSTEM_PROMPT } from './sonah-prompt';
+import type { ChatTurn } from './language-model';
 
-/** Nombre d'extraits fournis au modèle. */
-const CONTEXT_SIZE = 6;
 /** Nombre de messages précédents repris pour garder le fil de la conversation. */
 const HISTORY_SIZE = 8;
-/** Un message court (« et pour un étranger ? ») est complété par la question précédente pour la recherche. */
-const SHORT_MESSAGE_LENGTH = 80;
-const EXCERPT_LENGTH = 320;
 
 interface StoredTurn {
   role: 'USER' | 'ASSISTANT' | 'SYSTEM';
   content: string;
 }
 
-function toSource(result: SearchResult): ChatSource {
-  const shortTitle =
-    typeof result.metadata?.shortTitle === 'string' ? result.metadata.shortTitle : result.category;
-  return {
-    title: shortTitle,
-    reference: result.reference ?? undefined,
-    url: result.source.startsWith('http') ? result.source : undefined,
-  };
+/** Sources au format historique : une par texte et article cités. */
+function legacySources(citations: readonly Citation[]): ChatSource[] {
+  const seen = new Set<string>();
+  return citations.flatMap((citation) => {
+    const key = `${citation.title}|${citation.reference}`;
+    if (seen.has(key)) return [];
+    seen.add(key);
+    return [
+      {
+        title: citation.title,
+        ...(citation.reference ? { reference: citation.reference } : {}),
+        ...(citation.url ? { url: citation.url } : {}),
+      },
+    ];
+  });
 }
 
-function excerpt(text: string): string {
-  const compact = text.replace(/\s+/g, ' ').trim();
-  return compact.length > EXCERPT_LENGTH
-    ? `${compact.slice(0, EXCERPT_LENGTH).replace(/\s\S*$/, '')}…`
-    : compact;
-}
-
+/**
+ * Pipeline de conversation : masquage des données personnelles, détection de la langue,
+ * recherche (avec relance elliptique), rédaction contrôlée par le nœud de politique,
+ * historisation et trace d'audit pour chaque requête.
+ */
 @Injectable()
 export class ChatService {
   private readonly logger = new Logger(ChatService.name);
 
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(VECTOR_STORE) private readonly vectorStore: VectorStoreService,
-    @Inject(LANGUAGE_MODEL) private readonly languageModel: LanguageModel | null,
+    private readonly engine: AnswerEngine,
+    private readonly audit: AuditService,
   ) {}
 
-  /** Répond à un message : recherche des textes pertinents, rédaction, historisation. */
-  async reply(message: string, conversationId?: string): Promise<ChatResponse> {
+  async reply(
+    message: string,
+    conversationId?: string,
+    languageOverride?: Language,
+  ): Promise<ChatResponse> {
+    const recorder = new TraceRecorder();
+    const sonah = getAgent('sonah');
+
+    // Données personnelles masquées avant tout stockage ou envoi au modèle
+    const pii = maskPii(message);
+    const detection = detectLanguage(pii.text, languageOverride);
+    const language = detection.language;
+
     const conversation = await this.findOrCreateConversation(conversationId);
     const history = await this.loadHistory(conversation.id);
     await this.prisma.message.create({
-      data: { conversationId: conversation.id, role: 'USER', content: message },
+      data: {
+        conversationId: conversation.id,
+        role: 'USER',
+        content: pii.text,
+        metadata: { language, piiMasked: pii.findings },
+      },
     });
 
-    // Les extraits hors sujet sont écartés : mieux vaut dire « je n'ai pas ce texte » que citer à côté
-    const results = await this.vectorStore.search(
-      this.retrievalQuery(message, history),
-      CONTEXT_SIZE,
-      {
-        minScore: this.vectorStore.relevanceThreshold,
+    const previousQuestion = [...history].reverse().find((turn) => turn.role === 'USER')?.content;
+    const retrieval = buildRetrievalQuery(pii.text, previousQuestion);
+    recorder.add({
+      type: 'input',
+      agent: sonah.id,
+      summary: `Message reçu (${language}, ${detection.source})${
+        pii.total > 0 ? `, ${pii.total} donnée(s) personnelle(s) masquée(s)` : ''
+      }${retrieval.previousQuestionUsed ? ', relance elliptique' : ''}`,
+      data: {
+        messageLength: message.length,
+        language,
+        languageSource: detection.source,
+        languageScores: detection.scores,
+        piiMasked: pii.findings,
+        elliptical: retrieval.elliptical,
+        previousQuestionUsed: retrieval.previousQuestionUsed,
+        historyTurns: history.length,
       },
-    );
-    const sources = this.uniqueSources(results);
+    });
 
-    let reply: string;
-    let model: string;
-    if (this.languageModel) {
-      reply = await this.languageModel.complete(this.buildTurns(message, history, results));
-      model = this.languageModel.name;
-    } else {
-      reply = this.extractiveReply(results);
-      model = 'extractif';
-    }
+    const outcome = await this.engine.answer({
+      agent: sonah,
+      question: pii.text,
+      retrievalQuery: retrieval.query,
+      language,
+      recorder,
+      history: history.map((turn): ChatTurn => ({
+        role: turn.role === 'USER' ? 'user' : 'assistant',
+        content: turn.content,
+      })),
+    });
+
+    const reply = pii.total > 0 ? `${piiNotice(language)}\n\n${outcome.reply}` : outcome.reply;
+    const sources = legacySources(outcome.citations);
+    recorder.add({
+      type: 'output',
+      agent: sonah.id,
+      summary: `Réponse ${outcome.verdict} avec ${outcome.citations.length} citation(s)`,
+      data: {
+        verdict: outcome.verdict,
+        citations: outcome.citations.map((c) => ({
+          index: c.index,
+          documentId: c.documentId,
+          status: c.status,
+        })),
+        replyLength: reply.length,
+        writer: outcome.model,
+        piiNoticeShown: pii.total > 0,
+      },
+    });
+
+    await this.audit.record(recorder, {
+      kind: 'chat',
+      verdict: outcome.verdict,
+      conversationId: conversation.id,
+      agentId: sonah.id,
+      promptVersion: outcome.promptVersion,
+      model: outcome.model,
+    });
 
     await this.prisma.message.create({
       data: {
@@ -80,17 +141,27 @@ export class ChatService {
         role: 'ASSISTANT',
         content: reply,
         metadata: {
-          model,
-          embeddingModel: this.vectorStore.embeddingModel,
-          sources: sources.map((s) => ({ ...s })),
+          model: outcome.model,
+          verdict: outcome.verdict,
+          traceId: recorder.id,
+          language,
+          citations: outcome.citations.map((c) => ({ ...c })),
         },
       },
     });
     this.logger.log(
-      `Réponse ${model} (${results.length} extraits) pour la conversation ${conversation.id}`,
+      `Réponse ${outcome.verdict} (${outcome.model}, ${outcome.evidence.length} extraits) — conversation ${conversation.id}, trace ${recorder.id}`,
     );
 
-    return { conversationId: conversation.id, reply, sources };
+    return {
+      conversationId: conversation.id,
+      reply,
+      language,
+      verdict: outcome.verdict,
+      citations: outcome.citations,
+      sources,
+      traceId: recorder.id,
+    };
   }
 
   private async findOrCreateConversation(conversationId?: string): Promise<{ id: string }> {
@@ -112,72 +183,5 @@ export class ChatService {
       select: { role: true, content: true },
     });
     return recent.reverse();
-  }
-
-  private retrievalQuery(message: string, history: readonly StoredTurn[]): string {
-    if (message.length >= SHORT_MESSAGE_LENGTH) return message;
-    const previousQuestion = [...history].reverse().find((turn) => turn.role === 'USER');
-    return previousQuestion ? `${previousQuestion.content}\n${message}` : message;
-  }
-
-  private buildTurns(
-    message: string,
-    history: readonly StoredTurn[],
-    results: readonly SearchResult[],
-  ): ChatTurn[] {
-    return [
-      { role: 'system', content: SONAH_SYSTEM_PROMPT },
-      { role: 'system', content: formatContext(results) },
-      ...history.map((turn): ChatTurn => ({
-        role: turn.role === 'USER' ? 'user' : 'assistant',
-        content: turn.content,
-      })),
-      { role: 'user', content: message },
-    ];
-  }
-
-  /** Sans modèle de langage : présente honnêtement les articles les plus proches. */
-  private extractiveReply(results: readonly SearchResult[]): string {
-    if (results.length === 0) {
-      return (
-        "Je n'ai pas trouvé de texte officiel correspondant à votre question dans ceux que je connais pour l'instant " +
-        '(Constitution et Code du travail). Pour une démarche précise, rapprochez-vous de l’administration concernée.'
-      );
-    }
-    const cited = results.slice(0, 3);
-    const items = cited.map((result, index) => {
-      const source = toSource(result);
-      return `${index + 1}. ${source.title}, ${source.reference ?? 'extrait'} : « ${excerpt(result.content)} »`;
-    });
-    // Avertissements de version (texte modifié depuis), une fois par texte cité
-    const notes = [
-      ...new Map(
-        cited.flatMap((result) => {
-          const note = result.metadata?.note;
-          return typeof note === 'string'
-            ? [[result.sourceId, `⚠️ ${toSource(result).title} : ${note}`] as const]
-            : [];
-        }),
-      ).values(),
-    ];
-    return [
-      'Voici les textes officiels qui se rapprochent le plus de votre question :',
-      '',
-      ...items,
-      ...(notes.length > 0 ? ['', ...notes] : []),
-      '',
-      'Je vous les cite tels quels pour le moment. Pour une démarche précise (pièces, coûts, délais), ' +
-        'vérifiez auprès de l’administration concernée.',
-    ].join('\n');
-  }
-
-  private uniqueSources(results: readonly SearchResult[]): ChatSource[] {
-    const seen = new Set<string>();
-    return results.map(toSource).filter((source) => {
-      const key = `${source.title}|${source.reference ?? ''}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
   }
 }

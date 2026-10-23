@@ -1,28 +1,27 @@
 import { create } from 'zustand';
-import { ApiUnavailableError, sendChatMessage, type Source } from '@/lib/api-client';
+import type { Locale } from '@/i18n/config';
+import { sendChatMessage, type Citation, type Source } from '@/lib/api-client';
+import { toApiErrorKind, type ApiErrorKind } from '@/lib/api-errors';
 
 export interface ChatEntry {
   readonly id: string;
   readonly role: 'user' | 'assistant';
   readonly content: string;
+  readonly verdict?: string;
+  readonly citations?: readonly Citation[];
   readonly sources?: readonly Source[];
-  readonly isError?: boolean;
+  readonly traceId?: string;
+  /** Erreur traduite à l'affichage, pour suivre la langue choisie. */
+  readonly error?: ApiErrorKind;
 }
 
 interface ChatState {
   readonly messages: readonly ChatEntry[];
   readonly conversationId: string | undefined;
   readonly isSending: boolean;
-  send: (content: string) => Promise<void>;
+  send: (content: string, language: Locale) => Promise<void>;
   reset: () => void;
 }
-
-const UNAVAILABLE_MESSAGE =
-  'Je suis encore en train de me préparer et je ne peux pas répondre pour le moment. ' +
-  'Revenez très bientôt : votre question m’intéresse !';
-
-const GENERIC_ERROR_MESSAGE =
-  "Oups, quelque chose s'est mal passé de mon côté. Pouvez-vous réessayer dans un instant ?";
 
 function createId(): string {
   return typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -35,7 +34,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   conversationId: undefined,
   isSending: false,
 
-  send: async (content: string): Promise<void> => {
+  send: async (content: string, language: Locale): Promise<void> => {
     const text = content.trim();
     if (text.length === 0 || get().isSending) return;
 
@@ -45,21 +44,31 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }));
 
     try {
-      const response = await sendChatMessage(text, get().conversationId);
+      const response = await sendChatMessage({
+        message: text,
+        conversationId: get().conversationId,
+        language,
+      });
       set((state) => ({
         conversationId: response.conversationId,
         messages: [
           ...state.messages,
-          { id: createId(), role: 'assistant', content: response.reply, sources: response.sources },
+          {
+            id: createId(),
+            role: 'assistant',
+            content: response.reply,
+            verdict: response.verdict,
+            citations: response.citations,
+            sources: response.sources,
+            traceId: response.traceId,
+          },
         ],
       }));
     } catch (error) {
-      const message =
-        error instanceof ApiUnavailableError ? UNAVAILABLE_MESSAGE : GENERIC_ERROR_MESSAGE;
       set((state) => ({
         messages: [
           ...state.messages,
-          { id: createId(), role: 'assistant', content: message, isError: true },
+          { id: createId(), role: 'assistant', content: '', error: toApiErrorKind(error) },
         ],
       }));
     } finally {

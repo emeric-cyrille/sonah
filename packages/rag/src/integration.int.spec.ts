@@ -14,6 +14,7 @@ const enabled = process.env.RAG_INTEGRATION === '1' && Boolean(process.env.DATAB
 const describeDb = enabled ? describe : describe.skip;
 const describeGraph = enabled && process.env.NEO4J_URI ? describe : describe.skip;
 const silentLogger = { log: () => undefined, warn: () => undefined, error: () => undefined };
+const SOURCES_DIR = path.resolve(__dirname, '../../../data/sources');
 
 jest.setTimeout(120_000);
 
@@ -91,16 +92,50 @@ describeDb('seedLegalSources (textes réels)', () => {
     await prisma.$disconnect();
   });
 
-  it('indexe la Constitution et le Code du travail, puis retrouve les bons articles', async () => {
+  it('indexe les textes, avec statut juridique et suppression des fragments obsolètes', async () => {
+    // Fragment obsolète d'un texte réel (ancien découpage) : doit disparaître au seed
+    await store.upsert({
+      chunkKey: 'code-du-travail-1992:art-999:1',
+      sourceId: 'code-du-travail-1992',
+      type: 'LAW',
+      title: 'Code du travail',
+      reference: 'Article 999',
+      content: 'Fragment issu d’un ancien découpage.',
+      source: 'https://example.org',
+      category: 'Code du travail',
+    });
+
     const reports = await seedLegalSources({
-      sourcesDir: path.resolve(__dirname, '../../../data/sources'),
+      sourcesDir: SOURCES_DIR,
       vectorStore: store,
       logger: silentLogger,
+      // Pas de réseau en CI : les textes non redistribuables ne sont indexés que s'ils sont en cache
+      remote: 'cache-only',
     });
     const byId = Object.fromEntries(reports.map((report) => [report.sourceId, report]));
     expect(byId['code-du-travail-1992']?.articles).toBe(177);
-    expect(byId['constitution-1996']?.articles).toBeGreaterThanOrEqual(65);
+    expect(byId['code-du-travail-1992']?.staleDeleted).toBe(1);
+    expect(byId['constitution-1996']?.articles).toBe(69);
+    expect(byId['constitution-1996']?.amended).toBe(10);
+    expect(byId['loi-2010-012-cybersecurite']?.articles).toBe(97);
+    expect(byId['loi-2024-017-donnees-personnelles']?.articles).toBe(75);
+    expect(
+      await prisma.document.count({ where: { chunkKey: 'code-du-travail-1992:art-999:1' } }),
+    ).toBe(0);
 
+    // Relancer le seed ne crée aucun doublon
+    const before = await prisma.document.count({ where: { sourceId: 'constitution-1996' } });
+    await seedLegalSources({
+      sourcesDir: SOURCES_DIR,
+      vectorStore: store,
+      logger: silentLogger,
+      remote: 'cache-only',
+      sourceIds: ['constitution-1996'],
+    });
+    expect(await prisma.document.count({ where: { sourceId: 'constitution-1996' } })).toBe(before);
+  });
+
+  it('retrouve les bons articles et expose leur statut', async () => {
     const forcedLabour = await store.search('le travail forcé ou obligatoire est-il interdit', 3, {
       sourceIds: ['code-du-travail-1992'],
     });
@@ -109,11 +144,42 @@ describeDb('seedLegalSources (textes réels)', () => {
     const president = await store.search(
       'élection du Président de la République au suffrage universel',
       3,
-      {
-        sourceIds: ['constitution-1996'],
-      },
+      { sourceIds: ['constitution-1996'] },
     );
-    expect(president.map((result) => result.reference)).toContain('Article 6');
+    const article6 = president.find((result) => result.reference === 'Article 6');
+    expect(article6?.metadata).toMatchObject({
+      status: 'amended',
+      amendedBy: 'constitution-2008-amendment:art-6-nouveau',
+      sourceId: 'constitution-1996',
+      version: expect.any(String),
+      date: '1996-01-18',
+      page: expect.any(Number),
+    });
+
+    const current = await store.search('mandat du Président de la République rééligible', 5, {
+      sourceIds: ['constitution-2026-amendment'],
+    });
+    expect(current[0]?.reference).toMatch(/^Article 6 \(nouveau\)/);
+    expect(current[0]?.metadata?.status).toBe('in_force');
+  });
+
+  it('recherche hybride : retrouve une référence exacte (« Article 12 », « loi n° 2010/012 »)', async () => {
+    const query = 'Article 12 de la loi n° 2010/012';
+    const hybrid = await store.search(query, 3, { minScore: 0.99 });
+    expect(hybrid[0]).toMatchObject({
+      sourceId: 'loi-2010-012-cybersecurite',
+      reference: 'Article 12',
+    });
+    // Recherche vectorielle seule : le seuil s'applique sans exception
+    expect(await store.search(query, 3, { hybrid: false, minScore: 0.99 })).toEqual([]);
+    // Même forme de résultat dans les deux modes
+    const vectorRanked = await store.search(query, 3, { hybrid: false });
+    expect(Object.keys(vectorRanked[0] ?? {}).sort()).toEqual(Object.keys(hybrid[0] ?? {}).sort());
+  });
+
+  it('sans référence explicite, la recherche par défaut est purement vectorielle', async () => {
+    const query = 'durée du mandat du chef de l’État';
+    expect(await store.search(query, 5)).toEqual(await store.search(query, 5, { hybrid: false }));
   });
 });
 

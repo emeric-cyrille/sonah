@@ -1,0 +1,39 @@
+slug: sonah-agentic-rag-reference
+name: SONAH - Agentic RAG Reference for Citizen Legal Information
+description: 'Rebuilds the SONAH pipeline with no API key on the public FAOLEX texts of
+  the Cameroonian Constitution (1996) and Labour Code (1992), downloaded at run time: legal
+  article chunker, TF-IDF (or multilingual) retriever, packaged agent with retrieve/answer/refuse
+  tools and a blocking Y.3172 P-node guardrail with typed verdicts (incl. OUTDATED_TEXT for
+  articles amended by Law No. 2008/001). Reports answered / refused / accuracy-on-answered /
+  recall@k with Wilson CIs, a threshold sweep and tool traces. Runs on Colab free tier (CPU).'
+version: 1.0.0
+date_added: '2026-10-23'
+added_by: seedsoftengine@gmail.com
+dataset: ''
+language: Python
+libraries:
+  - pypdf
+  - scikit-learn
+  - numpy
+  - sentence-transformers
+tags:
+  - reference-solution
+  - agentic
+  - rag
+  - legal
+  - public-services
+  - y3172
+  - itu-ai4g
+license: See source repository
+authors:
+  - Fokam Emeric Cyrille
+source: https://github.com/emeric-cyrille/sonah
+doi: ''
+results: ''
+notes: Texts are fetched from FAOLEX at run time and not redistributed. sentence-transformers
+  is only needed when USE_NEURAL = True.
+files:
+  - path: notebook/SONAH_Agentic_RAG.ipynb
+    bytes: 64908
+    sha256: d3139ad2dcc3602eac6c65b4b2f1c3f4222a5264411825f89bb9bb41725bdb1e
+    format: ipynb

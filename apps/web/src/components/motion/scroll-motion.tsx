@@ -4,8 +4,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef, type ReactNode } from 'react';
 
-gsap.registerPlugin(ScrollTrigger);
-
 /**
  * Animations d'apparition au scroll (GSAP ScrollTrigger), sur le défilement natif du navigateur.
  *
@@ -19,6 +17,8 @@ export function ScrollMotion({ children }: { readonly children: ReactNode }): JS
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Enregistré après l'hydratation : ScrollTrigger modifie le style de <body> à l'enregistrement
+    gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {

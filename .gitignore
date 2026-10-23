@@ -81,3 +81,6 @@ backup-*.sql
 
 # Prisma client généré
 packages/database/generated/
+
+# Copies de travail des agents
+.claude/worktrees/

@@ -1,0 +1,102 @@
+Title: Law No. 2008/001 of 14 April 2008 to amend and supplement some provisions of Law No. 96/6 of 18 January 1996 to amend the Constitution of 2 June 1972
+Titre : Loi n° 2008/001 du 14 avril 2008 modifiant et complétant certaines dispositions de la loi n° 96/06 du 18 janvier 1996 portant révision de la Constitution du 2 juin 1972
+Document ID: CMR-PRC-LOI-2008-001
+Issuing body: Présidence de la République du Cameroun (Assemblée nationale)
+Country/jurisdiction: Cameroon
+Type: CONSTITUTION (binding)
+Version: Copie certifiée conforme publiée par la Présidence (OCR) — 2008-04-14
+Source URL: https://www.prc.cm/fr/multimedia/documents/6284-loi-n-2008-001-du-14-04-2008-modifian-constitution-1972-fr
+Accessed: 2026-10-23 — SHA-256 of original: 1429f93fc3118e537e366a4d1e14e10398efa4081b48c970a9698af103793507
+Licence: Texte législatif officiel publié par la Présidence de la République (domaine public de fait).
+ITU AI Readiness dimensions: ai_policies
+Derivation: OCR (Apple Vision, fr-FR, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».
+Note: Les articles 6 et 53 ont depuis été réécrits par la loi n° 2026/002 du 14 avril 2026. Texte obtenu par OCR.
+
+### Article premier
+Les dispositions des articles 6(2) et (4), 14(3)a, 15(4), 51(1), 53 et
+67(6) de la loi n° 96/06 du 18 janvier 1996 portant révision de la constitution du 02
+juin 1972 sont modifiées et complétées ainsi qu'il suit :
+
+### Article 6 (nouveau) [AMENDED: current wording in constitution-2026-amendment:art-6-nouveau]
+.
+(2) (nouveau) : Le Président de la République est élu pour un mandat
+de sept (07) ans. Il est réeligible.
+(4) (nouveau) : En cas de vacance de la Présidence de la République
+pour cause de décès, de démission ou d'empêchement définitif constaté par le
+Conseil Constitutionnel, le scrutin pour l'élection du nouveau Président de la
+République doit impérativement avoir lieu vingt (20) jours au moins et cent vingt
+(120) jours au plus après l'ouverture de la vacance.
+a) L'intérim du Président de la République est exercé de plein droit, jusqu'à
+l'élection du nouveau Président de la République, par le Président du Sénat.
+Et si ce dernier est, à son tour empêché, par son suppléant suivant l'ordre de
+préséance du Sénat.
+b) Le Président de la République par intérim - le Président du Sénat ou son
+suppléant - ne peut modifier ni la Constitution, ni la composition du
+Gouvernement. Il ne peut recourir au référendum. Il ne peut être candidat à
+l'élection organisée pour la Présidence de la République ;
+c) Toutefois, en cas de nécessité liée à l'organisation de l'élection
+présidentielle, le Président de la République par intérim peut, après
+consultation du Conseil Constitutionnel, modifier la composition du
+Gouvernement.
+
+### Article 14 (nouveau)
+(3) Les Chambres du Parlement se réunissent aux mêmes dates :
+a- (nouveau) : en sessions ordinaires chaque année aux mois de mars, juin et
+novembre sur convocation des Bureaux de l'Assemblée Nationale et du Sénat, après
+consultation du Président de la République.
+
+### Article 15 (nouveau)
+(4) (nouveau): En cas de crise grave ou lorsque les circonstances
+l'exigent, le Président de la République peut, après consultation du Président du
+Conseil Constitutionnel et des bureaux de l'Assemblée Nationale et du Sénat,
+demander à l'Assemblée Nationale de décider, par une loi, de proroger ou d'abréger
+son mandat. Dans ce cas, l'élection d'une nouvelle Assemblée a lieu quarante (40)
+jours au moins et cent vingt (120) jours au plus après l'expiration du délai de
+prorogation ou d'abrègement de mandat.
+
+### Article 51 (nouveau)
+.
+(1) (nouveau): Le Conseil Constitutionnel comprend onze (11) membres
+désignés pour un mandat de six (06) ans éventuellement renouvelable.
+Les membres du Conseil Constitutionnel sont choisis parmi les personnalités de
+réputation professionnelle établie.
+Ils doivent jouir d'une grande intégrité morale et d'une compétence reconnue.
+
+### Article 53 (nouveau) [AMENDED: current wording in constitution-2026-amendment:art-53-nouveau]
+Titre VIII - DE LA HAUTE COUR DE JUSTICE
+(nouveau)
+(1) La Haute Cour de Justice est compétente pour juger les actes accomplis
+dans l'exercice de leurs fonctions par :
+le Président de la République en cas de haute trahison ;
+- le Premier Ministre, les autres membres du Gouvernement et assimilés, les
+hauts responsables de l'administration ayant reçu délégation de pouvoirs en
+application des articles 10 et 12 ci-dessus, en cas de complot contre la sûreté
+de l'Etat.
+(2) Le Président de la République ne peut être mis en accusation que par
+l'Assemblée Nationale et le Sénat statuant par un vote identique au scrutin public et à la
+majorité des quatre cinquièmes des membres les composant.
+(3) Les actes accomplis par le Président de la République en application des
+articles 5, 8, 9 et 10 ci-dessus, sont couverts par l'immunité et ne sauraient engager sa
+responsabilité à l'issue de son mandat.
+(4) L'organisation, la composition, les conditions de saisine ainsi que la
+procédure suivie devant la Haute Cour de Justice sont déterminées par la loi.
+
+### Article 67 (nouveau)
+Titre XIII - DISPOSITIONS TRANSITOIRES ET FINALES
+(6) (nouveau) : Au cas où la mise en place du Sénat intervient avant celle des
+Régions, le collège électoral pour l'élection des sénateurs est composé exclusivement des
+conseillers municipaux ».
+
+### Article 2
+Titre XIII - DISPOSITIONS TRANSITOIRES ET FINALES
+La présente loi sera enregistrée, publiée suivant la procédure d'urgence puis
+insérée au Journal Officiel en français et anglais./-
+Yaoundé, le 1 4 AVR 2008
+PUBUQUE DU C
+TRAV
+PRI
+DE LA REPUBLIQUE,
+THE PAC
+SIDI
+CAMI
+OL BIYA

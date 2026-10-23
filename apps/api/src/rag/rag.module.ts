@@ -1,12 +1,31 @@
 import { Logger, Module, type OnModuleDestroy, Inject, Optional } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createEmbedder, GraphStoreService, VectorStoreService } from '@sonah/rag';
+import {
+  createEmbedder,
+  GraphStoreService,
+  VectorStoreService,
+  type EmbedderConfig,
+} from '@sonah/rag';
 import type { Env } from '../config/env';
 import { PrismaService } from '../prisma/prisma.service';
 import { RagController } from './rag.controller';
 import { GRAPH_STORE, VECTOR_STORE } from './rag.tokens';
 
 const logger = new Logger('RagModule');
+
+/** Configuration des embeddings, partagée avec le script de seed. */
+export function embedderConfig(config: Pick<ConfigService<Env, true>, 'get'>): EmbedderConfig {
+  return {
+    provider: config.get('EMBEDDING_PROVIDER', { infer: true }),
+    localModel: config.get('LOCAL_EMBEDDING_MODEL', { infer: true }),
+    localCacheDir: config.get('EMBEDDINGS_CACHE_DIR', { infer: true }),
+    geminiApiKey: config.get('GEMINI_API_KEY', { infer: true }),
+    geminiEmbeddingModel: config.get('GEMINI_EMBEDDING_MODEL', { infer: true }),
+    openaiApiKey: config.get('OPENAI_API_KEY', { infer: true }),
+    openaiEmbeddingModel: config.get('OPENAI_EMBEDDING_MODEL', { infer: true }),
+    relevanceThreshold: config.get('EMBEDDING_RELEVANCE_THRESHOLD', { infer: true }),
+  };
+}
 
 @Module({
   controllers: [RagController],
@@ -15,14 +34,10 @@ const logger = new Logger('RagModule');
       provide: VECTOR_STORE,
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService<Env, true>): VectorStoreService => {
-        const embedder = createEmbedder(
-          {
-            openaiApiKey: config.get('OPENAI_API_KEY', { infer: true }),
-            openaiEmbeddingModel: config.get('OPENAI_EMBEDDING_MODEL', { infer: true }),
-          },
-          logger,
+        const embedder = createEmbedder(embedderConfig(config), logger);
+        logger.log(
+          `Recherche vectorielle avec ${embedder.model} (seuil ${embedder.relevanceThreshold})`,
         );
-        logger.log(`Recherche vectorielle avec le modèle ${embedder.model}`);
         return new VectorStoreService(prisma, embedder, logger);
       },
     },

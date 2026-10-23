@@ -57,7 +57,9 @@ jobs:
     name: Deploy to VPS
     needs: images
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Le premier déploiement (ou un changement de modèle d'embedding) indexe toute la base avec le
+    # modèle local : compter une dizaine de minutes en plus du téléchargement des images.
+    timeout-minutes: 40
     environment:
       name: production
       url: https://sonah.fokamemeric.com
@@ -95,6 +97,30 @@ jobs:
           scp traefik/dynamic/sonah.yml vps:~/sonah/traefik/dynamic/
           scp infrastructure/postgres/init.sql vps:~/sonah/infrastructure/postgres/
 
+      # Clés d'API transmises par l'entrée standard SSH (jamais en argument) ; chaque synchronisation
+      # n'est activée que si sa variable (ENABLE_GROQ, ENABLE_GEMINI) vaut 'true'.
+      - name: Sync Groq key
+        if: vars.ENABLE_GROQ == 'true'
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "GROQ_API_KEY secret is empty: nothing to sync"
+            exit 0
+          fi
+          printf '%s\n' "$GROQ_API_KEY" | ssh vps 'bash ~/sonah/scripts/deploy.sh --sync-groq-key'
+
+      - name: Sync Gemini key
+        if: vars.ENABLE_GEMINI == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "GEMINI_API_KEY secret is empty: nothing to sync"
+            exit 0
+          fi
+          printf '%s\n' "$GEMINI_API_KEY" | ssh vps 'bash ~/sonah/scripts/deploy.sh --sync-gemini-key'
+
       - name: Deploy
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -116,3 +142,28 @@ jobs:
               sleep 6
             done
           done
+
+      - name: Smoke test (index and chat)
+        env:
+          BASE_URL: https://sonah.fokamemeric.com
+        run: |
+          # L'index doit contenir au moins un article
+          ready="$(curl -fsS --max-time 15 "$BASE_URL/api/v1/health/ready")"
+          documents="$(jq -r '.index.documents // 0' <<<"$ready")"
+          echo "Indexed documents: $documents ($(jq -r '.index.embeddingModel' <<<"$ready"), language model: $(jq -r '.services.languageModel' <<<"$ready"))"
+          if ! [ "$documents" -gt 0 ] 2>/dev/null; then
+            echo "✗ /api/v1/health/ready: no indexed documents"; exit 1
+          fi
+
+          # Une vraie question à Sonah : HTTP 200 et une réponse JSON non vide
+          status="$(curl -sS -o chat.json -w '%{http_code}' --max-time 90 \
+            -X POST "$BASE_URL/api/v1/chat" \
+            -H 'Content-Type: application/json' \
+            -d '{"message":"Quelle est la durée légale du travail au Cameroun ?"}')"
+          if [ "$status" != 200 ]; then
+            echo "✗ POST /api/v1/chat: HTTP $status"; cat chat.json; exit 1
+          fi
+          if ! jq -e '(.reply | type == "string") and (.reply | length > 0)' chat.json > /dev/null; then
+            echo "✗ POST /api/v1/chat: no reply in response"; cat chat.json; exit 1
+          fi
+          echo "✓ POST /api/v1/chat ($(jq '.sources | length' chat.json) sources)"

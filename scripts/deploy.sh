@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
-# Déploiement SONAH sur le VPS — exécuté par la CI (ou à la main) depuis /home/deploy/sonah.
+# Déploiement SONAH sur le VPS — exécuté par la CI (ou à la main) depuis ~/sonah.
 #
 # Usage : ./scripts/deploy.sh <image-tag>
+#         ./scripts/deploy.sh --sync-groq-key     (clé lue sur l'entrée standard)
+#         ./scripts/deploy.sh --sync-gemini-key   (clé lue sur l'entrée standard)
 #
 # 1. Génère les secrets manquants (mot de passe PostgreSQL) et installe la route Traefik
 # 2. Démarre PostgreSQL, applique les migrations Prisma
 # 3. Récupère les images GHCR du tag demandé et redémarre web + api
 # 4. Attend que les conteneurs soient « healthy », sinon revient au tag précédent
 # 5. Indexe les textes officiels s'ils ne le sont pas encore pour le modèle d'embedding courant
+#    (conteneur éphémère, quelques minutes avec le modèle local ; le site reste en ligne pendant ce temps)
 set -euo pipefail
 
-IMAGE_TAG="${1:?Usage: deploy.sh <image-tag>}"
-APP_DIR="${APP_DIR:-/home/deploy/sonah}"
-TRAEFIK_DYNAMIC_DIR="${TRAEFIK_DYNAMIC_DIR:-/home/deploy/portfolio/traefik/dynamic}"
+APP_DIR="${APP_DIR:-$HOME/sonah}"
+TRAEFIK_DYNAMIC_DIR="${TRAEFIK_DYNAMIC_DIR:-$HOME/portfolio/traefik/dynamic}"
 COMPOSE_FILE="docker-compose.prod.yml"
 STATE_FILE=".deployed-tag"
 HEALTH_TIMEOUT_SECONDS=120
@@ -22,6 +24,38 @@ PROFILES=()
 cd "$APP_DIR"
 
 log() { printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
+
+# Met à jour une clé d'API (GROQ_API_KEY, GEMINI_API_KEY) dans .env.production depuis l'entrée standard.
+# La clé ne passe jamais en argument (invisible dans ps et dans les logs) ; vide : rien n'est modifié.
+sync_key() {
+  local name="$1" key tmp
+  IFS= read -r key || true
+  key="${key%$'\r'}"
+  if [[ -z "$key" ]]; then
+    log "$name vide : .env.production inchangé"
+    return 0
+  fi
+  [[ -f .env.production ]] || install -m 600 /dev/null .env.production
+  tmp="$(mktemp .env.production.XXXXXX)"
+  chmod 600 "$tmp"
+  grep -v "^$name=" .env.production > "$tmp" || true
+  printf '%s=%s\n' "$name" "$key" >> "$tmp"
+  mv "$tmp" .env.production
+  log "$name synchronisée"
+}
+
+case "${1:-}" in
+  --sync-groq-key)
+    sync_key GROQ_API_KEY
+    exit 0
+    ;;
+  --sync-gemini-key)
+    sync_key GEMINI_API_KEY
+    exit 0
+    ;;
+esac
+
+IMAGE_TAG="${1:?Usage: deploy.sh <image-tag> | --sync-groq-key | --sync-gemini-key}"
 
 compose() { IMAGE_TAG="$1" docker compose -f "$COMPOSE_FILE" --env-file .env.production "${PROFILES[@]}" "${@:2}"; }
 
@@ -90,8 +124,16 @@ compose "$IMAGE_TAG" up -d --remove-orphans "${SERVICES[@]}"
 
 if wait_healthy; then
   echo "$IMAGE_TAG" > "$STATE_FILE"
-  log "Indexation des textes officiels (si nécessaire)"
-  compose "$IMAGE_TAG" exec -T api node dist/scripts/seed.js --if-empty || log "⚠️  Indexation échouée (Sonah reste en ligne)"
+  # Indexation dans un conteneur éphémère (même image, mêmes variables et limites que l'API) : le site
+  # reste servi pendant ce temps et un échec du seed n'entraîne pas de rollback. La CI attend la fin
+  # avant les tests de fumée (index non vide, vraie question à Sonah).
+  log "Indexation des textes officiels si nécessaire (plusieurs minutes au premier déploiement)"
+  seed_start=$SECONDS
+  if compose "$IMAGE_TAG" run --rm --no-deps -T api node dist/scripts/seed.js --if-empty; then
+    log "Indexation terminée en $((SECONDS - seed_start))s"
+  else
+    log "⚠️  Indexation échouée après $((SECONDS - seed_start))s (Sonah reste en ligne, index incomplet)"
+  fi
   docker image prune -f --filter "label=org.opencontainers.image.source=https://github.com/emeric-cyrille/sonah" > /dev/null
   log "✅ Déploiement $IMAGE_TAG terminé"
   exit 0

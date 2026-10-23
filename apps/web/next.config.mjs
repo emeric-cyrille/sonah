@@ -11,6 +11,9 @@ const nextConfig = {
   experimental: {
     // Monorepo : trace les dépendances depuis la racine pour le build standalone
     outputFileTracingRoot: path.join(path.dirname(fileURLToPath(import.meta.url)), '../../'),
+    // Une étape de scénario fait répondre plusieurs agents (parfois > 30 s, délai par défaut
+    // du relais Next.js) : sans cela, le relais coupe la requête alors que l'API travaille encore.
+    proxyTimeout: 150_000,
   },
   // En production, Traefik route /api/v1 vers l'API avant d'atteindre Next.js.
   // En développement, Next.js relaie ces requêtes vers l'API locale.

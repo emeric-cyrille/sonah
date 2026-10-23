@@ -3,12 +3,13 @@
  * En production : docker compose exec api node dist/scripts/seed.js [--if-empty]
  *
  * --if-empty : n'indexe que si aucun document n'existe pour le modèle d'embedding courant
- * (premier déploiement, ou changement de modèle après ajout d'OPENAI_API_KEY).
+ * (premier déploiement, ou changement de modèle après ajout d'une clé Gemini ou OpenAI).
  */
 import { Logger } from '@nestjs/common';
 import { createPrismaClient } from '@sonah/database';
 import {
   createEmbedder,
+  embedderConfigFromEnv,
   GraphStoreService,
   seedLegalSources,
   VectorStoreService,
@@ -22,10 +23,7 @@ async function main(): Promise<void> {
   const sourcesDir = process.env.SOURCES_DIR ?? path.resolve(process.cwd(), 'data/sources');
 
   const prisma = createPrismaClient();
-  const embedder = createEmbedder(
-    { openaiApiKey: env.OPENAI_API_KEY, openaiEmbeddingModel: env.OPENAI_EMBEDDING_MODEL },
-    logger,
-  );
+  const embedder = createEmbedder(embedderConfigFromEnv(process.env), logger);
   const graphStore = env.NEO4J_URI
     ? GraphStoreService.connect(
         { uri: env.NEO4J_URI, user: env.NEO4J_USER, password: env.NEO4J_PASSWORD },

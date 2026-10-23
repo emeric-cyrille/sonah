@@ -1,0 +1,669 @@
+{
+  "timestamp": "2026-10-23T02-57-23-294Z",
+  "baseUrl": "http://localhost:4400/api/v1",
+  "label": "before-51217ce-oos",
+  "argv": ["--category", "out-of-scope", "--delay", "8000", "--label", "before-51217ce-oos"],
+  "sources": {},
+  "metrics": [
+    {
+      "name": "retrieval hit@1",
+      "successes": 0,
+      "n": 0,
+      "definition": "expected article ranked 1st by /search",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "retrieval hit@3",
+      "successes": 0,
+      "n": 0,
+      "definition": "expected article in top 3",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "retrieval hit@5",
+      "successes": 0,
+      "n": 0,
+      "definition": "expected article in top 5",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "source hit@5",
+      "successes": 0,
+      "n": 0,
+      "definition": "any fragment of an expected source in top 5",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "chat availability",
+      "successes": 10,
+      "n": 10,
+      "definition": "/chat returned HTTP < 400",
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1
+    },
+    {
+      "name": "verdict accuracy",
+      "successes": 8,
+      "n": 10,
+      "definition": "returned verdict in accepted_verdicts (items whose API returns a verdict)",
+      "p": 0.8,
+      "low": 0.49015684672072335,
+      "high": 0.9433190520193067
+    },
+    {
+      "name": "out-of-scope refusal",
+      "successes": 8,
+      "n": 10,
+      "definition": "OUT_OF_SCOPE verdict (legacy API: no citation)",
+      "p": 0.8,
+      "low": 0.49015684672072335,
+      "high": 0.9433190520193067
+    },
+    {
+      "name": "unsupported-answer avoidance",
+      "successes": 8,
+      "n": 10,
+      "definition": "items expected OUT_OF_SCOPE/INSUFFICIENT_EVIDENCE not answered as if grounded",
+      "p": 0.8,
+      "low": 0.49015684672072335,
+      "high": 0.9433190520193067
+    },
+    {
+      "name": "citation validity",
+      "successes": 6,
+      "n": 6,
+      "definition": "cited (source, article) present in /search top-20 for the same question",
+      "p": 1,
+      "low": 0.6096569663469354,
+      "high": 0.9999999999999999
+    },
+    {
+      "name": "PII not echoed (S2)",
+      "successes": 0,
+      "n": 0,
+      "definition": "synthetic identifiers absent from the reply",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "traceId returned",
+      "successes": 10,
+      "n": 10,
+      "definition": "response carries an audit traceId",
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1
+    }
+  ],
+  "statistics": {
+    "search_p50_ms": 67.08300799999961,
+    "search_p95_ms": 165.07111600000002,
+    "mrr_at_10": null,
+    "chat_p50_ms": 780.9021680000005,
+    "chat_p95_ms": 21401.271987
+  },
+  "results": [
+    {
+      "id": "OOS-01",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 165.07111600000002,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Préambule (partie 1/4)",
+            "score": 0.7828440458457402
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "POSITIONNEMENT DU CAMEROUN AU PLAN INTERNATIONAL DANS LE DOMAINE DU NUMÉRIQUE E…",
+            "score": 0.7833047871797021
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "GLOSSAIRE/ ABRÉVIATIONS",
+            "score": 0.7760401501631772
+          },
+          {
+            "sourceId": "decret-2017-0877-pm-cfce",
+            "reference": "Article 6",
+            "score": 0.7687689661979894
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES (partie 1/2)",
+            "score": 0.7767754133283107
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 1897.9755079999995,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "0c12bf1a-fe88-469f-8070-a07a7ad9a013",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-02",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 67.08300799999961,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 3/3)",
+            "score": 0.7923735616318738
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "3.2 Implementation of the Continental AI Strategy 3.2.1 Timeframe for the Imple…",
+            "score": 0.7674005586145977
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 1 (partie 2/2)",
+            "score": 0.7814860268864567
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 1/3)",
+            "score": 0.7922971248626934
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "iii. Accelerate the integration of AI in the core sectors outlined in the Digit…",
+            "score": 0.7620597935950971
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 79.69980800000121,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "25929605-9e84-4664-83f6-6e75b17e2b40",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-03",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 40.64554099999805,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8487673997879088
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 5 (partie 5/10)",
+            "score": 0.7879119425029948
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES (partie 1/2)",
+            "score": 0.8302384817315958
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 66",
+            "score": 0.793756164236756
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 66 (nouveau)",
+            "score": 0.7882275111539669
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 782.5733079999991,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "35ac3320-b575-49f2-8d2a-3ae9c33619b3",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-04",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 86.6242609999972,
+        "top": [
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "iii. Expanding AI Adoption in the Education Sector in Africa (partie 1/4)",
+            "score": 0.769307104461319
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 1 (partie 2/2)",
+            "score": 0.7828304301005471
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "2.4.2.2 AI in Priority Sectors",
+            "score": 0.772477740650765
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "1.3 Regional Policy Context for AI in Africa (partie 1/5)",
+            "score": 0.7740632430277445
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "2.4.3.1 Datasets and Computing Platforms for AI Development in (partie 3/4)",
+            "score": 0.7668376426003972
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 77.46491799999785,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "7b23a927-2096-4488-b2d7-f40c0a73530d",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-05",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 63.77667199999996,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EVOLUTION DE QUELQUES INDICATEURS CLÉS AU PLAN NATIONAL ETAT DES LIEUX ET DIAGN…",
+            "score": 0.8340754559748854
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EVOLUTION DE QUELQUES INDICATEURS CLÉS AU PLAN NATIONAL ETAT DES LIEUX ET DIAGN…",
+            "score": 0.8115703800492814
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER LA TRANSFORMATION NUMERIQUE DE L'ADMINISTRATION ET DES ENTREPRISES PLAN… (partie 2/2)",
+            "score": 0.8139095528233584
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES (partie 2/2)",
+            "score": 0.8122349493363544
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES (partie 2/2)",
+            "score": 0.805622148848913
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 559.3939010000031,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "7cb834f8-fa3c-4422-906f-aecaf2f2a2bb",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-06",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 82.273758000003,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 33",
+            "score": 0.8010201928567426
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 31",
+            "score": 0.7989413265199743
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 40 (partie 1/2)",
+            "score": 0.7982481723284222
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 40 (partie 2/2)",
+            "score": 0.7953608401964607
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 30",
+            "score": 0.7967489129157832
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 11624.307918000006,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "e3e38672-f4f3-4b4a-9701-60a94de1da14",
+            "sourceId": "au-continental-ai-strategy-2024",
+            "title": "AU Continental AI Strategy",
+            "reference": "iii. Accelerate the integration of AI in the core sectors outlined in the Digit…",
+            "excerpt": "Transformation Strategy, notably sectors with high social and economic value, including agriculture, education, health, climate change and natural resource management, and regional peace and security. iv. Accelerate the adoption of AI by the private sector, including small and me… enterprises. v. Create an enabling…",
+            "url": "https://au.int/en/documents/20240809/continental-artificial-intelligence-strategy",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "3e097d4b-05b0-4486-bdf0-232ddf1b85f7",
+            "sourceId": "constitution-2026-amendment-en",
+            "title": "Constitutional Law No. 2026/002",
+            "reference": "Article 6 (new) (partie 1/2)",
+            "excerpt": "(new) (1) The President of the Republic shall be elected by a majority of the votes cast through direct, equal and secret universal suffrage. (2) The President of the Republic shall be elected for a term of office of 7 (seven) years. He shall be eligible for re-election. (3) The election shall be held not less than 20…",
+            "url": "https://www.prc.cm/en/news/the-acts/laws/8241-law-no-2026-002-of-14-april-2026-to-amend-and-supplement-the-constitution-of-2-june-1972-as-amended-and-supplemented-by-law-no-96-06-of-18-january-1996-and-law-no-2008-001-of-14-april-2008",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "b8fecec9-4c0a-4978-9c63-e308bb3c1a11",
+            "sourceId": "au-continental-ai-strategy-2024",
+            "title": "AU Continental AI Strategy",
+            "reference": "3.2 Implementation of the Continental AI Strategy 3.2.1 Timeframe for the Imple…",
+            "excerpt": "The Continental AI strategy proposes a five-year timeframe between 2025 and 2030 for implementing the actions in the fifteen areas outlined above. After preparatory activities in 2024, the AI strategy will be implemented in two phases: Phase 1, which will take place between 2025 and 2026, will focus on beginning of…",
+            "url": "https://au.int/en/documents/20240809/continental-artificial-intelligence-strategy",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "55ec730b-8d90-4e98-82e3-1e34c8245ab8",
+        "reply": "Here are the official texts closest to your question:\n\n[1] AU Continental AI Strategy, iii. Accelerate the integration of AI in the core sectors outlined in the Digit… : « Transformation Strategy, notably sectors with high social and economic value, including agriculture, education, health, climate change and natural resource management, and regional peace and security. iv. Accelerate the adoption of AI by the private sector, including small and me… enterprises. v. Create an enabling… »\n[2] Constitutional Law No. 2026/002, Article 6 (new) (partie 1/2) : « (new) (1) The President of the Republi",
+        "verdictCorrect": false,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "OOS-07",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 93.92139599999791,
+        "top": [
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 17",
+            "score": 0.8198859017849538
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8390579127703868
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 41",
+            "score": 0.7672600884878596
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 47",
+            "score": 0.8343374381761983
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 35",
+            "score": 0.8005429030759331
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 5860.181046999991,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "b14e0bb8-0bbf-4df0-a890-82661e28519a",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-08",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 95.97494699999515,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8255032130935557
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "2.4.6.2 Fostering Partnership between Africa and Other Regions and Countries (partie 2/2)",
+            "score": 0.7553083763445599
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "2.4.2.4 Building Vibrant, Inclusive and Diverse AI Start-up and Enterprise (partie 2/3)",
+            "score": 0.7629105706869191
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Article 14 (partie 2/3)",
+            "score": 0.8107763544882164
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "2.4.2.4 Building Vibrant, Inclusive and Diverse AI Start-up and Enterprise (partie 3/3)",
+            "score": 0.754880494642305
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 780.9021680000005,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "80e254ad-7f8d-453c-8a5b-250aae2c629a",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-09",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 43.02125700000033,
+        "top": [
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 6 (nouveau) (partie 1/2)",
+            "score": 0.8399291789468423
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 6",
+            "score": 0.8407665551851031
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "score": 0.8456599276357858
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 6 (nouveau)",
+            "score": 0.8386167595297265
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 48",
+            "score": 0.8292783062606461
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 21401.271987,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "174d5abd-8d01-420c-b32f-f6ff5a999c5c",
+            "sourceId": "constitution-2026-amendment",
+            "title": "Loi constitutionnelle n° 2026/002",
+            "reference": "Article 6 (nouveau) (partie 1/2)",
+            "excerpt": "(nouveau) (1) Le Président de la République est élu au suffrage universel direct, égal et secret, a la majorité des suffrages exprimés. (2) Le Président de la République est élu pour un mandat de sept (07) ans. Il est rééligible. (3) L'élection a lieu vingt (20) jours au moins et cinquante (50) jours au plus avant…",
+            "url": "https://www.prc.cm/fr/actualites/actes/lois/8244-loi-n-2026-002-du-14-avril-2026-modifiant-et-completant-certaines-dispositions-de-la-constitution-du-02-juin-1972-modifiee-et-completee-par-la-loi-n-96-06-du-18-janvier-1996-et-la-loi-n-2008-001-du-14-avril-2008",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "0a9ac915-86a0-407c-b4c3-66199d4853cb",
+            "sourceId": "constitution-2026-amendment",
+            "title": "Loi constitutionnelle n° 2026/002",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "excerpt": "(9) Les candidats aux fonctions de Président de la République doivent être des citoyens camerounais d'origine, jouir de leurs droits civiques et politiques et avoir trente cinq (35) ans révolus à la date de l'élection. (10) Le régime de l'élection à la Présidence de la République est fixé par la loi.",
+            "url": "https://www.prc.cm/fr/actualites/actes/lois/8244-loi-n-2026-002-du-14-avril-2026-modifiant-et-completant-certaines-dispositions-de-la-constitution-du-02-juin-1972-modifiee-et-completee-par-la-loi-n-96-06-du-18-janvier-1996-et-la-loi-n-2008-001-du-14-avril-2008",
+            "status": "in_force"
+          },
+          {
+            "index": 5,
+            "documentId": "224319d9-93cb-4379-b1cb-973208b40fa2",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Article 48",
+            "excerpt": "(1) Le Conseil Constitutionnel veille à la régularité de l'élection présidentielle, des élections parlementaires, des consultations référendaires. Il en proclame les résultats. (2) En cas de contestation sur la régularité de l'une des élections prévues à l'alinéa (1) ci-dessus, le Conseil Constitutionnel peut être…",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "50fc28db-7ce6-4a51-8292-d31ce0bd97ce",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Loi constitutionnelle n° 2026/002, Article 6 (nouveau) (partie 1/2) : « (nouveau) (1) Le Président de la République est élu au suffrage universel direct, égal et secret, a la majorité des suffrages exprimés. (2) Le Président de la République est élu pour un mandat de sept (07) ans. Il est rééligible. (3) L'élection a lieu vingt (20) jours au moins et cinquante (50) jours au plus avant… »\n[3] Loi constitutionnelle n° 2026/002, Article 6 (nouveau) (partie 2/2) : « (9) Les candidats aux fonctions de Président de la Rép",
+        "verdictCorrect": false,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "OOS-10",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 54.93716500001028,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.830491542816168
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 78",
+            "score": 0.7131823726405242
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 64",
+            "score": 0.7431224890801323
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 65",
+            "score": 0.8010000346302939
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 65",
+            "score": 0.7404862200924041
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 591.2563269999955,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "c2f45f48-793d-4ccf-9555-0248a171fba3",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    }
+  ]
+}

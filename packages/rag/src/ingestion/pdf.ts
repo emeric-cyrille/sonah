@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises';
 // Import direct du module : l'entrée principale de pdf-parse exécute un mode debug
 import pdfParse from 'pdf-parse/lib/pdf-parse.js';
+import { PAGE_SEPARATOR } from '../chunking/text-normalizer';
 
-/** Extrait le texte d'un PDF, page par page (séparateur =====PAGE=====). */
-export async function extractPdfText(filePath: string): Promise<string> {
-  const buffer = await readFile(filePath);
+/** Extrait le texte d'un PDF en mémoire, page par page (séparateur =====PAGE=====). */
+export async function extractPdfBuffer(buffer: Buffer): Promise<string> {
   const pages: string[] = [];
   await pdfParse(buffer, {
     pagerender: async (page) => {
@@ -23,5 +23,10 @@ export async function extractPdfText(filePath: string): Promise<string> {
       return text;
     },
   });
-  return pages.join('\n=====PAGE=====\n');
+  return pages.join(`\n${PAGE_SEPARATOR}\n`);
+}
+
+/** Extrait le texte d'un fichier PDF, page par page (séparateur =====PAGE=====). */
+export async function extractPdfText(filePath: string): Promise<string> {
+  return extractPdfBuffer(await readFile(filePath));
 }
