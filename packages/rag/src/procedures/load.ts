@@ -36,7 +36,10 @@ export async function loadProcedureSheets(dir: string): Promise<ProcedureSheet[]
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') return [];
     throw error;
   }
-  const files = entries.filter((name) => name.endsWith('.json')).sort();
+  // Les fichiers *.schema.json décrivent le format des fiches : ce ne sont pas des fiches
+  const files = entries
+    .filter((name) => name.endsWith('.json') && !name.endsWith('.schema.json'))
+    .sort();
   const sheets: ProcedureSheet[] = [];
   const seen = new Map<string, string>();
   for (const file of files) {

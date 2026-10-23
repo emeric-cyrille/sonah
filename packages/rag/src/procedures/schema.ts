@@ -7,6 +7,18 @@ import { z } from 'zod';
  */
 const nullableText = z.string().trim().min(1).nullable();
 
+/**
+ * Élément sourcé : texte simple, ou { text, source_refs } quand la fiche relie chaque élément à
+ * ses sources (format de data/procedures). Ramené au texte pour l'affichage et la vérification.
+ */
+const sourcedText = z
+  .union([
+    z.string().trim().min(1),
+    z.object({ text: z.string().trim().min(1), source_refs: z.array(z.number()).optional() }),
+  ])
+  .transform((value) => (typeof value === 'string' ? value : value.text));
+const nullableSourcedText = sourcedText.nullable();
+
 export const procedureSheetSchema = z.object({
   id: z
     .string()
@@ -23,14 +35,14 @@ export const procedureSheetSchema = z.object({
       level: nullableText.optional(),
     })
     .nullable(),
-  where: z.array(z.string().trim().min(1)).nullable().default([]),
-  who_can_apply: nullableText.optional(),
-  documents: z.array(z.string().trim().min(1)).nullable().default([]),
+  where: z.array(sourcedText).nullable().default([]),
+  who_can_apply: nullableSourcedText.optional(),
+  documents: z.array(sourcedText).nullable().default([]),
   steps: z
     .array(
       z.object({
         order: z.number().int().min(1),
-        description: z.string().trim().min(1),
+        description: sourcedText,
       }),
     )
     .nullable()
@@ -38,12 +50,12 @@ export const procedureSheetSchema = z.object({
   cost: z
     .object({
       amount_fcfa: z.number().nonnegative().nullable(),
-      description: nullableText.optional(),
+      description: nullableSourcedText.optional(),
     })
     .nullable()
     .optional(),
-  delay: nullableText.optional(),
-  validity: nullableText.optional(),
+  delay: nullableSourcedText.optional(),
+  validity: nullableSourcedText.optional(),
   legal_basis: z
     .array(
       z.object({
@@ -54,7 +66,7 @@ export const procedureSheetSchema = z.object({
     )
     .nullable()
     .default([]),
-  tips: z.array(z.string().trim().min(1)).nullable().default([]),
+  tips: z.array(sourcedText).nullable().default([]),
   sources: z
     .array(
       z.object({

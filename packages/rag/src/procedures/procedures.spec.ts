@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import type { VectorStoreService } from '../vector-store.service';
 import { loadProcedureSheets, ProcedureSheetError } from './load';
-import { matchProcedureKeywords, stem } from './match';
+import { contentTokens, isGenericToken, matchProcedureKeywords, stem } from './match';
 import { parseProcedureSheet, procedureFromMetadata } from './schema';
 import {
   PROCEDURES_SOURCE_ID,
@@ -267,5 +267,18 @@ describe('correspondance par mots-clés', () => {
     expect(stem('medicale')).toBe('medical');
     expect(stem('medicaux')).toBe('medical');
     expect(stem('cartes')).toBe('carte');
+  });
+});
+
+describe('correspondance des demandes avec les fiches', () => {
+  it('rapproche « perdu », « volée » et « lost » de la perte', () => {
+    expect(contentTokens("J'ai perdu ma carte")).toEqual(contentTokens('perte de carte'));
+    expect(contentTokens('stolen card')).toEqual(contentTokens('perte card'));
+  });
+
+  it('ignore le nom du pays et rend « register » générique', () => {
+    expect(contentTokens('register my company in Cameroon')).toEqual(['inscription', 'societe']);
+    expect(isGenericToken('inscription')).toBe(true);
+    expect(isGenericToken('societe')).toBe(false);
   });
 });

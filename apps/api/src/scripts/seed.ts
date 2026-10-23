@@ -19,7 +19,7 @@ import {
   seedProcedures,
   VectorStoreService,
 } from '@sonah/rag';
-import path from 'node:path';
+import * as path from 'node:path';
 import { validateEnv } from '../config/env';
 
 async function main(): Promise<void> {

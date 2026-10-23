@@ -76,6 +76,8 @@ RUN groupadd --system --gid 1001 nodejs \
 COPY --from=model --chown=nestjs:nodejs /models ./models
 COPY --from=builder --chown=nestjs:nodejs /out ./
 COPY --chown=nestjs:nodejs data/sources ./data/sources
+# Fiches démarches (indexées par le seed avec les textes officiels)
+COPY --chown=nestjs:nodejs data/procedures ./data/procedures
 # Cache des textes non redistribuables, rempli par le seed (volume en production)
 RUN mkdir -p data/sources/.cache && chown nestjs:nodejs data/sources/.cache
 

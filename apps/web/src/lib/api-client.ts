@@ -71,19 +71,25 @@ export const procedureSchema = z.object({
     .array(z.object({ order: z.number(), description: z.string() }))
     .default([])
     .transform((steps) => [...steps].sort((a, b) => a.order - b.order)),
+  // L'API envoie amountFcfa ; amount_fcfa (format des fiches) reste accepté
   cost: z
     .object({
-      amount_fcfa: z
-        .number()
-        .nullish()
-        .transform((value) => value ?? null),
+      amount_fcfa: z.number().nullish(),
+      amountFcfa: z.number().nullish(),
       description: z
         .string()
         .nullish()
         .transform((value) => value ?? null),
     })
     .nullish()
-    .transform((value) => value ?? null),
+    .transform((value) =>
+      value
+        ? {
+            amount_fcfa: value.amountFcfa ?? value.amount_fcfa ?? null,
+            description: value.description,
+          }
+        : null,
+    ),
   delay: z
     .string()
     .nullish()
