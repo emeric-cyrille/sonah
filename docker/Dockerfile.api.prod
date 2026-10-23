@@ -1,40 +1,101 @@
 # syntax=docker/dockerfile:1.7
-FROM node:20-alpine AS base
-RUN apk add --no-cache openssl && corepack enable && corepack prepare pnpm@8.15.0 --activate
+# Image de production de l'API.
+# Base Debian (glibc) : onnxruntime-node, utilisé pour les embeddings locaux, ne fonctionne pas sous Alpine (musl).
+FROM node:20-bookworm-slim AS base
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends openssl \
+ && rm -rf /var/lib/apt/lists/* \
+ && corepack enable && corepack prepare pnpm@8.15.0 --activate
+# onnxruntime-node télécharge sinon les binaires CUDA (plusieurs centaines de Mo) à l'installation.
+# Cache d'effets de bord pnpm désactivé (et store distinct des images Alpine) : sinon les moteurs Prisma
+# d'une installation musl peuvent être réutilisés, et la CLI Prisma les retélécharge au déploiement.
+ENV ONNXRUNTIME_NODE_INSTALL_CUDA=skip \
+    npm_config_side_effects_cache=false
 WORKDIR /app
 
-FROM base AS builder
+FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/
 COPY packages/database/package.json packages/database/
 COPY packages/rag/package.json packages/rag/
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+RUN --mount=type=cache,id=pnpm-bookworm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --filter @sonah/api...
+
+# Modèle d'embedding pré-téléchargé au build (la production ne le télécharge jamais).
+# Étape séparée : ne dépend que des dépendances, elle reste en cache tant que le lockfile ne change pas.
+# Même bibliothèque et même variante (q8) que LocalEmbedder (packages/rag/src/embeddings/local-embedder.ts).
+FROM deps AS model
+ARG LOCAL_EMBEDDING_MODEL=Xenova/multilingual-e5-small
+WORKDIR /app/packages/rag
+RUN node -e " \
+  const { env, pipeline } = require('@huggingface/transformers'); \
+  env.cacheDir = '/models'; \
+  pipeline('feature-extraction', process.argv[1], { dtype: 'q8' }) \
+    .then((extract) => extract(['query: test'], { pooling: 'mean', normalize: true })) \
+    .then((output) => console.log('Modèle', process.argv[1], 'prêt, dimension', output.dims[1])) \
+    .catch((error) => { console.error(error); process.exit(1); });" \
+  "$LOCAL_EMBEDDING_MODEL"
+
+FROM deps AS builder
 COPY packages/database packages/database
 COPY packages/rag packages/rag
 COPY apps/api apps/api
-RUN pnpm --filter @sonah/database build \
+RUN --mount=type=cache,id=pnpm-bookworm,target=/root/.local/share/pnpm/store \
+    pnpm --filter @sonah/database build \
  && pnpm --filter @sonah/rag build \
  && pnpm --filter @sonah/api build \
  && pnpm --filter @sonah/api deploy --prod /out \
  && cp -r apps/api/dist /out/dist
+# Allègement : binaires ONNX des autres plateformes, onnxruntime-web (ignoré par la version Node de
+# transformers.js), bundles navigateur/WebAssembly de transformers.js et source maps
+RUN arch="$(node -p process.arch)" \
+ && for dir in /out/node_modules/.pnpm/onnxruntime-node@*/node_modules/onnxruntime-node/bin/napi-v3; do \
+      find "$dir" -mindepth 1 -maxdepth 1 ! -name linux -exec rm -rf {} + ; \
+      find "$dir/linux" -mindepth 1 -maxdepth 1 ! -name "$arch" -exec rm -rf {} + ; \
+    done \
+ && find /out/node_modules/.pnpm -maxdepth 1 -type d -name 'onnxruntime-web@*' -exec rm -rf {} + \
+ && find /out/node_modules/.pnpm -path '*/@huggingface/transformers/dist/*' -type f \
+      \( -name '*.wasm' -o -name '*.web.*' -o -name 'transformers.js' -o -name 'transformers.min.js' \) -delete \
+ && find /out/node_modules -name '*.map' -type f -delete
 
-FROM node:20-alpine AS runner
-RUN apk add --no-cache openssl
+FROM node:20-bookworm-slim AS runner
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends openssl \
+ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 ENV NODE_ENV=production \
     API_PORT=4000 \
-    SOURCES_DIR=/app/data/sources
+    SOURCES_DIR=/app/data/sources \
+    EMBEDDING_PROVIDER=local \
+    EMBEDDINGS_CACHE_DIR=/app/models
 
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
+RUN groupadd --system --gid 1001 nodejs \
+ && useradd --system --uid 1001 --gid nodejs --no-create-home nestjs
 
+# Le modèle (plus de 100 Mo, rarement modifié) d'abord, pour réutiliser la couche entre les versions
+COPY --from=model --chown=nestjs:nodejs /models ./models
 COPY --from=builder --chown=nestjs:nodejs /out ./
 COPY --chown=nestjs:nodejs data/sources ./data/sources
+# Cache des textes non redistribuables, rempli par le seed (volume en production)
+RUN mkdir -p data/sources/.cache && chown nestjs:nodejs data/sources/.cache
 
 USER nestjs
+
+# Vérifications sans réseau : moteurs Prisma (migrations au déploiement) et modèle d'embedding présents
+RUN --network=none node_modules/.bin/prisma version > /dev/null
+RUN --network=none node -e " \
+  const path = require('node:path'); \
+  const rag = require.resolve('@sonah/rag'); \
+  const transformers = require(require.resolve('@huggingface/transformers', { paths: [path.dirname(rag)] })); \
+  transformers.env.allowRemoteModels = false; \
+  const { LocalEmbedder } = require('@sonah/rag'); \
+  new LocalEmbedder({ cacheDir: process.env.EMBEDDINGS_CACHE_DIR }).embed(['bonjour'], 'query') \
+    .then(([vector]) => console.log('Embeddings locaux OK, dimension', vector.length)) \
+    .catch((error) => { console.error(error); process.exit(1); });"
+
 EXPOSE 4000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD wget -qO- http://127.0.0.1:4000/api/v1/health > /dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:4000/api/v1/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 
 CMD ["node", "dist/main.js"]

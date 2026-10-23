@@ -1,4 +1,4 @@
-# Production — VPS partagé seazone (51.254.137.22)
+# Production — VPS partagé (adresse et accès SSH : secrets GitHub, voir docs/DEPLOYMENT.md)
 #
 # - Les conteneurs web et api rejoignent le réseau externe `portfolio-net` :
 #   Traefik (portfolio-traefik) les joint par leur nom, aucun port n'est publié sur l'hôte.
@@ -7,6 +7,10 @@
 # - Neo4j est dans le profil `graph` (graphe des démarches, ~800 Mo de RAM) : activé avec
 #   `--profile graph` et NEO4J_URI=bolt://neo4j:7687 dans .env.production.
 # - Redis et RabbitMQ sont dans le profil `queue` (orchestration multi-agents, à venir).
+# - Embeddings : modèle multilingue local (Xenova/multilingual-e5-small), intégré à l'image de l'API
+#   dans /app/models : aucun téléchargement au démarrage. Modèle de langage : Groq (GROQ_API_KEY).
+# - Les textes non redistribuables sont téléchargés par le seed (empreinte SHA-256 vérifiée) et
+#   conservés dans le volume `sources_cache`.
 
 name: sonah
 
@@ -39,13 +43,22 @@ services:
       API_PORT: 4000
       APP_VERSION: ${IMAGE_TAG:-latest}
       DATABASE_URL: postgresql://sonah_user:${POSTGRES_PASSWORD:-}@postgres:5432/sonah_prod
+      # Imposé : une GEMINI_API_KEY présente dans .env.production ne doit pas changer d'index
+      EMBEDDING_PROVIDER: local
+      EMBEDDINGS_CACHE_DIR: /app/models
+    volumes:
+      - sources_cache:/app/data/sources/.cache
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - portfolio-net
       - sonah-internal
+    # Modèle chargé : voir docs/DEPLOYMENT.md (mesures). Le seed tourne dans un conteneur
+    # éphémère du même service, avec les mêmes limites.
     mem_limit: 1g
+    # ONNX Runtime utilise tous les cœurs pendant l'indexation : on en laisse aux autres applications
+    cpus: 2
     logging: *default-logging
 
   postgres:
@@ -132,6 +145,7 @@ services:
 
 volumes:
   postgres_data:
+  sources_cache:
   neo4j_data:
   redis_data:
   rabbitmq_data:

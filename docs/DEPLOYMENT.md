@@ -21,13 +21,33 @@ Internet ──443──▶ portfolio-traefik (Let's Encrypt)
   `scripts/deploy.sh` in `.env.production` on the first deployment.
 - **Neo4j** is in the `graph` profile: it starts when `NEO4J_URI=bolt://neo4j:7687` is set in `.env.production`.
 - The `queue` profile (Redis / RabbitMQ) in `docker-compose.prod.yml` is not used by the application today.
+- **Language model: Groq** (`GROQ_API_KEY`), with a fallback model. Gemini is disabled (its key is
+  refused with HTTP 403): `ENABLE_GEMINI` stays unset.
+- **Embeddings: local** multilingual model `Xenova/multilingual-e5-small` (ONNX, quantised q8), run inside
+  the API container. It is **baked into the image** at build time (`/app/models`, `EMBEDDINGS_CACHE_DIR`), so
+  production never downloads it. `EMBEDDING_PROVIDER=local` is forced by `docker-compose.prod.yml`, so a
+  Gemini/OpenAI key left in `.env.production` cannot switch the index to another model.
+- The API image is based on `node:20-bookworm-slim` (glibc): `onnxruntime-node` does not run on Alpine (musl).
+
+### Knowledge base sources
+
+`data/sources/` (manifest, redistributable texts) is copied into the API image. Four sources are
+**not redistributable** (ILO NATLEX English labour code, _Cameroun numérique 2020_, AU continental AI strategy,
+EU AI Act): their licences do not allow shipping them in an image, so the seed downloads them at indexing
+time and checks each file's SHA-256 against the manifest. Downloads are kept in the `sources_cache` volume
+(`/app/data/sources/.cache`), so re-indexing does not depend on the publishers' sites. A source that cannot
+be downloaded, or whose hash changed, is skipped with a warning; the other texts are still indexed.
+
+### Resources (measured)
+
+<!-- RESOURCES -->
 
 ## CI/CD pipeline
 
 | Workflow     | Trigger                   | Steps                                                                                                                    |
 | ------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `ci.yml`     | Pull request              | install → format → lint → typecheck → migrations → test (with PostgreSQL and Neo4j services) → build, then Docker builds |
-| `deploy.yml` | Push to `main`, or manual | full CI → build and push images to GHCR (`:<sha>` and `:latest`) → optional Gemini key sync → SSH deploy → smoke tests   |
+| `deploy.yml` | Push to `main`, or manual | full CI → build and push images to GHCR (`:<sha>` and `:latest`) → Groq key sync → SSH deploy → index → smoke tests      |
 
 The deploy job runs `scripts/deploy.sh <sha>` on the VPS:
 
@@ -36,9 +56,13 @@ The deploy job runs `scripts/deploy.sh <sha>` on the VPS:
 3. `docker compose pull` then `up -d` for `web` and `api`;
 4. waits until both containers are `healthy` (2 min max), otherwise **rolls back automatically** to the previous tag;
 5. indexes the official texts if no article is indexed yet for the current embedding model
-   (first deployment, or a Gemini/OpenAI key was just added).
+   (`seed.js --if-empty`: first deployment, or a new embedding model). The seed runs in a temporary container
+   of the `api` service (`docker compose run --rm`), with the same image, variables and limits, while the site
+   keeps serving. Indexing about 1,700 fragments with the local model takes several minutes (about 4 minutes
+   on a 4-core laptop); the job waits for it and logs its duration. A failed seed does not roll back the
+   release, but the next smoke test then fails because the index is empty.
 
-Smoke tests then check over HTTPS that `/`, `/healthz` and `/api/v1/health` answer, that
+Smoke tests run after indexing and check over HTTPS that `/`, `/healthz` and `/api/v1/health` answer, that
 `/api/v1/health/ready` reports more than zero indexed documents, and that `POST /api/v1/chat` returns
 HTTP 200 with a JSON `reply`.
 
@@ -51,13 +75,32 @@ HTTP 200 with a JSON `reply`.
 | `VPS_USER`        | secret   | `<VPS_USER>`                                                             |
 | `VPS_SSH_KEY`     | secret   | ed25519 private key dedicated to CI                                      |
 | `VPS_KNOWN_HOSTS` | secret   | output of `ssh-keyscan -p <VPS_PORT> <VPS_HOST>`                         |
-| `GEMINI_API_KEY`  | secret   | optional Gemini API key                                                  |
+| `GROQ_API_KEY`    | secret   | Groq API key (https://console.groq.com/keys)                             |
+| `ENABLE_GROQ`     | variable | `true` to copy `GROQ_API_KEY` into `~/sonah/.env.production` on deploy   |
+| `GEMINI_API_KEY`  | secret   | optional Gemini API key (currently refused, keep disabled)               |
 | `ENABLE_GEMINI`   | variable | `true` to copy `GEMINI_API_KEY` into `~/sonah/.env.production` on deploy |
 
 The GHCR token is the workflow's short-lived `GITHUB_TOKEN`: there is no registry secret to manage.
 
-The Gemini key is sent to the VPS through SSH **stdin** (never on a command line) and written only when
-`ENABLE_GEMINI` is `true` and the secret is non-empty. Without it, the key in `.env.production` is left untouched.
+API keys are sent to the VPS through SSH **stdin** (never on a command line:
+`deploy.sh --sync-groq-key` / `--sync-gemini-key`) and written only when the matching variable
+(`ENABLE_GROQ`, `ENABLE_GEMINI`) is `true` and the secret is non-empty. Otherwise the key in `.env.production`
+is left untouched.
+
+### Application variables (`~/sonah/.env.production`)
+
+| Variable                | Default                         | Notes                                                                 |
+| ----------------------- | ------------------------------- | --------------------------------------------------------------------- |
+| `GROQ_API_KEY`          | —                               | synced by CI when `ENABLE_GROQ=true`; without any key, extractive answers |
+| `GROQ_CHAT_MODEL`       | `openai/gpt-oss-120b`           | main model                                                            |
+| `GROQ_FALLBACK_MODEL`   | `qwen/qwen3.8-27b`              | used when the main model fails or hits its quota                      |
+| `EMBEDDING_PROVIDER`    | `local` (forced by compose)     | `local`, `gemini`, `openai` or `hashing`                              |
+| `LOCAL_EMBEDDING_MODEL` | `Xenova/multilingual-e5-small`  | must match the model baked into the image (build arg of the same name) |
+| `EMBEDDINGS_CACHE_DIR`  | `/app/models` (forced by compose) | model directory inside the image                                    |
+
+**Groq free tier limits, per model:** 30 requests/minute, 1,000 requests/day, 8,000 tokens/minute. When the
+main model is rate-limited, the fallback model takes over; when both are, Sonah answers by quoting the
+articles without drafting.
 
 ## Initial setup (once)
 
@@ -74,9 +117,13 @@ gh secret set VPS_SSH_KEY --env production < sonah_deploy
 ssh-keyscan -p <VPS_PORT> <VPS_HOST> | gh secret set VPS_KNOWN_HOSTS --env production
 rm sonah_deploy sonah_deploy.pub
 
-# Optional: Gemini key, activated only once ENABLE_GEMINI is true
-gh secret set GEMINI_API_KEY --env production
-gh variable set ENABLE_GEMINI --env production --body true
+# Groq key, synced on each deploy once ENABLE_GROQ is true
+gh secret set GROQ_API_KEY --env production
+gh variable set ENABLE_GROQ --env production --body true
+
+# Optional (currently refused by Google, keep disabled): Gemini key, synced only once ENABLE_GEMINI is true
+# gh secret set GEMINI_API_KEY --env production
+# gh variable set ENABLE_GEMINI --env production --body true
 
 # 3. Application secrets on the VPS (the script creates an empty file if missing)
 ssh -p <VPS_PORT> <VPS_USER>@<VPS_HOST> 'mkdir -p ~/sonah && cd ~/sonah && touch .env.production && chmod 600 .env.production'
@@ -98,13 +145,13 @@ docker compose -f docker-compose.prod.yml logs -f --tail 100 api
 # Redeploy a given tag (e.g. manual rollback)
 bash scripts/deploy.sh <sha>
 
-# Enable a language model by hand: add the key, restart the API, re-index with its embeddings
-echo 'GEMINI_API_KEY=<key>' >> .env.production
+# Change the Groq key by hand (read from stdin, never on the command line), then restart the API
+bash scripts/deploy.sh --sync-groq-key   # paste the key, Enter
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d api
-docker compose -f docker-compose.prod.yml --env-file .env.production exec api node dist/scripts/seed.js --if-empty
 
-# Re-index the official texts (idempotent)
-docker compose -f docker-compose.prod.yml --env-file .env.production exec api node dist/scripts/seed.js
+# Index if empty for the current model / re-index everything (idempotent), in a temporary container
+docker compose -f docker-compose.prod.yml --env-file .env.production run --rm --no-deps -T api node dist/scripts/seed.js --if-empty
+docker compose -f docker-compose.prod.yml --env-file .env.production run --rm --no-deps -T api node dist/scripts/seed.js
 
 # Dependency status (database, graph, model, number of indexed articles)
 curl -s https://sonah.fokamemeric.com/api/v1/health/ready
