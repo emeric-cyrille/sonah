@@ -24,10 +24,10 @@ Internet ──443──▶ portfolio-traefik (Let's Encrypt)
 
 ## CI/CD pipeline
 
-| Workflow     | Trigger                     | Steps                                                                                                                     |
-| ------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `ci.yml`     | Pull request                | install → format → lint → typecheck → migrations → test (with PostgreSQL and Neo4j services) → build, then Docker builds  |
-| `deploy.yml` | Push to `main`, or manual   | full CI → build and push images to GHCR (`:<sha>` and `:latest`) → optional Gemini key sync → SSH deploy → smoke tests    |
+| Workflow     | Trigger                   | Steps                                                                                                                    |
+| ------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `ci.yml`     | Pull request              | install → format → lint → typecheck → migrations → test (with PostgreSQL and Neo4j services) → build, then Docker builds |
+| `deploy.yml` | Push to `main`, or manual | full CI → build and push images to GHCR (`:<sha>` and `:latest`) → optional Gemini key sync → SSH deploy → smoke tests   |
 
 The deploy job runs `scripts/deploy.sh <sha>` on the VPS:
 
@@ -44,15 +44,15 @@ HTTP 200 with a JSON `reply`.
 
 ### GitHub secrets and variables (`production` environment)
 
-| Name                      | Kind     | Value                                                                    |
-| ------------------------- | -------- | ------------------------------------------------------------------------ |
-| `VPS_HOST`                | secret   | `<VPS_HOST>`                                                             |
-| `VPS_PORT`                | secret   | `<VPS_PORT>`                                                             |
-| `VPS_USER`                | secret   | `<VPS_USER>`                                                             |
-| `VPS_SSH_KEY`             | secret   | ed25519 private key dedicated to CI                                      |
-| `VPS_KNOWN_HOSTS`         | secret   | output of `ssh-keyscan -p <VPS_PORT> <VPS_HOST>`                         |
-| `GEMINI_API_KEY`          | secret   | optional Gemini API key                                                  |
-| `ENABLE_GEMINI`           | variable | `true` to copy `GEMINI_API_KEY` into `~/sonah/.env.production` on deploy |
+| Name              | Kind     | Value                                                                    |
+| ----------------- | -------- | ------------------------------------------------------------------------ |
+| `VPS_HOST`        | secret   | `<VPS_HOST>`                                                             |
+| `VPS_PORT`        | secret   | `<VPS_PORT>`                                                             |
+| `VPS_USER`        | secret   | `<VPS_USER>`                                                             |
+| `VPS_SSH_KEY`     | secret   | ed25519 private key dedicated to CI                                      |
+| `VPS_KNOWN_HOSTS` | secret   | output of `ssh-keyscan -p <VPS_PORT> <VPS_HOST>`                         |
+| `GEMINI_API_KEY`  | secret   | optional Gemini API key                                                  |
+| `ENABLE_GEMINI`   | variable | `true` to copy `GEMINI_API_KEY` into `~/sonah/.env.production` on deploy |
 
 The GHCR token is the workflow's short-lived `GITHUB_TOKEN`: there is no registry secret to manage.
 

@@ -1,331 +1,97 @@
-# Guide de Démarrage Rapide
+# Quickstart
 
-## Prérequis
+Run SONAH locally in about ten minutes. No API key is required.
 
-- Node.js >= 18.0.0
-- pnpm >= 8.0.0
-- Docker Desktop
-- Clé API OpenAI
+## Requirements
 
-### Installation des prérequis
+- Node.js 20 (18+ works for development; the Docker images use 20)
+- pnpm 8 (`corepack enable && corepack prepare pnpm@8.15.0 --activate`)
+- Docker with Compose v2
 
-**Node.js et pnpm**
-```bash
-# Vérifier Node.js
-node --version  # doit être >= 18.0.0
-
-# Installer pnpm
-npm install -g pnpm@8.15.0
-```
-
-**Docker Desktop**
-- Télécharger depuis [docker.com](https://www.docker.com/products/docker-desktop/)
-- Installer et démarrer Docker Desktop
-
-**Clé API OpenAI**
-- Créer un compte sur [platform.openai.com](https://platform.openai.com/)
-- Générer une clé API dans Settings > API Keys
-
----
-
-## Installation
-
-### 1. Cloner le repository
+## 1. Install
 
 ```bash
 git clone https://github.com/emeric-cyrille/sonah.git
 cd sonah
-```
-
-### 2. Installer les dépendances
-
-```bash
 pnpm install
-```
-
-### 3. Configuration de l'environnement
-
-```bash
 cp .env.example .env
 ```
 
-Éditer `.env` et renseigner au minimum :
+`.env` works as is for local development. The API reads it from the repository root. Every variable is
+described in [`.env.example`](./.env.example).
 
-```env
-DATABASE_URL="postgresql://postgres:password@localhost:5432/sonah"
-NEO4J_URI="bolt://localhost:7687"
-NEO4J_USER="neo4j"
-NEO4J_PASSWORD="password"
-REDIS_URL="redis://localhost:6379"
-RABBITMQ_URL="amqp://localhost:5672"
-OPENAI_API_KEY="sk-proj-VOTRE_CLE_ICI"
-JWT_SECRET="development-secret-key"
-NEXT_PUBLIC_API_URL="http://localhost:4000"
-NODE_ENV="development"
-```
-
-### 4. Démarrer l'infrastructure
+## 2. Start the databases
 
 ```bash
-docker-compose up -d
+docker compose up -d postgres neo4j
+docker compose ps        # wait until both are "healthy"
 ```
 
-Vérifier que tous les services sont actifs :
+- PostgreSQL 16 + pgvector on `localhost:5432` (user `postgres`, password `password`, database `sonah`).
+  The `vector` extension is created by `infrastructure/postgres/init.sql`.
+- Neo4j 5 on `localhost:7687` (browser on http://localhost:7474, `neo4j` / `password`). It is optional:
+  leave `NEO4J_URI` empty in `.env` to run without it.
+
+`docker-compose.yml` also defines `api` and `web` containers and Redis/RabbitMQ services. The application does not
+need any of them for local development.
+
+## 3. Build, migrate and index
 
 ```bash
-docker-compose ps
+pnpm build                                                   # builds @sonah/database, @sonah/rag, api, web
+export DATABASE_URL="postgresql://postgres:password@localhost:5432/sonah"
+pnpm --filter @sonah/database exec prisma migrate deploy     # creates the schema
+pnpm --filter @sonah/rag seed                                # indexes data/sources (idempotent)
 ```
 
-Services démarrés :
-- sonah-postgres (port 5432)
-- sonah-neo4j (ports 7474, 7687)
-- sonah-redis (port 6379)
-- sonah-rabbitmq (ports 5672, 15672)
+To also store the structure of the texts in Neo4j, export `NEO4J_URI=bolt://localhost:7687`, `NEO4J_USER=neo4j`
+and `NEO4J_PASSWORD=password` before running the seed.
 
-### 5. Initialiser la base de données
+The seed script reads only the shell environment, not `.env`. When you add a model key, export it as well and run
+the seed again: the texts are then re-embedded with that provider's embedding model.
 
-```bash
-# Générer le client Prisma
-pnpm --filter @sonah/database prisma generate
+## 4. Run
 
-# Créer les tables
-pnpm --filter @sonah/database prisma db push
-```
-
-### 6. Lancer les applications
-
-**Option A : Tout en un**
 ```bash
 pnpm dev
 ```
 
-**Option B : Séparément (2 terminaux)**
-```bash
-# Terminal 1 - Backend
-pnpm --filter @sonah/api dev
+- Web app: http://localhost:3000 (it proxies `/api/v1` to the API)
+- API: http://localhost:4000/api/v1
 
-# Terminal 2 - Frontend
-pnpm --filter @sonah/web dev
-```
+Or run each app on its own: `pnpm --filter @sonah/api dev` and `pnpm --filter @sonah/web dev`.
 
----
-
-## Vérification
-
-### Frontend
-
-Accéder à http://localhost:3000
-
-La landing page SONAH doit s'afficher avec les statistiques du projet.
-
-### Backend
+## 5. Check
 
 ```bash
-curl http://localhost:4000/api/v1/health
+curl -s http://localhost:4000/api/v1/health          # liveness
+curl -s http://localhost:4000/api/v1/health/ready    # database, graph, model, indexed articles
+curl -s -X POST http://localhost:4000/api/v1/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"message":"Quelle est la durée légale du travail ?"}'
 ```
 
-Réponse attendue :
-```json
-{
-  "status": "healthy",
-  "timestamp": "2026-10-21T...",
-  "uptime": 123.45,
-  "environment": "development",
-  "services": {
-    "database": "connected",
-    "redis": "connected",
-    "neo4j": "connected",
-    "rabbitmq": "connected"
-  }
-}
-```
+Without a key, `health/ready` reports `"languageModel":"extractif"` and the chat reply quotes the most relevant
+articles. With `GEMINI_API_KEY` or `OPENAI_API_KEY` set, SONAH writes an answer with numbered citations.
 
-### Base de données
+## Useful commands
 
-```bash
-pnpm db:studio
-```
+| Command                                                 | Purpose                                              |
+| ------------------------------------------------------- | ---------------------------------------------------- |
+| `pnpm format` / `pnpm format:check`                     | Prettier                                             |
+| `pnpm lint`                                             | ESLint (zero warnings)                               |
+| `pnpm typecheck`                                        | TypeScript, strict                                   |
+| `pnpm test`                                             | Unit tests (Jest)                                    |
+| `RAG_INTEGRATION=1 pnpm test`                           | Also runs integration tests against PostgreSQL/Neo4j |
+| `pnpm build`                                            | Build all packages and apps                          |
+| `pnpm --filter @sonah/database exec prisma migrate dev` | Create a new migration after a schema change         |
+| `pnpm --filter @sonah/database exec prisma studio`      | Browse the database                                  |
+| `docker compose down` / `docker compose down -v`        | Stop the databases (and delete their data)           |
 
-Ouvre Prisma Studio sur http://localhost:5555
+## Troubleshooting
 
----
-
-## Commandes Utiles
-
-### Développement
-
-```bash
-pnpm dev                    # Lancer frontend + backend
-pnpm build                  # Build production
-pnpm lint                   # Linter
-pnpm format                 # Formatter le code
-```
-
-### Base de données
-
-```bash
-pnpm db:generate            # Générer client Prisma
-pnpm db:migrate             # Créer migration
-pnpm db:push                # Push schema (dev)
-pnpm db:studio              # Interface Prisma Studio
-```
-
-### Docker
-
-```bash
-docker-compose up -d        # Démarrer services
-docker-compose down         # Arrêter services
-docker-compose down -v      # Arrêter + supprimer volumes
-docker-compose logs -f      # Voir logs
-docker-compose restart      # Redémarrer services
-```
-
-### Services spécifiques
-
-```bash
-docker-compose logs -f postgres
-docker-compose logs -f neo4j
-docker-compose restart postgres
-```
-
----
-
-## Résolution de Problèmes
-
-### Port déjà utilisé
-
-**Erreur** : `Error: listen EADDRINUSE: address already in use :::3000`
-
-**Solution** :
-```bash
-# Identifier le processus
-lsof -ti:3000
-
-# Terminer le processus
-lsof -ti:3000 | xargs kill -9
-```
-
-### Services Docker ne démarrent pas
-
-```bash
-# Vérifier que Docker Desktop est lancé
-docker ps
-
-# Nettoyer et redémarrer
-docker-compose down -v
-docker-compose up -d
-
-# Vérifier les logs
-docker-compose logs
-```
-
-### Prisma ne trouve pas la base de données
-
-```bash
-# Vérifier PostgreSQL
-docker-compose ps postgres
-
-# Tester la connexion
-docker exec -it sonah-postgres psql -U postgres -c "SELECT 1"
-
-# Recréer le schema
-pnpm --filter @sonah/database prisma db push --force-reset
-```
-
-### pgvector non installé
-
-```bash
-# Recréer le container PostgreSQL
-docker-compose down -v postgres
-docker-compose up -d postgres
-
-# Vérifier l'extension
-docker exec -it sonah-postgres psql -U postgres -d sonah -c "CREATE EXTENSION IF NOT EXISTS vector;"
-```
-
-### Erreur de permissions Prisma
-
-```bash
-# Régénérer le client
-pnpm --filter @sonah/database prisma generate
-
-# Nettoyer le cache
-rm -rf node_modules/.prisma
-pnpm install
-```
-
----
-
-## Structure des Services
-
-### Ports utilisés
-
-| Service | Port(s) | Accès |
-|---------|---------|-------|
-| Frontend (Next.js) | 3000 | http://localhost:3000 |
-| Backend (NestJS) | 4000 | http://localhost:4000 |
-| PostgreSQL | 5432 | localhost:5432 |
-| Neo4j Browser | 7474 | http://localhost:7474 |
-| Neo4j Bolt | 7687 | bolt://localhost:7687 |
-| Redis | 6379 | localhost:6379 |
-| RabbitMQ AMQP | 5672 | localhost:5672 |
-| RabbitMQ Management | 15672 | http://localhost:15672 |
-
-### Identifiants par défaut
-
-**Neo4j**
-- User: neo4j
-- Password: password
-
-**RabbitMQ**
-- User: admin
-- Password: adminpassword
-
-**PostgreSQL**
-- User: postgres
-- Password: password
-- Database: sonah
-
----
-
-## Prochaines Étapes
-
-1. Lire [README.md](./README.md) pour la documentation complète
-2. Consulter le [Prisma schema](./packages/database/prisma/schema.prisma)
-3. Examiner l'architecture dans [apps/api/src](./apps/api/src)
-4. Commencer par implémenter Phase 1.2 (RAG Foundation)
-
----
-
-## Commandes de Diagnostic
-
-```bash
-# Vérifier toutes les dépendances
-pnpm list
-
-# Vérifier l'état des services Docker
-docker-compose ps
-
-# Voir l'utilisation des ressources
-docker stats
-
-# Vérifier les logs d'erreur
-docker-compose logs --tail=100
-
-# Tester la connexion API
-curl http://localhost:4000/api/v1/health
-
-# Vérifier Prisma
-pnpm --filter @sonah/database prisma validate
-```
-
----
-
-## Support
-
-En cas de problème :
-
-1. Consulter cette documentation
-2. Vérifier les logs : `docker-compose logs`
-3. Consulter [GitHub Issues](https://github.com/emeric-cyrille/sonah/issues)
-4. Contacter : fokamemeric@gmail.com
+- **`Configuration invalide : DATABASE_URL: Required`** when starting the API: `.env` is missing at the repository root.
+- **`Cannot find module '@sonah/database'`**: run `pnpm build` once so the workspace packages have a `dist/`.
+- **`type "vector" does not exist`** during migration: the database volume was created without the init script.
+  Run `docker exec sonah-postgres psql -U postgres -d sonah -c 'CREATE EXTENSION IF NOT EXISTS vector;'`.
+- **Port already in use** (3000, 4000, 5432): stop the other process (`lsof -ti:4000 | xargs kill`).
