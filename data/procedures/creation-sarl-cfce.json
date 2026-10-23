@@ -1,0 +1,201 @@
+{
+  "id": "creation-sarl-cfce",
+  "title_fr": "Créer une SARL au CFCE (statuts sous seing privé)",
+  "title_en": "Incorporating a limited liability company (SARL) at the CFCE with privately drafted articles",
+  "category": "entreprise",
+  "keywords_fr": [
+    "créer une SARL",
+    "créer une société",
+    "société à responsabilité limitée",
+    "SARL unipersonnelle",
+    "SARLU",
+    "statuts",
+    "statuts sous seing privé",
+    "authentification des statuts",
+    "CFCE",
+    "créer une société sans notaire",
+    "RCCM société"
+  ],
+  "keywords_en": [
+    "incorporate a company",
+    "limited liability company",
+    "LLC",
+    "SARL",
+    "single-member company",
+    "articles of association",
+    "company registration",
+    "CFCE"
+  ],
+  "authority": {
+    "name": "Centre de Formalités de Création d'Entreprises (CFCE) – le Chef de Centre authentifie les statuts",
+    "level": "regional",
+    "source_refs": [0, 1]
+  },
+  "where": [
+    {
+      "text": "CFCE de la région où la société aura son siège (un CFCE par région).",
+      "source_refs": [1]
+    },
+    {
+      "text": "Variante en ligne via le guichet électronique MyBusiness.cm, avec authentification des statuts, paiement et retrait au CFCE (voir réserves).",
+      "source_refs": [3]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Un ou plusieurs associés constituant une SARL dont les statuts sont établis sous seing privé (sans notaire), dans les conditions de capital fixées par la loi n° 2016/014 et le décret n° 2017/0877/PM.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Statuts (5 exemplaires + autant d'exemplaires que d'associés) ; un modèle de statuts de SARL unipersonnelle est disponible au CFCE.",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Déclarations de régularité et de conformité (5 exemplaires + autant que d'associés).",
+      "source_refs": [1]
+    },
+    {
+      "text": "Deux extraits de casier judiciaire pour chaque associé et pour le gérant, ou une déclaration sur l'honneur à la place.",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Photocopie de la CNI de chaque associé ; deux copies de la CNI du gérant s'il est associé (une sinon).",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Plan de localisation du siège social.",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Une boîte postale et un numéro de téléphone.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Formulaire de demande de carte de contribuable (personne morale), chemise de circulation du dossier et fiche d'identification du promoteur, remis au CFCE.",
+      "source_refs": [2]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Retirer les formulaires au CFCE.",
+      "source_refs": [2]
+    },
+    {
+      "order": 2,
+      "description": "Faire authentifier les statuts sous seing privé par le Chef du CFCE : il vérifie la forme, la dénomination, la durée, le capital, le nombre et la valeur des parts et les modalités de fonctionnement, puis signe et appose sur chaque page le cachet « Authentifié par le CFCE », dans les 24 heures suivant le dépôt de la demande.",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 3,
+      "description": "Faire enregistrer les statuts authentifiés auprès du service des impôts présent au CFCE.",
+      "source_refs": [3]
+    },
+    {
+      "order": 4,
+      "description": "Déposer le dossier complet au CFCE (ou en ligne), puis payer les frais : immatriculation au RCCM, droits fixes d'enregistrement, timbres fiscaux sur les statuts, publication de l'annonce légale.",
+      "source_refs": [2, 3]
+    },
+    {
+      "order": 5,
+      "description": "Retirer, sur présentation du récépissé de dépôt, l'immatriculation RCCM (personne morale), l'attestation d'immatriculation fiscale, les statuts authentifiés et enregistrés et le récépissé d'annonce légale.",
+      "source_refs": [2]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Variable selon le nombre de pages des statuts (droit de timbre). Montants indiqués par eRegulations Yaoundé (dépôt en ligne) : immatriculation RCCM 21 500 FCFA, droits fixes d'enregistrement 20 000 FCFA, annonce légale (Cameroon Tribune) 13 125 FCFA, timbres fiscaux sur statuts env. 15 000 FCFA (1 000 FCFA par timbre) – total estimé 69 625 FCFA. Le MINFI indique 41 500 FCFA de frais d'enregistrement + 13 125 FCFA d'annonce légale + timbre selon le nombre de pages.",
+    "source_refs": [1, 2, 3]
+  },
+  "delay": {
+    "text": "Authentification des statuts : 24 heures maximum après le dépôt (décret n° 2017/0877/PM). Ensemble de la procédure : 72 heures selon le MINFI ; 1 à 7 jours selon eRegulations.",
+    "source_refs": [0, 1, 2, 3]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "decret-2017-0877-pm-cfce",
+      "reference": "Articles 1 à 5",
+      "title": "Décret n° 2017/0877/PM du 28 février 2017 fixant les modalités d'authentification des statuts de la SARL établis sous seing privé dans les CFCE",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article 3(3)",
+      "title": "Loi n° 2016/014 du 14 décembre 2016 fixant le capital social minimum et les modalités de recours aux services du notaire dans le cadre de la création d'une SARL",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article 13",
+      "title": "Acte uniforme OHADA révisé du 30 janvier 2014 relatif au droit des sociétés commerciales et du GIE",
+      "source_refs": [2]
+    },
+    {
+      "sourceId": null,
+      "reference": "Articles II-a et II-b",
+      "title": "Circulaire interministérielle n° 001 MINJUSTICE-MINFI-MINPMEESA du 30 mai 2012",
+      "source_refs": [2]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Avec des statuts sous seing privé authentifiés au CFCE, le capital doit être compris entre 100 000 et 999 999 FCFA, ou est librement fixé dans les statuts pour une société unipersonnelle.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Un exemplaire original des statuts authentifiés est remis à chaque associé et une copie est tenue à leur disposition au siège social.",
+      "source_refs": [0]
+    },
+    {
+      "text": "eRegulations signale que le parcours de dépôt physique au CFCE est « en cours de révision » : faites-vous confirmer la liste des pièces au CFCE avant de constituer le dossier.",
+      "source_refs": [2]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Décret n° 2017/0877/PM du 28 février 2017 (corpus SONAH : decret-2017-0877-pm-cfce)",
+      "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+      "publisher": "Services du Premier Ministre",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "CFCE in brief / Business creation space in the Republic of Cameroon",
+      "url": "https://minfi.gov.cm/en/business-creation-space-in-the-republic-of-cameroon/",
+      "publisher": "Ministère des Finances (MINFI)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Créer une société locale – CFCE – statuts sous seing privé",
+      "url": "https://yaounde.eregulations.org/procedure/184/139?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Créer une société locale – en ligne – statuts sous seing privé",
+      "url": "https://yaounde.eregulations.org/procedure/185/140?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost.amount_fcfa",
+      "note": "Pas de montant unique : le droit de timbre dépend du nombre de pages des statuts, et les deux sources officielles présentent les frais différemment (MINFI 41 500 FCFA de frais d'enregistrement ; eRegulations 21 500 + 20 000 FCFA ou 20 500 + 1 000 + 20 000 FCFA selon la fiche)."
+    },
+    {
+      "field": "where",
+      "note": "Le domaine mybusiness.cm affichait une page parking le 2026-10-23 ; la disponibilité du dépôt en ligne n'a pas pu être confirmée."
+    },
+    {
+      "field": "validity",
+      "note": "Aucune durée de validité n'est indiquée dans les sources pour l'immatriculation RCCM."
+    }
+  ],
+  "language_versions": ["fr"]
+}

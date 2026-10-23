@@ -7,6 +7,7 @@ import { PatternMarquee } from '@/components/pattern-marquee';
 import { PatternFill, type PatternName } from '@/components/patterns/cameroon-patterns';
 import { SonahOrb } from '@/components/three/sonah-orb';
 import { getServerDictionary } from '@/i18n/server';
+import { procedureQuestions } from '@/lib/procedure-questions';
 
 // Motif associé à chaque engagement (même ordre que le dictionnaire)
 const PROMISE_PATTERNS: readonly PatternName[] = ['perles', 'ndop', 'toghu'];
@@ -28,8 +29,9 @@ function Arrow({ className = 'h-5 w-5' }: { className?: string }): JSX.Element {
 }
 
 export default function HomePage(): JSX.Element {
-  const { dict } = getServerDictionary();
+  const { dict, locale } = getServerDictionary();
   const t = dict.home;
+  const questions = [...procedureQuestions(locale), ...t.questions];
   const headline: ReadonlyArray<{ word: string; accent?: boolean; breakAfter?: boolean }> = [
     { word: t.headline.first, breakAfter: true },
     ...t.headline.words.map((word) => ({ word })),
@@ -118,7 +120,7 @@ export default function HomePage(): JSX.Element {
             </div>
 
             <ul data-reveal-stagger className="border-t border-line">
-              {t.questions.map((item) => (
+              {questions.map((item) => (
                 <li key={item.question} className="border-b border-line">
                   <Link
                     href={`/chat?q=${encodeURIComponent(item.question)}`}

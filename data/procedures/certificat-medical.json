@@ -1,0 +1,138 @@
+{
+  "id": "certificat-medical",
+  "title_fr": "Certificat médical (aptitude physique, visite médicale d'embauche ou de concours)",
+  "title_en": "Medical certificate (fitness certificate, pre-employment or exam medical check)",
+  "category": "sante",
+  "keywords_fr": [
+    "certificat médical",
+    "certificat medical",
+    "certificat d'aptitude physique",
+    "certificat d'aptitude physique et mentale",
+    "visite médicale",
+    "visite médicale d'embauche",
+    "examen médical",
+    "certificat médical pour concours",
+    "certificat médical pour dossier",
+    "je veux faire mon certificat médical",
+    "aptitude médicale"
+  ],
+  "keywords_en": [
+    "medical certificate",
+    "fitness certificate",
+    "medical fitness",
+    "pre-employment medical",
+    "medical examination",
+    "health certificate"
+  ],
+  "authority": {
+    "name": "Médecin habilité (hôpital ou centre de santé) ; pour certains concours publics, médecin du secteur public ; pour l'embauche, service médical du travail agréé",
+    "level": "private",
+    "source_refs": [0, 1, 2]
+  },
+  "where": [
+    {
+      "text": "Un hôpital ou centre de santé auprès d'un médecin habilité. Certains avis de concours exigent un médecin du secteur public (hôpital public) : lire l'avis de concours ou l'exigence de l'organisme demandeur.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Pour un salarié : examen médical obligatoire avant l'embauche, assuré dans le cadre du service médical et sanitaire de l'entreprise par des médecins agréés par le ministre chargé du Travail.",
+      "source_refs": [2]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne qui doit justifier de son aptitude physique (candidats aux concours et examens, salariés avant embauche, etc.).",
+    "source_refs": [0, 1, 2]
+  },
+  "documents": [],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Vérifier dans l'avis de concours ou auprès de l'organisme demandeur le type de certificat exigé (ex. « certificat médical d'aptitude physique et mentale délivré par un médecin habilité » ou « délivré par un médecin du secteur public »).",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 2,
+      "description": "Se présenter à la consultation d'un médecin répondant à cette exigence et passer l'examen médical.",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 3,
+      "description": "Récupérer le certificat signé par le médecin et le joindre au dossier (original, pas de photocopie si l'avis l'exige).",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Aucun tarif national officiel trouvé : le prix de la consultation et du certificat est fixé par l'établissement de santé ou le médecin. Pour la visite médicale d'embauche, elle relève du service médical que l'employeur doit organiser (Code du travail, art. 98-100).",
+    "source_refs": [2]
+  },
+  "delay": null,
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "code-du-travail-1992",
+      "reference": "Art. 98, 99 et 100 (service médical et sanitaire de l'entreprise ; médecins agréés ; examen médical obligatoire avant l'embauche et surveillance médicale)",
+      "title": "Code du travail (loi n° 92-007 du 14 août 1992)",
+      "source_refs": [2]
+    },
+    {
+      "sourceId": "code-du-travail-1992",
+      "reference": "Art. 86 al. 2 b) (certificat médical signé par un médecin agréé pour les jeunes de moins de 18 ans embarqués sur des navires)",
+      "title": "Code du travail (loi n° 92-007 du 14 août 1992)",
+      "source_refs": [2]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Pour les concours, lisez précisément l'avis : un certificat qui ne vient pas du type de médecin demandé (ex. secteur public) peut faire rejeter le dossier.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Dans les dossiers soumis en ligne pour certains examens du MINESUP, les documents photocopiés entraînent le rejet pur et simple du dossier.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Arrêté MINESUP portant ouverture de l'Examen National d'Entrée au Cycle de Spécialisation en Médecine au Cameroun, année académique 2021-2022",
+      "url": "https://minesup.gov.cm/site/2021/DAUQ/Examen%20National%20d'entree%20au%20cycle%20de%20Specialisation%202021_fr.pdf",
+      "publisher": "Ministère de l'Enseignement Supérieur (MINESUP)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Arrêté MINFOPRA du 21 décembre 2017 portant ouverture d'un test de sélection pour le recrutement de 150 sages-femmes/maïeuticiens (MINSANTE)",
+      "url": "https://www.minsante.cm/site/sites/default/files/150sfm2017.pdf",
+      "publisher": "Ministère de la Santé Publique / MINFOPRA",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Code du travail (loi n° 92-007 du 14 août 1992) — texte du corpus SONAH (data/sources, id code-du-travail-1992)",
+      "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+      "publisher": "Assemblée nationale du Cameroun (édition Droit-Afrique, hébergée par FAOLEX)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost",
+      "note": "Pas de tarif officiel national ; le montant dépend de l'établissement ou du médecin. Ne pas annoncer de prix."
+    },
+    {
+      "field": "documents",
+      "note": "Aucune source officielle ne liste les pièces à présenter au médecin (une pièce d'identité est d'usage mais non vérifiée)."
+    },
+    {
+      "field": "delay",
+      "note": "Dépend de l'établissement et des examens éventuellement demandés (analyses, radiographie) ; non vérifié."
+    },
+    {
+      "field": "validity",
+      "note": "Aucune règle générale officielle trouvée ; l'organisme demandeur (concours, employeur) fixe en pratique l'ancienneté maximale acceptée."
+    }
+  ],
+  "language_versions": ["fr"]
+}

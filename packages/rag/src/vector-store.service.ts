@@ -368,6 +368,23 @@ export class VectorStoreService {
   }
 
   /**
+   * Empreintes (`metadata.fingerprint`) des fragments d'un texte indexés avec le modèle courant :
+   * permet de ne revectoriser que les fragments absents ou modifiés.
+   */
+  async indexedFingerprints(sourceId: string): Promise<Map<string, string | null>> {
+    const rows = await this.prisma.document.findMany({
+      where: { sourceId, embeddingModel: this.embedder.model },
+      select: { chunkKey: true, metadata: true },
+    });
+    return new Map(
+      rows.map((row) => {
+        const fingerprint = asRecord(row.metadata)?.fingerprint;
+        return [row.chunkKey, typeof fingerprint === 'string' ? fingerprint : null];
+      }),
+    );
+  }
+
+  /**
    * Supprime les fragments d'un texte qui ne font plus partie de son indexation (texte corrigé,
    * redécoupé ou segmenté autrement). Retourne le nombre de fragments supprimés.
    */

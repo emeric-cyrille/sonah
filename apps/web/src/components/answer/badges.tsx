@@ -45,6 +45,11 @@ const VERDICT_STYLES: Readonly<Record<VerdictKey, { dark: string; light: string;
     light: 'border-ink/20 bg-ink/5 text-ink-soft',
     dot: 'bg-ink-muted',
   },
+  PROCEDURE_GUIDANCE: {
+    dark: 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100',
+    light: 'border-leaf/30 bg-leaf/10 text-leaf-deep',
+    dot: 'bg-emerald-400',
+  },
   UNKNOWN: {
     dark: 'border-white/25 bg-white/[0.06] text-paper/85',
     light: 'border-ink/20 bg-ink/5 text-ink-soft',

@@ -1,0 +1,130 @@
+{
+  "id": "attestation-de-non-redevance",
+  "title_fr": "Obtenir une attestation de conformité fiscale (ACF, ex-attestation de non-redevance)",
+  "title_en": "Obtaining a tax compliance certificate (ACF, formerly tax clearance certificate / ANR)",
+  "category": "fiscalite",
+  "keywords_fr": [
+    "attestation de non redevance",
+    "ANR",
+    "attestation de conformité fiscale",
+    "ACF",
+    "quitus fiscal",
+    "attestation fiscale pour visa",
+    "papier des impôts pour le visa",
+    "je suis à jour de mes impôts"
+  ],
+  "keywords_en": [
+    "tax clearance certificate",
+    "tax compliance certificate",
+    "TCC",
+    "ANR",
+    "ACF",
+    "tax certificate for visa"
+  ],
+  "authority": {
+    "name": "Direction générale des Impôts (DGI), Ministère des Finances",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "En ligne, sur le site de la DGI : www.impots.cm (document généré par le contribuable).",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Tout contribuable à jour de ses obligations déclaratives et de paiement. Pour une demande de visa, elle est exigée de tous les contribuables personnes physiques (salariés, dirigeants, exploitants individuels, professions libérales…) ; en sont dispensés les enfants mineurs, les étudiants sans revenus et les cas d'évacuation sanitaire.",
+    "source_refs": [0]
+  },
+  "documents": [],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Disposer d'un NIU (voir la fiche « numero-identifiant-unique-niu ») et être à jour de ses déclarations et paiements d'impôts.",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Générer l'attestation de conformité fiscale en ligne depuis le site de la DGI (www.impots.cm).",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "En cas de dette fiscale, solliciter un moratoire ou un sursis de paiement auprès de l'administration fiscale pour pouvoir obtenir l'attestation.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "La DGI précise que l'ACF « n'est pas un nouvel impôt ou une nouvelle charge fiscale » ; aucun frais de délivrance n'est mentionné dans le dépliant officiel.",
+    "source_refs": [0]
+  },
+  "delay": null,
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Loi de finances pour l'exercice 2024 (substitution de l'ACF à l'ANR, exigence pour les visas depuis le 1er janvier 2024)",
+      "title": "Loi de finances de la République du Cameroun pour l'exercice 2024",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Depuis le 1er janvier 2024, l'ACF remplace l'attestation de non-redevance (ANR) et est exigée pour toute demande de visa auprès des missions diplomatiques et consulaires.",
+      "source_refs": [0]
+    },
+    {
+      "text": "La situation fiscale d'un dirigeant est distincte de celle de son entreprise : une dette de l'entreprise n'empêche pas le dirigeant d'obtenir sa propre ACF.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Les contribuables soumis à l'Impôt général synthétique (IGS) doivent présenter une ACF en cours de validité ; à défaut, fermeture de l'établissement et amende de 25 000 FCFA.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Assistance en temps réel : appeler le 8200.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "L'attestation de conformité fiscale en cinq points (dépliant DGI, janvier 2024)",
+      "url": "https://minfi.gov.cm/wp-content/uploads/2024/01/DEPLIANT_ATTESTATION_DE_CONFORMITE_FISCALE.pdf",
+      "publisher": "Ministère des Finances – Direction générale des Impôts",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Bon à savoir sur l'Impôt général synthétique (IGS) – mars 2025 (brochure DGI, copie hébergée par Lefisk)",
+      "url": "https://lefisk.cm/uploads/brochure-igs-dgi-cameroun.pdf",
+      "publisher": "Direction générale des Impôts (copie sur lefisk.cm)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "Le dépliant officiel ne liste aucune pièce : la démarche est en ligne à partir du compte contribuable. Liste laissée vide."
+    },
+    {
+      "field": "cost.amount_fcfa",
+      "note": "Aucun frais officiel indiqué. Un site non officiel (lefisk.cm) évoque 5 000 / 10 000 FCFA selon le régime : non retenu faute de source officielle."
+    },
+    {
+      "field": "delay",
+      "note": "Délai non indiqué par la DGI (document généré en ligne). Les 72 h à 15 jours évoqués par lefisk.cm ne sont pas confirmés officiellement."
+    },
+    {
+      "field": "validity",
+      "note": "Durée de validité non indiquée dans le dépliant DGI ; les 3 mois avancés par lefisk.cm ne sont pas confirmés officiellement."
+    },
+    {
+      "field": "legal_basis",
+      "note": "Le numéro de la loi de finances 2024 et l'article exact du CGI ne sont pas cités dans le dépliant."
+    }
+  ],
+  "language_versions": ["fr"]
+}

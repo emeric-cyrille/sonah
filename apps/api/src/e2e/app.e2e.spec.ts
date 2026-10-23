@@ -15,7 +15,7 @@ import {
   MemoryScenarioRunRepository,
   SCENARIO_RUN_REPOSITORY,
 } from '../scenarios/scenario-run.repository';
-import { CONSTITUTION_ART6, LABOUR_ARTICLE } from '../testing/fixtures';
+import { CONSTITUTION_ART6, LABOUR_ARTICLE, MEDICAL_CERTIFICATE } from '../testing/fixtures';
 import { fakeVectorStore, memoryPrisma } from '../testing/fakes';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -24,7 +24,7 @@ describe('API SONAH (e2e)', () => {
   let app: INestApplication;
   let baseUrl: string;
   const traces = new MemoryTraceStore();
-  const corpus = [LABOUR_ARTICLE, CONSTITUTION_ART6];
+  const corpus = [LABOUR_ARTICLE, CONSTITUTION_ART6, MEDICAL_CERTIFICATE];
 
   beforeAll(async () => {
     process.env.DATABASE_URL = 'postgresql://e2e:e2e@localhost:1/unused';
@@ -98,6 +98,48 @@ describe('API SONAH (e2e)', () => {
     expect(json.sources).toEqual([
       expect.objectContaining({ title: 'Code du travail', reference: 'Article 2' }),
     ]);
+  });
+
+  it('POST /chat : démarche avec fiche → réponse structurée (answerType « procedure »)', async () => {
+    const { status, json } = await call('POST', '/chat', {
+      message: 'je veux faire mon certificat médical',
+    });
+    expect(status).toBe(200);
+    expect(json).toMatchObject({
+      verdict: 'ANSWERED_WITH_CITATIONS',
+      answerType: 'procedure',
+      procedure: {
+        id: 'certificat-medical',
+        title: 'Certificat médical',
+        authority: { name: 'Médecin agréé ou formation sanitaire publique', level: 'local' },
+        documents: expect.arrayContaining(["Pièce d'identité"]),
+        steps: expect.arrayContaining([expect.objectContaining({ order: 1 })]),
+        cost: { amountFcfa: null, description: expect.any(String) },
+        delay: 'Le jour même pour une simple consultation',
+        validity: null,
+        sources: [
+          expect.objectContaining({ url: 'https://example.org/fixtures/certificat-medical' }),
+        ],
+        verifiedAt: '2026-10-01',
+        unverified: expect.arrayContaining([expect.objectContaining({ field: 'cost' })]),
+      },
+    });
+    expect(String(json.reply)).not.toContain('Constitution');
+    const trace = await call('GET', `/audit/traces/${String(json.traceId)}`);
+    const steps = trace.json.steps as Array<{ type: string; data: Record<string, unknown> }>;
+    expect(steps[0]?.data.intent).toBe('procedure');
+  });
+
+  it('POST /chat : démarche sans fiche → orientation, aucune loi citée', async () => {
+    const { json } = await call('POST', '/chat', { message: 'comment renouveler mon passeport' });
+    expect(json).toMatchObject({
+      verdict: 'INSUFFICIENT_EVIDENCE',
+      answerType: 'orientation',
+      citations: [],
+      sources: [],
+    });
+    expect(json.procedure).toBeUndefined();
+    expect(String(json.reply)).toContain("Je n'ai pas encore la fiche officielle");
   });
 
   it('POST /chat valide la requête', async () => {

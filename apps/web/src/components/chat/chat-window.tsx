@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { AnswerBody } from '@/components/answer/answer-body';
+import { OrientationCard, ProcedureCard } from '@/components/answer/procedure-card';
 import { OrbAvatar } from '@/components/orb-avatar';
 import { PatternFill } from '@/components/patterns/cameroon-patterns';
 import { SonahOrb } from '@/components/three/sonah-orb';
 import { useI18n } from '@/i18n/provider';
 import { describeApiError } from '@/lib/api-errors';
+import { procedureQuestions } from '@/lib/procedure-questions';
 import { useChatStore, type ChatEntry } from '@/store/chat-store';
 
 const MAX_LENGTH = 2000;
@@ -21,6 +23,13 @@ function AssistantMessage({ message }: { readonly message: ChatEntry }): JSX.Ele
       ? dict.chat.unavailable
       : describeApiError(message.error, dict)
     : null;
+
+  const attachment =
+    message.answerType === 'procedure' && message.procedure ? (
+      <ProcedureCard procedure={message.procedure} storageId={message.traceId ?? message.id} />
+    ) : message.answerType === 'orientation' ? (
+      <OrientationCard procedure={message.procedure} />
+    ) : null;
 
   return (
     <div className="flex gap-3 sm:gap-4">
@@ -44,6 +53,7 @@ function AssistantMessage({ message }: { readonly message: ChatEntry }): JSX.Ele
               traceId={message.traceId}
               feedbackId={message.traceId ?? message.id}
               tone="dark"
+              attachment={attachment}
             />
           )}
         </div>
@@ -119,7 +129,10 @@ export function ChatWindow(): JSX.Element {
               </h1>
               <p className="mt-3 max-w-lg text-paper/75">{dict.chat.emptyLead}</p>
               <ul className="mt-10 flex max-w-2xl flex-wrap justify-center gap-2.5">
-                {dict.chat.suggestions.map((suggestion) => (
+                {[
+                  ...procedureQuestions(locale).map((item) => item.question),
+                  ...dict.chat.suggestions,
+                ].map((suggestion) => (
                   <li key={suggestion}>
                     <button
                       type="button"

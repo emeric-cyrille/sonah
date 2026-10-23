@@ -1,0 +1,137 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "acte-de-naissance-declaration",
+  "title_fr": "Déclaration de naissance et établissement de l'acte de naissance",
+  "title_en": "Birth declaration and issuance of the birth certificate",
+  "category": "etat-civil",
+  "keywords_fr": [
+    "acte de naissance",
+    "déclarer une naissance",
+    "déclaration de naissance",
+    "naissance bébé",
+    "nouveau-né",
+    "faire l'acte de naissance de mon enfant",
+    "établir acte de naissance",
+    "reconnaissance d'enfant",
+    "mairie naissance",
+    "NIPU"
+  ],
+  "keywords_en": [
+    "birth certificate",
+    "register a birth",
+    "birth registration",
+    "declare a birth",
+    "newborn",
+    "baby birth certificate"
+  ],
+  "authority": {
+    "name": "Officier d'état civil du centre d'état civil (maire ou adjoint au maire de la commune ; chef de mission diplomatique ou de poste consulaire à l'étranger)",
+    "level": "communal",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Centre d'état civil du lieu de naissance (centre principal créé auprès de chaque commune, commune d'arrondissement ou communauté urbaine)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Centre d'état civil spécialisé de la formation sanitaire, lorsqu'il en existe un, pour les naissances survenues dans cette formation",
+      "source_refs": [0]
+    },
+    {
+      "text": "À l'étranger : mission diplomatique ou poste consulaire du Cameroun",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Le père, la mère ou toute personne ayant connaissance de la naissance (naissance en communauté). Pour une naissance en formation sanitaire publique ou privée, le responsable de la formation ou le professionnel de santé ayant assisté à l'accouchement doit la déclarer dans les 30 jours ; à défaut, les parents disposent de 60 jours supplémentaires.",
+    "source_refs": [0]
+  },
+  "documents": [],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Déclarer la naissance (oralement ou par écrit) à l'officier d'état civil du lieu de naissance dans les 90 jours suivant l'accouchement. En formation sanitaire, la formation doit faire la déclaration dans les 30 jours.",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Fournir les informations de la déclaration : noms et prénoms de la mère, sexe de l'enfant, date (jour, mois, année) et lieu de naissance, noms et prénoms du déclarant ; les parents complètent les autres mentions (identité, nationalité, profession, domicile des parents) lors de l'établissement de l'acte.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Pour un enfant né hors mariage, le père peut le reconnaître par déclaration devant l'officier d'état civil au moment de la déclaration de naissance ; la déclaration de reconnaissance est signée par le père, la mère, les témoins et l'officier.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "L'officier d'état civil enregistre la déclaration dans les 10 jours suivant sa réception, établit l'acte et en donne lecture ; demander séance tenante la correction de toute erreur avant la signature.",
+      "source_refs": [0]
+    },
+    {
+      "order": 5,
+      "description": "Retirer l'original de l'acte de naissance (gratuit). Un Numéro d'Identification Personnel Unique (NIPU) est attribué à l'enregistrement de la naissance dans le fichier national de l'état civil.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 0,
+    "description": "Gratuit : la déclaration, l'enregistrement, l'établissement et la délivrance de l'original de l'acte et de la copie initiale sont gratuits (art. 5). Les copies et extraits ultérieurs sont soumis au droit de timbre.",
+    "source_refs": [0]
+  },
+  "delay": {
+    "text": "Déclaration dans les 90 jours suivant l'accouchement (30 jours pour la formation sanitaire, puis 60 jours supplémentaires pour les parents en cas de défaillance) ; enregistrement par l'officier dans les 10 jours suivant la réception de la déclaration.",
+    "source_refs": [0]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 4, 5, 9, 10, 11, 37, 68, 81, 85 et 91",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Article 6 (déclaration obligatoire, y compris des Camerounais à l'étranger)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Passé 90 jours, la naissance ne peut plus être déclarée directement : voir la fiche « enregistrement tardif de la naissance » (réquisition du Procureur ou du Sous-préfet jusqu'à 12 mois, puis jugement déclaratif).",
+      "source_refs": [0]
+    },
+    {
+      "text": "Vérifier toutes les mentions lors de la lecture de l'acte, avant signature : après signature, toute correction nécessite un jugement rectificatif.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Nul ne peut détenir deux actes de naissance : seul le plus ancien est pris en compte, sans préjudice de poursuites pénales.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7589-loi-n-2024-016-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-10",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "La loi n° 2024/016 ne fixe pas de liste de pièces justificatives et aucun texte d'application ni page officielle (commune, BUNEC, MINDDEVEL) n'a pu être consulté ; les listes publiées par des sites non officiels varient d'une commune à l'autre. Se renseigner auprès du centre d'état civil. Les guides non officiels citent généralement le certificat (ou attestation) de naissance délivré par la formation sanitaire et les pièces d'identité des parents."
+    },
+    {
+      "field": "validity",
+      "note": "La loi ne fixe pas de durée de validité de l'acte ; certaines administrations exigent une copie récente, à vérifier auprès de l'administration destinataire."
+    }
+  ],
+  "language_versions": ["fr"]
+}

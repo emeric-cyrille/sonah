@@ -76,8 +76,8 @@ describe('ChatService', () => {
   it('changement de sujet : pas de dérive vers la question précédente', async () => {
     const { chat, calls } = createHarness([ARTICLE], null);
     const first = await chat.reply('Quels sont mes droits face au travail forcé ?');
-    await chat.reply('Comment obtenir un passeport ?', first.conversationId);
-    expect(calls[1]?.query).toBe('Comment obtenir un passeport ?');
+    await chat.reply('Quelle est la durée du mandat présidentiel ?', first.conversationId);
+    expect(calls[1]?.query).toBe('Quelle est la durée du mandat présidentiel ?');
   });
 
   it('répond dans la langue de l’utilisateur, ou celle demandée', async () => {
@@ -172,9 +172,10 @@ describe('ChatService', () => {
       score: 0.07,
     });
     const { chat } = createHarness([offTopic], null);
-    const response = await chat.reply('Comment obtenir un passeport ?');
+    const response = await chat.reply('Quelle est la durée du congé de maternité ?');
     expect(response.sources).toEqual([]);
     expect(response.verdict).toBe('INSUFFICIENT_EVIDENCE');
+    expect(response.answerType).toBe('legal');
     expect(response.reply).toContain("Je n'ai pas trouvé de texte officiel");
   });
 
@@ -183,5 +184,6 @@ describe('ChatService', () => {
     const response = await chat.reply('Quel temps fait-il ?');
     expect(response.verdict).toBe('OUT_OF_SCOPE');
     expect(response.citations).toEqual([]);
+    expect(response.answerType).toBeUndefined();
   });
 });

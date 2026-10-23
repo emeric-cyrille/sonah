@@ -1,0 +1,188 @@
+{
+  "id": "creation-entreprise-individuelle-cfce",
+  "title_fr": "Créer une entreprise individuelle (Établissement) au CFCE",
+  "title_en": "Registering a sole proprietorship (Établissement) at the CFCE",
+  "category": "entreprise",
+  "keywords_fr": [
+    "créer une entreprise",
+    "création d'entreprise",
+    "entreprise individuelle",
+    "établissement",
+    "Ets",
+    "ouvrir un Ets",
+    "commerçant individuel",
+    "registre de commerce",
+    "RCCM",
+    "CFCE",
+    "guichet unique création entreprise",
+    "déclarer mon commerce",
+    "mettre mon business en règle"
+  ],
+  "keywords_en": [
+    "start a business",
+    "register a business",
+    "sole proprietorship",
+    "sole trader",
+    "business registration",
+    "trade register",
+    "RCCM",
+    "CFCE",
+    "one-stop shop"
+  ],
+  "authority": {
+    "name": "Centre de Formalités de Création d'Entreprises (CFCE), sous la tutelle du Ministère des PME, de l'Économie sociale et de l'Artisanat (MINPMEESA)",
+    "level": "regional",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "CFCE de la région où l'entreprise sera installée (un CFCE par région, généralement logé dans la Délégation régionale du MINPMEESA).",
+      "source_refs": [0]
+    },
+    {
+      "text": "Dépôt en ligne prévu via le guichet électronique MyBusiness.cm, avec paiement et retrait des pièces au CFCE (voir conseils : le site n'était pas accessible lors de la vérification).",
+      "source_refs": [1]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne physique (camerounaise ou étrangère en situation régulière) souhaitant exercer une activité commerciale en son nom propre ; les étrangers fournissent passeport ou titre de séjour.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Deux photocopies de la carte nationale d'identité (ou acte de naissance) pour les nationaux.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Deux photocopies du passeport ou du titre de séjour pour les étrangers.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une photocopie de l'acte de mariage, si le promoteur est marié.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Un extrait de casier judiciaire, ou une simple déclaration sur l'honneur remplie à l'accueil du CFCE.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Un plan de localisation de l'entreprise (siège).",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Une chemise cartonnée.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Constituer le dossier (pièces d'identité, acte de mariage le cas échéant, plan de localisation, déclaration sur l'honneur) et le déposer au CFCE de la région, ou le soumettre en ligne sur le guichet électronique MyBusiness.cm.",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 2,
+      "description": "Payer les frais au CFCE (immatriculation au registre du commerce et droits fixes d'enregistrement aux impôts) ; un reçu de paiement CFCE est délivré.",
+      "source_refs": [1]
+    },
+    {
+      "order": 3,
+      "description": "Retirer au CFCE les pièces attestant la création : immatriculation au RCCM (personne physique), carte de contribuable, attestation de création ; selon eRegulations, également la fiche CNPS employeur.",
+      "source_refs": [0, 1]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 41500,
+    "description": "41 500 FCFA selon le MINFI ; eRegulations Yaoundé détaille : 21 500 FCFA de frais d'immatriculation au registre du commerce + 20 000 FCFA de droits fixes d'enregistrement aux impôts. Une ancienne procédure eRegulations (« initiale », en cours de révision) mentionnait 53 000 FCFA d'immatriculation : se faire confirmer le montant au CFCE.",
+    "source_refs": [0, 1, 2]
+  },
+  "delay": {
+    "text": "1 à 3 jours selon eRegulations Yaoundé (procédure en ligne) ; le MINFI annonce un délai réglementaire de 72 heures pour la création d'entreprise.",
+    "source_refs": [0, 1]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Articles 44 et 45",
+      "title": "Acte uniforme OHADA portant sur le droit commercial général du 15 décembre 2010",
+      "source_refs": [1]
+    },
+    {
+      "sourceId": null,
+      "reference": "Articles II-a et II-b",
+      "title": "Circulaire interministérielle n° 001 MINJUSTICE-MINFI-MINPMEESA du 30 mai 2012 relative aux procédures devant les CFCE",
+      "source_refs": [1]
+    },
+    {
+      "sourceId": null,
+      "reference": "Instruction n° 001/CAB/PM du 13 juin 2016",
+      "title": "Formalités de création d'entreprise en ligne au Cameroun",
+      "source_refs": [1]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Le CFCE est un guichet unique : un seul dossier couvre le registre du commerce, l'immatriculation fiscale (carte de contribuable) et la CNPS.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Adressez-vous au CFCE de la région où l'activité sera exercée. Contacts indiqués par le MINFI : (+237) 222 20 45 88, 674 38 58 36, 694 54 27 37.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une entreprise individuelle dont le chiffre d'affaires annuel est inférieur à 50 millions FCFA relève ensuite de l'Impôt général synthétique (IGS) : voir la fiche « impot-liberatoire-patente ».",
+      "source_refs": [3]
+    }
+  ],
+  "sources": [
+    {
+      "title": "CFCE in brief / Business creation space in the Republic of Cameroon",
+      "url": "https://minfi.gov.cm/en/business-creation-space-in-the-republic-of-cameroon/",
+      "publisher": "Ministère des Finances (MINFI)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "S'enregistrer comme commerçant individuel – en ligne",
+      "url": "https://yaounde.eregulations.org/procedure/181/136?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "S'enregistrer comme commerçant individuel – procédure initiale (en cours de révision)",
+      "url": "https://yaounde.eregulations.org/procedure/81/69?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Bon à savoir sur l'Impôt général synthétique (IGS) – mars 2025 (brochure DGI, copie hébergée par Lefisk)",
+      "url": "https://lefisk.cm/uploads/brochure-igs-dgi-cameroun.pdf",
+      "publisher": "Direction générale des Impôts (copie sur lefisk.cm)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "where",
+      "note": "Le domaine mybusiness.cm affichait une page parking (« domain may be for sale ») le 2026-10-23 ; la disponibilité du dépôt en ligne n'a pas pu être confirmée. Le dépôt physique au CFCE reste la voie sûre."
+    },
+    {
+      "field": "cost",
+      "note": "Les deux sources officielles concordent sur 41 500 FCFA, mais les pages eRegulations ne sont pas datées et une ancienne fiche indique 53 000 FCFA ; à confirmer au CFCE."
+    },
+    {
+      "field": "validity",
+      "note": "L'immatriculation au RCCM n'a pas de durée de validité indiquée dans les sources consultées."
+    },
+    {
+      "field": "where",
+      "note": "Les adresses précises des CFCE régionaux ne sont pas publiées sur la page du MINFI."
+    }
+  ],
+  "language_versions": ["fr"]
+}

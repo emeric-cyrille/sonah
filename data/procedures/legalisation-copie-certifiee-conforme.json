@@ -1,0 +1,177 @@
+{
+  "id": "legalisation-copie-certifiee-conforme",
+  "title_fr": "Copie certifiée conforme et légalisation de documents",
+  "title_en": "Certified true copies and legalisation of documents",
+  "category": "autre",
+  "keywords_fr": [
+    "légalisation",
+    "légaliser un document",
+    "copie certifiée conforme",
+    "certifier conforme",
+    "certification conforme",
+    "CCC",
+    "légaliser mon diplôme",
+    "légalisation MINREX",
+    "légalisation pour l'étranger",
+    "apostille",
+    "faire certifier mon acte de naissance",
+    "attestation de présentation de l'original"
+  ],
+  "keywords_en": [
+    "legalization",
+    "legalisation",
+    "certified true copy",
+    "certified copy",
+    "authentication of documents",
+    "apostille Cameroon",
+    "MINREX legalization"
+  ],
+  "authority": {
+    "name": "Autorité qui a délivré l'original (ex. mairie / centre d'état civil, tribunal) ou autorité civile compétente ; Ministère des Relations Extérieures (MINREX) pour un usage à l'étranger",
+    "level": "national",
+    "source_refs": [0, 2, 4]
+  },
+  "where": [
+    {
+      "text": "Pour une copie d'un acte d'état civil : le centre d'état civil / la mairie qui détient l'acte (exemple : service de l'état civil de la Mairie de Yaoundé 1, rue Ceper, lundi–vendredi 07h30–15h30).",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Pour un usage à l'étranger : MINREX à Yaoundé pour les documents établis dans l'Adamaoua, le Centre, l'Est, l'Extrême-Nord, le Nord et le Sud ; antenne du MINREX à Douala pour le Littoral, l'Ouest, le Nord-Ouest et le Sud-Ouest.",
+      "source_refs": [0, 3]
+    },
+    {
+      "text": "Ensuite, le cas échéant, l'ambassade ou le consulat du pays de destination (ou l'ambassade du Cameroun à l'étranger pour un Camerounais qui y réside).",
+      "source_refs": [0, 3]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne détenant le document original (ou son représentant). L'ambassade du Cameroun aux États-Unis exige que la demande de légalisation finale émane du titulaire du document.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Le document original (ou, pour un acte d'état civil, une copie certifiée délivrée par le centre d'état civil qui a établi l'original — une simple photocopie n'est pas acceptée pour la légalisation).",
+      "source_refs": [0, 3]
+    },
+    {
+      "text": "Pour une copie d'acte de naissance à la mairie (exemple de Yaoundé 1) : formulaire de demande de copie, l'acte original, un timbre fiscal de 1 000 FCFA et un timbre communal de 200 FCFA par document.",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Pour la légalisation par l'ambassade du Cameroun à Washington (étape finale à l'étranger) : demande notariée adressée à l'Ambassadeur, original légalisé par le MINREX, copie du passeport, justificatif de séjour et paiement de 2,73 USD.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Faire certifier ou légaliser le document par l'autorité qui l'a délivré (ex. la mairie qui a établi l'acte de naissance). Pour une copie d'acte d'état civil, demander une copie certifiée au centre d'état civil et y apposer les timbres requis.",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 2,
+      "description": "Si le document est destiné à l'étranger : faire légaliser la signature de cette autorité par le MINREX (Yaoundé ou antenne de Douala selon la région d'origine du document).",
+      "source_refs": [0, 3]
+    },
+    {
+      "order": 3,
+      "description": "Faire ensuite légaliser le document par l'ambassade ou le consulat compétent (pays de destination, ou ambassade du Cameroun dans votre pays de résidence).",
+      "source_refs": [0, 3]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Copie d'acte d'état civil à la mairie (exemple Yaoundé 1, eRegulations) : pas de frais de service affichés, mais un timbre fiscal de 1 000 FCFA et un timbre communal de 200 FCFA par document, plus 100 FCFA pour le formulaire de demande de copie. Les frais de légalisation au MINREX n'ont pas pu être vérifiés sur une source officielle. Les frais des ambassades sont fixés par chaque ambassade (ex. 2,73 USD à l'ambassade du Cameroun à Washington).",
+    "source_refs": [0, 1, 2]
+  },
+  "delay": {
+    "text": "Copie d'acte à la mairie (Yaoundé 1) : 0 à 40 minutes sur place. Légalisation finale à l'ambassade du Cameroun à Washington : environ 5 jours ouvrables. Délai MINREX non vérifié.",
+    "source_refs": [0, 2]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Loi n° 2024/016, art. 3 (définitions des copies initiale, intégrale et ultérieure) et art. 5 al. 2-3 (gratuité de l'original et de la copie initiale ; droit de timbre sur les autres copies et extraits)",
+      "title": "Loi portant organisation du système d'enregistrement des faits d'état civil au Cameroun"
+    },
+    {
+      "sourceId": null,
+      "reference": "Loi n° 2009/019 du 15 décembre 2009 portant fiscalité locale, art. 104 (timbre communal) ; Code général des impôts, art. 428-6, 430 et 444 (timbre fiscal)",
+      "title": "Fiscalité locale et Code général des impôts",
+      "source_refs": [1, 2]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Le Cameroun n'est pas partie à la Convention de La Haye sur l'apostille : les documents camerounais destinés à l'étranger passent par la légalisation (MINREX puis ambassade), pas par une apostille.",
+      "source_refs": [3]
+    },
+    {
+      "text": "Un document légalisé par le MINREX qui est modifié ou altéré de quelque façon sera rejeté par l'ambassade.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Pour les concours administratifs, les avis officiels demandent souvent une copie certifiée conforme du diplôme « signée par une autorité civile compétente » et une attestation de présentation de l'original ; les photocopies simples peuvent entraîner le rejet du dossier.",
+      "source_refs": [4]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Authentication / Legalization of official Cameroonian documents (version January 2023)",
+      "url": "https://www.cameroonembassyusa.org/main23/Images/documents_folder/AuthenticationLegalizationofOfficialCameroonianDocuments.pdf",
+      "publisher": "Ambassade de la République du Cameroun aux États-Unis",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Achat de timbres communaux (étape 382, procédure « S'enregistrer comme commerçant individuel »)",
+      "url": "https://yaounde.eregulations.org/procedure/81/69/step/382?l=fr",
+      "publisher": "eRegulations Yaoundé (MINPMEESA)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Obtention des actes d'état civil et du certificat de domicile (étape 383)",
+      "url": "https://yaounde.eregulations.org/procedure/81/69/step/383?l=fr",
+      "publisher": "eRegulations Yaoundé (MINPMEESA)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Légalisation et Apostille de La Haye",
+      "url": "https://exteriores.gob.es/Embajadas/yaunde/fr/ServiciosConsulares/Paginas/Consular/Legalizacion-y-apostilla-de-La-Haya.aspx",
+      "publisher": "Ambassade d'Espagne à Yaoundé",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Arrêté MINFOPRA du 21 décembre 2017 portant ouverture d'un test de sélection pour le recrutement de 150 sages-femmes/maïeuticiens (MINSANTE)",
+      "url": "https://www.minsante.cm/site/sites/default/files/150sfm2017.pdf",
+      "publisher": "Ministère de la Santé Publique / MINFOPRA",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost",
+      "note": "Aucun tarif officiel trouvé pour la légalisation de signature au MINREX ni pour la certification conforme de photocopies (diplômes, CNI) en mairie, sous-préfecture ou commissariat. Des sites non officiels citent des montants divergents ; non retenus."
+    },
+    {
+      "field": "where",
+      "note": "La pratique courante de certification conforme de photocopies (diplômes, CNI) en mairie, sous-préfecture ou commissariat n'a pas pu être confirmée par une source officielle décrivant la procédure ; seule la formule « autorité civile compétente » figure dans les avis de concours."
+    },
+    {
+      "field": "delay",
+      "note": "Délai de traitement au MINREX non vérifié."
+    },
+    {
+      "field": "validity",
+      "note": "Aucune règle officielle générale trouvée sur la durée de validité d'une copie certifiée conforme ; chaque administration destinataire peut fixer sa propre exigence."
+    }
+  ],
+  "language_versions": ["fr"]
+}

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { Citation, Language, Verdict } from '../policy/policy.types';
+import type { ProcedurePayload } from '../policy/procedure-answer';
 
 export const chatRequestSchema = z.object({
   message: z.string().trim().min(1, 'Message vide').max(2000),
@@ -23,4 +24,13 @@ export interface ChatResponse {
   readonly citations: readonly Citation[];
   readonly sources: readonly ChatSource[];
   readonly traceId: string;
+  /**
+   * Nature de la réponse (champ ajouté, facultatif pour les anciens clients) :
+   * procedure (fiche de démarche), legal (textes officiels cités), orientation (démarche sans fiche).
+   */
+  readonly answerType?: AnswerType;
+  /** Fiche de démarche structurée, pour answerType « procedure ». */
+  readonly procedure?: ProcedurePayload;
 }
+
+export type AnswerType = 'procedure' | 'legal' | 'orientation';
