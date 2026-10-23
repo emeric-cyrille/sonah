@@ -28,6 +28,7 @@ export const fr = {
       'Beaucoup de questions en peu de temps : patientez un instant avant de réessayer.',
     genericError: "Quelque chose s'est mal passé. Pouvez-vous réessayer ?",
     invalidResponse: 'Le serveur a renvoyé une réponse inattendue.',
+    busy: 'Une étape est déjà en cours de traitement. Patientez quelques secondes, puis réessayez.',
     notFound: 'Élément introuvable.',
     dateLocale: 'fr-FR',
   },
@@ -84,7 +85,7 @@ export const fr = {
     eyebrow: 'Assistant juridique · Cameroun',
     headline: { first: 'Bonjour,', words: ['je', 'suis'], accent: 'Sonah.' },
     intro:
-      'Vos droits au travail, ce que dit la Constitution… Posez votre question avec vos mots : je cherche dans les textes officiels, je cite les articles que je trouve et je vous dis quand je ne sais pas.',
+      'Vos droits au travail, une naissance à déclarer, vos données personnelles, ce que dit la Constitution… Posez votre question avec vos mots : je cherche dans les textes officiels, je cite les articles que je trouve et je vous dis quand je ne sais pas.',
     askLabel: 'Votre question',
     askPlaceholder: 'Ex. : combien de jours de congés payés par an ?',
     askButton: 'Demander',
@@ -93,7 +94,7 @@ export const fr = {
     faqTitle: 'Une question sur vos droits',
     faqTitleEm: 'au travail ou ailleurs',
     faqLead:
-      "Ces questions s'appuient sur le Code du travail (1992) et la Constitution (1996), les textes indexés aujourd'hui. Touchez-en une pour démarrer.",
+      "Ces questions s'appuient sur les textes indexés aujourd'hui : Code du travail, Constitution et ses révisions, lois sur l'état civil, les données personnelles et la cybersécurité, décret sur la création d'entreprise. Touchez-en une pour démarrer.",
     faqAll: 'Voir les sujets couverts',
     questions: [
       { topic: 'Congés', question: 'Combien de jours de congés payés ai-je droit par an ?' },
@@ -102,15 +103,22 @@ export const fr = {
         topic: 'Maladie',
         question: 'Mon employeur peut-il me licencier pendant un arrêt maladie ?',
       },
-      { topic: 'Salaire', question: 'Existe-t-il un salaire minimum au Cameroun ?' },
-      { topic: 'Libertés', question: 'Le travail forcé est-il interdit au Cameroun ?' },
+      { topic: 'État civil', question: 'Dans quel délai faut-il déclarer une naissance ?' },
       {
-        topic: 'Constitution',
-        question: 'Combien de temps dure le mandat du Président de la République ?',
+        topic: 'Données personnelles',
+        question: 'Quels sont mes droits sur mes données personnelles ?',
+      },
+      {
+        topic: 'Cybersécurité',
+        question: "Quelles sanctions pour l'accès frauduleux à un système informatique ?",
+      },
+      {
+        topic: 'Entreprise',
+        question: 'Quelles pièces faut-il pour créer une entreprise au CFCE ?',
       },
       {
         topic: 'Constitution',
-        question: 'Qui peut proposer une révision de la Constitution ?',
+        question: 'Combien de temps dure le mandat du Président de la République ?',
       },
     ],
     motifsEyebrow: 'Patrimoine camerounais',
@@ -126,7 +134,7 @@ export const fr = {
       },
       {
         title: 'Sonah cherche',
-        text: 'Dans les textes officiels indexés, article par article : aujourd’hui le Code du travail et la Constitution.',
+        text: 'Dans les textes officiels indexés, article par article : Code du travail, Constitution, état civil, données personnelles, cybersécurité, création d’entreprise.',
       },
       {
         title: 'Sonah répond, sources à l’appui',
@@ -187,19 +195,44 @@ export const fr = {
       {
         id: 'travail',
         title: 'Droit du travail',
-        source: 'Code du travail · loi n° 92-007 du 14 août 1992',
+        source: 'Code du travail · loi n° 92-007 du 14 août 1992 (versions française et anglaise)',
         questions: [
           'Combien de jours de congés payés ai-je droit par an ?',
           "Combien de temps peut durer une période d'essai ?",
           'Mon employeur peut-il me licencier pendant un arrêt maladie ?',
-          'Existe-t-il un salaire minimum au Cameroun ?',
-          'Le travail forcé est-il interdit au Cameroun ?',
         ],
+      },
+      {
+        id: 'etat-civil',
+        title: 'État civil',
+        source: 'Loi n° 2024/016 du 23 décembre 2024 (enregistrement des faits d’état civil)',
+        questions: ['Dans quel délai faut-il déclarer une naissance ?'],
+      },
+      {
+        id: 'donnees',
+        title: 'Données personnelles',
+        source: 'Loi n° 2024/017 du 23 décembre 2024 (protection des données personnelles)',
+        questions: [
+          'Quels sont mes droits sur mes données personnelles ?',
+          "Quelles sont les obligations d'une entreprise qui collecte des données personnelles ?",
+        ],
+      },
+      {
+        id: 'numerique',
+        title: 'Cybersécurité et communications électroniques',
+        source: 'Lois n° 2010/012, n° 2010/013 et n° 2015/006',
+        questions: ["Quelles sanctions pour l'accès frauduleux à un système informatique ?"],
+      },
+      {
+        id: 'entreprise',
+        title: "Création d'entreprise",
+        source: 'Décret n° 2017/0877/PM du 28 février 2017 (CFCE)',
+        questions: ['Quelles pièces faut-il pour créer une entreprise au CFCE ?'],
       },
       {
         id: 'constitution',
         title: 'Constitution',
-        source: 'Constitution · loi n° 96-06 du 18 janvier 1996 (révisée en 2008)',
+        source: 'Constitution de 1996 · révisions de 2008 et de 2026',
         questions: [
           'Combien de temps dure le mandat du Président de la République ?',
           'Qui peut proposer une révision de la Constitution ?',
@@ -214,43 +247,34 @@ export const fr = {
     soonBadge: 'Pas encore couvert',
     soon: [
       {
-        title: 'Cybersécurité et cybercriminalité',
-        description: 'Infractions en ligne, obligations de sécurité des opérateurs.',
+        title: "Carte nationale d'identité et passeport",
+        description: 'Pièces, coûts et délais, à partir de sources officielles vérifiées.',
       },
       {
-        title: 'Communications électroniques',
-        description: 'Droits des usagers, opérateurs et régulation du secteur.',
+        title: 'Impôts et sécurité sociale (CNPS)',
+        description: 'Déclarations, cotisations et prestations.',
       },
       {
-        title: 'Protection des données personnelles',
-        description: 'Ce que les organismes peuvent collecter et vos droits sur vos données.',
-      },
-      {
-        title: 'État civil',
-        description: 'Actes de naissance, de mariage, de décès et jugements supplétifs.',
-      },
-      {
-        title: "Démarches : carte d'identité, passeport, création d'entreprise, impôts, CNPS",
+        title: 'Salaire minimum et textes d’application du Code du travail',
         description:
-          'Pièces, coûts et délais des démarches courantes, à partir de sources officielles vérifiées.',
+          'Le montant du salaire minimum est fixé par décret : ce texte n’est pas encore indexé.',
       },
     ],
   },
   chat: {
     metaTitle: 'Discuter avec Sonah',
     metaDescription:
-      'Posez votre question : Sonah répond à partir du Code du travail et de la Constitution, sources à l’appui.',
+      'Posez votre question : Sonah répond à partir des textes officiels camerounais indexés, sources à l’appui.',
     emptyTitle: "Qu'est-ce qui vous amène ?",
     emptyLead:
-      "Décrivez votre situation avec vos mots. Aujourd'hui, je connais le Code du travail (1992) et la Constitution (1996) — si votre sujet n'est pas encore couvert, je vous le dirai.",
+      "Décrivez votre situation avec vos mots. Je connais le Code du travail, la Constitution, l'état civil, les données personnelles, la cybersécurité et la création d'entreprise — si votre sujet n'est pas encore couvert, je vous le dirai.",
     suggestions: [
-      'Combien de jours de congés payés par an ?',
-      "Quelle est la durée maximale d'une période d'essai ?",
-      'Peut-on me licencier pendant un arrêt maladie ?',
-      'Existe-t-il un salaire minimum ?',
-      'Le travail forcé est-il interdit ?',
-      'Combien de temps dure le mandat présidentiel ?',
-      'La liberté d’expression est-elle garantie ?',
+      'Combien de jours de congés payés ai-je droit par an ?',
+      "Combien de temps peut durer une période d'essai ?",
+      'Mon employeur peut-il me licencier pendant un arrêt maladie ?',
+      'Dans quel délai faut-il déclarer une naissance ?',
+      'Quels sont mes droits sur mes données personnelles ?',
+      'Combien de temps dure le mandat du Président de la République ?',
     ],
     inputLabel: 'Votre message',
     placeholder: 'Écrivez à Sonah…',
@@ -341,6 +365,8 @@ export const fr = {
     colDate: 'Date',
     colVerdict: 'Verdict',
     colHash: 'Empreinte',
+    kindChat: 'Conversation',
+    kindScenario: 'Scénario',
     open: 'Ouvrir',
     lookupLabel: 'Ouvrir une trace par identifiant',
     lookupPlaceholder: 'Identifiant de trace',
@@ -361,6 +387,7 @@ export const fr = {
       createdAt: 'Créée le',
       conversation: 'Conversation',
       scenarioRun: 'Exécution de scénario',
+      producedBy: 'Produite par',
       verdict: 'Verdict',
       hash: 'Empreinte (hash)',
       prevHash: 'Empreinte précédente',
@@ -404,6 +431,27 @@ export const fr = {
     agentsLead: 'Chaque agent a un mandat et des sources précis.',
     mandate: 'Mandat',
     sources: 'Sources',
+    allSources: 'tous les textes indexés',
+    rules: 'Règles déterministes',
+    ruleLabels: {
+      'pii-masking': 'masquage des données personnelles',
+      'verbatim-citation-gate': 'citations vérifiées mot à mot',
+      'outdated-text-warning': 'alerte texte modifié',
+      'conflict-detection': 'détection des contradictions',
+      'refer-sensitive-situations': 'renvoi des situations sensibles',
+      'extractive-fallback': 'repli extractif sans modèle',
+      'legality-check': 'contrôle de légalité',
+      'gap-flagging': 'signalement des lacunes',
+      'service-continuity-check': 'continuité de service',
+      'data-minimisation-check': 'minimisation des données',
+      'procedure-consistency-check': 'cohérence des procédures',
+    } as Record<string, string>,
+    domains: {
+      'legal-information': 'Information juridique',
+      'data-protection': 'Protection des données',
+      'service-continuity': 'Continuité de service',
+      'business-creation': "Création d'entreprise",
+    } as Record<string, string>,
     scenariosTitle: 'Scénarios',
     scenariosEmpty: 'Aucun scénario disponible.',
     stepsCount: (n: number): string => `${n} événement${n > 1 ? 's' : ''}`,
@@ -494,28 +542,28 @@ export const fr = {
     readiness:
       'Sonah sert aussi d’outil d’analyse : le laboratoire de politiques confronte les textes à des scénarios concrets et met en évidence les lacunes réglementaires, avec des exemples internationaux. Cette lecture alimente le cadre de préparation à l’IA (AI Readiness) — l’évaluation détaillée sera publiée dans le dossier du projet.',
     corpusTitle: 'Textes couverts',
-    corpusLead: 'Sonah ne répond qu’à partir de ces textes. La liste s’allonge progressivement.',
-    corpusAvailable: 'Indexés',
-    corpusSoon: 'En préparation',
-    corpus: [
-      {
-        title: 'Constitution de la République du Cameroun',
-        detail:
-          'Loi n° 96-06 du 18 janvier 1996. Certains articles ont été modifiés par la loi n° 2008-1 du 14 avril 2008 : Sonah le signale quand il cite un article concerné.',
-        url: 'https://faolex.fao.org/docs/pdf/cmr117236.pdf',
-      },
-      {
-        title: 'Code du travail',
-        detail:
-          'Loi n° 92-007 du 14 août 1992. Des textes d’application peuvent compléter certaines dispositions (par exemple le montant du salaire minimum, fixé par décret).',
-        url: 'https://faolex.fao.org/docs/pdf/cmr198304.pdf',
-      },
-    ],
+    corpusLead:
+      'Sonah ne répond qu’à partir des textes indexés ci-dessous, découpés article par article. Cette liste est générée depuis le manifeste du corpus utilisé par l’API.',
+    corpusCount: (indexed: number, cited: number): string =>
+      `${indexed} textes indexés${cited > 0 ? ` · ${cited} référence${cited > 1 ? 's' : ''} citée${cited > 1 ? 's' : ''} sans indexation` : ''}`,
+    corpusGroups: {
+      national: 'Droit camerounais',
+      strategy: 'Stratégie nationale',
+      international: 'Références internationales',
+    },
+    corpusAvailable: 'Indexé',
+    corpusCitedOnly: 'Cité uniquement',
+    corpusBinding: 'Contraignant',
+    corpusAdvisory: 'Non contraignant',
+    corpusLanguages: { fr: 'Français', en: 'Anglais' },
+    corpusAmends: 'Modifie',
+    corpusOfficial: 'Texte officiel',
+    corpusSoon: 'Pas encore couvert',
     corpusComing: [
-      'Cybersécurité et cybercriminalité',
-      'Communications électroniques',
-      'Protection des données personnelles',
-      'État civil',
+      "Démarches : carte nationale d'identité, passeport",
+      'Fiscalité et sécurité sociale (CNPS)',
+      "Textes d'application du Code du travail (salaire minimum, conventions collectives)",
+      'Version anglaise des lois sur le numérique, les données et l’état civil',
     ],
     privacyTitle: 'Données et confidentialité',
     privacy: [

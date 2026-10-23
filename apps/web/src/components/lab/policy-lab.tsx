@@ -17,9 +17,15 @@ import {
   type RunStep,
   type Scenario,
 } from '@/lib/api-client';
+import { CORPUS_SOURCES } from '@/lib/corpus-sources';
 import { describeApiError, toApiErrorKind, type ApiErrorKind } from '@/lib/api-errors';
 
 const RUN_STORAGE_KEY = 'sonah_lab_run';
+
+/** Titre court d'une source du corpus (identifiant renvoyé par l'API). */
+function sourceLabel(sourceId: string): string {
+  return CORPUS_SOURCES.find((source) => source.id === sourceId)?.shortTitle ?? sourceId;
+}
 
 // Identité visuelle de chaque agent : couleur et motif camerounais
 const AGENT_LOOKS: ReadonlyArray<{ readonly color: string; readonly pattern: PatternName }> = [
@@ -189,7 +195,7 @@ export function PolicyLab(): JSX.Element {
   useEffect(() => {
     let cancelled = false;
     setLoadError(null);
-    Promise.all([listAgents(), listScenarios()])
+    Promise.all([listAgents(locale), listScenarios(locale)])
       .then(async ([agentList, scenarioList]) => {
         if (cancelled) return;
         setAgents(agentList);
@@ -202,7 +208,8 @@ export function PolicyLab(): JSX.Element {
           if (cancelled) return;
           setRun({
             runId: state.runId,
-            scenario,
+            // Titre dans la langue de l'exécution, quand l'API le fournit
+            scenario: { ...scenario, ...state.scenario },
             totalSteps: state.totalSteps,
             steps: state.steps,
             done: state.done,
@@ -239,11 +246,13 @@ export function PolicyLab(): JSX.Element {
     [agents],
   );
 
+  const domainLabel = (domain: string): string => t.domains[domain] ?? domain;
+
   const start = async (scenario: Scenario): Promise<void> => {
     setBusy('starting');
     setActionError(null);
     try {
-      const started = await startScenarioRun(scenario.id);
+      const started = await startScenarioRun(scenario.id, locale);
       saveRun(started.runId, scenario.id);
       setRun({
         runId: started.runId,
@@ -258,6 +267,20 @@ export function PolicyLab(): JSX.Element {
       setActionError(toApiErrorKind(error));
     } finally {
       setBusy(null);
+    }
+  };
+
+  const syncRun = async (runId: string): Promise<void> => {
+    try {
+      const state = await getScenarioRun(runId);
+      setRun((current) =>
+        current && current.runId === runId
+          ? { ...current, totalSteps: state.totalSteps, steps: state.steps, done: state.done }
+          : current,
+      );
+      if (!state.done) setActionError({ kind: 'busy' });
+    } catch (error) {
+      setActionError(toApiErrorKind(error));
     }
   };
 
@@ -281,7 +304,9 @@ export function PolicyLab(): JSX.Element {
       setAnnouncement(`${t.progress(step.step, step.totalSteps)} : ${step.event.title}`);
     } catch (error) {
       if (error instanceof ApiRequestError && error.status === 409) {
-        setRun((current) => (current ? { ...current, done: true } : current));
+        // 409 : scénario terminé, ou étape déjà en cours de publication (autre onglet, délai
+        // dépassé) : on resynchronise avec l'état enregistré côté serveur.
+        await syncRun(run.runId);
       } else {
         setActionError(toApiErrorKind(error));
       }
@@ -363,10 +388,16 @@ export function PolicyLab(): JSX.Element {
                     {agent.mandate}
                   </p>
                 )}
-                {agent.sources.length > 0 && (
+                <p className="mt-2 text-xs text-ink-muted">
+                  <span className="font-semibold">{t.sources} : </span>
+                  {agent.sources.length > 0
+                    ? agent.sources.map(sourceLabel).join(' · ')
+                    : t.allSources}
+                </p>
+                {agent.rules.length > 0 && (
                   <p className="mt-2 text-xs text-ink-muted">
-                    <span className="font-semibold">{t.sources} : </span>
-                    {agent.sources.join(' · ')}
+                    <span className="font-semibold">{t.rules} : </span>
+                    {agent.rules.map((rule) => t.ruleLabels[rule] ?? rule).join(' · ')}
                   </p>
                 )}
               </li>
@@ -404,7 +435,7 @@ export function PolicyLab(): JSX.Element {
                   </div>
                   <div className="flex flex-1 flex-col p-6">
                     <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-                      {scenario.domain} · {t.stepsCount(scenario.totalSteps)}
+                      {domainLabel(scenario.domain)} · {t.stepsCount(scenario.totalSteps)}
                     </p>
                     <h3 className="mt-2 font-display text-2xl leading-snug">{scenario.title}</h3>
                     <p className="mt-2 flex-1 text-ink-soft">{scenario.description}</p>
@@ -431,7 +462,7 @@ export function PolicyLab(): JSX.Element {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div className="min-w-0">
                 <p className="eyebrow text-sun">
-                  {t.running} · {run.scenario.domain}
+                  {t.running} · {domainLabel(run.scenario.domain)}
                 </p>
                 <h2 id="run-title" className="mt-1 font-display text-2xl leading-tight sm:text-3xl">
                   {run.scenario.title}

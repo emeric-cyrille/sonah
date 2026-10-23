@@ -2,9 +2,84 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Y3172Diagram } from '@/components/about/y3172-diagram';
 import { PageHero } from '@/components/page-hero';
+import type { Locale } from '@/i18n/config';
+import type { Dictionary } from '@/i18n/dictionaries';
 import { getServerDictionary } from '@/i18n/server';
+import { CORPUS_SOURCES, type CorpusSource, type CorpusSourceType } from '@/lib/corpus-sources';
 
 const GITHUB_URL = 'https://github.com/emeric-cyrille/sonah';
+
+const CORPUS_GROUPS: ReadonlyArray<{
+  readonly id: keyof Dictionary['about']['corpusGroups'];
+  readonly types: readonly CorpusSourceType[];
+}> = [
+  { id: 'national', types: ['CONSTITUTION', 'LAW', 'DECREE', 'PROCEDURE', 'FORM', 'OTHER'] },
+  { id: 'strategy', types: ['STRATEGY'] },
+  { id: 'international', types: ['INTERNATIONAL'] },
+];
+
+function formatYear(date: string): string {
+  return date.slice(0, 4);
+}
+
+function CorpusCard({
+  source,
+  locale,
+  t,
+}: {
+  readonly source: CorpusSource;
+  readonly locale: Locale;
+  readonly t: Dictionary['about'];
+}): JSX.Element {
+  const amended = source.amends
+    ? CORPUS_SOURCES.find((candidate) => candidate.id === source.amends)
+    : undefined;
+  return (
+    <li
+      className={`flex flex-col rounded-3xl border p-5 ${
+        source.indexed ? 'border-line bg-paper-soft' : 'border-dashed border-ink/25'
+      }`}
+    >
+      <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
+        <span
+          className={`rounded-full px-2.5 py-0.5 ${
+            source.indexed
+              ? 'border border-leaf/30 bg-leaf/10 text-leaf-deep'
+              : 'border border-ink/20 text-ink-soft'
+          }`}
+        >
+          {source.indexed ? t.corpusAvailable : t.corpusCitedOnly}
+        </span>
+        <span className="rounded-full border border-ink/15 px-2.5 py-0.5 text-ink-soft">
+          {t.corpusLanguages[source.language]}
+        </span>
+        <span className="rounded-full border border-ink/15 px-2.5 py-0.5 text-ink-soft">
+          {source.binding === 'binding' ? t.corpusBinding : t.corpusAdvisory}
+        </span>
+        <span className="ml-auto font-mono text-ink-muted">{formatYear(source.date)}</span>
+      </div>
+      <p className="mt-3 font-display text-xl leading-snug">{source.shortTitle}</p>
+      <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-soft">{source.title[locale]}</p>
+      <p className="mt-2 text-xs text-ink-muted">
+        {source.issuingBody}
+        {amended && (
+          <>
+            {' · '}
+            {t.corpusAmends} : {amended.shortTitle}
+          </>
+        )}
+      </p>
+      <a
+        href={source.url}
+        target="_blank"
+        rel="noreferrer"
+        className="link-underline mt-3 w-fit text-sm font-semibold"
+      >
+        {t.corpusOfficial} ↗
+      </a>
+    </li>
+  );
+}
 
 export function generateMetadata(): Metadata {
   const { dict } = getServerDictionary();
@@ -12,8 +87,9 @@ export function generateMetadata(): Metadata {
 }
 
 export default function AboutPage(): JSX.Element {
-  const { dict } = getServerDictionary();
+  const { dict, locale } = getServerDictionary();
   const t = dict.about;
+  const indexedCount = CORPUS_SOURCES.filter((source) => source.indexed).length;
   const sections = [
     { id: 'architecture', label: t.architectureTitle },
     { id: 'y3172', label: t.pipelineTitle },
@@ -102,28 +178,23 @@ export default function AboutPage(): JSX.Element {
               {t.corpusTitle}
             </h2>
             <p className="mt-4 max-w-3xl text-ink-soft">{t.corpusLead}</p>
-            <h3 className="eyebrow mt-8">{t.corpusAvailable}</h3>
-            <ul className="mt-3 space-y-4">
-              {t.corpus.map((source) => (
-                <li key={source.title} className="rounded-3xl border border-line bg-paper-soft p-6">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <p className="font-display text-2xl">{source.title}</p>
-                    <span className="rounded-full border border-leaf/30 bg-leaf/10 px-2.5 py-0.5 text-xs font-semibold text-leaf-deep">
-                      {t.corpusAvailable}
-                    </span>
-                  </div>
-                  <p className="mt-2 leading-relaxed text-ink-soft">{source.detail}</p>
-                  <a
-                    href={source.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="link-underline mt-3 inline-block text-sm font-semibold"
-                  >
-                    FAOLEX ↗
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <p className="mt-3 text-sm font-semibold">
+              {t.corpusCount(indexedCount, CORPUS_SOURCES.length - indexedCount)}
+            </p>
+            {CORPUS_GROUPS.map((group) => {
+              const sources = CORPUS_SOURCES.filter((source) => group.types.includes(source.type));
+              if (sources.length === 0) return null;
+              return (
+                <div key={group.id} className="mt-8">
+                  <h3 className="eyebrow">{t.corpusGroups[group.id]}</h3>
+                  <ul className="mt-3 grid gap-3 md:grid-cols-2">
+                    {sources.map((source) => (
+                      <CorpusCard key={source.id} source={source} locale={locale} t={t} />
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
             <h3 className="eyebrow mt-10">{t.corpusSoon}</h3>
             <ul className="mt-3 flex flex-wrap gap-2">
               {t.corpusComing.map((item) => (

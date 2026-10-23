@@ -12,6 +12,7 @@ export type ApiErrorKind =
   | { readonly kind: 'rate-limited'; readonly retryAfterSeconds?: number }
   | { readonly kind: 'not-found' }
   | { readonly kind: 'invalid' }
+  | { readonly kind: 'busy' }
   | { readonly kind: 'generic' };
 
 export function toApiErrorKind(error: unknown): ApiErrorKind {
@@ -36,6 +37,8 @@ export function describeApiError(error: ApiErrorKind, dict: Dictionary): string 
       return dict.common.notFound;
     case 'invalid':
       return dict.common.invalidResponse;
+    case 'busy':
+      return dict.common.busy;
     default:
       return dict.common.genericError;
   }

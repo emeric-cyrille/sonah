@@ -86,9 +86,14 @@ export function TraceList(): JSX.Element {
                   <span className="sr-only">{t.colDate} : </span>
                   {formatDateTime(trace.createdAt, dict.common.dateLocale)}
                 </span>
-                <span>
+                <span className="flex flex-wrap items-center gap-2">
                   <span className="sr-only">{t.colVerdict} : </span>
                   <VerdictBadge verdict={trace.verdict} tone="light" />
+                  {trace.agentId && (
+                    <span className="rounded-full border border-ink/15 px-2.5 py-0.5 text-xs text-ink-soft">
+                      {trace.kind === 'scenario' ? t.kindScenario : t.kindChat} · {trace.agentId}
+                    </span>
+                  )}
                 </span>
                 <span className="font-mono text-xs text-ink-muted">
                   <span className="sr-only">{t.colHash} : </span>
