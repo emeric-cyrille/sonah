@@ -19,6 +19,7 @@ export const KNOWN_VERDICTS = [
   'OUTDATED_TEXT',
   'REFER_TO_HUMAN',
   'OUT_OF_SCOPE',
+  'PROCEDURE_GUIDANCE',
 ] as const;
 export type KnownVerdict = (typeof KNOWN_VERDICTS)[number];
 
@@ -49,6 +50,55 @@ export const sourceSchema = z.object({
   url: nullableString,
 });
 
+// ─── Fiche démarche (champs optionnels de /chat) ──────────────────
+// Tolérance : une fiche mal formée est ignorée (catch) au lieu de faire échouer toute la réponse.
+
+export const ANSWER_TYPES = ['procedure', 'legal', 'orientation'] as const;
+export type AnswerType = (typeof ANSWER_TYPES)[number];
+
+const stringList = z.array(z.string()).default([]);
+
+export const procedureSchema = z.object({
+  id: z.string().default(''),
+  title: z.string(),
+  authority: z
+    .object({ name: z.string(), level: nullableString })
+    .nullish()
+    .transform((value) => value ?? undefined),
+  where: stringList,
+  documents: stringList,
+  steps: z
+    .array(z.object({ order: z.number(), description: z.string() }))
+    .default([])
+    .transform((steps) => [...steps].sort((a, b) => a.order - b.order)),
+  cost: z
+    .object({
+      amount_fcfa: z
+        .number()
+        .nullish()
+        .transform((value) => value ?? null),
+      description: z
+        .string()
+        .nullish()
+        .transform((value) => value ?? null),
+    })
+    .nullish()
+    .transform((value) => value ?? null),
+  delay: z
+    .string()
+    .nullish()
+    .transform((value) => value ?? null),
+  validity: z
+    .string()
+    .nullish()
+    .transform((value) => value ?? null),
+  sources: z
+    .array(z.object({ title: z.string(), url: nullableString, publisher: nullableString }))
+    .default([]),
+  verifiedAt: nullableString,
+  unverified: z.array(z.object({ field: z.string(), note: z.string().default('') })).default([]),
+});
+
 export const chatResponseSchema = z.object({
   conversationId: z.string(),
   reply: z.string(),
@@ -57,6 +107,8 @@ export const chatResponseSchema = z.object({
   citations: z.array(citationSchema).default([]),
   sources: z.array(sourceSchema).default([]),
   traceId: nullableString,
+  answerType: z.enum(ANSWER_TYPES).optional().catch(undefined),
+  procedure: procedureSchema.optional().catch(undefined),
 });
 
 export const traceSummarySchema = z.object({
@@ -198,6 +250,7 @@ export const documentSchema = z.object({
 export type Citation = z.infer<typeof citationSchema>;
 export type Source = z.infer<typeof sourceSchema>;
 export type ChatResponse = z.infer<typeof chatResponseSchema>;
+export type Procedure = z.infer<typeof procedureSchema>;
 export type TraceSummary = z.infer<typeof traceSummarySchema>;
 export type Trace = z.infer<typeof traceSchema>;
 export type TraceStep = z.infer<typeof traceStepSchema>;

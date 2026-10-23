@@ -14,6 +14,7 @@ import {
   MOCK_SCENARIOS,
   type MockCitation,
 } from './mock-data';
+import { MOCK_PROCEDURE_ANSWERS } from './mock-procedures';
 
 interface MockStep {
   order: number;
@@ -185,6 +186,38 @@ export function mockChat(body: {
     typeof body.conversationId === 'string' && body.conversationId
       ? body.conversationId
       : randomUUID();
+  // Démarches administratives (fiches d'exemple) avant les réponses juridiques
+  const procedureAnswer = MOCK_PROCEDURE_ANSWERS.find((candidate) => candidate.match.test(message));
+  if (procedureAnswer) {
+    const reply = procedureAnswer.reply[language];
+    const trace = appendTrace({
+      conversationId,
+      scenarioRunId: null,
+      verdict: procedureAnswer.verdict,
+      steps: buildSteps({
+        question: message,
+        agent: 'sonah',
+        verdict: procedureAnswer.verdict,
+        citations: [],
+        reply,
+      }),
+    });
+    return {
+      status: 200,
+      body: {
+        conversationId,
+        reply,
+        language,
+        verdict: procedureAnswer.verdict,
+        citations: [],
+        sources: [],
+        traceId: trace.id,
+        answerType: procedureAnswer.answerType,
+        procedure: procedureAnswer.procedure?.[language],
+      },
+    };
+  }
+
   const answer = MOCK_ANSWERS.find((candidate) => candidate.match.test(message));
   const citations = answer ? answer.texts.map((textId, i) => citationFor(i + 1, textId)) : [];
   const verdict = answer?.verdict ?? 'OUT_OF_SCOPE';
