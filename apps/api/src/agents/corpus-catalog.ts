@@ -8,6 +8,8 @@ export interface CorpusCatalog {
   sourceIds(): Promise<string[]>;
   /** Fragment d'un texte par sa référence (« Article 6 »), ou null. */
   findByReference(sourceId: string, reference: string): Promise<SearchResult | null>;
+  /** Fiches de démarches indexées (documents PROCEDURE, fiche complète dans `metadata.procedure`). */
+  procedures(): Promise<SearchResult[]>;
 }
 
 export const CORPUS_CATALOG = Symbol('CORPUS_CATALOG');
@@ -23,6 +25,7 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 @Injectable()
 export class PrismaCorpusCatalog implements CorpusCatalog {
   private cache: { ids: string[]; at: number } | null = null;
+  private procedureCache: { documents: SearchResult[]; at: number } | null = null;
 
   constructor(private readonly prisma: PrismaService) {}
 
@@ -54,6 +57,29 @@ export class PrismaCorpusCatalog implements CorpusCatalog {
     });
     return row ? { ...row, score: 1, metadata: asRecord(row.metadata) } : null;
   }
+
+  async procedures(): Promise<SearchResult[]> {
+    if (this.procedureCache && Date.now() - this.procedureCache.at < CACHE_TTL_MS) {
+      return this.procedureCache.documents;
+    }
+    const rows = await this.prisma.document.findMany({
+      where: { type: 'PROCEDURE' },
+      orderBy: { chunkKey: 'asc' },
+      select: {
+        id: true,
+        sourceId: true,
+        title: true,
+        reference: true,
+        content: true,
+        category: true,
+        source: true,
+        metadata: true,
+      },
+    });
+    const documents = rows.map((row) => ({ ...row, score: 1, metadata: asRecord(row.metadata) }));
+    this.procedureCache = { documents, at: Date.now() };
+    return documents;
+  }
 }
 
 /** Catalogue en mémoire (tests). */
@@ -66,5 +92,9 @@ export class MemoryCorpusCatalog implements CorpusCatalog {
 
   async findByReference(sourceId: string, reference: string): Promise<SearchResult | null> {
     return this.documents.find((d) => d.sourceId === sourceId && d.reference === reference) ?? null;
+  }
+
+  async procedures(): Promise<SearchResult[]> {
+    return this.documents.filter((d) => d.metadata?.documentType === 'PROCEDURE');
   }
 }

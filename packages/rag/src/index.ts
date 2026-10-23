@@ -60,3 +60,30 @@ export {
   type SeedOptions,
   type SeedReport,
 } from './ingestion/seed-legal';
+export {
+  parseProcedureSheet,
+  procedureFromMetadata,
+  procedureSheetSchema,
+  type ProcedureSheet,
+  type ProcedureSheetInput,
+} from './procedures/schema';
+export { loadProcedureSheets, ProcedureSheetError } from './procedures/load';
+export {
+  contentTokens,
+  foldText,
+  isGenericToken,
+  matchProcedureKeywords,
+  procedurePhrases,
+  type ProcedureKeywordMatch,
+} from './procedures/match';
+export {
+  PROCEDURES_SOURCE_ID,
+  procedureChunkKey,
+  procedureContent,
+  procedureEmbeddingText,
+  procedureFingerprint,
+  procedureToDocument,
+  seedProcedures,
+  type SeedProceduresOptions,
+  type SeedProceduresReport,
+} from './procedures/seed-procedures';

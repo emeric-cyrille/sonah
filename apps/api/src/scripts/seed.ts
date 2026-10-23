@@ -1,11 +1,13 @@
 /**
- * Indexe les textes officiels (data/sources) dans la base vectorielle et le graphe.
+ * Indexe les textes officiels (data/sources) dans la base vectorielle et le graphe, puis les fiches
+ * de démarches (data/procedures, ou PROCEDURES_DIR) dans la base vectorielle.
  * En production : docker compose exec api node dist/scripts/seed.js [--if-empty]
  *
  * --if-empty : n'indexe que les fragments absents pour le modèle d'embedding courant (premier
  * déploiement, changement de modèle, ou reprise d'une indexation interrompue). Sans fragment
  * manquant, rien n'est recalculé.
- * (premier déploiement, ou changement de modèle après ajout d'une clé Gemini ou OpenAI).
+ * Les fiches de démarches absentes ou modifiées sont (ré)indexées ; les fiches retirées du
+ * dossier sont supprimées de la base.
  */
 import { Logger } from '@nestjs/common';
 import { createPrismaClient } from '@sonah/database';
@@ -14,6 +16,7 @@ import {
   embedderConfigFromEnv,
   GraphStoreService,
   seedLegalSources,
+  seedProcedures,
   VectorStoreService,
 } from '@sonah/rag';
 import path from 'node:path';
@@ -23,6 +26,7 @@ async function main(): Promise<void> {
   const logger = new Logger('Seed');
   const env = validateEnv(process.env);
   const sourcesDir = process.env.SOURCES_DIR ?? path.resolve(process.cwd(), 'data/sources');
+  const proceduresDir = process.env.PROCEDURES_DIR ?? path.resolve(sourcesDir, '../procedures');
 
   const prisma = createPrismaClient();
   const embedder = createEmbedder(embedderConfigFromEnv(process.env), logger);
@@ -48,6 +52,12 @@ async function main(): Promise<void> {
     for (const report of reports) {
       logger.log(`${report.sourceId} : ${report.articles} articles, ${report.chunks} fragments`);
     }
+    const procedures = await seedProcedures({ proceduresDir, vectorStore, logger, onlyMissing });
+    logger.log(
+      procedures.sheets === null
+        ? `Fiches de démarches : dossier ${proceduresDir} absent`
+        : `Fiches de démarches : ${procedures.sheets} fiche(s), ${procedures.indexed} indexée(s), ${procedures.staleDeleted} retirée(s)`,
+    );
   } finally {
     await prisma.$disconnect();
     await graphStore?.close();

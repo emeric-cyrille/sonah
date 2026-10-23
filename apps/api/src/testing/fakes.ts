@@ -9,6 +9,7 @@ import { MemoryCorpusCatalog } from '../agents/corpus-catalog';
 import { AuditService } from '../audit/audit.service';
 import { MemoryTraceStore } from '../audit/trace-store';
 import { ChatService } from '../chat/chat.service';
+import { ProcedureService } from '../procedures/procedure.service';
 import type { ChatTurn, LanguageModel } from '../chat/language-model';
 import { words } from '../policy/text';
 import type { PrismaService } from '../prisma/prisma.service';
@@ -88,6 +89,13 @@ export function fakeVectorStore(
           (result) =>
             result.score >= (search?.minScore ?? -1) &&
             (!search?.sourceIds || search.sourceIds.includes(result.sourceId)) &&
+            // Type du document : `metadata.documentType` (fiches de démarches), sinon texte de loi
+            (!search?.types ||
+              search.types.includes(
+                typeof result.metadata?.documentType === 'string'
+                  ? result.metadata.documentType
+                  : 'LAW',
+              )) &&
             (!options.lexical ||
               [...significantWords(result.content)].some((word) => queryWords.has(word))),
         )
@@ -126,6 +134,7 @@ export class FailingModel implements LanguageModel {
 export interface TestHarness {
   readonly chat: ChatService;
   readonly engine: AnswerEngine;
+  readonly procedures: ProcedureService;
   readonly audit: AuditService;
   readonly traces: MemoryTraceStore;
   readonly messages: StoredMessage[];
@@ -141,7 +150,9 @@ export function createHarness(
   const { store, calls } = fakeVectorStore(results);
   const traces = new MemoryTraceStore();
   const audit = new AuditService(traces);
-  const engine = new AnswerEngine(store, new MemoryCorpusCatalog(results), model);
-  const chat = new ChatService(prisma, engine, audit);
-  return { chat, engine, audit, traces, messages, calls };
+  const catalog = new MemoryCorpusCatalog(results);
+  const engine = new AnswerEngine(store, catalog, model);
+  const procedures = new ProcedureService(store, catalog, model);
+  const chat = new ChatService(prisma, engine, audit, procedures);
+  return { chat, engine, procedures, audit, traces, messages, calls };
 }

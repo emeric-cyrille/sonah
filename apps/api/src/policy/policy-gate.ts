@@ -28,7 +28,15 @@ const MIN_QUOTE_WORDS = 4;
 /** Un fragment de citation (entre deux ellipses) n'est vérifié qu'à partir de ce nombre de mots. */
 const MIN_SEGMENT_WORDS = 3;
 
-export const POLICY_GATE_VERSION = 'policy-gate-1.1';
+export const POLICY_GATE_VERSION = 'policy-gate-1.2';
+
+// Démarches : réponses rendues depuis une fiche, ou orientation sans fiche (voir procedure-gate.ts)
+export {
+  applyOrientationGate,
+  applyProcedureGate,
+  validateAgainstReference,
+  validateProcedureText,
+} from './procedure-gate';
 
 export interface GateInput {
   /** Question de l'utilisateur (déjà masquée). */
@@ -43,7 +51,13 @@ export interface GateInput {
 }
 
 export interface GateCheck {
-  readonly check: 'citation_index' | 'verbatim_quote' | 'has_citation';
+  readonly check:
+    | 'citation_index'
+    | 'verbatim_quote'
+    | 'has_citation'
+    | 'procedure_number'
+    | 'procedure_document'
+    | 'procedure_link';
   readonly valid: boolean;
   readonly detail: string;
 }

@@ -1,0 +1,46 @@
+{
+  "id": "acte-de-naissance-copie",
+  "title_fr": "Copie d'acte de naissance",
+  "title_en": "Copy of a birth certificate",
+  "category": "etat_civil",
+  "keywords_fr": [
+    "acte de naissance",
+    "copie d'acte de naissance",
+    "extrait de naissance",
+    "copie certifiée conforme"
+  ],
+  "keywords_en": ["birth certificate", "copy of birth certificate"],
+  "authority": { "name": "Centre d'état civil", "level": "communal" },
+  "where": ["Centre d'état civil où la naissance a été déclarée (mairie)"],
+  "who_can_apply": "La personne concernée, ses parents ou un mandataire.",
+  "documents": ["Original ou référence de l'acte de naissance", "Pièce d'identité du demandeur"],
+  "steps": [
+    { "order": 1, "description": "Se rendre au centre d'état civil qui a dressé l'acte." },
+    {
+      "order": 2,
+      "description": "Présenter l'original ou les références de l'acte (numéro, date, centre)."
+    },
+    { "order": 3, "description": "Faire certifier la copie par l'officier d'état civil." }
+  ],
+  "cost": null,
+  "delay": null,
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "etat-civil-fixture",
+      "reference": null,
+      "title": "Texte portant organisation de l'état civil (FIXTURE)"
+    }
+  ],
+  "tips": [],
+  "sources": [
+    {
+      "title": "FIXTURE DE TEST — source fictive",
+      "url": "https://example.org/fixtures/acte-naissance",
+      "publisher": "Tests SONAH"
+    }
+  ],
+  "verified_at": null,
+  "unverified": [{ "field": "cost", "note": "Coût non vérifié." }],
+  "language_versions": ["fr"]
+}

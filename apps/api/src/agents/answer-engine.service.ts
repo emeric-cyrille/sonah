@@ -64,6 +64,8 @@ export interface AnswerRequest {
   readonly simulateModelOutage?: boolean;
   readonly pinned?: readonly PinnedEvidence[];
   readonly statusOverlay?: readonly StatusOverlay[];
+  /** Marge ajoutée au seuil de pertinence du modèle d'embedding (citer une loi seulement si clairement pertinente). */
+  readonly minScoreMargin?: number;
 }
 
 export interface AnswerOutcome {
@@ -292,10 +294,11 @@ export class AnswerEngine {
         ? 'agent_sources'
         : 'fallback_all_sources';
 
+    const minScore = this.vectorStore.relevanceThreshold + Math.max(0, request.minScoreMargin ?? 0);
     let results = await this.vectorStore.search(
       request.retrievalQuery ?? request.question,
       CONTEXT_SIZE,
-      { minScore: this.vectorStore.relevanceThreshold, sourceIds, types },
+      { minScore, sourceIds, types },
     );
 
     // Articles imposés par le scénario : placés en tête (événement reproductible)
@@ -322,7 +325,7 @@ export class AnswerEngine {
         sourceIds: sourceIds ?? null,
         documentTypes: types ?? null,
         embeddingModel: this.vectorStore.embeddingModel,
-        minScore: this.vectorStore.relevanceThreshold,
+        minScore,
         pinnedByScenario: pinned,
         results: results.map((result, i) => ({
           index: i + 1,
