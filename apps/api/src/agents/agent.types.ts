@@ -1,3 +1,4 @@
+import type { DocumentType } from '@sonah/rag';
 import type { Language } from '../policy/policy.types';
 
 export const AGENT_IDS = [
@@ -30,6 +31,11 @@ export interface AgentDefinition {
   readonly sources: readonly string[];
   /** Correspondances tolérantes avec les sourceId réellement indexés. */
   readonly sourcePatterns: readonly RegExp[];
+  /**
+   * Types de textes consultables (ex. textes contraignants seulement). Absent : tous les types.
+   * Combiné aux sources déclarées quand l'agent en a.
+   */
+  readonly documentTypes?: readonly DocumentType[];
   /** Racines de mots (texte replié) qui déclenchent le routage vers cet agent. */
   readonly keywords: readonly string[];
   /** Règles déterministes appliquées à chaque réponse. */

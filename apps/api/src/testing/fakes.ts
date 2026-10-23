@@ -53,6 +53,7 @@ export function memoryPrisma(): { prisma: PrismaService; messages: StoredMessage
 export interface SearchCall {
   readonly query: string;
   readonly sourceIds?: readonly string[];
+  readonly types?: readonly string[];
 }
 
 /** Mots significatifs (au moins 5 lettres, sans accents) pour la recherche lexicale simulée. */
@@ -77,18 +78,20 @@ export function fakeVectorStore(
     relevanceThreshold: 0.15,
     search: async (
       query: string,
-      _topK: number,
-      search?: { minScore?: number; sourceIds?: readonly string[] },
+      topK: number,
+      search?: { minScore?: number; sourceIds?: readonly string[]; types?: readonly string[] },
     ) => {
-      calls.push({ query, sourceIds: search?.sourceIds });
+      calls.push({ query, sourceIds: search?.sourceIds, types: search?.types });
       const queryWords = significantWords(query);
-      return results.filter(
-        (result) =>
-          result.score >= (search?.minScore ?? -1) &&
-          (!search?.sourceIds || search.sourceIds.includes(result.sourceId)) &&
-          (!options.lexical ||
-            [...significantWords(result.content)].some((word) => queryWords.has(word))),
-      );
+      return results
+        .filter(
+          (result) =>
+            result.score >= (search?.minScore ?? -1) &&
+            (!search?.sourceIds || search.sourceIds.includes(result.sourceId)) &&
+            (!options.lexical ||
+              [...significantWords(result.content)].some((word) => queryWords.has(word))),
+        )
+        .slice(0, topK);
     },
   } as unknown as VectorStoreService;
   return { store, calls };
