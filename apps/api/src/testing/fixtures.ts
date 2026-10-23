@@ -1,4 +1,11 @@
-import type { SearchResult } from '@sonah/rag';
+import {
+  parseProcedureSheet,
+  procedureToDocument,
+  type ProcedureSheet,
+  type SearchResult,
+} from '@sonah/rag';
+import { readFileSync } from 'node:fs';
+import * as path from 'node:path';
 
 /** Fragments de textes officiels utilisés par les tests. */
 export function makeResult(overrides: Partial<SearchResult> = {}): SearchResult {
@@ -35,3 +42,35 @@ export const CONSTITUTION_ART6 = makeResult({
     amendedBy: 'loi n° 2008-1 du 14 avril 2008',
   },
 });
+
+/** Fiches de démarches de test (packages/rag/src/procedures/__fixtures__), indexées comme en base. */
+const PROCEDURE_FIXTURES_DIR = path.resolve(
+  __dirname,
+  '../../../../packages/rag/src/procedures/__fixtures__',
+);
+
+export function procedureSheetFixture(id: string): ProcedureSheet {
+  return parseProcedureSheet(
+    JSON.parse(readFileSync(path.join(PROCEDURE_FIXTURES_DIR, `${id}.json`), 'utf8')),
+  );
+}
+
+/** Document PROCEDURE tel que renvoyé par la recherche (score cosinus donné). */
+export function procedureResult(id: string, score = 0.5): SearchResult {
+  const doc = procedureToDocument(procedureSheetFixture(id));
+  return {
+    id: `doc-${doc.chunkKey}`,
+    sourceId: doc.sourceId,
+    title: doc.title,
+    reference: doc.reference ?? null,
+    content: doc.content,
+    category: doc.category,
+    source: doc.source,
+    score,
+    metadata: doc.metadata ?? null,
+  };
+}
+
+export const MEDICAL_CERTIFICATE = procedureResult('certificat-medical');
+export const LOST_ID_CARD = procedureResult('cni-perte');
+export const BIRTH_CERTIFICATE = procedureResult('acte-de-naissance-copie');

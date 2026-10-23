@@ -4,15 +4,47 @@ import { AnswerEngine } from '../agents/answer-engine.service';
 import { AuditService } from '../audit/audit.service';
 import { TraceRecorder } from '../audit/trace-recorder';
 import { buildRetrievalQuery } from '../policy/follow-up';
+import { classifyIntent, type IntentResult } from '../policy/intent';
 import { detectLanguage } from '../policy/language';
 import { maskPii, piiNotice } from '../policy/pii';
-import type { Citation, Language } from '../policy/policy.types';
+import type { Citation, Language, Verdict } from '../policy/policy.types';
+import type { ProcedurePayload } from '../policy/procedure-answer';
+import { detectSensitiveSituation } from '../policy/situations';
 import { PrismaService } from '../prisma/prisma.service';
-import type { ChatResponse, ChatSource } from './chat.schemas';
+import { ProcedureService } from '../procedures/procedure.service';
+import type { AnswerType, ChatResponse, ChatSource } from './chat.schemas';
 import type { ChatTurn } from './language-model';
 
 /** Nombre de messages précédents repris pour garder le fil de la conversation. */
 const HISTORY_SIZE = 8;
+
+/**
+ * Marge ajoutée au seuil de pertinence pour citer une loi dans une demande mixte (démarche + droit)
+ * sans fiche : seul un texte nettement pertinent est cité.
+ */
+export const MIXED_LAW_MARGIN = 0.02;
+
+interface RoutedAnswer {
+  readonly reply: string;
+  readonly verdict: Verdict;
+  readonly citations: readonly Citation[];
+  readonly sources: ChatSource[];
+  readonly model: string;
+  readonly promptVersion: string;
+  readonly answerType: AnswerType;
+  readonly procedure?: ProcedurePayload;
+  readonly evidenceCount: number;
+}
+
+/** Sources d'une fiche de démarche au format historique. */
+function procedureSources(
+  sources: ReadonlyArray<{ title: string; url: string | null }>,
+): ChatSource[] {
+  return sources.map((source) => ({
+    title: source.title,
+    ...(source.url ? { url: source.url } : {}),
+  }));
+}
 
 interface StoredTurn {
   role: 'USER' | 'ASSISTANT' | 'SYSTEM';
@@ -49,6 +81,7 @@ export class ChatService {
     private readonly prisma: PrismaService,
     private readonly engine: AnswerEngine,
     private readonly audit: AuditService,
+    private readonly procedures: ProcedureService,
   ) {}
 
   async reply(
@@ -77,12 +110,18 @@ export class ChatService {
 
     const previousQuestion = [...history].reverse().find((turn) => turn.role === 'USER')?.content;
     const retrieval = buildRetrievalQuery(pii.text, previousQuestion);
+    let intent = classifyIntent(pii.text);
+    // Relance elliptique sans indice propre (« et pour un mineur ? ») : intention de la question précédente
+    if (retrieval.previousQuestionUsed && intent.signals.every((s) => s.startsWith('default:'))) {
+      const previous = classifyIntent(retrieval.query);
+      intent = { intent: previous.intent, signals: ['elliptical', ...previous.signals] };
+    }
     recorder.add({
       type: 'input',
       agent: sonah.id,
       summary: `Message reçu (${language}, ${detection.source})${
         pii.total > 0 ? `, ${pii.total} donnée(s) personnelle(s) masquée(s)` : ''
-      }${retrieval.previousQuestionUsed ? ', relance elliptique' : ''}`,
+      }${retrieval.previousQuestionUsed ? ', relance elliptique' : ''}, intention ${intent.intent}`,
       data: {
         messageLength: message.length,
         language,
@@ -92,47 +131,41 @@ export class ChatService {
         elliptical: retrieval.elliptical,
         previousQuestionUsed: retrieval.previousQuestionUsed,
         historyTurns: history.length,
+        intent: intent.intent,
+        intentSignals: intent.signals,
       },
     });
 
-    const outcome = await this.engine.answer({
-      agent: sonah,
-      question: pii.text,
-      retrievalQuery: retrieval.query,
-      language,
-      recorder,
-      history: history.map((turn): ChatTurn => ({
-        role: turn.role === 'USER' ? 'user' : 'assistant',
-        content: turn.content,
-      })),
-    });
+    const answer = await this.route(intent, pii.text, retrieval.query, language, recorder, history);
 
-    const reply = pii.total > 0 ? `${piiNotice(language)}\n\n${outcome.reply}` : outcome.reply;
-    const sources = legacySources(outcome.citations);
+    const reply = pii.total > 0 ? `${piiNotice(language)}\n\n${answer.reply}` : answer.reply;
     recorder.add({
       type: 'output',
       agent: sonah.id,
-      summary: `Réponse ${outcome.verdict} avec ${outcome.citations.length} citation(s)`,
+      summary: `Réponse ${answer.verdict} (${answer.answerType}) avec ${answer.citations.length} citation(s)`,
       data: {
-        verdict: outcome.verdict,
-        citations: outcome.citations.map((c) => ({
+        verdict: answer.verdict,
+        answerType: answer.answerType,
+        intent: intent.intent,
+        procedureId: answer.procedure?.id ?? null,
+        citations: answer.citations.map((c) => ({
           index: c.index,
           documentId: c.documentId,
           status: c.status,
         })),
         replyLength: reply.length,
-        writer: outcome.model,
+        writer: answer.model,
         piiNoticeShown: pii.total > 0,
       },
     });
 
     await this.audit.record(recorder, {
       kind: 'chat',
-      verdict: outcome.verdict,
+      verdict: answer.verdict,
       conversationId: conversation.id,
       agentId: sonah.id,
-      promptVersion: outcome.promptVersion,
-      model: outcome.model,
+      promptVersion: answer.promptVersion,
+      model: answer.model,
     });
 
     await this.prisma.message.create({
@@ -141,26 +174,116 @@ export class ChatService {
         role: 'ASSISTANT',
         content: reply,
         metadata: {
-          model: outcome.model,
-          verdict: outcome.verdict,
+          model: answer.model,
+          verdict: answer.verdict,
+          answerType: answer.answerType,
+          intent: intent.intent,
+          procedureId: answer.procedure?.id ?? null,
           traceId: recorder.id,
           language,
-          citations: outcome.citations.map((c) => ({ ...c })),
+          citations: answer.citations.map((c) => ({ ...c })),
         },
       },
     });
     this.logger.log(
-      `Réponse ${outcome.verdict} (${outcome.model}, ${outcome.evidence.length} extraits) — conversation ${conversation.id}, trace ${recorder.id}`,
+      `Réponse ${answer.verdict} (${answer.answerType}, ${answer.model}) — conversation ${conversation.id}, trace ${recorder.id}`,
     );
 
     return {
       conversationId: conversation.id,
       reply,
       language,
-      verdict: outcome.verdict,
-      citations: outcome.citations,
-      sources,
+      verdict: answer.verdict,
+      citations: answer.citations,
+      sources: answer.sources,
       traceId: recorder.id,
+      answerType: answer.answerType,
+      ...(answer.procedure ? { procedure: answer.procedure } : {}),
+    };
+  }
+
+  /**
+   * Aiguillage selon l'intention : démarche → fiche (ou orientation sans fiche, jamais une loi sans
+   * rapport) ; mixte sans fiche → textes seulement s'ils sont nettement pertinents ; droits et hors
+   * sujet → pipeline juridique inchangé. Une situation sensible suit toujours le pipeline juridique
+   * (orientation vers un humain).
+   */
+  private async route(
+    intent: IntentResult,
+    question: string,
+    retrievalQuery: string,
+    language: Language,
+    recorder: TraceRecorder,
+    history: readonly StoredTurn[],
+  ): Promise<RoutedAnswer> {
+    const sonah = getAgent('sonah');
+    const legal = async (minScoreMargin?: number): Promise<RoutedAnswer> => {
+      const outcome = await this.engine.answer({
+        agent: sonah,
+        question,
+        retrievalQuery,
+        language,
+        recorder,
+        minScoreMargin,
+        history: history.map((turn): ChatTurn => ({
+          role: turn.role === 'USER' ? 'user' : 'assistant',
+          content: turn.content,
+        })),
+      });
+      return {
+        reply: outcome.reply,
+        verdict: outcome.verdict,
+        citations: outcome.citations,
+        sources: legacySources(outcome.citations),
+        model: outcome.model,
+        promptVersion: outcome.promptVersion,
+        answerType: 'legal',
+        evidenceCount: outcome.evidence.length,
+      };
+    };
+
+    const procedural = intent.intent === 'procedure' || intent.intent === 'mixed';
+    if (!procedural || detectSensitiveSituation(question)) return legal();
+
+    const match = await this.procedures.find(retrievalQuery, recorder, sonah.id);
+    if (match.best) {
+      const outcome = await this.procedures.answerWithSheet(
+        match.best,
+        question,
+        language,
+        recorder,
+        sonah.id,
+      );
+      return {
+        reply: outcome.gate.reply,
+        verdict: outcome.gate.verdict,
+        citations: outcome.gate.citations,
+        sources: procedureSources(match.best.sheet.sources),
+        model: outcome.model,
+        promptVersion: outcome.promptVersion,
+        answerType: 'procedure',
+        procedure: outcome.procedure ?? undefined,
+        evidenceCount: 1,
+      };
+    }
+
+    const orientation = this.procedures.orientation(question, language, recorder, sonah.id);
+    if (intent.intent === 'mixed') {
+      // Question de droit associée : un texte n'est cité que s'il est nettement pertinent
+      const answer = await legal(MIXED_LAW_MARGIN);
+      if (answer.evidenceCount > 0 && answer.verdict !== 'OUT_OF_SCOPE') {
+        return { ...answer, reply: `${orientation.gate.reply}\n\n${answer.reply}` };
+      }
+    }
+    return {
+      reply: orientation.gate.reply,
+      verdict: orientation.gate.verdict,
+      citations: [],
+      sources: [],
+      model: orientation.model,
+      promptVersion: orientation.promptVersion,
+      answerType: 'orientation',
+      evidenceCount: 0,
     };
   }
 
