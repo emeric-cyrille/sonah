@@ -30,6 +30,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "@huggingface/transformers": "3.5.1",
     "@sonah/database": "workspace:^",
     "neo4j-driver": "5.27.0",
     "openai": "4.77.0",

@@ -16,6 +16,9 @@ const logger = new Logger('RagModule');
 /** Configuration des embeddings, partagée avec le script de seed. */
 export function embedderConfig(config: Pick<ConfigService<Env, true>, 'get'>): EmbedderConfig {
   return {
+    provider: config.get('EMBEDDING_PROVIDER', { infer: true }),
+    localModel: config.get('LOCAL_EMBEDDING_MODEL', { infer: true }),
+    localCacheDir: config.get('EMBEDDINGS_CACHE_DIR', { infer: true }),
     geminiApiKey: config.get('GEMINI_API_KEY', { infer: true }),
     geminiEmbeddingModel: config.get('GEMINI_EMBEDDING_MODEL', { infer: true }),
     openaiApiKey: config.get('OPENAI_API_KEY', { infer: true }),

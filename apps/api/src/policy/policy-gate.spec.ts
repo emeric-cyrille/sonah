@@ -5,6 +5,7 @@ import {
   extractCitationMarkers,
   extractQuotes,
   isVerbatim,
+  normalizeCitationMarkers,
   OUT_OF_SCOPE_TOKEN,
   validateAnswer,
 } from './policy-gate';
@@ -270,5 +271,17 @@ describe('applyPolicyGate', () => {
     });
     expect(gate.verdict).toBe('REFER_TO_HUMAN');
     expect(gate.reply).toContain('lawyer');
+  });
+});
+
+describe('normalizeCitationMarkers', () => {
+  it('ramène les marqueurs des modèles de raisonnement au format [n]', () => {
+    expect(normalizeCitationMarkers('six mois【6】 et huit【2†L1-L3】, voir【1，3】 et[^4].')).toBe(
+      'six mois[6] et huit[2], voir[1,3] et[4].',
+    );
+  });
+
+  it('laisse intacts les marqueurs déjà conformes et le texte sans marqueur', () => {
+    expect(normalizeCitationMarkers('Article 89 [1] et [2, 3].')).toBe('Article 89 [1] et [2, 3].');
   });
 });

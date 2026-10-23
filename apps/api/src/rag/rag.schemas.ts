@@ -23,7 +23,16 @@ export const createDocumentSchema = z.object({
     .min(1)
     .max(100)
     .regex(/^[a-z0-9-]+$/),
-  type: z.enum(['CONSTITUTION', 'LAW', 'DECREE', 'PROCEDURE', 'FORM', 'OTHER']),
+  type: z.enum([
+    'CONSTITUTION',
+    'LAW',
+    'DECREE',
+    'PROCEDURE',
+    'FORM',
+    'STRATEGY',
+    'INTERNATIONAL',
+    'OTHER',
+  ]),
   title: z.string().trim().min(1).max(300),
   reference: z.string().trim().max(100).optional(),
   content: z.string().trim().min(1).max(20_000),

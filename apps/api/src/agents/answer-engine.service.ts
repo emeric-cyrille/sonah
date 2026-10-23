@@ -4,7 +4,12 @@ import { TraceRecorder } from '../audit/trace-recorder';
 import { LANGUAGE_MODEL, type ChatTurn, type LanguageModel } from '../chat/language-model';
 import { buildSystemPrompt, formatContext, PROMPT_VERSION } from '../chat/sonah-prompt';
 import { shortTitleOf, statusOf } from '../policy/evidence';
-import { applyPolicyGate, POLICY_GATE_VERSION, type GateResult } from '../policy/policy-gate';
+import {
+  applyPolicyGate,
+  normalizeCitationMarkers,
+  POLICY_GATE_VERSION,
+  type GateResult,
+} from '../policy/policy-gate';
 import type { Citation, ConflictHint, Language, TextStatus, Verdict } from '../policy/policy.types';
 import { VECTOR_STORE } from '../rag/rag.tokens';
 import type { AgentDefinition } from './agent.types';
@@ -120,7 +125,8 @@ export class AnswerEngine {
         if (request.simulateModelOutage) {
           throw new Error('Panne simulée du modèle de langage (quota épuisé)');
         }
-        draft = await this.languageModel.complete(turns);
+        // Les marqueurs « 【n】 » de certains modèles sont ramenés à « [n] » avant le contrôle
+        draft = normalizeCitationMarkers(await this.languageModel.complete(turns));
         model = this.languageModel.name;
         recorder.add({
           type: 'llm',

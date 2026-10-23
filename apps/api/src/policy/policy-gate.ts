@@ -70,6 +70,19 @@ export interface GateResult {
 }
 
 /** Numéros cités sous la forme [1], [1, 2], [1-3] ou [1][2]. */
+/**
+ * Uniformise les marqueurs de citation produits par certains modèles :
+ * « 【6】 », « 【6†L1-L3】 », « [^6] » ou « (6) » collé à un crochet deviennent « [6] ».
+ */
+export function normalizeCitationMarkers(text: string): string {
+  return text
+    .replace(
+      /【\s*(\d+(?:\s*[,，;]\s*\d+)*)(?:†[^】]*)?\s*】/g,
+      (_, numbers: string) => `[${numbers.replace(/，/g, ',')}]`,
+    )
+    .replace(/\[\^(\d+)\]/g, '[$1]');
+}
+
 export function extractCitationMarkers(text: string): number[] {
   const markers: number[] = [];
   for (const match of text.matchAll(/\[(\d+(?:\s*[,;–-]\s*\d+)*)\]/g)) {

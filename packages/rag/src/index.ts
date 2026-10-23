@@ -13,8 +13,19 @@ export {
 } from './embeddings/embedder';
 export { GeminiEmbedder, formatForGemini } from './embeddings/gemini-embedder';
 export { HashingEmbedder } from './embeddings/hashing-embedder';
+export {
+  DEFAULT_LOCAL_MODEL,
+  LocalEmbedder,
+  formatForE5,
+  padVector,
+} from './embeddings/local-embedder';
 export { OpenAIEmbedder } from './embeddings/openai-embedder';
-export { createEmbedder, type EmbedderConfig } from './embeddings/create-embedder';
+export {
+  createEmbedder,
+  embedderConfigFromEnv,
+  type EmbedderConfig,
+  type EmbeddingProvider,
+} from './embeddings/create-embedder';
 export {
   VectorStoreService,
   extractQueryTerms,

@@ -94,7 +94,9 @@ export const AGENTS: readonly AgentDefinition[] = [
     },
     sources: [
       'loi-2010-013-communications-electroniques',
-      'loi-2010-012-cybersecurite-cybercriminalite',
+      'loi-2015-006-communications-electroniques',
+      'loi-2010-012-cybersecurite',
+      'cameroun-numerique-2020',
     ],
     sourcePatterns: [/communications?-electroniques/, /telecom/, /cyber/],
     keywords: [
@@ -178,8 +180,8 @@ export const AGENTS: readonly AgentDefinition[] = [
       fr: 'Point de vue du ministère : création d’entreprise, guichets uniques, autorisations d’exercer, simplification des procédures.',
       en: 'Ministry view: business creation, one-stop shops, operating licences, simplification of procedures.',
     },
-    sources: ['ohada-acte-uniforme-societes-commerciales'],
-    sourcePatterns: [/ohada/, /societes/, /commerc/, /entreprise/, /pme/, /investissement/],
+    sources: ['decret-2017-0877-pm-cfce', 'loi-2024-016-etat-civil'],
+    sourcePatterns: [/cfce/, /ohada/, /societes/, /commerc/, /entreprise/, /pme/, /investissement/],
     keywords: [
       'entreprise',
       'business',

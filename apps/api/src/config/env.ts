@@ -28,6 +28,11 @@ export const envSchema = z.object({
   OPENAI_CHAT_MODEL: z.string().default('gpt-4o'),
   OPENAI_EMBEDDING_MODEL: z.string().default('text-embedding-3-small'),
 
+  /** Embeddings : « local » (modèle multilingue sur le serveur) par défaut sans clé Gemini/OpenAI. */
+  EMBEDDING_PROVIDER: z.enum(['local', 'gemini', 'openai', 'hashing']).optional(),
+  LOCAL_EMBEDDING_MODEL: z.string().optional(),
+  EMBEDDINGS_CACHE_DIR: z.string().optional(),
+
   /** Seuil de pertinence calibré (pnpm --filter @sonah/rag calibrate). Absent : valeur par défaut du modèle. */
   EMBEDDING_RELEVANCE_THRESHOLD: z.coerce.number().min(-1).max(1).optional(),
 

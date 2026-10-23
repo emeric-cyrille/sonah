@@ -5,7 +5,7 @@
  *   DATABASE_URL=... GEMINI_API_KEY=... pnpm --filter @sonah/rag calibrate
  */
 import { createPrismaClient } from '@sonah/database';
-import { createEmbedder, VectorStoreService } from '../src';
+import { createEmbedder, embedderConfigFromEnv, VectorStoreService } from '../src';
 
 const CODE = 'code-du-travail-1992';
 const CONSTITUTION = 'constitution-1996';
@@ -44,12 +44,7 @@ const OFF_TOPIC: readonly string[] = [
 
 async function main(): Promise<void> {
   const prisma = createPrismaClient();
-  const embedder = createEmbedder({
-    geminiApiKey: process.env.GEMINI_API_KEY,
-    geminiEmbeddingModel: process.env.GEMINI_EMBEDDING_MODEL,
-    openaiApiKey: process.env.OPENAI_API_KEY,
-    openaiEmbeddingModel: process.env.OPENAI_EMBEDDING_MODEL,
-  });
+  const embedder = createEmbedder(embedderConfigFromEnv(process.env));
   const store = new VectorStoreService(prisma, embedder);
 
   try {

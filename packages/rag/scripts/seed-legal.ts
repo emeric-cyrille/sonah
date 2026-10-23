@@ -8,7 +8,13 @@
  */
 import path from 'node:path';
 import { createPrismaClient } from '@sonah/database';
-import { createEmbedder, GraphStoreService, seedLegalSources, VectorStoreService } from '../src';
+import {
+  createEmbedder,
+  embedderConfigFromEnv,
+  GraphStoreService,
+  seedLegalSources,
+  VectorStoreService,
+} from '../src';
 
 function argValues(name: string): string[] {
   const args = process.argv.slice(2);
@@ -20,12 +26,7 @@ function argValues(name: string): string[] {
 async function main(): Promise<void> {
   const sourcesDir = process.env.SOURCES_DIR ?? path.resolve(__dirname, '../../../data/sources');
   const prisma = createPrismaClient();
-  const embedder = createEmbedder({
-    geminiApiKey: process.env.GEMINI_API_KEY,
-    geminiEmbeddingModel: process.env.GEMINI_EMBEDDING_MODEL,
-    openaiApiKey: process.env.OPENAI_API_KEY,
-    openaiEmbeddingModel: process.env.OPENAI_EMBEDDING_MODEL,
-  });
+  const embedder = createEmbedder(embedderConfigFromEnv(process.env));
   const vectorStore = new VectorStoreService(prisma, embedder);
 
   let graphStore: GraphStoreService | undefined;
