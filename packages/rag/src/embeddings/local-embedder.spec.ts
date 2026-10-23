@@ -35,8 +35,8 @@ describe('LocalEmbedder', () => {
     );
     await embedder.embed(['question'], 'query');
     expect(loads).toBe(1);
-    expect(calls.map((batch) => batch.length)).toEqual([32, 8, 1]);
-    expect(calls[2]).toEqual(['query: question']);
+    expect(calls.map((batch) => batch.length)).toEqual([8, 8, 8, 8, 8, 1]);
+    expect(calls[5]).toEqual(['query: question']);
     expect(vectors[0]).toHaveLength(EMBEDDING_DIMENSIONS);
     expect(embedder.model).toBe('local:multilingual-e5-small');
   });
@@ -52,5 +52,20 @@ describe('LocalEmbedder', () => {
     });
     await expect(embedder.embed(['a'])).rejects.toThrow('réseau indisponible');
     await expect(embedder.embed(['a'])).resolves.toHaveLength(1);
+  });
+
+  it('libère les tenseurs du modèle après chaque lot (fuite mémoire constatée en production)', async () => {
+    let disposed = 0;
+    const embedder = new LocalEmbedder({
+      batchSize: 2,
+      loadExtractor: async () => async (texts: string[]) => ({
+        tolist: () => texts.map(() => [1]),
+        dispose: () => {
+          disposed += 1;
+        },
+      }),
+    });
+    await embedder.embed(['a', 'b', 'c', 'd', 'e']);
+    expect(disposed).toBe(3);
   });
 });

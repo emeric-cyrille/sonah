@@ -19,6 +19,7 @@ export function embedderConfig(config: Pick<ConfigService<Env, true>, 'get'>): E
     provider: config.get('EMBEDDING_PROVIDER', { infer: true }),
     localModel: config.get('LOCAL_EMBEDDING_MODEL', { infer: true }),
     localCacheDir: config.get('EMBEDDINGS_CACHE_DIR', { infer: true }),
+    localBatchSize: config.get('EMBEDDING_BATCH_SIZE', { infer: true }),
     geminiApiKey: config.get('GEMINI_API_KEY', { infer: true }),
     geminiEmbeddingModel: config.get('GEMINI_EMBEDDING_MODEL', { infer: true }),
     openaiApiKey: config.get('OPENAI_API_KEY', { infer: true }),

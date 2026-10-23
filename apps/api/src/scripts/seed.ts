@@ -2,7 +2,9 @@
  * Indexe les textes officiels (data/sources) dans la base vectorielle et le graphe.
  * En production : docker compose exec api node dist/scripts/seed.js [--if-empty]
  *
- * --if-empty : n'indexe que si aucun document n'existe pour le modèle d'embedding courant
+ * --if-empty : n'indexe que les fragments absents pour le modèle d'embedding courant (premier
+ * déploiement, changement de modèle, ou reprise d'une indexation interrompue). Sans fragment
+ * manquant, rien n'est recalculé.
  * (premier déploiement, ou changement de modèle après ajout d'une clé Gemini ou OpenAI).
  */
 import { Logger } from '@nestjs/common';
@@ -33,13 +35,7 @@ async function main(): Promise<void> {
 
   try {
     const vectorStore = new VectorStoreService(prisma, embedder, logger);
-    if (process.argv.includes('--if-empty')) {
-      const indexed = await vectorStore.countIndexed();
-      if (indexed > 0) {
-        logger.log(`${indexed} fragments déjà indexés avec ${embedder.model} : rien à faire`);
-        return;
-      }
-    }
+    const onlyMissing = process.argv.includes('--if-empty');
 
     logger.log(`Indexation de ${sourcesDir} avec ${embedder.model}`);
     const reports = await seedLegalSources({
@@ -47,6 +43,7 @@ async function main(): Promise<void> {
       vectorStore,
       graphStore,
       logger,
+      onlyMissing,
     });
     for (const report of reports) {
       logger.log(`${report.sourceId} : ${report.articles} articles, ${report.chunks} fragments`);

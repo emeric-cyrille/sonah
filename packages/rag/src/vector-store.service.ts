@@ -358,6 +358,15 @@ export class VectorStoreService {
     }
   }
 
+  /** Clés des fragments d'un texte déjà indexés avec le modèle d'embedding courant. */
+  async indexedChunkKeys(sourceId: string): Promise<Set<string>> {
+    const rows = await this.prisma.document.findMany({
+      where: { sourceId, embeddingModel: this.embedder.model },
+      select: { chunkKey: true },
+    });
+    return new Set(rows.map((row) => row.chunkKey));
+  }
+
   /**
    * Supprime les fragments d'un texte qui ne font plus partie de son indexation (texte corrigé,
    * redécoupé ou segmenté autrement). Retourne le nombre de fragments supprimés.

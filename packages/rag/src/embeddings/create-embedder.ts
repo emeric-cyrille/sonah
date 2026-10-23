@@ -13,6 +13,7 @@ export interface EmbedderConfig {
   /** Modèle local (Hugging Face, format ONNX) et dossier de cache. */
   readonly localModel?: string;
   readonly localCacheDir?: string;
+  readonly localBatchSize?: number;
   readonly geminiApiKey?: string;
   readonly geminiEmbeddingModel?: string;
   readonly openaiApiKey?: string;
@@ -34,6 +35,7 @@ export function embedderConfigFromEnv(env: Record<string, string | undefined>): 
     provider: (provider || undefined) as EmbeddingProvider | undefined,
     localModel: env.LOCAL_EMBEDDING_MODEL || undefined,
     localCacheDir: env.EMBEDDINGS_CACHE_DIR || undefined,
+    localBatchSize: env.EMBEDDING_BATCH_SIZE ? Number(env.EMBEDDING_BATCH_SIZE) : undefined,
     geminiApiKey: env.GEMINI_API_KEY,
     geminiEmbeddingModel: env.GEMINI_EMBEDDING_MODEL || undefined,
     openaiApiKey: env.OPENAI_API_KEY,
@@ -71,7 +73,11 @@ export function createEmbedder(
       embedder = new HashingEmbedder();
       break;
     case 'local':
-      embedder = new LocalEmbedder({ model: config.localModel, cacheDir: config.localCacheDir });
+      embedder = new LocalEmbedder({
+        model: config.localModel,
+        cacheDir: config.localCacheDir,
+        batchSize: config.localBatchSize,
+      });
       break;
   }
 

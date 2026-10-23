@@ -32,6 +32,8 @@ export const envSchema = z.object({
   EMBEDDING_PROVIDER: z.enum(['local', 'gemini', 'openai', 'hashing']).optional(),
   LOCAL_EMBEDDING_MODEL: z.string().optional(),
   EMBEDDINGS_CACHE_DIR: z.string().optional(),
+  /** Passages par appel au modèle local (mémoire ∝ taille du lot, 8 par défaut). */
+  EMBEDDING_BATCH_SIZE: z.coerce.number().int().min(1).max(64).optional(),
 
   /** Seuil de pertinence calibré (pnpm --filter @sonah/rag calibrate). Absent : valeur par défaut du modèle. */
   EMBEDDING_RELEVANCE_THRESHOLD: z.coerce.number().min(-1).max(1).optional(),
