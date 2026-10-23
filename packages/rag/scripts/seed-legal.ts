@@ -1,11 +1,21 @@
 /**
- * Indexe la Constitution et le Code du travail (data/sources) dans pgvector et Neo4j.
+ * Indexe les textes de data/sources (manifest.json) dans pgvector et Neo4j.
  *
  *   DATABASE_URL=... [OPENAI_API_KEY=...] [NEO4J_URI=... NEO4J_USER=... NEO4J_PASSWORD=...] pnpm --filter @sonah/rag seed
+ *
+ * Options : --offline (textes non redistribuables lus depuis le cache uniquement),
+ *           --source <id> (répétable : n'indexe que ces textes).
  */
 import path from 'node:path';
 import { createPrismaClient } from '@sonah/database';
 import { createEmbedder, GraphStoreService, seedLegalSources, VectorStoreService } from '../src';
+
+function argValues(name: string): string[] {
+  const args = process.argv.slice(2);
+  return args.flatMap((arg, index) =>
+    arg === name && args[index + 1] ? [args[index + 1] as string] : [],
+  );
+}
 
 async function main(): Promise<void> {
   const sourcesDir = process.env.SOURCES_DIR ?? path.resolve(__dirname, '../../../data/sources');
@@ -30,7 +40,14 @@ async function main(): Promise<void> {
 
   try {
     console.log(`Indexation avec le modèle ${embedder.model}`);
-    const reports = await seedLegalSources({ sourcesDir, vectorStore, graphStore });
+    const sourceIds = argValues('--source');
+    const reports = await seedLegalSources({
+      sourcesDir,
+      vectorStore,
+      graphStore,
+      remote: process.argv.includes('--offline') ? 'cache-only' : 'fetch',
+      sourceIds: sourceIds.length > 0 ? sourceIds : undefined,
+    });
     console.table(reports);
   } finally {
     await prisma.$disconnect();

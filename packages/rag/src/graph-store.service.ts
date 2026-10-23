@@ -1,6 +1,17 @@
 import neo4j, { type Driver, type ManagedTransaction } from 'neo4j-driver';
 import { z } from 'zod';
-import { consoleLogger, type LegalChunk, type LegalSource, type RagLogger } from './types';
+import {
+  consoleLogger,
+  type LegalChunk,
+  type LegalSource,
+  type LegalStatus,
+  type RagLogger,
+} from './types';
+
+/** Clé d'un nœud Article : « constitution-1996:26 », « constitution-2008-amendment:6-nouveau ». */
+export function graphArticleKey(chunk: LegalChunk): string {
+  return `${chunk.sourceId}:${chunk.unitId}`;
+}
 
 /**
  * Types de relations entre démarches. Neo4j n'accepte pas de type de relation paramétré :
@@ -192,36 +203,69 @@ export class GraphStoreService {
     }));
   }
 
-  /** Enregistre la structure d'un texte officiel : (Law)-[:CONTAINS]->(Article). */
-  async upsertLegalStructure(source: LegalSource, chunks: readonly LegalChunk[]): Promise<number> {
+  /**
+   * Enregistre la structure d'un texte : (Law)-[:CONTAINS]->(Article), avec le statut de chaque unité.
+   * Les unités qui ne figurent plus dans le texte (redécoupage) sont supprimées.
+   */
+  async upsertLegalStructure(
+    source: LegalSource,
+    chunks: readonly LegalChunk[],
+    statusOf: (chunk: LegalChunk) => LegalStatus = () => 'in_force',
+  ): Promise<number> {
     const articles = chunks
       .filter((chunk) => chunk.part === 1)
       .map((chunk) => ({
-        key: `${source.id}:${chunk.articleNumber ?? 'preambule'}`,
+        key: graphArticleKey(chunk),
         reference: chunk.reference,
         number: chunk.articleNumber ?? null,
         path: [...chunk.path],
+        status: statusOf(chunk),
       }));
 
-    await this.write((tx) =>
-      tx.run(
+    await this.write(async (tx) => {
+      await tx.run(
         `MERGE (l:Law {id: $id})
-         SET l.title = $title, l.shortTitle = $shortTitle, l.url = $url
+         SET l.title = $title, l.shortTitle = $shortTitle, l.url = $url, l.docId = $docId,
+             l.version = $version, l.date = $date, l.binding = $binding, l.type = $type
          WITH l
          UNWIND $articles AS article
          MERGE (a:Article {key: article.key})
-         SET a.reference = article.reference, a.number = article.number, a.path = article.path
+         SET a.reference = article.reference, a.number = article.number, a.path = article.path,
+             a.status = article.status
          MERGE (l)-[:CONTAINS]->(a)`,
         {
           id: source.id,
           title: source.title,
           shortTitle: source.shortTitle,
           url: source.url,
+          docId: source.docId,
+          version: source.version,
+          date: source.date,
+          binding: source.binding,
+          type: source.type,
           articles,
         },
+      );
+      await tx.run(
+        `MATCH (:Law {id: $id})-[:CONTAINS]->(a:Article)
+         WHERE NOT a.key IN $keys
+         DETACH DELETE a`,
+        { id: source.id, keys: articles.map((article) => article.key) },
+      );
+    });
+    return articles.length;
+  }
+
+  /** Relie chaque nouvelle rédaction à l'article qu'elle modifie : (nouveau)-[:AMENDS]->(ancien). */
+  async linkAmendments(pairs: ReadonlyArray<readonly [string, string]>): Promise<void> {
+    await this.write((tx) =>
+      tx.run(
+        `UNWIND $pairs AS pair
+         MATCH (n:Article {key: pair[0]}), (o:Article {key: pair[1]})
+         MERGE (n)-[:AMENDS]->(o)`,
+        { pairs: pairs.map(([newer, older]) => [newer, older]) },
       ),
     );
-    return articles.length;
   }
 
   /** Supprime les démarches dont le code commence par `prefix` (utilisé par les tests). */
