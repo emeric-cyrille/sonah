@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0.0",
+  "domain": "Public-service legal information delivered by AI assistants (citizen-facing RAG/LLM systems)",
+  "scope_note": "Gaps are stated at domain level. Cameroon is used as the observed context, not as the object of country-specific recommendations. Every external fact carries its URL; facts we could not verify against a primary source are flagged in `to_verify`.",
+  "gap_types": ["unclear responsibilities", "standards", "technology", "legislative", "coordination", "conflicting objectives"],
+  "verified_on": "2026-10-23",
+  "gaps": [
+    {
+      "id": "GAP-01",
+      "title": "No authoritative, machine-readable, consolidated (point-in-time) legal texts",
+      "gap_type": ["standards", "technology"],
+      "description": "AI assistants can only be as current as their sources. When the official consolidated version of a law is missing, or exists only as scanned or third-party PDFs without amendment links, the system has no reliable signal that an article was modified. The assistant may then serve a repealed rule as current law.",
+      "evidence": {
+        "scenario": "S1",
+        "observation": "SONAH's indexed Constitution (Law No. 96/06, FAOLEX copy) says the President is elected for seven years 'renouvelable une fois' (Art. 6(2)). Law No. 2008/001 of 14 April 2008 replaced this with 'Il est rééligible' and also amended Arts. 6(4), 14(3)(a), 15(4), 51(1), 53 and 67(6). Nothing in the source file links the two texts. The only safeguard is a manual version note in data/sources/manifest.json.",
+        "artefacts": ["data/sources/manifest.json", "eval/questions.jsonl (items OUT-01..OUT-04)"]
+      },
+      "cameroon_context": [
+        {"fact": "The Presidency publishes acts (lois, ordonnances, décrets) as promulgated, with no consolidated versions or amendment tracking.", "url": "https://www.prc.cm/fr/actualites/actes"},
+        {"fact": "Law No. 2008/001 of 14 April 2008 amends Law No. 96/06 (Journal officiel text reproduced by WIPO Lex). The new Art. 6(2) reads 'Il est rééligible'.", "url": "https://www.wipo.int/wipolex/fr/text/491139"},
+        {"fact": "The 2015 Open Data Index rated Cameroon's online legislation as outdated (spm.gov.cm).", "url": "https://2015.index.okfn.org/place/cameroon/legislation"}
+      ],
+      "global_examples": [
+        {"name": "EUR-Lex consolidated texts", "jurisdiction": "European Union", "what_it_does": "Merges each act with its later amendments and corrigenda into one consolidated document. It is documentary only and has no legal effect.", "url": "https://eur-lex.europa.eu/collection/eu-law/consleg.html"},
+        {"name": "European Legislation Identifier (ELI)", "jurisdiction": "European Union", "what_it_does": "Council conclusions of 26 October 2012 (OJ 2012/C 325/02) invite Member States to give legislation persistent URIs and machine-readable metadata, on a voluntary, gradual basis.", "url": "https://data.consilium.europa.eu/doc/document/ST-14172-2017-INIT/en/pdf"},
+        {"name": "LEGI open dataset (DILA)", "jurisdiction": "France", "what_it_does": "Consolidated codes, laws and regulations as open data under Licence Ouverte, available as bulk download and through an API (PISTE).", "url": "https://www.data.gouv.fr/datasets/legi-codes-lois-et-reglements-consolides"},
+        {"name": "legislation.gov.uk API", "jurisdiction": "United Kingdom", "what_it_does": "Permanent URIs and XML/RDF/Atom formats (CLML, Akoma Ntoso) for revised legislation under the Open Government Licence v3.0.", "url": "https://www.legislation.gov.uk/developer"},
+        {"name": "Akoma Ntoso v1.0 (OASIS LegalDocML)", "jurisdiction": "International standard", "what_it_does": "OASIS Standard since 29 August 2018. An XML vocabulary for parliamentary, legislative and judicial documents, including amendments and versions.", "url": "https://www.oasis-open.org/?p=4821"}
+      ],
+      "recommendation": "Publish official legal texts as consolidated, versioned, machine-readable data, with persistent identifiers per article and per version (ELI-style URIs, Akoma Ntoso markup) and an amendment graph. Until that exists, public AI assistants should be required to attach a version status to every citation and to refuse (OUTDATED_TEXT) when a known amendment is not in their corpus.",
+      "itu_links": [
+        {"ref": "ITU-T Y.3172, SRC node", "url": "https://www.itu.int/rec/T-REC-Y.3172/en", "relevance": "Data provenance and freshness at the source node."},
+        {"ref": "ITU AI Ready Report 2.0, Data → Data Interoperability → 'Standard data formats' (pp. 12-13)", "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf", "relevance": "Readiness index this gap depresses."}
+      ],
+      "to_verify": []
+    },
+    {
+      "id": "GAP-02",
+      "title": "No transparency and disclaimer standard for AI systems that give legal or administrative information",
+      "gap_type": ["standards", "legislative"],
+      "description": "No rule says what a public-facing AI legal-information service must disclose: that it is an AI, which sources and versions it used, that the answer is orientation and not a binding position, and how confident it is. Each deployer invents its own wording, and citizens cannot compare or rely on it.",
+      "evidence": {
+        "scenario": "S1, S4",
+        "observation": "SONAH discloses its nature and sources through prompt rules and typed verdicts (apps/api/src/chat/sonah-prompt.ts; verdicts in the P node). These are design choices; no applicable standard required them.",
+        "artefacts": ["apps/api/src/chat/sonah-prompt.ts", "docs/itu/y3172-mapping.md"]
+      },
+      "cameroon_context": [
+        {"fact": "A national AI strategy was presented by the Minister of Posts and Telecommunications at CONIA 2025 (Yaoundé, 7-8 July 2025). We found no published official text or implementing instrument.", "url": "https://www.digitalbusiness.africa/cameroun-minette-libom-li-likeng-devoile-le-contenu-de-la-strategie-nationale-dia-aux-conia-2025/"}
+      ],
+      "global_examples": [
+        {"name": "EU AI Act, Article 50(1)", "jurisdiction": "European Union", "what_it_does": "Providers must design AI systems that interact directly with people so those people are informed they are interacting with an AI system. Applies from 2 August 2026.", "url": "https://artificialintelligenceact.eu/article/50/"},
+        {"name": "Algorithmic Transparency Recording Standard (ATRS)", "jurisdiction": "United Kingdom", "what_it_does": "Mandatory for central government departments since February 2024. Covers tools that influence decisions with public effect or interact directly with the public. Each tool gets a published transparency record.", "url": "https://www.gov.uk/government/publications/algorithmic-transparency-recording-standard-mandatory-scope-and-exemptions-policy/algorithmic-transparency-recording-standard-atrs-mandatory-scope-and-exemptions-policy"},
+        {"name": "Code des relations entre le public et l'administration, L312-1-3", "jurisdiction": "France", "what_it_does": "Administrations publish online the rules of the main algorithmic processes used for individual decisions (Loi pour une République numérique, 2016).", "url": "https://questions.assemblee-nationale.fr/dyn/taux-application-lois/DLR5L14N34516"}
+      ],
+      "recommendation": "Adopt a domain standard for AI legal-information services. It should require AI disclosure; a citation per claim, with source, article and version; a machine-readable answer status (answered / insufficient evidence / outdated / conflict / referred); a standard 'orientation, not legal advice' notice; and a public transparency record per deployed system.",
+      "itu_links": [
+        {"ref": "ITU AI Ready Report 2.0, Dimension 10 'AI & Policies' - 'explainability, trustability, and reliability' (p. 29)", "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf", "relevance": "Horizontal policy metric."}
+      ],
+      "to_verify": ["Exact current text of CRPA L312-1-3 on Légifrance (site returned 403; secondary source used)."]
+    },
+    {
+      "id": "GAP-03",
+      "title": "Retention of citizen conversations: blanket traffic-data retention vs storage limitation",
+      "gap_type": ["conflicting objectives", "legislative"],
+      "description": "Citizens often type identity numbers, health or employment details into public AI assistants. Security and law-enforcement retention duties push operators to keep data for a long time. Data-protection law requires keeping it no longer than necessary. No rule says which regime applies to AI conversation logs and audit trails, or how long they may be kept.",
+      "evidence": {
+        "scenario": "S2",
+        "observation": "In gold items PDP-05/PDP-06, a citizen shares a national ID number, phone number and date of birth. SONAH currently stores messages in Message.content (packages/database/prisma/schema.prisma). PII redaction before storage is being implemented. The audit trail must stay verifiable (hash chain) without keeping raw PII.",
+        "artefacts": ["packages/database/prisma/schema.prisma", "eval/questions.jsonl (items PDP-05, PDP-06)"]
+      },
+      "cameroon_context": [
+        {"fact": "Law No. 2010/012 of 21 December 2010 (cybersecurity), Section 29(1): 'Operators of information systems shall be bound to conserve the connection and traffic data of their information systems for a period of 10 (ten) years.'", "url": "https://database.cyberpolicyportal.org/api/files/166367990584329pspck8evk.pdf"},
+        {"fact": "Law No. 2024/017 of 23 December 2024 on personal data protection sets core principles, including a retention period fixed in advance according to purpose (secondary summary). It enters into force on 23 June 2026 after an 18-month transition.", "url": "https://www.dlapiperdataprotection.com/?c=CM&t=law"},
+        {"fact": "Entry into force on 23 June 2026.", "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/1297-cameroun-la-loi-sur-la-protection-des-donnees-a-caractere-personnel-entre-en-vigueur-ce-23-juin-2026"}
+      ],
+      "global_examples": [
+        {"name": "GDPR Article 5(1)(e) - storage limitation", "jurisdiction": "European Union", "what_it_does": "Personal data must be kept in identifiable form no longer than necessary for the purposes of processing.", "url": "https://gdpr-info.eu/art-5-gdpr/"},
+        {"name": "GDPR Article 25 - data protection by design and by default", "jurisdiction": "European Union", "what_it_does": "Requires measures such as data minimisation by design, with only the data needed for each purpose processed and stored by default.", "url": "https://gdpr-info.eu/art-25-gdpr/"},
+        {"name": "EU AI Act Article 26(6)", "jurisdiction": "European Union", "what_it_does": "Deployers of high-risk systems keep automatically generated logs for at least six months, unless other Union or national law provides otherwise. This sets an explicit minimum and leaves the maximum to data-protection law.", "url": "https://artificialintelligenceact.eu/article/26/"}
+      ],
+      "recommendation": "Issue guidance that classifies AI-assistant conversation content separately from connection/traffic metadata. It should mandate redaction of identifiers before storage and model calls, set a maximum retention for conversation content and a separate retention for integrity-protected audit records (hashes, verdicts, source IDs), and name the authority that arbitrates between the two regimes.",
+      "itu_links": [
+        {"ref": "ITU-T X.1058 (02/2026), controls and guidance for PII protection", "url": "https://www.itu.int/rec/T-REC-X.1058/en", "relevance": "PII controls applicable at the PP node."},
+        {"ref": "ITU-T Y.3172, PP and SINK nodes", "url": "https://www.itu.int/rec/T-REC-Y.3172/en", "relevance": "Redaction at PP; retention at SINK."}
+      ],
+      "to_verify": ["Article number of the retention / storage-limitation principle in Law No. 2024/017 (primary text not found online).", "Whether Section 29 of Law 2010/012 applies to AI-service providers as 'operators of information systems' (legal interpretation needed)."]
+    },
+    {
+      "id": "GAP-04",
+      "title": "Unclear accountability when a public AI assistant gives wrong information",
+      "gap_type": ["unclear responsibilities", "legislative"],
+      "description": "The rules do not say who is liable when a citizen relies on information from a government or public-interest AI assistant: the deploying administration, the model provider, or the citizen. They also do not say whether that information binds the administration and what remedy exists.",
+      "evidence": {
+        "scenario": "S1, S4",
+        "observation": "If SONAH served the outdated Art. 6(2) (S1), or one ministry's requirements in place of another's (S4), the citizen could act on wrong information. No Cameroonian text we reviewed assigns responsibility or gives information supplied by an administration any binding effect.",
+        "artefacts": ["eval/questions.jsonl (items OUT-*, PRO-09, PRO-10)"]
+      },
+      "cameroon_context": [
+        {"fact": "No national instrument on liability for automated or AI-provided public information was found. The national AI strategy presented in July 2025 has no published text.", "url": "https://camer.be/actualites/societe/le-cameroun-se-dote-dune-strategie-pour-lia-enjeux-et-perspectives-dun-tournant-numerique-cameroon.html"}
+      ],
+      "global_examples": [
+        {"name": "Moffatt v. Air Canada, 2024 BCCRT 149", "jurisdiction": "Canada (British Columbia)", "what_it_does": "The tribunal held the company liable for negligent misrepresentation by its website chatbot and rejected the argument that the chatbot was a separate entity.", "url": "https://www.mondaq.com/canada/new-technology/1427926/airline-ordered-to-compensate-a-bc-man-because-its-chatbot-provided-inaccurate-information"},
+        {"name": "NYC MyCity chatbot", "jurisdiction": "United States (New York City)", "what_it_does": "A city AI chatbot told businesses they could take actions that are illegal under city law (The Markup, 29 March 2024). The case shows the risk without a clear accountability regime.", "url": "https://themarkup.org/news/2024/03/29/nycs-ai-chatbot-tells-businesses-to-break-the-law"},
+        {"name": "Opposability of published administrative positions (CRPA L312-3, ESSOC law 2018-727)", "jurisdiction": "France", "what_it_does": "A person may rely on a published interpretation by the administration, even an erroneous one, until it is changed.", "url": "https://droit.cairn.info/article/RDP_101_1185/pdf?lang=fr"}
+      ],
+      "recommendation": "Define in law or policy that the deploying public body is accountable for information its AI assistant provides. The rule should state which outputs (if any) are opposable, require a logged trace for every answer so disputes can be resolved, and provide a correction and remedy channel.",
+      "itu_links": [
+        {"ref": "ITU AI Ready Report 2.0, Dimension 10 - 'accountability of final decisions, which remains with humans' (p. 29)", "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf", "relevance": "Policies for AI metric."}
+      ],
+      "to_verify": ["Primary text of 2024 BCCRT 149 (tribunal site returned 403; secondary report used)."]
+    },
+    {
+      "id": "GAP-05",
+      "title": "No continuity or service-level requirement for public AI services that depend on external models",
+      "gap_type": ["technology", "standards"],
+      "description": "Public AI assistants often call foreign commercial LLM APIs with quotas and outages beyond the deployer's control. No requirement sets minimum availability, a degraded mode, or what the service must do when the model is unavailable. The risk is a service that silently fails, or answers without its safeguards.",
+      "evidence": {
+        "scenario": "S3",
+        "observation": "When no LLM key is configured, SONAH falls back to a deterministic extractive answer (apps/api/src/chat/chat.service.ts, extractiveReply). On branch feat/gemini, it also falls back when the model call fails. These behaviours are our own design; no external requirement exists.",
+        "artefacts": ["apps/api/src/chat/chat.service.ts", "apps/api/src/health/health.controller.ts"]
+      },
+      "cameroon_context": [
+        {"fact": "Law No. 2010/012 gives ANTIC the regulation of electronic security activities (Section 7) but sets no availability or continuity requirement for public digital services. Our review covered only this law and 2010/013; this is a finding of absence.", "url": "https://database.cyberpolicyportal.org/api/files/166367990584329pspck8evk.pdf"}
+      ],
+      "global_examples": [
+        {"name": "GOV.UK Service Standard, point 14 'Operate a reliable service'", "jurisdiction": "United Kingdom", "what_it_does": "Services must minimise downtime and have a plan for when it happens, deploy without significant downtime, and be monitored.", "url": "https://www.gov.uk/service-manual/service-standard/point-14-operate-a-reliable-service"},
+        {"name": "ISO 22301:2019", "jurisdiction": "International standard", "what_it_does": "Requirements for business continuity management systems (amended 2024).", "url": "https://www.sis.se/en/produkter/sociology-services-company-organization/company-organization-and-management/general/iso-223012019/"},
+        {"name": "EU AI Act, Article 15(4)", "jurisdiction": "European Union", "what_it_does": "High-risk systems must be as resilient as possible to errors, faults and inconsistencies. Robustness may be achieved through technical redundancy, including backup or fail-safe plans.", "url": "https://artificialintelligenceact.eu/article/15/"}
+      ],
+      "recommendation": "Require public AI information services to declare a degraded mode that keeps the policy safeguards (extractive, citation-only, or explicit unavailability). They should publish availability targets, avoid single-provider dependency for critical services, and report incidents.",
+      "itu_links": [
+        {"ref": "ITU-T Y.3172, MLFO (model selection and reselection)", "url": "https://www.itu.int/rec/T-REC-Y.3172/en", "relevance": "Orchestrator reselects the model based on performance or conditions."},
+        {"ref": "ITU AI Ready Report 2.0, Dimension 13 'Digital Infrastructure'", "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf", "relevance": "Infrastructure readiness."}
+      ],
+      "to_verify": ["Whether a Cameroonian public-service continuity instrument exists outside the two laws reviewed."]
+    },
+    {
+      "id": "GAP-06",
+      "title": "No equal-quality requirement for AI public services in both official languages",
+      "gap_type": ["standards", "coordination"],
+      "description": "In bilingual or multilingual states, AI assistants are usually built and evaluated mostly in one language. Nothing requires answer quality, refusal behaviour and source coverage to be equivalent across official languages. Evaluating each language separately is not required either.",
+      "evidence": {
+        "scenario": "Gold set (FR/EN pairs)",
+        "observation": "The indexed legal texts are French editions. English questions must be matched cross-lingually (the cybersecurity law is bilingual, with Sections in English and Articles in French). eval/run-eval.ts reports metrics per item, so FR/EN parity can be measured.",
+        "artefacts": ["eval/questions.jsonl", "eval/run-eval.ts"]
+      },
+      "cameroon_context": [
+        {"fact": "Constitution Art. 1(3): English and French are the official languages, 'both languages having the same status'; the State guarantees the promotion of bilingualism.", "url": "https://www.constituteproject.org/constitution/Cameroon_2008"}
+      ],
+      "global_examples": [
+        {"name": "Official Languages Act, Part IV 'Communications with and Services to the Public'", "jurisdiction": "Canada", "what_it_does": "Sets the public's right to communicate with and receive services from federal institutions in either official language.", "url": "https://laws-lois.justice.gc.ca/eng/acts/O-3.01/"},
+        {"name": "Directive on Automated Decision-Making + Algorithmic Impact Assessment", "jurisdiction": "Canada", "what_it_does": "Since 1 April 2019, federal automated decision systems require a mandatory impact assessment that assigns impact levels I-IV and the safeguards that go with them.", "url": "https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/responsible-use-ai/automated-decision-making/algorithmic-impact-assessment.html"}
+      ],
+      "recommendation": "Require per-language evaluation and reporting (retrieval, refusal and error rates) for public AI services, with parity thresholds across official languages, and official translations of key legal texts in machine-readable form.",
+      "itu_links": [
+        {"ref": "ITU AI Ready Report 2.0, Dimension 6 'Human Interface' - 'Availability of AI models in the local language' (p. 24)", "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf", "relevance": "Readiness metric."}
+      ],
+      "to_verify": ["Exact wording of Official Languages Act ss. 21-22 (page timed out; only the Part IV title is cited)."]
+    },
+    {
+      "id": "GAP-07",
+      "title": "No authoritative cross-ministry registry of administrative procedures",
+      "gap_type": ["coordination", "unclear responsibilities"],
+      "description": "Procedures that involve several authorities (commerce, health and hygiene, municipality, tax) are described separately by each one. There is no single authoritative, machine-readable record of requirements, order, fees and legal basis. When two authorities require conflicting steps, neither the citizen nor an AI assistant can tell which prevails or who arbitrates.",
+      "evidence": {
+        "scenario": "S4",
+        "observation": "In gold items PRO-09/PRO-10, a citizen opening a restaurant gets requirements from different ministries in a conflicting order. SONAH's knowledge base contains no procedure texts, so the correct behaviour is CONFLICT_BETWEEN_TEXTS or REFER_TO_HUMAN, never a guessed order. The Neo4j graph (REQUIRES / PRECEDES / GOVERNED_BY) can represent a registry once one exists.",
+        "artefacts": ["packages/rag/src/graph-store.service.ts", "eval/questions.jsonl (items PRO-09, PRO-10)"]
+      },
+      "cameroon_context": [
+        {"fact": "Business-creation one-stop centres (CFCE) and the mybusiness.cm electronic window exist. Step-by-step business-creation procedures are documented on eRegulations portals for Yaoundé, Douala and Garoua.", "url": "https://yaounde.eregulations.org/menu/1?l=fr"}
+      ],
+      "global_examples": [
+        {"name": "Single Digital Gateway Regulation (EU) 2018/1724", "jurisdiction": "European Union", "what_it_does": "Your Europe is the single access point to information on and online access to procedures. Article 14 sets up the Once-Only Technical System (OOTS), live since December 2023.", "url": "https://single-market-economy.ec.europa.eu/single-market/single-digital-gateway_en"},
+        {"name": "eesti.ee state portal", "jurisdiction": "Estonia", "what_it_does": "Single state portal since 2003, with personalised e-services and information articles in three languages, run by the Information System Authority (RIA).", "url": "https://ria.ee/en/news/20-years-reliable-e-services"}
+      ],
+      "recommendation": "Create a single, authoritative, machine-readable procedure registry. Each step should carry its competent authority, legal basis, prerequisites, fees and deadlines. The registry needs a designated owner who resolves conflicts between authorities, and an API that AI assistants and portals must use instead of scraping.",
+      "itu_links": [
+        {"ref": "ITU-T Y.3172, D node and SINK", "url": "https://www.itu.int/rec/T-REC-Y.3172/en", "relevance": "Routing outputs to the competent authority (SINK)."},
+        {"ref": "ITU AI Ready Report 2.0, Dimension 5 'Level of Integration of AI in Workflows' - interoperability gaps, standardized APIs (pp. 22-23)", "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf", "relevance": "Standardised interfaces for workflow integration."}
+      ],
+      "to_verify": ["Whether eRegulations Cameroon covers sector authorisations (e.g. hygiene/health certificates for restaurants) and their legal basis.", "Current status and official URL of mybusiness.cm (only secondary sources found)."]
+    },
+    {
+      "id": "GAP-08",
+      "title": "No human-oversight, escalation and redress channel for citizen-facing AI",
+      "gap_type": ["unclear responsibilities", "legislative"],
+      "description": "Where an AI assistant should hand over to a human (danger to the person, a dispute, a contested answer, a data-protection complaint), no rule designates the receiving authority or sets the escalation path, response time or the documentation the citizen receives to contest an answer.",
+      "evidence": {
+        "scenario": "S2, S4",
+        "observation": "SONAH's REFER_TO_HUMAN verdict (items PRO-11, PRO-12) and its planned authority agents (data-protection-authority, regulator-minpostel, ministry-business) need a real counterpart. The data-protection authority created by Law No. 2024/017 (Art. 53) was not yet operational, according to the secondary sources available.",
+        "artefacts": ["docs/itu/y3172-pipeline.yaml (D, SINK)", "eval/questions.jsonl (items PRO-11, PRO-12)"]
+      },
+      "cameroon_context": [
+        {"fact": "Law No. 2024/017, Art. 53 creates the Autorité de protection des données à caractère personnel as an independent public body.", "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/"},
+        {"fact": "The implementing decree setting up the authority had not been adopted (secondary sources).", "url": "https://www.dlapiperdataprotection.com/?c=CM&t=law"}
+      ],
+      "global_examples": [
+        {"name": "EU AI Act, Article 14 (human oversight) and Article 26(2)", "jurisdiction": "European Union", "what_it_does": "High-risk systems must be effectively overseeable by natural persons, who can override or stop them. Deployers assign oversight to people with the necessary competence, training and authority.", "url": "https://artificialintelligenceact.eu/article/14/"},
+        {"name": "Council of Europe Framework Convention on AI (CETS No. 225)", "jurisdiction": "Council of Europe and other signatories", "what_it_does": "Opened for signature on 5 September 2024. Chapter IV covers remedies and procedural safeguards, including information sufficient to contest decisions and complaints to competent authorities.", "url": "https://www.coe.int/en/web/portal/-/council-of-europe-opens-first-ever-global-treaty-on-ai-for-signature"},
+        {"name": "UNESCO Recommendation on the Ethics of AI (2021)", "jurisdiction": "193 UNESCO Member States", "what_it_does": "Principle of human oversight and determination: AI should not displace ultimate human responsibility and accountability.", "url": "https://www.unesco.org/en/artificial-intelligence/recommendation-ethics"},
+        {"name": "African Union Continental AI Strategy", "jurisdiction": "African Union", "what_it_does": "Endorsed by the AU Executive Council (Accra, July 2024). It is the continental reference framework for responsible AI adoption.", "url": "https://au.int/en/documents/20240809/continental-artificial-intelligence-strategy"}
+      ],
+      "recommendation": "Designate, for each public AI service, the human escalation counterpart by category of issue (legal dispute, safety, data protection, procedure conflict). Define response times. Give citizens a trace reference (the traceId) that lets them contest an answer before the competent authority.",
+      "itu_links": [
+        {"ref": "ITU AI Ready Report 2.0, Dimension 9 'Impacts of Humans in AI Integration' - decisions referred back to domain experts (p. 26)", "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf", "relevance": "Human-in-the-loop readiness."}
+      ],
+      "to_verify": ["Exact text of CETS 225 Articles 14-15 (treaty text fetch blocked; summary from Council of Europe pages and search snippets)."]
+    }
+  ]
+}

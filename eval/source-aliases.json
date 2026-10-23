@@ -1,0 +1,12 @@
+{
+  "_comment": "Canonical sourceId used in questions.jsonl -> sourceId(s) actually deployed in data/sources/manifest.json. Edit the right-hand side if the ingestion workstream chose different ids; the runner probes each with a source-filtered /search.",
+  "constitution-1996": ["constitution-1996"],
+  "code-du-travail-1992": ["code-du-travail-1992"],
+  "loi-2008-001-revision-constitution": ["loi-2008-001-revision-constitution"],
+  "loi-2010-012-cybersecurite": ["loi-2010-012-cybersecurite"],
+  "loi-2010-013-communications-electroniques": ["loi-2010-013-communications-electroniques"],
+  "loi-2024-017-donnees-personnelles": ["loi-2024-017-donnees-personnelles"],
+  "loi-2011-011-etat-civil": ["loi-2011-011-etat-civil"],
+  "eu-ai-act-2024": ["eu-ai-act-2024"],
+  "unesco-recommandation-ethique-ia-2021": ["unesco-recommandation-ethique-ia-2021"]
+}
