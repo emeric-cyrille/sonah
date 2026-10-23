@@ -5,6 +5,10 @@ export const IS_API_MOCK = process.env.NEXT_PUBLIC_API_MOCK === '1';
 
 const API_BASE_PATH = IS_API_MOCK ? '/api/mock/v1' : '/api/v1';
 const REQUEST_TIMEOUT_MS = 45_000;
+// Une étape de scénario fait répondre plusieurs agents à la suite : délai plus long
+const SCENARIO_STEP_TIMEOUT_MS = 120_000;
+
+export type ApiLanguage = 'fr' | 'en';
 
 // ─── Schémas ──────────────────────────────────────────────────────
 
@@ -58,8 +62,13 @@ export const chatResponseSchema = z.object({
 export const traceSummarySchema = z.object({
   id: z.string(),
   createdAt: z.string(),
+  kind: z.string().nullish(),
   conversationId: z.string().nullish(),
+  scenarioRunId: z.string().nullish(),
+  agentId: z.string().nullish(),
   verdict: verdictSchema.nullish(),
+  model: z.string().nullish(),
+  stepCount: z.number().nullish(),
   hash: z.string(),
 });
 
@@ -79,7 +88,12 @@ export const traceSchema = z.object({
   createdAt: z.string(),
   conversationId: z.string().nullish(),
   scenarioRunId: z.string().nullish(),
+  kind: z.string().nullish(),
+  agentId: z.string().nullish(),
   verdict: verdictSchema.nullish(),
+  model: z.string().nullish(),
+  promptVersion: z.string().nullish(),
+  sequence: z.number().nullish(),
   hash: z.string(),
   prevHash: z.string().nullish(),
   steps: z.array(traceStepSchema).default([]),
@@ -97,6 +111,7 @@ export const agentSchema = z.object({
   role: z.string(),
   mandate: z.string().default(''),
   sources: z.array(z.string()).default([]),
+  rules: z.array(z.string()).default([]),
 });
 export const agentListSchema = z.array(agentSchema);
 
@@ -147,16 +162,31 @@ export const runStepSchema = z.object({
   done: z.boolean(),
 });
 
-/** Forme tolérante de GET /scenarios/runs/:runId (reprise d'une exécution). */
-export const runStateSchema = z.object({
-  runId: z.string(),
-  totalSteps: z.number().int(),
-  steps: z.array(runStepSchema).default([]),
-  done: z.boolean().default(false),
-});
+/**
+ * GET /scenarios/runs/:runId (reprise d'une exécution) : `status` vaut RUNNING ou COMPLETED.
+ * `done` est déduit du statut, ou du nombre d'étapes publiées si le statut est absent.
+ */
+export const runStateSchema = z
+  .object({
+    runId: z.string(),
+    scenario: scenarioSchema.partial().nullish(),
+    language: z.string().nullish(),
+    status: z.string().nullish(),
+    currentStep: z.number().int().nullish(),
+    totalSteps: z.number().int(),
+    steps: z.array(runStepSchema).default([]),
+  })
+  .transform((run) => ({
+    ...run,
+    done: run.status
+      ? run.status === 'COMPLETED'
+      : run.steps.length >= run.totalSteps || run.steps.some((step) => step.done),
+  }));
 
 export const documentSchema = z.object({
   id: z.string(),
+  sourceId: z.string().nullish(),
+  type: z.string().nullish(),
   title: z.string(),
   reference: z.string().nullish(),
   content: z.string().default(''),
@@ -237,9 +267,10 @@ async function request<T>(
   path: string,
   schema: z.ZodType<T, z.ZodTypeDef, unknown>,
   body?: unknown,
+  timeoutMs: number = REQUEST_TIMEOUT_MS,
 ): Promise<T> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   let response: Response;
   try {
@@ -314,20 +345,28 @@ export function verifyAuditChain(): Promise<VerifyResult> {
   return request('GET', '/audit/verify', verifySchema);
 }
 
-export function listAgents(): Promise<Agent[]> {
-  return request('GET', '/agents', agentListSchema);
+export function listAgents(language: ApiLanguage): Promise<Agent[]> {
+  return request('GET', `/agents?language=${language}`, agentListSchema);
 }
 
-export function listScenarios(): Promise<Scenario[]> {
-  return request('GET', '/scenarios', scenarioListSchema);
+export function listScenarios(language: ApiLanguage): Promise<Scenario[]> {
+  return request('GET', `/scenarios?language=${language}`, scenarioListSchema);
 }
 
-export function startScenarioRun(scenarioId: string): Promise<RunStart> {
-  return request('POST', `/scenarios/${encodeURIComponent(scenarioId)}/runs`, runStartSchema, {});
+export function startScenarioRun(scenarioId: string, language: ApiLanguage): Promise<RunStart> {
+  return request('POST', `/scenarios/${encodeURIComponent(scenarioId)}/runs`, runStartSchema, {
+    language,
+  });
 }
 
 export function releaseNextEvent(runId: string): Promise<RunStep> {
-  return request('POST', `/scenarios/runs/${encodeURIComponent(runId)}/next`, runStepSchema, {});
+  return request(
+    'POST',
+    `/scenarios/runs/${encodeURIComponent(runId)}/next`,
+    runStepSchema,
+    {},
+    SCENARIO_STEP_TIMEOUT_MS,
+  );
 }
 
 export function getScenarioRun(runId: string): Promise<RunState> {

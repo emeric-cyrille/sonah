@@ -197,6 +197,16 @@ export function TraceView({ traceId }: { readonly traceId: string }): JSX.Elemen
             <dt className="eyebrow">{t.createdAt}</dt>
             <dd className="mt-1">{formatDateTime(trace.createdAt, dict.common.dateLocale)}</dd>
           </div>
+          {(trace.agentId || trace.model) && (
+            <div className="min-w-0">
+              <dt className="eyebrow">{t.producedBy}</dt>
+              <dd className="mt-1 break-words text-sm">
+                {trace.agentId && <span className="font-semibold">{trace.agentId}</span>}
+                {trace.agentId && trace.model && ' · '}
+                {trace.model && <span className="font-mono text-xs">{trace.model}</span>}
+              </dd>
+            </div>
+          )}
           {trace.conversationId && (
             <div className="min-w-0">
               <dt className="eyebrow">{t.conversation}</dt>

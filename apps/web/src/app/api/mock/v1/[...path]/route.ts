@@ -32,7 +32,9 @@ function notFound(): Response {
   return json({ error: 'Not found' }, 404);
 }
 
-function requestLocale(): Locale {
+/** Langue explicite (paramètre ou corps de requête), comme l'API réelle ; sinon cookie du site. */
+function requestLocale(explicit?: unknown): Locale {
+  if (isLocale(explicit)) return explicit;
   const fromCookie = cookies().get(LOCALE_COOKIE)?.value;
   return isLocale(fromCookie) ? fromCookie : negotiateLocale(headers().get('accept-language'));
 }
@@ -46,7 +48,7 @@ export async function GET(
   if (!ENABLED) return notFound();
   const [first, second, third] = params.path;
   const url = new URL(request.url);
-  const locale = requestLocale();
+  const locale = requestLocale(url.searchParams.get('language'));
 
   if (first === 'audit' && second === 'traces' && !third) {
     return json(mockListTraces(url.searchParams));
@@ -85,7 +87,7 @@ export async function POST(
     return json(result.body, result.status, result.headers);
   }
   if (first === 'scenarios' && second && third === 'runs' && !fourth) {
-    const run = mockStartRun(second, requestLocale());
+    const run = mockStartRun(second, requestLocale(payload.language));
     return run ? json(run, 201) : notFound();
   }
   if (first === 'scenarios' && second === 'runs' && third && fourth === 'next') {

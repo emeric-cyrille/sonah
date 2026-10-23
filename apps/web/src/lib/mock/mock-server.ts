@@ -49,6 +49,7 @@ interface MockRun {
   runId: string;
   scenarioId: string;
   locale: Locale;
+  createdAt: string;
   steps: MockRunStep[];
 }
 
@@ -257,26 +258,32 @@ export function mockAgents(locale: Locale): unknown {
   }));
 }
 
-export function mockScenarios(locale: Locale): unknown {
-  return MOCK_SCENARIOS.map((scenario) => ({
+function scenarioSummary(scenario: (typeof MOCK_SCENARIOS)[number], locale: Locale): unknown {
+  return {
     id: scenario.id,
     title: scenario.title[locale],
     description: scenario.description[locale],
     totalSteps: scenario.events.length,
     domain: scenario.domain[locale],
-  }));
+  };
+}
+
+export function mockScenarios(locale: Locale): unknown {
+  return MOCK_SCENARIOS.map((scenario) => scenarioSummary(scenario, locale));
 }
 
 export function mockStartRun(scenarioId: string, locale: Locale): unknown | undefined {
   const scenario = MOCK_SCENARIOS.find((candidate) => candidate.id === scenarioId);
   if (!scenario) return undefined;
   const runId = randomUUID();
-  state.runs.set(runId, { runId, scenarioId, locale, steps: [] });
-  return {
+  state.runs.set(runId, {
     runId,
-    scenario: { id: scenario.id, title: scenario.title[locale] },
-    totalSteps: scenario.events.length,
-  };
+    scenarioId,
+    locale,
+    createdAt: new Date().toISOString(),
+    steps: [],
+  });
+  return { runId, scenario: scenarioSummary(scenario, locale), totalSteps: scenario.events.length };
 }
 
 export function mockNextEvent(runId: string): MockRunStep | 'done' | undefined {
@@ -353,12 +360,16 @@ export function mockGetRun(runId: string): unknown | undefined {
   if (!run) return undefined;
   const scenario = MOCK_SCENARIOS.find((candidate) => candidate.id === run.scenarioId);
   const totalSteps = scenario?.events.length ?? run.steps.length;
+  // Même forme que l'API réelle (ScenarioRunView)
   return {
     runId,
-    scenarioId: run.scenarioId,
+    scenario: scenario ? scenarioSummary(scenario, run.locale) : { id: run.scenarioId },
+    language: run.locale,
+    status: run.steps.length >= totalSteps ? 'COMPLETED' : 'RUNNING',
+    currentStep: run.steps.length,
     totalSteps,
+    createdAt: run.createdAt,
     steps: run.steps,
-    done: run.steps.length >= totalSteps,
   };
 }
 
