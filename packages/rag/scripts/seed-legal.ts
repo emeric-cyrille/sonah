@@ -1,7 +1,7 @@
 /**
  * Indexe les textes de data/sources (manifest.json) dans pgvector et Neo4j.
  *
- *   DATABASE_URL=... [OPENAI_API_KEY=...] [NEO4J_URI=... NEO4J_USER=... NEO4J_PASSWORD=...] pnpm --filter @sonah/rag seed
+ *   DATABASE_URL=... [GEMINI_API_KEY=... | OPENAI_API_KEY=...] [NEO4J_URI=... NEO4J_USER=... NEO4J_PASSWORD=...] pnpm --filter @sonah/rag seed
  *
  * Options : --offline (textes non redistribuables lus depuis le cache uniquement),
  *           --source <id> (répétable : n'indexe que ces textes).
@@ -21,6 +21,8 @@ async function main(): Promise<void> {
   const sourcesDir = process.env.SOURCES_DIR ?? path.resolve(__dirname, '../../../data/sources');
   const prisma = createPrismaClient();
   const embedder = createEmbedder({
+    geminiApiKey: process.env.GEMINI_API_KEY,
+    geminiEmbeddingModel: process.env.GEMINI_EMBEDDING_MODEL,
     openaiApiKey: process.env.OPENAI_API_KEY,
     openaiEmbeddingModel: process.env.OPENAI_EMBEDDING_MODEL,
   });

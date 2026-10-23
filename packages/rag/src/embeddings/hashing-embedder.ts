@@ -48,8 +48,8 @@ function hash(value: string): number {
  */
 export class HashingEmbedder implements Embedder {
   readonly model = 'hashing-fr-v1';
-  // Mesuré sur la Constitution et le Code du travail : hors sujet < 0,10, pertinent > 0,20
-  readonly relevanceThreshold = 0.15;
+  // Calibré (scripts/calibrate-threshold.ts) : hors sujet ≤ 0,15, bons articles ≥ 0,17
+  readonly relevanceThreshold = 0.16;
 
   async embed(texts: readonly string[]): Promise<number[][]> {
     return texts.map((text) => this.embedOne(text));

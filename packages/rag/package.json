@@ -13,7 +13,8 @@
     "seed": "ts-node --transpile-only scripts/seed-legal.ts",
     "kb:fetch": "ts-node --transpile-only scripts/fetch-sources.ts",
     "kb:report": "ts-node --transpile-only scripts/kb-report.ts",
-    "kb:export-itu": "ts-node --transpile-only scripts/export-itu.ts"
+    "kb:export-itu": "ts-node --transpile-only scripts/export-itu.ts",
+    "calibrate": "ts-node --transpile-only scripts/calibrate-threshold.ts"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -112,7 +112,9 @@ function parseArgs(argv: string[]): Record<string, string | boolean> {
 
 const args = parseArgs(process.argv.slice(2));
 const ROOT = path.resolve(__dirname_safe(), '..');
-const BASE_URL = String(args['base-url'] ?? process.env.BASE_URL ?? 'http://localhost:4000/api/v1').replace(/\/$/, '');
+const BASE_URL = String(
+  args['base-url'] ?? process.env.BASE_URL ?? 'http://localhost:4000/api/v1',
+).replace(/\/$/, '');
 const QUESTIONS = String(args.questions ?? path.join(ROOT, 'eval', 'questions.jsonl'));
 const ALIASES = String(args.aliases ?? path.join(ROOT, 'eval', 'source-aliases.json'));
 const SEARCH_ONLY = args['search-only'] === true;
@@ -129,7 +131,11 @@ function __dirname_safe(): string {
 // ---------------------------------------------------------------- helpers
 
 /** Wilson score interval, 95 % (z = 1.96). */
-export function wilson(successes: number, n: number, z = 1.96): { p: number; low: number; high: number } {
+export function wilson(
+  successes: number,
+  n: number,
+  z = 1.96,
+): { p: number; low: number; high: number } {
   if (n === 0) return { p: Number.NaN, low: Number.NaN, high: Number.NaN };
   const p = successes / n;
   const denom = 1 + (z * z) / n;
@@ -141,10 +147,7 @@ export function wilson(successes: number, n: number, z = 1.96): { p: number; low
 /** "Article premier" -> "1", "Art. 47 bis" -> "47 bis", "Section 29" -> "29", "Préambule" -> "preambule". */
 export function articleKey(reference: string | null | undefined): string | null {
   if (!reference) return null;
-  const lower = reference
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '');
+  const lower = reference.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   if (lower.includes('preambule') || lower.includes('preamble')) return 'preambule';
   if (/\b(premier|1er|first)\b/.test(lower)) return '1';
   const match = /(\d+)(?:\s*(bis|ter|quater))?/.exec(lower);
@@ -161,7 +164,10 @@ function percentile(values: number[], q: number): number {
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function postJson(route: string, body: unknown): Promise<{ status: number; json: unknown; ms: number }> {
+async function postJson(
+  route: string,
+  body: unknown,
+): Promise<{ status: number; json: unknown; ms: number }> {
   const started = performance.now();
   const response = await fetch(`${BASE_URL}${route}`, {
     method: 'POST',
@@ -204,9 +210,18 @@ const expectedSourceIds = (item: GoldItem): Set<string> =>
 
 // ---------------------------------------------------------------- API calls
 
-async function search(query: string, topK: number, sourceIds?: string[]): Promise<{ hits: SearchHit[]; ms: number }> {
-  const { status, json, ms } = await postJson('/search', { query, topK, ...(sourceIds ? { sourceIds } : {}) });
-  if (status >= 400) throw new Error(`/search HTTP ${status}: ${JSON.stringify(json).slice(0, 200)}`);
+async function search(
+  query: string,
+  topK: number,
+  sourceIds?: string[],
+): Promise<{ hits: SearchHit[]; ms: number }> {
+  const { status, json, ms } = await postJson('/search', {
+    query,
+    topK,
+    ...(sourceIds ? { sourceIds } : {}),
+  });
+  if (status >= 400)
+    throw new Error(`/search HTTP ${status}: ${JSON.stringify(json).slice(0, 200)}`);
   const results = ((json as { results?: SearchHit[] })?.results ?? []).map((r) => ({
     sourceId: r.sourceId,
     reference: r.reference ?? null,
@@ -251,7 +266,9 @@ async function chat(message: string, language: string): Promise<ChatOutcome> {
 
 /** A required source is present if a source-filtered search returns at least one fragment. */
 async function presentSources(items: GoldItem[]): Promise<Map<string, boolean>> {
-  const required = [...new Set(items.flatMap((item) => (item.requires_source ? [item.requires_source] : [])))];
+  const required = [
+    ...new Set(items.flatMap((item) => (item.requires_source ? [item.requires_source] : []))),
+  ];
   const presence = new Map<string, boolean>();
   for (const source of required) {
     if (SKIP_MISSING) {
@@ -274,12 +291,19 @@ async function presentSources(items: GoldItem[]): Promise<Map<string, boolean>> 
 const PII_PATTERNS = [/\b\d{9}\b/, /\b6\d{2}[\s.]?\d{2}[\s.]?\d{2}[\s.]?\d{2}\b/, /\+237\s?\d/];
 
 async function evaluateItem(item: GoldItem, present: Map<string, boolean>): Promise<ItemResult> {
-  const base: ItemResult = { id: item.id, category: item.category, language: item.language, scenario: item.scenario };
+  const base: ItemResult = {
+    id: item.id,
+    category: item.category,
+    language: item.language,
+    scenario: item.scenario,
+  };
   if (item.requires_source && !present.get(item.requires_source)) {
     return { ...base, skipped: `source ${item.requires_source} absent` };
   }
   const expected = expectedSourceIds(item);
-  const expectedKeys = new Set(item.expected_references.map(articleKey).filter((k): k is string => k !== null));
+  const expectedKeys = new Set(
+    item.expected_references.map(articleKey).filter((k): k is string => k !== null),
+  );
 
   // Retrieval: top-20 is also used as the "retrieved set" for citation validity
   const { hits, ms } = await search(item.question, 20);
@@ -288,14 +312,17 @@ async function evaluateItem(item: GoldItem, present: Map<string, boolean>): Prom
     return expected.has(hit.sourceId) && key !== null && expectedKeys.has(key);
   };
   const rankIndex = expectedKeys.size > 0 ? hits.slice(0, 10).findIndex(matches) : -1;
-  const sourceIndex = expected.size > 0 ? hits.slice(0, 10).findIndex((hit) => expected.has(hit.sourceId)) : -1;
+  const sourceIndex =
+    expected.size > 0 ? hits.slice(0, 10).findIndex((hit) => expected.has(hit.sourceId)) : -1;
   const result: ItemResult = {
     ...base,
     retrieval: {
       rank: rankIndex >= 0 ? rankIndex + 1 : null,
       sourceRank: sourceIndex >= 0 ? sourceIndex + 1 : null,
       latencyMs: ms,
-      top: hits.slice(0, 5).map((h) => ({ sourceId: h.sourceId, reference: h.reference, score: h.score })),
+      top: hits
+        .slice(0, 5)
+        .map((h) => ({ sourceId: h.sourceId, reference: h.reference, score: h.score })),
     },
   };
 
@@ -307,9 +334,13 @@ async function evaluateItem(item: GoldItem, present: Map<string, boolean>): Prom
   const retrieved = new Set(hits.map((h) => `${h.sourceId}|${articleKey(h.reference)}`));
   const retrievedRefs = new Set(hits.map((h) => articleKey(h.reference)));
   const valid = outcome.citations.filter((c) =>
-    c.sourceId ? retrieved.has(`${c.sourceId}|${articleKey(c.reference)}`) : retrievedRefs.has(articleKey(c.reference)),
+    c.sourceId
+      ? retrieved.has(`${c.sourceId}|${articleKey(c.reference)}`)
+      : retrievedRefs.has(articleKey(c.reference)),
   ).length;
-  const piiEchoed = item.expect_pii_redacted ? PII_PATTERNS.some((p) => p.test(outcome.reply)) : undefined;
+  const piiEchoed = item.expect_pii_redacted
+    ? PII_PATTERNS.some((p) => p.test(outcome.reply))
+    : undefined;
   result.chat = {
     ...outcome,
     reply: outcome.reply.slice(0, 600),
@@ -328,16 +359,39 @@ interface Metric {
   definition: string;
 }
 
-function summarise(items: GoldItem[], results: ItemResult[]): { metrics: Metric[]; latency: Record<string, number> } {
+function summarise(
+  items: GoldItem[],
+  results: ItemResult[],
+): { metrics: Metric[]; latency: Record<string, number> } {
   const byId = new Map(items.map((item) => [item.id, item]));
   const run = results.filter((r) => !r.skipped);
-  const withRefs = run.filter((r) => (byId.get(r.id)?.expected_references.length ?? 0) > 0 && r.retrieval);
-  const withSources = run.filter((r) => (byId.get(r.id)?.expected_sources.length ?? 0) > 0 && r.retrieval);
-  const hitAt = (k: number): number => withRefs.filter((r) => (r.retrieval?.rank ?? Infinity) <= k).length;
+  const withRefs = run.filter(
+    (r) => (byId.get(r.id)?.expected_references.length ?? 0) > 0 && r.retrieval,
+  );
+  const withSources = run.filter(
+    (r) => (byId.get(r.id)?.expected_sources.length ?? 0) > 0 && r.retrieval,
+  );
+  const hitAt = (k: number): number =>
+    withRefs.filter((r) => (r.retrieval?.rank ?? Infinity) <= k).length;
   const metrics: Metric[] = [
-    { name: 'retrieval hit@1', successes: hitAt(1), n: withRefs.length, definition: 'expected article ranked 1st by /search' },
-    { name: 'retrieval hit@3', successes: hitAt(3), n: withRefs.length, definition: 'expected article in top 3' },
-    { name: 'retrieval hit@5', successes: hitAt(5), n: withRefs.length, definition: 'expected article in top 5' },
+    {
+      name: 'retrieval hit@1',
+      successes: hitAt(1),
+      n: withRefs.length,
+      definition: 'expected article ranked 1st by /search',
+    },
+    {
+      name: 'retrieval hit@3',
+      successes: hitAt(3),
+      n: withRefs.length,
+      definition: 'expected article in top 3',
+    },
+    {
+      name: 'retrieval hit@5',
+      successes: hitAt(5),
+      n: withRefs.length,
+      definition: 'expected article in top 5',
+    },
     {
       name: 'source hit@5',
       successes: withSources.filter((r) => (r.retrieval?.sourceRank ?? Infinity) <= 5).length,
@@ -348,10 +402,17 @@ function summarise(items: GoldItem[], results: ItemResult[]): { metrics: Metric[
 
   const chats = run.filter((r) => r.chat);
   const latency: Record<string, number> = {
-    search_p50_ms: percentile(run.flatMap((r) => (r.retrieval ? [r.retrieval.latencyMs] : [])), 0.5),
-    search_p95_ms: percentile(run.flatMap((r) => (r.retrieval ? [r.retrieval.latencyMs] : [])), 0.95),
+    search_p50_ms: percentile(
+      run.flatMap((r) => (r.retrieval ? [r.retrieval.latencyMs] : [])),
+      0.5,
+    ),
+    search_p95_ms: percentile(
+      run.flatMap((r) => (r.retrieval ? [r.retrieval.latencyMs] : [])),
+      0.95,
+    ),
     mrr_at_10: withRefs.length
-      ? withRefs.reduce((sum, r) => sum + (r.retrieval?.rank ? 1 / r.retrieval.rank : 0), 0) / withRefs.length
+      ? withRefs.reduce((sum, r) => sum + (r.retrieval?.rank ? 1 / r.retrieval.rank : 0), 0) /
+        withRefs.length
       : Number.NaN,
   };
   if (chats.length > 0) {
@@ -365,10 +426,17 @@ function summarise(items: GoldItem[], results: ItemResult[]): { metrics: Metric[
     const validCitations = okChats.reduce((s, r) => s + (r.chat?.validCitations ?? 0), 0);
     const pii = okChats.filter((r) => r.chat?.piiEchoed !== undefined);
     const answeredGrounded = okChats.filter(
-      (r) => r.chat?.verdict === 'ANSWERED_WITH_CITATIONS' || (r.chat?.verdict === null && (r.chat?.totalCitations ?? 0) > 0),
+      (r) =>
+        r.chat?.verdict === 'ANSWERED_WITH_CITATIONS' ||
+        (r.chat?.verdict === null && (r.chat?.totalCitations ?? 0) > 0),
     );
     metrics.push(
-      { name: 'chat availability', successes: okChats.length, n: chats.length, definition: '/chat returned HTTP < 400' },
+      {
+        name: 'chat availability',
+        successes: okChats.length,
+        n: chats.length,
+        definition: '/chat returned HTTP < 400',
+      },
       {
         name: 'verdict accuracy',
         successes: withVerdict.filter((r) => r.chat?.verdictCorrect).length,
@@ -378,7 +446,9 @@ function summarise(items: GoldItem[], results: ItemResult[]): { metrics: Metric[
       {
         name: 'out-of-scope refusal',
         successes: oos.filter((r) =>
-          r.chat?.verdict !== null ? r.chat?.verdict === 'OUT_OF_SCOPE' : (r.chat?.totalCitations ?? 0) === 0,
+          r.chat?.verdict !== null
+            ? r.chat?.verdict === 'OUT_OF_SCOPE'
+            : (r.chat?.totalCitations ?? 0) === 0,
         ).length,
         n: oos.length,
         definition: 'OUT_OF_SCOPE verdict (legacy API: no citation)',
@@ -408,8 +478,14 @@ function summarise(items: GoldItem[], results: ItemResult[]): { metrics: Metric[
         definition: 'response carries an audit traceId',
       },
     );
-    latency.chat_p50_ms = percentile(okChats.map((r) => r.chat?.latencyMs ?? 0), 0.5);
-    latency.chat_p95_ms = percentile(okChats.map((r) => r.chat?.latencyMs ?? 0), 0.95);
+    latency.chat_p50_ms = percentile(
+      okChats.map((r) => r.chat?.latencyMs ?? 0),
+      0.5,
+    );
+    latency.chat_p95_ms = percentile(
+      okChats.map((r) => r.chat?.latencyMs ?? 0),
+      0.95,
+    );
   }
   return { metrics, latency };
 }
@@ -450,7 +526,8 @@ function markdown(
 
 async function main(): Promise<void> {
   let items = loadGold();
-  if (typeof args.category === 'string') items = items.filter((item) => item.category === args.category);
+  if (typeof args.category === 'string')
+    items = items.filter((item) => item.category === args.category);
   if (typeof args.limit === 'string') items = items.slice(0, Number(args.limit));
 
   const present = await presentSources(items);

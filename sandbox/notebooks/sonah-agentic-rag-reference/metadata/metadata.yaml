@@ -12,28 +12,28 @@ added_by: seedsoftengine@gmail.com
 dataset: ''
 language: Python
 libraries:
-- pypdf
-- scikit-learn
-- numpy
-- sentence-transformers
+  - pypdf
+  - scikit-learn
+  - numpy
+  - sentence-transformers
 tags:
-- reference-solution
-- agentic
-- rag
-- legal
-- public-services
-- y3172
-- itu-ai4g
+  - reference-solution
+  - agentic
+  - rag
+  - legal
+  - public-services
+  - y3172
+  - itu-ai4g
 license: See source repository
 authors:
-- Fokam Emeric Cyrille
+  - Fokam Emeric Cyrille
 source: https://github.com/emeric-cyrille/sonah
 doi: ''
 results: ''
 notes: Texts are fetched from FAOLEX at run time and not redistributed. sentence-transformers
   is only needed when USE_NEURAL = True.
 files:
-- path: notebook/SONAH_Agentic_RAG.ipynb
-  bytes: 64908
-  sha256: d3139ad2dcc3602eac6c65b4b2f1c3f4222a5264411825f89bb9bb41725bdb1e
-  format: ipynb
+  - path: notebook/SONAH_Agentic_RAG.ipynb
+    bytes: 64908
+    sha256: d3139ad2dcc3602eac6c65b4b2f1c3f4222a5264411825f89bb9bb41725bdb1e
+    format: ipynb
