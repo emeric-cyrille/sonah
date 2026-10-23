@@ -18,7 +18,8 @@ export class OpenAILanguageModel implements LanguageModel {
     apiKey: string,
     readonly name: string,
   ) {
-    this.client = new OpenAI({ apiKey, maxRetries: 2, timeout: 45_000 });
+    // Un seul nouvel essai, 20 s au plus : au-delà, Sonah bascule sur la réponse extractive
+    this.client = new OpenAI({ apiKey, maxRetries: 1, timeout: 20_000 });
   }
 
   async complete(turns: readonly ChatTurn[]): Promise<string> {
