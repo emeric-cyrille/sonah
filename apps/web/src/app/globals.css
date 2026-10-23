@@ -17,8 +17,11 @@
     @apply bg-sun-soft text-ink;
   }
 
+  /* Anneau de focus lisible sur fond clair comme sur fond sombre : or + liseré encre */
   :focus-visible {
-    @apply rounded-sm outline outline-2 outline-offset-2 outline-indigo;
+    outline: 3px solid #e8a317;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #181b34;
   }
 }
 
@@ -171,7 +174,9 @@
   animation: marquee 38s linear infinite;
 }
 
-.marquee:hover .marquee-track {
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track,
+.marquee-paused .marquee-track {
   animation-play-state: paused;
 }
 
@@ -211,6 +216,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .orb-css::after,
   .orb-thinking,
   .word,
