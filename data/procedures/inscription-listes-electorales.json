@@ -1,0 +1,164 @@
+{
+  "id": "inscription-listes-electorales",
+  "title_fr": "Inscription sur les listes électorales (ELECAM)",
+  "title_en": "Voter registration (Elections Cameroon – ELECAM)",
+  "category": "elections",
+  "keywords_fr": [
+    "inscription sur les listes électorales",
+    "s'inscrire pour voter",
+    "liste électorale",
+    "carte d'électeur",
+    "carte électorale",
+    "ELECAM",
+    "Elections Cameroon",
+    "je veux voter",
+    "vérifier mon inscription",
+    "transfert d'inscription",
+    "inscription électorale diaspora"
+  ],
+  "keywords_en": [
+    "voter registration",
+    "register to vote",
+    "electoral roll",
+    "voter card",
+    "ELECAM",
+    "Elections Cameroon",
+    "check my registration"
+  ],
+  "authority": {
+    "name": "Elections Cameroon (ELECAM) — démembrements communaux, avec les commissions de révision des listes électorales",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Démembrement communal d'ELECAM de la commune de votre domicile d'origine ou de résidence (commission de révision des listes électorales de la commune). ELECAM déploie aussi des agents d'enrôlement sur le terrain pendant la révision.",
+      "source_refs": [0, 2]
+    },
+    {
+      "text": "Camerounais établis à l'étranger : listes électorales ouvertes auprès des ambassades et postes consulaires (ils votent à l'élection présidentielle et au référendum).",
+      "source_refs": [0]
+    },
+    {
+      "text": "Vérification de l'inscription en ligne sur le portail d'ELECAM (lien « Consulter votre inscription » : https://file.elecam.cm), avec le numéro d'inscription ou les données personnelles (noms, date et lieu de naissance, nom de la mère).",
+      "source_refs": [1, 3]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne de nationalité camerounaise, sans distinction de sexe, âgée de 20 ans révolus (ou qui les aura avant la clôture des inscriptions ou le jour du scrutin), ayant son domicile d'origine ou résidant effectivement dans la commune depuis au moins 6 mois, et ne se trouvant dans aucun cas d'incapacité (condamnation pour crime, peine de prison ferme de plus de 3 mois, peine avec sursis de plus de 6 mois, mandat d'arrêt, faillite non réhabilitée, aliénation mentale).",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Cas particulier (inscription au titre du rôle des contributions directes depuis 5 ans dans la circonscription) : certificat de non-inscription sur les listes électorales ou de radiation, délivré par le démembrement communal d'ELECAM du lieu de domicile.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Pour retirer la carte électorale : la carte nationale d'identité ou le récépissé d'inscription.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Pendant la période de révision annuelle (du 1er janvier au 31 août, suspendue dès la convocation du corps électoral), se présenter au démembrement communal d'ELECAM ou à un point d'enrôlement de sa commune.",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 2,
+      "description": "Se faire enrôler : l'électeur nouvellement inscrit reçoit un récépissé portant la date, le lieu et le numéro d'inscription (utile pour les réclamations, il ne remplace pas la carte d'électeur).",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 3,
+      "description": "Vérifier les listes électorales provisoires affichées au plus tard le 20 octobre et, en cas d'omission ou d'erreur, saisir la commission de révision ou la commission départementale de supervision.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "Retirer sa carte électorale biométrique (permanente) : en cas de nouvelles inscriptions, les cartes sont distribuées dans les 40 jours précédant le scrutin ; elles ne sont remises que sur présentation de la carte d'identité ou du récépissé d'inscription (les cartes non retirées sont déposées au bureau de vote jusqu'à la clôture du scrutin).",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "L'inscription est un droit (art. 71 du Code électoral). Aucun frais d'inscription n'est mentionné dans le Code électoral ; la gratuité n'est toutefois pas énoncée explicitement dans les sources consultées.",
+    "source_refs": [0]
+  },
+  "delay": {
+    "text": "Révision annuelle du 1er janvier au 31 août ; listes provisoires affichées au plus tard le 20 octobre ; liste électorale nationale publiée au plus tard le 30 décembre.",
+    "source_refs": [0]
+  },
+  "validity": {
+    "text": "Les listes électorales sont permanentes (révisées chaque année) et les cartes électorales sont permanentes.",
+    "source_refs": [0]
+  },
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Loi n° 2012/001 du 19 avril 2012 portant Code électoral, modifiée et complétée par la loi n° 2012/017 du 21 décembre 2012 : art. 45-48 (électeurs, incapacités), 70-80 (listes électorales et révision annuelle), 84-85 (cartes électorales), 271-272 (Camerounais de l'étranger)",
+      "title": "Code électoral du Cameroun",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "On ne peut être inscrit que sur une seule liste électorale ; en cas d'inscriptions multiples, seule la dernière est retenue et les autres sont radiées d'office.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Tout refus d'inscription doit être motivé et notifié ; il peut être contesté devant la commission départementale de supervision ou le Conseil électoral.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Le jour du vote, il faut présenter la carte électorale et la carte nationale d'identité.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Code électoral — Loi n° 2012/001 du 19 avril 2012 modifiée par la loi n° 2012/017 du 21 décembre 2012 (édition ELECAM / DGE, 2013)",
+      "url": "https://www.electionpassport.com/files/Cameroon-Electoral-Code-French.pdf",
+      "publisher": "Elections Cameroon (ELECAM), Direction Générale des Élections — copie hébergée par ElectionPassport",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Cameroun : Elecam annonce la publication du fichier électoral national sur son site internet (11 juillet 2025)",
+      "url": "https://fr.journalducameroun.com/cameroun-elecam-annonce-la-publication-du-fichier-electoral-national-sur-son-site-internet/",
+      "publisher": "Journal du Cameroun",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Cameroun : Elections - L'opération d'enregistrement des électeurs, avec Elecam, bat son plein (juillet 2025)",
+      "url": "https://fr.allafrica.com/stories/202507070220.html",
+      "publisher": "AllAfrica",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Elections Cameroon — site officiel",
+      "url": "https://www.elecam.cm/",
+      "publisher": "Elections Cameroon (ELECAM)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "Les pièces exigées pour l'enrôlement (CNI ou récépissé de CNI, etc.) ne sont pas listées dans le Code électoral et aucune page officielle d'ELECAM les détaillant n'a été trouvée ; le site elecam.cm ne propose qu'un lien de consultation."
+    },
+    {
+      "field": "cost",
+      "note": "Gratuité non énoncée explicitement dans les sources consultées."
+    },
+    {
+      "field": "legal_basis",
+      "note": "Texte de 2012 (édition 2013). D'éventuelles modifications ultérieures du Code électoral n'ont pas été vérifiées ; le Code n'est pas dans le corpus data/sources."
+    }
+  ],
+  "language_versions": ["fr"]
+}

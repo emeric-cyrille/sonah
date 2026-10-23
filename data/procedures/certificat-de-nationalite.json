@@ -1,0 +1,157 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "certificat-de-nationalite",
+  "title_fr": "Certificat de nationalité camerounaise",
+  "title_en": "Certificate of Cameroonian nationality",
+  "category": "justice",
+  "keywords_fr": [
+    "certificat de nationalité",
+    "nationalité camerounaise",
+    "prouver ma nationalité",
+    "certificat de nationalité pour CNI",
+    "tribunal de première instance",
+    "TPI nationalité"
+  ],
+  "keywords_en": [
+    "nationality certificate",
+    "certificate of nationality",
+    "proof of Cameroonian citizenship",
+    "citizenship certificate"
+  ],
+  "authority": {
+    "name": "Président du Tribunal de Première Instance (TPI)",
+    "level": "national",
+    "source_refs": [0, 1]
+  },
+  "where": [
+    {
+      "text": "Tribunal de Première Instance compétent (du lieu de naissance ou d'origine selon l'ambassade du Cameroun près le Saint-Siège).",
+      "source_refs": [1]
+    },
+    {
+      "text": "À l'étranger : certaines ambassades du Cameroun reçoivent la demande (par exemple l'ambassade en Italie, qui délivre le certificat le jour même) ; d'autres indiquent seulement aider à la transmission du dossier au tribunal.",
+      "source_refs": [1, 2]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne de nationalité camerounaise, d'origine ou par acquisition, qui doit prouver sa nationalité (notamment pour une première CNI).",
+    "source_refs": [0, 1]
+  },
+  "documents": [
+    {
+      "text": "Une demande écrite et signée, adressée au président du tribunal compétent.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Une copie de l'acte de naissance camerounais (ou du jugement supplétif).",
+      "source_refs": [1]
+    },
+    {
+      "text": "Une pièce d'identité.",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Une preuve de filiation.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Un justificatif de résidence (pour les Camerounais de l'étranger : titre ou permis de séjour).",
+      "source_refs": [1, 2]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Rassembler les pièces et rédiger une demande adressée au président du Tribunal de Première Instance compétent.",
+      "source_refs": [1]
+    },
+    {
+      "order": 2,
+      "description": "Déposer le dossier au tribunal (ou à l'ambassade pour les Camerounais de l'étranger, selon le pays).",
+      "source_refs": [1, 2]
+    },
+    {
+      "order": 3,
+      "description": "Retirer le certificat signé du président du Tribunal de Première Instance.",
+      "source_refs": [0, 1]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Aucun barème officiel trouvé. L'ambassade du Cameroun près le Saint-Siège indique des frais de justice d'environ 10 000 à 20 000 FCFA au Cameroun ; l'ambassade du Cameroun en Italie indique 40 € pour une demande déposée chez elle.",
+    "source_refs": [1, 2]
+  },
+  "delay": {
+    "text": "De 2 semaines à plusieurs mois selon la procédure (indication de l'ambassade du Cameroun près le Saint-Siège) ; retrait le jour même pour les demandes déposées à l'ambassade du Cameroun en Italie.",
+    "source_refs": [1, 2]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Loi n° 1968-LF-3 du 11 juin 1968",
+      "title": "Code de la nationalité camerounaise",
+      "source_refs": [3]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Le certificat de nationalité signé du Président du TPI fait partie des pièces exigées pour une première carte nationale d'identité.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Tout sur vos titres identitaires : modalités d'établissement et de délivrance des titres identitaires (dépliant)",
+      "url": "https://www.dgsn.cm/wp-content/uploads/2020/01/Depliant-CNI.pdf",
+      "publisher": "Délégation Générale à la Sûreté Nationale (DGSN)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Le certificat de nationalité : définition, utilité et démarches",
+      "url": "https://www.ambacamvat.com/le-certificat-de-nationalite-definition-utilite-et-demarches/",
+      "publisher": "Ambassade du Cameroun près le Saint-Siège",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Certificat de nationalité",
+      "url": "https://ambacam.it/certificat-de-nationalite/",
+      "publisher": "Ambassade du Cameroun en Italie",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Loi n° 1968-LF-3 du 11 juin 1968 portant code de la nationalité camerounaise",
+      "url": "https://www.refworld.org/docid/3ae6b4d734",
+      "publisher": "UNHCR Refworld",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "Liste issue d'une page d'ambassade (destinée à la diaspora), pas d'une source du ministère de la Justice ; les tribunaux au Cameroun peuvent exiger d'autres pièces (des guides non officiels citent les actes de naissance des parents, un certificat de résidence, des photos et une demande timbrée)."
+    },
+    {
+      "field": "cost",
+      "note": "Aucun tarif officiel trouvé ; montants indicatifs fournis par des ambassades."
+    },
+    {
+      "field": "validity",
+      "note": "Durée de validité du certificat non indiquée par les sources consultées."
+    },
+    {
+      "field": "legal_basis",
+      "note": "L'article du code de la nationalité qui régit la délivrance du certificat n'a pas pu être lu (texte Refworld inaccessible, HTTP 403)."
+    },
+    {
+      "field": "where",
+      "note": "Les ambassades se contredisent sur la possibilité de demander le certificat à l'étranger ; à confirmer auprès de l'ambassade du pays de résidence."
+    }
+  ],
+  "language_versions": ["fr"]
+}

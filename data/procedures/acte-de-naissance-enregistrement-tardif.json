@@ -1,0 +1,149 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "acte-de-naissance-enregistrement-tardif",
+  "title_fr": "Enregistrement tardif d'une naissance (réquisition du Procureur ou jugement déclaratif, ex-« jugement supplétif »)",
+  "title_en": "Late birth registration (prosecutor's requisition or declaratory judgment, formerly 'supplementary judgment')",
+  "category": "etat-civil",
+  "keywords_fr": [
+    "jugement supplétif",
+    "jugement déclaratif",
+    "acte de naissance tardif",
+    "naissance non déclarée",
+    "pas d'acte de naissance",
+    "enfant sans acte de naissance",
+    "réquisition du procureur",
+    "déclaration tardive",
+    "hors délai"
+  ],
+  "keywords_en": [
+    "late birth registration",
+    "supplementary judgment",
+    "declaratory judgment",
+    "no birth certificate",
+    "unregistered birth",
+    "delayed registration"
+  ],
+  "authority": {
+    "name": "Procureur de la République ou Sous-préfet (entre 90 jours et 12 mois) ; Tribunal compétent (au-delà de 12 mois) ; puis officier d'état civil",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Entre 90 jours et 12 mois : Procureur de la République territorialement compétent, ou Sous-préfet lorsque le lieu de naissance est éloigné du siège de la juridiction",
+      "source_refs": [0]
+    },
+    {
+      "text": "Au-delà de 12 mois : tribunal du lieu où la naissance est survenue, a ou aurait été enregistrée, ou du lieu où l'acte aurait dû être établi",
+      "source_refs": [0]
+    },
+    {
+      "text": "Naissances survenues à l'étranger (actes consulaires) : Président du Tribunal de Première Instance de Yaoundé Centre-Administratif",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Entre 90 jours et 12 mois : les parents, le chef traditionnel du ressort, le responsable du service des affaires sociales ou de la famille, une association légalement constituée de protection de l'enfance ou toute personne physique ou morale intéressée. Au-delà : toute personne justifiant d'un intérêt légitime.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Requête au tribunal (au-delà de 12 mois) indiquant notamment : noms et prénoms du requérant ; noms, prénoms, filiation, date et lieu de naissance de la personne concernée ; motifs détaillés ; noms, prénoms, âge et résidence des témoins ; centre d'état civil où l'acte aurait dû être établi",
+      "source_refs": [0]
+    },
+    {
+      "text": "Témoins majeurs et capables ayant vécu les faits qu'ils attestent ou détenant des preuves desdits faits",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Si la naissance a moins de 12 mois : saisir le Procureur de la République (ou le Sous-préfet si le lieu de naissance est éloigné du tribunal). Sur sa réquisition, l'officier d'état civil enregistre la naissance ; mention de la réquisition est portée en marge de l'acte.",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Si la naissance a plus de 12 mois : déposer une requête en jugement déclaratif devant le tribunal compétent.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Le tribunal transmet la requête au Procureur pour enquête (vérification qu'il n'existe pas déjà un acte, crédibilité des témoins, absence de changement frauduleux d'identité) ; l'enquête n'est pas obligatoire pour les mineurs de moins de 15 ans.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "Le tribunal statue dans un délai maximum de 6 mois ; recours possible devant la Cour d'appel dans les 30 jours du prononcé ou de la notification.",
+      "source_refs": [0]
+    },
+    {
+      "order": 5,
+      "description": "Présenter le jugement à l'officier d'état civil, qui établit l'acte de naissance en vertu du jugement.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": null,
+    "source_refs": []
+  },
+  "delay": {
+    "text": "Le tribunal statue dans un délai maximum de 6 mois à compter de sa saisine ; la Cour d'appel, en cas de recours, dans un délai maximum de 6 mois.",
+    "source_refs": [0]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 12, 13, 58, 61, 63, 64 et 65",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 14 et 57 (Camerounais nés à l'étranger sans centre d'état civil ; personnes déplacées internes)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "La loi n° 2024/016 parle désormais de « jugement déclaratif » ; le terme « jugement supplétif » de l'ancienne ordonnance n° 81-02 reste courant dans le langage usuel.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Si l'enquête ne permet pas de déterminer la date de naissance, la date retenue est celle déclarée par le demandeur.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Personnes déplacées internes (guerre, conflit, catastrophe) : requête au Procureur du nouveau lieu de résidence, avec pièces justificatives ou, à défaut, deux témoins identifiés.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Camerounais nés à l'étranger dans un pays sans centre d'état civil camerounais : déclarer la naissance dans les 12 mois du retour au Cameroun, avec pièces justificatives ; à défaut, jugement déclaratif.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7589-loi-n-2024-016-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-10",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost",
+      "note": "Les frais de justice (timbres, droits de greffe, enquête) ne sont pas fixés par la loi n° 2024/016 et n'ont pas pu être vérifiés sur une source officielle."
+    },
+    {
+      "field": "documents",
+      "note": "Hors les mentions de la requête et les témoins prévus par la loi, les pièces exigées par les greffes (certificat d'âge apparent, pièces d'identité des témoins, etc.) n'ont pas pu être vérifiées."
+    }
+  ],
+  "language_versions": ["fr"]
+}

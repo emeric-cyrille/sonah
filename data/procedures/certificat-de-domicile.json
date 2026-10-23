@@ -1,0 +1,110 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "certificat-de-domicile",
+  "title_fr": "Certificat de domicile (souvent appelé certificat de résidence)",
+  "title_en": "Certificate of domicile (often called certificate of residence)",
+  "category": "identite",
+  "keywords_fr": [
+    "certificat de domicile",
+    "certificat de résidence",
+    "attestation de résidence",
+    "attestation de domicile",
+    "preuve de domicile",
+    "chef de quartier",
+    "commissariat certificat de domicile"
+  ],
+  "keywords_en": [
+    "certificate of domicile",
+    "certificate of residence",
+    "proof of address",
+    "residence certificate"
+  ],
+  "authority": {
+    "name": "Autorité administrative (sous-préfet) ou commissaire de police territorialement compétent",
+    "level": "national",
+    "source_refs": [0, 1]
+  },
+  "where": [
+    {
+      "text": "Auprès de l'autorité administrative ou du commissaire de police territorialement compétent, après visa préalable et obligatoire du chef de quartier ou de village.",
+      "source_refs": [0, 1]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne qui réside dans la circonscription ; le certificat est notamment exigé des étrangers pour la carte de séjour et la carte de résident.",
+    "source_refs": [0, 1]
+  },
+  "documents": [],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Obtenir le visa du chef de quartier ou de village du lieu de résidence.",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 2,
+      "description": "Faire établir le certificat par l'autorité administrative ou le commissaire de police territorialement compétent.",
+      "source_refs": [0, 1]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": null
+  },
+  "delay": null,
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Décret n° 2023/147 du 2 mars 2023, articles 39 et 42",
+      "title": "Décret fixant les modalités d'application de la loi n° 97/012 du 10 janvier 1997 relative aux conditions d'entrée, de séjour et de sortie des étrangers au Cameroun",
+      "source_refs": [1]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Sans le visa du chef de quartier ou de village, le certificat ne peut pas être délivré : commencez par cette étape.",
+      "source_refs": [0, 1]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Tout sur vos titres identitaires : modalités d'établissement et de délivrance des titres identitaires (dépliant)",
+      "url": "https://www.dgsn.cm/wp-content/uploads/2020/01/Depliant-CNI.pdf",
+      "publisher": "Délégation Générale à la Sûreté Nationale (DGSN)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Décret n° 2023/147 du 2 mars 2023 fixant les modalités d'application de la loi n° 97/012 relative aux conditions d'entrée, de séjour et de sortie des étrangers au Cameroun",
+      "url": "https://www.prc.cm/files/47/4a/a3/a84330acd666b5684ff46711e2b7669e.pdf",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "Aucune source officielle ne liste les pièces à fournir pour obtenir le certificat lui-même ; des guides non officiels citent une pièce d'identité et des justificatifs (factures), non retenus."
+    },
+    {
+      "field": "cost",
+      "note": "Aucun tarif officiel trouvé."
+    },
+    {
+      "field": "delay",
+      "note": "Aucun délai officiel trouvé."
+    },
+    {
+      "field": "validity",
+      "note": "Durée de validité non indiquée par les sources officielles consultées."
+    },
+    {
+      "field": "title_fr",
+      "note": "Les textes officiels parlent de « certificat de domicile » ; l'équivalence avec le « certificat de résidence » couramment demandé, et l'éventuelle compétence de la mairie (citée par des guides non officiels), ne sont pas confirmées par une source officielle."
+    }
+  ],
+  "language_versions": ["fr"]
+}

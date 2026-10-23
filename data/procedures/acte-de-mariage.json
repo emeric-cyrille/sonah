@@ -1,0 +1,160 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "acte-de-mariage",
+  "title_fr": "Mariage civil et acte de mariage (et transcription d'un mariage coutumier)",
+  "title_en": "Civil marriage and marriage certificate (and registration of a customary marriage)",
+  "category": "etat-civil",
+  "keywords_fr": [
+    "mariage",
+    "se marier",
+    "acte de mariage",
+    "mariage civil",
+    "mariage à la mairie",
+    "publication des bans",
+    "bans",
+    "intention de mariage",
+    "mariage coutumier",
+    "transcription mariage coutumier",
+    "livret de famille",
+    "opposition au mariage"
+  ],
+  "keywords_en": [
+    "marriage",
+    "get married",
+    "marriage certificate",
+    "civil marriage",
+    "banns",
+    "customary marriage registration",
+    "family booklet"
+  ],
+  "authority": {
+    "name": "Officier d'état civil du centre d'état civil (maire ou adjoint au maire de la commune ; chef de mission diplomatique ou de poste consulaire à l'étranger)",
+    "level": "communal",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Centre d'état civil du lieu de naissance ou de résidence de l'un des futurs époux (célébration dans le local prévu à cet effet ou, sur le territoire de compétence de l'officier, dans un lieu ouvert au public)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Mariage coutumier : officier d'état civil du lieu de naissance ou de résidence des époux, ou du lieu de célébration du mariage coutumier",
+      "source_refs": [0]
+    },
+    {
+      "text": "Camerounais mariés à l'étranger devant les autorités locales : mission diplomatique ou poste consulaire du Cameroun (transcription)",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Les futurs époux (déclaration d'intention de mariage) ; pour la transcription d'un mariage coutumier, les époux.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Déclaration d'intention de mariage énonçant, pour chacun des futurs époux : noms et prénoms, âge, nationalité, lieu de naissance, sexe, domicile, profession",
+      "source_refs": [0]
+    },
+    {
+      "text": "Témoins des époux (leurs noms et prénoms figurent dans l'acte et ils le signent)",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Au moins 30 jours avant la célébration, déposer la déclaration d'intention de mariage auprès de l'officier d'état civil.",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "L'officier publie immédiatement la déclaration par affichage au centre d'état civil (et, le cas échéant, sur le site internet de la commune) et la transmet aux officiers d'état civil des lieux de naissance et du dernier domicile des futurs époux, qui vérifient l'absence de mariage antérieur faisant obstacle.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Pendant ce délai, toute opposition est transmise au Président du Tribunal de Première Instance, qui statue dans les 10 jours par ordonnance rendue sans frais. Pour motifs graves et urgents, le Procureur peut accorder une dispense de publication sur demande motivée.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "À l'expiration des 30 jours, en l'absence d'opposition ou après mainlevée, l'officier célèbre le mariage ; il recueille notamment la forme du mariage (monogamie ou polygamie) et le régime des biens, qui sont mentionnés dans l'acte.",
+      "source_refs": [0]
+    },
+    {
+      "order": 5,
+      "description": "L'acte est lu aux époux et aux témoins puis signé par les époux, les témoins, l'officier et le secrétaire d'état civil ; chaque époux reçoit un exemplaire original de l'acte. Un livret de famille peut être remis sur demande.",
+      "source_refs": [0]
+    },
+    {
+      "order": 6,
+      "description": "Mariage coutumier : déclarer le mariage à l'officier d'état civil ; la demande de transcription est publiée par affichage et les oppositions sont possibles pendant 30 jours ; à l'issue, l'officier transcrit le mariage et en porte mention en marge des actes de naissance des époux.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 0,
+    "description": "La déclaration, l'enregistrement, l'établissement et la délivrance de l'original de l'acte d'état civil sont gratuits (art. 5). Les copies et extraits ultérieurs sont soumis au droit de timbre. D'éventuels frais liés au livret de famille ou à la cérémonie n'ont pas été vérifiés.",
+    "source_refs": [0]
+  },
+  "delay": {
+    "text": "Déclaration d'intention au moins 30 jours avant la célébration ; opposition jugée sous 10 jours ; transcription d'un mariage coutumier après un délai d'opposition de 30 jours.",
+    "source_refs": [0]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 16 à 20 (déclaration et publication de l'intention de mariage, dispense)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 41 à 47 (mentions de l'acte, oppositions, célébration, livret de famille)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 48 à 51 (mariage à l'étranger, transcription du mariage coutumier)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Sans opposition, aucune célébration n'est possible avant 30 jours après la publication : déposer la déclaration assez tôt.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Un Camerounais marié à l'étranger devant les autorités locales doit faire transcrire son mariage auprès de l'ambassade ou du consulat du Cameroun.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7589-loi-n-2024-016-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-10",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "La loi n° 2024/016 ne fixe pas de liste de pièces justificatives et aucun texte d'application ni page officielle (commune, BUNEC, MINDDEVEL) n'a pu être consulté ; les listes publiées par des sites non officiels varient d'une commune à l'autre. Se renseigner auprès du centre d'état civil. Des sites non officiels citent extraits d'acte de naissance récents, certificat de célibat, certificat de résidence, certificat médical prénuptial, pièces d'identité et photos : non vérifié pour la loi n° 2024/016."
+    },
+    {
+      "field": "who_can_apply",
+      "note": "Les conditions de fond du mariage (âge minimum, consentement) relèvent du droit des personnes et ne figurent pas dans les textes consultés."
+    },
+    {
+      "field": "validity",
+      "note": "Sans objet pour l'acte ; durée de validité des copies non fixée par la loi."
+    }
+  ],
+  "language_versions": ["fr"]
+}

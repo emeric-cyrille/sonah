@@ -1,0 +1,192 @@
+{
+  "id": "immatriculation-cnps-travailleur",
+  "title_fr": "Immatriculer un travailleur (assuré social) à la CNPS",
+  "title_en": "Registering a worker (insured person) with the CNPS",
+  "category": "social",
+  "keywords_fr": [
+    "numéro CNPS",
+    "matricule CNPS",
+    "immatriculation assuré",
+    "carte CNPS",
+    "être déclaré à la CNPS",
+    "mon patron ne m'a pas déclaré",
+    "affiliation CNPS",
+    "assurance volontaire",
+    "sécurité sociale",
+    "pension retraite CNPS"
+  ],
+  "keywords_en": [
+    "CNPS number",
+    "social security number",
+    "worker registration",
+    "insured person",
+    "voluntary insurance",
+    "pension"
+  ],
+  "authority": {
+    "name": "Caisse nationale de prévoyance sociale (CNPS) – Centre de prévoyance sociale (CPS)",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Centre de prévoyance sociale (CPS) de la CNPS, via l'employeur pour les salariés.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Téléimmatriculation assuré : https://e-services.cnps.cm/immatriculer/teleImmat_0.1/default2.jsp ; vérification de l'immatriculation : https://e-services.cnps.cm/consulter/DeclarationSalaires/CompteAssure/RegisteringFile.html",
+      "source_refs": [2]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Tous les travailleurs salariés du secteur privé doivent être affiliés dès leur embauche, par l'intermédiaire de leur employeur. Les travailleurs indépendants peuvent s'affilier volontairement.",
+    "source_refs": [1]
+  },
+  "documents": [
+    {
+      "text": "Demande d'immatriculation sur imprimé délivré par la CNPS, remplie et signée par l'intéressé.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Copie certifiée de l'acte de naissance.",
+      "source_refs": [0, 3]
+    },
+    {
+      "text": "Copie certifiée de la carte nationale d'identité.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Actes de naissance des enfants, le cas échéant.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Plan de localisation du domicile ou du lieu de travail.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Justificatif de revenus, ou déclaration sur l'honneur en l'absence de revenus.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Pour un salarié : avis d'embauche sur imprimé CNPS, établi par l'employeur.",
+      "source_refs": [3, 4]
+    },
+    {
+      "text": "Ancien travailleur n'ayant pas 180 mois de cotisation : certificat de travail ou avis de cessation d'activité du dernier employeur, et déclaration sur l'honneur de non-affiliation ou de non-perception d'une pension.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Le salarié remet à son employeur les pièces demandées (acte de naissance, CNI…) ; l'employeur établit l'avis d'embauche sur imprimé CNPS.",
+      "source_refs": [1, 4]
+    },
+    {
+      "order": 2,
+      "description": "L'employeur dépose la demande d'immatriculation du salarié au CPS, en même temps que son propre dossier s'il n'est pas encore immatriculé.",
+      "source_refs": [3, 4]
+    },
+    {
+      "order": 3,
+      "description": "Récupérer le récépissé et l'état de contrôle d'affiliation du salarié ; l'immatriculation peut ensuite être vérifiée en ligne.",
+      "source_refs": [2, 3]
+    },
+    {
+      "order": 4,
+      "description": "L'employeur déclare et verse les cotisations au plus tard le 15 du mois suivant la période de travail.",
+      "source_refs": [1]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Aucun frais d'immatriculation n'est indiqué par la CNPS. Les cotisations sont un pourcentage du salaire brut (partagées entre employeur et salarié) ; pour les assurés volontaires : 8,4 % du revenu annuel déclaré.",
+    "source_refs": [0, 1]
+  },
+  "delay": {
+    "text": "Affiliation obligatoire dès l'embauche. eRegulations Yaoundé estime 2 à 7 jours pour l'immatriculation de l'entreprise et du salarié.",
+    "source_refs": [1, 3]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "code-du-travail-1992",
+      "reference": "Article 1er (définition du travailleur et de l'employeur)",
+      "title": "Code du travail (loi n° 92-007 du 14 août 1992)",
+      "source_refs": [4]
+    },
+    {
+      "sourceId": null,
+      "reference": "Articles 2, 5, 7 et 9",
+      "title": "Décret n° 74-733 du 19 août 1974",
+      "source_refs": [3]
+    }
+  ],
+  "tips": [
+    {
+      "text": "C'est l'employeur qui est responsable de la déclaration du salarié et du paiement des cotisations.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Vous pouvez consulter votre compte individuel d'assuré en ligne (« Espace assuré ») : https://e-services.cnps.cm/consulter/DeclarationSalaires/CompteAssure/index.php",
+      "source_refs": [2]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Assuré(e) obligatoire",
+      "url": "https://www.cnps.cm/fr/assures/assure-e.html",
+      "publisher": "Caisse nationale de prévoyance sociale (CNPS)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Règle générale pour assuré(e)",
+      "url": "https://www.cnps.cm/fr/assures/regle-generale-pour-assure-e.html",
+      "publisher": "Caisse nationale de prévoyance sociale (CNPS)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "CNPS – page d'accueil (liens e-services)",
+      "url": "https://www.cnps.cm",
+      "publisher": "Caisse nationale de prévoyance sociale (CNPS)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Immatriculation de l'entreprise et du salarié à la CNPS",
+      "url": "https://yaounde.eregulations.org/procedure/93/53?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Règles générales pour les employeurs",
+      "url": "https://www.cnps.cm/fr/employeurs/regles-generales-pour-les-employeurs1.html",
+      "publisher": "Caisse nationale de prévoyance sociale (CNPS)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "Les pages CNPS mélangent les listes de l'assuré obligatoire et de l'assuré volontaire ; une page « règle générale » ne demande que acte de naissance, pièce d'identité et certificat de travail. À confirmer au CPS."
+    },
+    {
+      "field": "validity",
+      "note": "Aucune carte ni durée de validité n'est mentionnée par la CNPS pour l'immatriculation de l'assuré."
+    },
+    {
+      "field": "cost",
+      "note": "Le taux de cotisation des salariés n'est pas publié sur les pages consultées."
+    },
+    {
+      "field": "legal_basis",
+      "note": "Le Code du travail de 1992 est cité par la CNPS uniquement pour la définition du « travailleur » ; il ne fixe pas la procédure d'immatriculation, régie par les textes de prévoyance sociale (non consultés directement)."
+    }
+  ],
+  "language_versions": ["fr"]
+}

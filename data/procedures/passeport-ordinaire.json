@@ -1,0 +1,193 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "passeport-ordinaire",
+  "title_fr": "Passeport biométrique ordinaire : première demande et renouvellement",
+  "title_en": "Ordinary biometric passport: first application and renewal",
+  "category": "identite",
+  "keywords_fr": [
+    "passeport",
+    "passeport biométrique",
+    "faire mon passeport",
+    "renouveler mon passeport",
+    "passeport perdu",
+    "passeport volé",
+    "passcam",
+    "pré-enrôlement passeport",
+    "passeport pour voyager",
+    "prix du passeport"
+  ],
+  "keywords_en": [
+    "passport",
+    "biometric passport",
+    "apply for passport",
+    "passport renewal",
+    "lost passport",
+    "passcam",
+    "Cameroon passport fee"
+  ],
+  "authority": {
+    "name": "Délégation Générale à la Sûreté Nationale (DGSN), avec le prestataire AUGENTIC (portail PassCam)",
+    "level": "national",
+    "source_refs": [0, 1]
+  },
+  "where": [
+    {
+      "text": "Pré-enrôlement en ligne sur le portail officiel PassCam (https://portal.passcam.cm/), avec prise de rendez-vous.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Enrôlement biométrique dans un Centre d'Enrôlement Local au Cameroun, ou dans une mission diplomatique / un poste consulaire du Cameroun pour les Camerounais résidant à l'étranger.",
+      "source_refs": [0, 1]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Tout Camerounais, majeur ou mineur (les mineurs avec autorisation parentale), résidant au Cameroun ou à l'étranger.",
+    "source_refs": [1]
+  },
+  "documents": [
+    {
+      "text": "Dans tous les cas : le récépissé imprimé lors du pré-enrôlement.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Adulte de plus de 21 ans (première demande) : copies certifiées de l'acte de naissance et de la CNI, et justificatif de profession le cas échéant ; femme mariée : en plus, copie certifiée de l'acte de mariage.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Demandeur de 50 ans et plus : copie certifiée de la CNI (et de l'acte de mariage pour une femme mariée), justificatif de profession le cas échéant.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Mineur de moins de 15 ans : copie certifiée de l'acte de naissance, autorisation parentale ou du tuteur (légalisée s'il s'agit d'une procuration), copie certifiée de la pièce d'identité d'un parent ou du tuteur.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Mineur de 15 à 21 ans : copies certifiées de l'acte de naissance et de la CNI, autorisation parentale, copie certifiée de la CNI d'un parent ou du tuteur.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Renouvellement (passeport expiré, abîmé ou plein) : l'ancien passeport, copie certifiée de la CNI, copie certifiée de l'acte de naissance pour les moins de 50 ans, acte de mariage et justificatif de profession le cas échéant.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Passeport perdu ou volé : copie de l'ancien passeport et déclaration de perte ou de vol mentionnant le numéro du passeport, en plus des pièces du renouvellement.",
+      "source_refs": [1]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Créer un compte sur le portail PassCam et remplir le formulaire de pré-enrôlement en ligne.",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Prendre rendez-vous pour l'enrôlement biométrique dans le centre de son choix.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Payer les frais (Mobile Money ou carte bancaire), le jour de la prise de rendez-vous ou plus tard, avant le rendez-vous.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "Se présenter au rendez-vous avec le récépissé et les pièces justificatives pour la capture des données biométriques.",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 5,
+      "description": "La DGSN vérifie le dossier puis produit le passeport ; le retirer au centre d'enrôlement (présenter l'ancien passeport en cas de remplacement, sauf perte ou vol).",
+      "source_refs": [0, 2]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 110000,
+    "description": "Droit de timbre pour la délivrance, le renouvellement ou la prorogation d'un passeport ordinaire : 110 000 FCFA (article 548 du CGI, modifié par l'ordonnance n° 2024/001 du 20 juin 2024). Le ministère des Finances a indiqué en janvier 2026 que ce montant n'est pas modifié par la loi de finances 2026. À l'étranger, le montant est payable en monnaie locale selon un taux fixé par le prestataire ; les frais sont non remboursables.",
+    "source_refs": [1, 3, 4]
+  },
+  "delay": {
+    "text": "Personnalisation du passeport en général environ 2 jours ouvrables après l'enrôlement pour un dossier sans anomalie (estimation, non garantie) ; le délai de remise dépend du centre d'enrôlement.",
+    "source_refs": [2]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Article 548 du Code général des impôts, modifié par l'ordonnance n° 2024/001 du 20 juin 2024",
+      "title": "Droit de timbre sur les passeports nationaux (passeport ordinaire : 110 000 FCFA)",
+      "source_refs": [3]
+    }
+  ],
+  "tips": [
+    {
+      "text": "N'achetez pas de billet d'avion avant d'avoir reçu la décision : les délais de la DGSN ne sont que des estimations, et un rendez-vous « urgent » ne garantit pas un traitement plus rapide.",
+      "source_refs": [0, 2]
+    },
+    {
+      "text": "Un pré-enrôlement sans rendez-vous est supprimé après un an ; une demande non payée est supprimée après 30 jours ; un rendez-vous reste actif 10 jours après la date réservée.",
+      "source_refs": [0, 2]
+    },
+    {
+      "text": "Les passeports non retirés après 6 mois sont renvoyés à Yaoundé.",
+      "source_refs": [2]
+    },
+    {
+      "text": "Méfiez-vous des annonces de hausse du prix du passeport : le ministère des Finances a démenti toute hausse en 2026.",
+      "source_refs": [4]
+    }
+  ],
+  "sources": [
+    {
+      "title": "PassCam : services de passeports camerounais (page d'accueil, procédure)",
+      "url": "https://www.passcam.cm/",
+      "publisher": "AUGENTIC / Délégation Générale à la Sûreté Nationale",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "PassCam : passeports, pièces requises",
+      "url": "https://www.passcam.cm/passeports",
+      "publisher": "AUGENTIC / Délégation Générale à la Sûreté Nationale",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "PassCam : FAQ",
+      "url": "https://www.passcam.cm/faq",
+      "publisher": "AUGENTIC / Délégation Générale à la Sûreté Nationale",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Ordonnance n° 2024/001 du 20 juin 2024 modifiant et complétant certaines dispositions de la loi de finances 2024 (articles 548 et 549 du CGI)",
+      "url": "https://www.prc.cm/files/41/5c/26/3621ac2603f3f0a3d2ebf7657b1202f3.pdf",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Le prix du passeport biométrique camerounais reste inchangé : 110 000 FCFA",
+      "url": "https://www.focusmediaafrique.com/le-prix-du-passeport-biometrique-camerounais-reste-inchange-110-000-fcfa/",
+      "publisher": "Focus Média Afrique (relayant le ministère des Finances, 19 janvier 2026)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "validity",
+      "note": "La durée de validité du passeport ordinaire n'est indiquée ni sur passcam.cm ni dans les textes consultés ; des guides non officiels parlent de 5 ans, non retenu."
+    },
+    {
+      "field": "documents",
+      "note": "La liste des pièces pour les Camerounais résidant à l'étranger (carte de séjour, carte consulaire) et pour les changements de nom ou de filiation n'est pas reprise en détail ; consulter https://www.passcam.cm/passeports."
+    },
+    {
+      "field": "legal_basis",
+      "note": "Le texte réglementaire fixant les modalités de délivrance du passeport n'a pas été identifié ; seule la base fiscale (article 548 du CGI) est sourcée."
+    }
+  ],
+  "language_versions": ["fr"]
+}

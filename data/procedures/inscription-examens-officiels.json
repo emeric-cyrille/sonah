@@ -1,0 +1,116 @@
+{
+  "id": "inscription-examens-officiels",
+  "title_fr": "Inscription aux examens officiels de l'Office du Baccalauréat (probatoire, baccalauréat) — session 2026/2027",
+  "title_en": "Registration for official exams run by the Office du Baccalauréat (Probatoire, Baccalauréat) — 2026/2027 session",
+  "category": "education",
+  "keywords_fr": [
+    "inscription au bac",
+    "inscription baccalauréat",
+    "inscription probatoire",
+    "frais d'examen bac",
+    "OBC",
+    "Office du Bac",
+    "examens officiels",
+    "Epim-Exam",
+    "code de paiement examen",
+    "inscription examen officiel"
+  ],
+  "keywords_en": [
+    "baccalaureate registration",
+    "probatoire registration",
+    "official exams registration",
+    "exam fees Cameroon",
+    "Office du Baccalaureat"
+  ],
+  "authority": {
+    "name": "Office du Baccalauréat du Cameroun (OBC), sous la tutelle du Ministère des Enseignements Secondaires (MINESEC)",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Inscription numérique via la plateforme officielle Epim-Exam.cm, effectuée au niveau des établissements scolaires.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Paiement des frais auprès de Campost, Express Union, MTN ou Afriland First Bank, à l'aide d'un code de paiement généré sur Epim-Exam.cm.",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Élèves des établissements scolaires candidats au probatoire ou au baccalauréat (inscriptions faites par les établissements).",
+    "source_refs": [0]
+  },
+  "documents": [],
+  "steps": [
+    {
+      "order": 1,
+      "description": "L'établissement scolaire inscrit l'élève sur la plateforme Epim-Exam.cm (inscriptions ouvertes depuis le 12 octobre 2026 pour la session 2026/2027).",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Générer un code de paiement sur Epim-Exam.cm : paiement individuel (le parent paie directement) ou groupé (le chef d'établissement crée un code pour un groupe d'élèves).",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Payer les frais avec ce code chez Campost, Express Union, MTN ou Afriland First Bank.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 13000,
+    "description": "13 000 FCFA pour tous les baccalauréats généraux (session 2026/2027). Séries techniques : la plupart à moins de 30 000 FCFA, avec un plafond de 38 000 FCFA. Frais du probatoire non précisés dans la source.",
+    "source_refs": [0]
+  },
+  "delay": null,
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Circulaire du Ministre des Enseignements Secondaires signée le 18 septembre 2026 encadrant les inscriptions aux examens officiels 2026/2027",
+      "title": "Circulaire MINESEC (inscriptions aux examens officiels 2026/2027)",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Les inscriptions sont entièrement numériques et se font par l'établissement : rapprochez-vous de l'administration de votre école pour obtenir le code de paiement.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Examens officiels 2026/2027 : Les inscriptions ont démarré en ligne (14 octobre 2026)",
+      "url": "https://cameroon-tribune.cm/article.html/81582/fr.html/details_2",
+      "publisher": "Cameroon Tribune (SOPECAM, quotidien national)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "Pièces à fournir non mentionnées dans l'article (texte partiellement payant) ; la circulaire MINESEC du 18 septembre 2026 n'a pas été trouvée en ligne."
+    },
+    {
+      "field": "who_can_apply",
+      "note": "Modalités pour les candidats libres non trouvées dans une source officielle."
+    },
+    {
+      "field": "cost",
+      "note": "Frais du probatoire et détail par série technique non précisés ; montants à confirmer dans la circulaire MINESEC."
+    },
+    {
+      "field": "delay",
+      "note": "Date de clôture des inscriptions non indiquée dans la source."
+    },
+    {
+      "field": "where",
+      "note": "URL exacte de la plateforme Epim-Exam.cm non vérifiée (citée seulement par son nom). Les examens du sous-système anglophone (GCE Board) et le BEPC/CAP (MINESEC/DECC) ne sont pas couverts : aucune source officielle trouvée sur leurs modalités d'inscription."
+    }
+  ],
+  "language_versions": ["fr"]
+}

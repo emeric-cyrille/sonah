@@ -1,0 +1,164 @@
+{
+  "id": "impot-liberatoire-patente",
+  "title_fr": "Payer l'Impôt général synthétique (IGS, ex-impôt libératoire) ou la patente",
+  "title_en": "Paying the General Synthetic Tax (IGS, formerly the flat-rate 'impôt libératoire') or the business licence tax (patente)",
+  "category": "fiscalite",
+  "keywords_fr": [
+    "impôt libératoire",
+    "IL",
+    "IGS",
+    "impôt général synthétique",
+    "patente",
+    "payer la patente",
+    "impôt du petit commerce",
+    "impôt boutique",
+    "régime simplifié",
+    "RSI",
+    "taxe de mon commerce",
+    "fiscalité locale"
+  ],
+  "keywords_en": [
+    "flat-rate tax",
+    "small business tax",
+    "IGS",
+    "business licence tax",
+    "patente",
+    "local taxation",
+    "simplified tax regime"
+  ],
+  "authority": {
+    "name": "Direction générale des Impôts (DGI) – centre des impôts de rattachement ; produit reversé aux communes",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Déclaration au centre des impôts de rattachement du contribuable (les Centres divisionnaires des impôts deviennent des Centres de fiscalité locale et des particuliers, CFLP).",
+      "source_refs": [0]
+    },
+    {
+      "text": "Paiement par virement bancaire, paiement électronique, ou en espèces exclusivement aux guichets des banques.",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "IGS : contribuables exerçant une activité commerciale, industrielle, artisanale ou agropastorale ne relevant pas du régime du réel, avec un chiffre d'affaires annuel hors taxes inférieur à 50 000 000 FCFA. Au-delà de ce seuil, le contribuable est reclassé au régime du réel et paie la patente.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Numéro d'identifiant unique (NIU) : l'immatriculation est une obligation préalable.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Attestation de conformité fiscale en cours de validité.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "S'immatriculer auprès de la DGI (NIU).",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Souscrire la déclaration annuelle au plus tard le 15 mars de chaque année au centre des impôts de rattachement.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Payer l'IGS chaque trimestre, dans les 15 jours qui suivent la fin du trimestre, à l'aide de la déclaration électronique prescrite par l'administration.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "Tenir une comptabilité conforme au système comptable OHADA et conserver une attestation de conformité fiscale valide.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "IGS : montant annuel forfaitaire fixé par classe de chiffre d'affaires (10 classes), de 20 000 FCFA (chiffre d'affaires inférieur à 500 000 FCFA) à 2 000 000 FCFA (chiffre d'affaires de 30 000 000 à 49 999 999 FCFA). Tarifs divisés par deux pour les adhérents d'un centre de gestion agréé. La patente des entreprises au régime du réel n'est pas chiffrée ici.",
+    "source_refs": [0]
+  },
+  "delay": {
+    "text": "Déclaration annuelle avant le 15 mars ; paiement trimestriel dans les 15 jours suivant la fin de chaque trimestre.",
+    "source_refs": [0]
+  },
+  "validity": {
+    "text": "Impôt annuel, payé par trimestre.",
+    "source_refs": [0]
+  },
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Articles C 39 à C 48",
+      "title": "Loi n° 2024/020 du 23 décembre 2024 portant fiscalité locale",
+      "source_refs": [0, 1]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article L7 bis (modes de paiement)",
+      "title": "Code général des impôts",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "L'IGS, créé par la loi portant fiscalité locale, remplace l'impôt libératoire et le régime simplifié d'imposition, et libère du paiement de la patente, de la TVA et de l'IRPP au titre des bénéfices industriels et commerciaux.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Sanctions : le non-paiement dans les délais entraîne la fermeture de l'établissement et une pénalité de 50 % ; le défaut d'ACF, la fermeture et 25 000 FCFA d'amende ; le défaut de comptabilité, la fermeture et 1 000 000 FCFA d'amende.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Les fiches eRegulations sur l'« impôt libératoire » (chiffre d'affaires inférieur à 10 millions) décrivent l'ancien régime, antérieur à la réforme de décembre 2024.",
+      "source_refs": [0, 2]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Bon à savoir sur l'Impôt général synthétique (IGS) – Réforme de la fiscalité locale, mars 2025 (brochure DGI, copie hébergée par Lefisk)",
+      "url": "https://lefisk.cm/uploads/brochure-igs-dgi-cameroun.pdf",
+      "publisher": "Direction générale des Impôts (copie sur lefisk.cm)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Cameroun : réforme de la loi portant fiscalité locale",
+      "url": "https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2025-n2/cameroun-reforme-de-la-loi-portant-fiscalite-locale-DAA202v3",
+      "publisher": "L'Essentiel Droits africains des affaires (Lextenso)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Paiement des impôts (menu : impôt libératoire, chiffre d'affaires annuel < 10 millions FCFA)",
+      "url": "https://yaounde.eregulations.org/menu/18?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "sources",
+      "note": "La brochure IGS porte l'en-tête de la DGI mais n'a pas été trouvée sur impots.cm ; elle a été consultée sur un site tiers (lefisk.cm). Le texte de la loi n° 2024/020 n'a pas été consulté directement."
+    },
+    {
+      "field": "cost",
+      "note": "Les tarifs intermédiaires (classes 2 à 9 : 30 000, 40 000, 50 000, 60 000, 150 000, 300 000, 500 000, 1 000 000 FCFA) figurent dans un tableau dont l'extraction texte est ambiguë ; seules les bornes sont reprises. À vérifier sur le texte de loi."
+    },
+    {
+      "field": "cost",
+      "note": "Le mode de calcul et le montant de la patente pour les entreprises du régime du réel n'ont pas été vérifiés."
+    },
+    {
+      "field": "legal_basis",
+      "note": "La loi de finances 2026 a pu modifier les seuils de l'IGS (projet d'abaissement à 30 M FCFA pour les professions libérales évoqué par la presse) : non vérifié sur texte officiel."
+    }
+  ],
+  "language_versions": ["fr"]
+}

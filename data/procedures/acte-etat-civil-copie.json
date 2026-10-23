@@ -1,0 +1,136 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "acte-etat-civil-copie",
+  "title_fr": "Obtenir une copie ou un extrait d'acte de naissance, de mariage ou de décès (y compris en cas de perte)",
+  "title_en": "Obtaining a copy or extract of a birth, marriage or death certificate (including after loss)",
+  "category": "etat-civil",
+  "keywords_fr": [
+    "copie acte de naissance",
+    "extrait d'acte de naissance",
+    "copie intégrale",
+    "duplicata acte de naissance",
+    "acte de naissance perdu",
+    "perte acte de naissance",
+    "copie certifiée acte",
+    "copie acte de mariage",
+    "copie acte de décès",
+    "souche"
+  ],
+  "keywords_en": [
+    "copy of birth certificate",
+    "birth certificate extract",
+    "lost birth certificate",
+    "duplicate birth certificate",
+    "certified copy of civil status record"
+  ],
+  "authority": {
+    "name": "Officier d'état civil du centre d'état civil (maire ou adjoint au maire de la commune ; chef de mission diplomatique ou de poste consulaire à l'étranger)",
+    "level": "communal",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Centre d'état civil principal où l'acte a été établi, conservé ou archivé (copie intégrale de la souche)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Fichier national de l'état civil pour les actes enregistrés ou numérisés (copie ultérieure)",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": null,
+  "documents": [],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Identifier le centre d'état civil où l'acte a été établi (numéro et date de l'acte si possible).",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "En cas de perte de l'original papier : demander la copie intégrale de la souche, signée par l'autorité compétente du centre principal où la souche est conservée ; elle fait foi jusqu'à inscription en faux.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "En cas de perte de la copie initiale, ou si l'acte papier a été numérisé : demander une copie ultérieure issue du fichier national de l'état civil.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "S'acquitter du droit de timbre applicable aux copies et extraits.",
+      "source_refs": [0]
+    },
+    {
+      "order": 5,
+      "description": "Si l'acte ou le registre est perdu, détruit ou altéré : la reconstitution de l'acte se fait par jugement reconstitutif (voir la fiche rectification/reconstitution).",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Le service public de l'état civil est gratuit (déclaration, enregistrement, établissement et délivrance de l'original de l'acte et de la copie initiale). Les copies et extraits ultérieurs donnent lieu à un droit de timbre fixé par la législation sur le timbre (montant non vérifié).",
+    "source_refs": [0]
+  },
+  "delay": null,
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Article 3 (définitions : copie initiale, copie intégrale, copie ultérieure, souche)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Article 5 alinéas 2 et 3 (gratuité ; droit de timbre sur les copies)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 60 et 62 (perte de l'original ou de la copie)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "L'original de l'acte et la copie initiale issue du fichier national sont gratuits ; seules les copies et extraits suivants sont payants (timbre).",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7589-loi-n-2024-016-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-10",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost.amount_fcfa",
+      "note": "Le montant du droit de timbre sur les copies et extraits d'actes d'état civil (Code général des impôts) n'a pas pu être vérifié sur une source officielle."
+    },
+    {
+      "field": "who_can_apply",
+      "note": "Les règles d'accès aux données du fichier national (art. 79, 82) renvoient à des textes réglementaires non consultés : qui peut demander la copie de l'acte d'un tiers n'est pas vérifié."
+    },
+    {
+      "field": "documents",
+      "note": "La loi n° 2024/016 ne fixe pas de liste de pièces justificatives et aucun texte d'application ni page officielle (commune, BUNEC, MINDDEVEL) n'a pu être consulté ; les listes publiées par des sites non officiels varient d'une commune à l'autre. Se renseigner auprès du centre d'état civil."
+    },
+    {
+      "field": "delay",
+      "note": "Aucun délai de délivrance n'est fixé par la loi ni publié par une source officielle consultée."
+    },
+    {
+      "field": "validity",
+      "note": "La loi ne fixe pas de durée de validité ; l'exigence d'une copie « de moins de 3 mois » relève des administrations destinataires et n'a pas été vérifiée."
+    }
+  ],
+  "language_versions": ["fr"]
+}

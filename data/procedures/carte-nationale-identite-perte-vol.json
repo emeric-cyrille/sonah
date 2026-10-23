@@ -1,0 +1,161 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "carte-nationale-identite-perte-vol",
+  "title_fr": "Carte nationale d'identité (CNI) : perte, vol ou détérioration",
+  "title_en": "National identity card (CNI): lost, stolen or damaged card",
+  "category": "identite",
+  "keywords_fr": [
+    "CNI perdue",
+    "j'ai perdu ma CNI",
+    "perte de carte d'identité",
+    "vol de CNI",
+    "on m'a volé ma carte d'identité",
+    "CNI volée",
+    "CNI abîmée",
+    "CNI détériorée",
+    "duplicata CNI",
+    "déclaration de perte",
+    "attestation de perte"
+  ],
+  "keywords_en": [
+    "lost ID card",
+    "stolen ID card",
+    "damaged ID card",
+    "replace ID card",
+    "loss declaration"
+  ],
+  "authority": {
+    "name": "Délégation Générale à la Sûreté Nationale (DGSN)",
+    "level": "national",
+    "source_refs": [0, 2]
+  },
+  "where": [
+    {
+      "text": "Déclaration de perte, de vol ou de détérioration auprès de toute autorité habilitée, qui délivre une attestation de déclaration.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Nouvelle demande : pré-enrôlement sur www.idcam.cm puis enrôlement biométrique dans un centre d'enrôlement de la police.",
+      "source_refs": [3]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Tout titulaire camerounais d'une CNI perdue, volée ou détériorée.",
+    "source_refs": [0, 2]
+  },
+  "documents": [
+    {
+      "text": "L'attestation de déclaration de perte, de vol ou de détérioration délivrée par une autorité habilitée, mentionnant les noms et prénoms, la date et le lieu de naissance, la filiation du déclarant, ainsi que le numéro et la référence du poste d'identification ayant délivré la carte perdue, volée ou détériorée.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Déclarer la perte, le vol ou la détérioration auprès d'une autorité habilitée et obtenir l'attestation de déclaration (avec le numéro et le poste d'identification de l'ancienne carte si possible).",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Se pré-enrôler sur www.idcam.cm et payer en ligne le droit de timbre de 10 000 FCFA.",
+      "source_refs": [1, 3]
+    },
+    {
+      "order": 3,
+      "description": "Se présenter au centre d'enrôlement choisi avec l'attestation de déclaration pour la capture biométrique.",
+      "source_refs": [0, 3]
+    },
+    {
+      "order": 4,
+      "description": "Retirer la nouvelle carte au centre d'enrôlement après réception du SMS.",
+      "source_refs": [3]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 10000,
+    "description": "Droit de timbre sur la carte nationale d'identité (article 549 du CGI, modifié par l'ordonnance n° 2024/001 du 20 juin 2024). Le coût éventuel de l'attestation de déclaration de perte n'a pas été vérifié.",
+    "source_refs": [1]
+  },
+  "delay": {
+    "text": "La DGSN a annoncé une délivrance en 48 heures après l'enrôlement physique (annonce de février 2025 rapportée par la presse).",
+    "source_refs": [3]
+  },
+  "validity": {
+    "text": "10 ans.",
+    "source_refs": [0, 2]
+  },
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Décret n° 2016/375 du 4 août 2016",
+      "title": "Décret fixant les caractéristiques et les modalités d'établissement et de délivrance de la carte nationale d'identité",
+      "source_refs": [2]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article 549 du Code général des impôts, modifié par l'ordonnance n° 2024/001 du 20 juin 2024",
+      "title": "Droit de timbre sur les cartes nationales d'identité (10 000 FCFA)",
+      "source_refs": [1]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Le décret de 2016 traite la perte comme un cas de nouvelle demande : il ne prévoit pas de « duplicata » de l'ancienne carte, une nouvelle carte est établie.",
+      "source_refs": [2]
+    },
+    {
+      "text": "Notez dès maintenant le numéro de votre CNI et le poste d'identification qui l'a délivrée : ces informations doivent figurer sur l'attestation de déclaration de perte.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Tout sur vos titres identitaires : modalités d'établissement et de délivrance des titres identitaires (dépliant)",
+      "url": "https://www.dgsn.cm/wp-content/uploads/2020/01/Depliant-CNI.pdf",
+      "publisher": "Délégation Générale à la Sûreté Nationale (DGSN)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Ordonnance n° 2024/001 du 20 juin 2024 modifiant et complétant certaines dispositions de la loi de finances 2024 (articles 548 et 549 du CGI)",
+      "url": "https://www.prc.cm/files/41/5c/26/3621ac2603f3f0a3d2ebf7657b1202f3.pdf",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Cameroon: National identity cards, including requirements and procedures (CMR105627.FE)",
+      "url": "https://www.ecoi.net/en/document/1397225.html",
+      "publisher": "Immigration and Refugee Board of Canada (via ecoi.net)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "CNI en 48h au Cameroun : voici les trois étapes à suivre",
+      "url": "https://fr.journalducameroun.com/cni-en-48h-au-cameroun-voici-les-trois-etapes-a-suivre/",
+      "publisher": "Journal du Cameroun",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "where",
+      "note": "Le dépliant officiel parle de « toute autorité habilitée » sans les nommer ; des guides non officiels citent le commissariat ou la gendarmerie, non confirmé par une source officielle."
+    },
+    {
+      "field": "documents",
+      "note": "Des guides non officiels ajoutent une photocopie de l'ancienne CNI et une copie certifiée de l'acte de naissance ; non confirmé par le dépliant DGSN, donc non retenu. Le portail idcam.cm n'a pas pu être consulté (HTTP 403)."
+    },
+    {
+      "field": "cost",
+      "note": "Le coût de l'attestation de déclaration de perte n'a pas été trouvé dans une source officielle."
+    },
+    {
+      "field": "delay",
+      "note": "Délai de 48 heures annoncé par la DGSN et rapporté par la presse ; non garanti par un texte."
+    }
+  ],
+  "language_versions": ["fr"]
+}
