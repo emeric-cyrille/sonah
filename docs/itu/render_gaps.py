@@ -1,0 +1,52 @@
+import json, sys
+d = json.load(open(sys.argv[1]))
+out = []
+w = out.append
+w("# Policy, strategy and standards gap register")
+w("")
+w(f"**Domain:** {d['domain']}.")
+w("")
+w(d["scope_note"] + f" Last verified: {d['verified_on']}.")
+w("")
+w("The machine-readable source of truth is [`policy-gaps.json`](./policy-gaps.json). This page is generated from it, so edit the JSON, not this file, then run `python3 docs/itu/render_gaps.py docs/itu/policy-gaps.json docs/itu/policy-gap-register.md`.")
+w("Every gap starts from an observation in an error scenario (S1–S4, see [`y3172-mapping.md`](./y3172-mapping.md#error-scenarios-through-the-pipeline)) or in the gold set ([`eval/questions.jsonl`](../../eval/questions.jsonl)).")
+w("")
+w("## Summary")
+w("")
+w("| ID | Gap | Type | Scenario | Global examples | Recommendation (short) |")
+w("|---|---|---|---|---|---|")
+for g in d["gaps"]:
+    ex = "; ".join(f"[{e['name']}]({e['url']}) ({e['jurisdiction']})" for e in g["global_examples"])
+    rec = g["recommendation"].split(". ")[0].rstrip(".") + "."
+    w(f"| {g['id']} | {g['title']} | {', '.join(g['gap_type'])} | {g['evidence']['scenario']} | {ex} | {rec} |")
+w("")
+for g in d["gaps"]:
+    w(f"## {g['id']} — {g['title']}")
+    w("")
+    w(f"**Type:** {', '.join(g['gap_type'])}. **Scenario:** {g['evidence']['scenario']}.")
+    w("")
+    w(f"**Gap (domain level).** {g['description']}")
+    w("")
+    w(f"**Evidence from SONAH.** {g['evidence']['observation']} Artefacts: " + ", ".join(f"`{a}`" for a in g["evidence"]["artefacts"]) + ".")
+    w("")
+    w("**Observed context (Cameroon).**")
+    w("")
+    for c in g["cameroon_context"]:
+        w(f"- {c['fact']} [source]({c['url']})")
+    w("")
+    w("**Global examples.**")
+    w("")
+    w("| Instrument | Jurisdiction | What it does |")
+    w("|---|---|---|")
+    for e in g["global_examples"]:
+        w(f"| [{e['name']}]({e['url']}) | {e['jurisdiction']} | {e['what_it_does']} |")
+    w("")
+    w(f"**Recommendation.** {g['recommendation']}")
+    w("")
+    w("**ITU link.** " + "; ".join(f"[{l['ref']}]({l['url']}) ({l['relevance']})" for l in g["itu_links"]))
+    w("")
+    if g["to_verify"]:
+        w("**To verify.** " + " ".join(f"- {t}" if False else t for t in g["to_verify"]))
+        w("")
+open(sys.argv[2], "w").write("\n".join(out))
+print(len(out), "lines")
