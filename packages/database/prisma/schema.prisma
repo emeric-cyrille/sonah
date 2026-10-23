@@ -154,11 +154,15 @@ model Document {
   category       String // Constitution, Code du travail, etc.
   embedding      Unsupported("vector(1536)")?
   embeddingModel String?
+  // Statut, version, page, renvois de modification… (voir packages/rag, seed-legal.ts)
   metadata       Json?
+  // Recherche plein texte : colonne générée (référence, titre, contenu) indexée en GIN
+  searchVector   Unsupported("tsvector")? @default(dbgenerated()) @map("search_vector")
   createdAt      DateTime                @default(now())
   updatedAt      DateTime                @updatedAt
 
   @@index([sourceId])
+  @@index([searchVector], type: Gin)
   @@map("documents")
 }
 
@@ -168,6 +172,8 @@ enum DocumentType {
   DECREE
   PROCEDURE
   FORM
+  STRATEGY // Stratégie ou plan national (non contraignant)
+  INTERNATIONAL // Instrument international ou étranger (recommandation, règlement UE…)
   OTHER
 }
 
