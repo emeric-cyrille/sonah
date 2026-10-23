@@ -1,0 +1,36 @@
+slug: sonah-legal-agent
+name: SONAH Legal Information Agent
+description: 'Citizen legal-information agent (Cameroon: Constitution, Labour Code; FR/EN).
+  Retrieves official legal articles, then answers with article-level citations or refuses
+  with a typed verdict (INSUFFICIENT_EVIDENCE, OUTDATED_TEXT, OUT_OF_SCOPE). The ITU-T Y.3172
+  P node is blocking and deterministic: similarity threshold, citations must belong to the
+  retrieved set, amended articles are flagged. Embedder and LLM are injected (LLM optional:
+  extractive fallback), so the definition is testable with stubs; an HTTP backend calls a
+  running SONAH API.'
+version: 1.0.0
+date_added: '2026-10-23'
+added_by: seedsoftengine@gmail.com
+framework: custom (retrieve / answer / refuse) + deterministic policy gate
+model: TF-IDF char n-grams or paraphrase-multilingual-MiniLM-L12-v2; optional LLM (none by default)
+tools:
+- retrieve
+- answer
+- refuse
+guardrails: Blocking P node - refuses when top similarity < tau, when a citation is outside the
+  retrieved set, or flags OUTDATED_TEXT when a cited article is amended; logs every tool call
+  and policy decision for audit.
+notebook: sonah-agentic-rag-reference
+tags:
+- agentic
+- rag
+- legal
+- public-services
+- guardrails
+- y3172
+- itu-ai4g
+license: See source repository
+files:
+- path: agent/agent.py
+  bytes: 9000
+  sha256: 9437a56515f929c2fef37d3c9dd123d17deca1c47b54f576808cb6a7be98caef
+  format: py
