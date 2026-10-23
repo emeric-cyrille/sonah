@@ -191,6 +191,12 @@ export const fr = {
     lead: "Sonah ne répond qu'à partir des textes qu'il a indexés. Voici ce qui est couvert, et ce qui arrive. Pour le reste, il vous le dira franchement.",
     availableEyebrow: 'Disponible',
     ask: 'Demander à Sonah →',
+    procedures: {
+      id: 'demarches',
+      title: 'Démarches administratives',
+      source:
+        'Fiches structurées : où aller, pièces, étapes ; coût et délai seulement quand une source les confirme',
+    },
     available: [
       {
         id: 'travail',
@@ -247,7 +253,7 @@ export const fr = {
     soonBadge: 'Pas encore couvert',
     soon: [
       {
-        title: "Carte nationale d'identité et passeport",
+        title: 'Davantage de fiches démarches',
         description: 'Pièces, coûts et délais, à partir de sources officielles vérifiées.',
       },
       {
@@ -322,10 +328,72 @@ export const fr = {
       label: 'Hors du champ couvert',
       explanation: 'Ce sujet ne fait pas encore partie des textes indexés par Sonah.',
     },
+    PROCEDURE_GUIDANCE: {
+      label: 'Fiche démarche',
+      explanation:
+        'Une fiche structurée accompagne la réponse. Vérifiez les sources et les points non confirmés.',
+    },
     UNKNOWN: {
       label: 'Statut non précisé',
       explanation: 'Le statut de cette réponse n’a pas été précisé.',
     },
+  },
+  procedure: {
+    eyebrow: 'Fiche démarche',
+    authority: 'Service compétent',
+    levels: {
+      national: 'National',
+      regional: 'Régional',
+      departmental: 'Départemental',
+      local: 'Local',
+      communal: 'Communal',
+    } as Readonly<Record<string, string>>,
+    where: 'Où aller',
+    documents: 'Pièces à fournir',
+    documentsHint:
+      'Cochez au fur et à mesure : la liste reste sur cet appareil, rien n’est envoyé.',
+    documentsProgress: (done: number, total: number): string =>
+      `${done} sur ${total} prête${done > 1 ? 's' : ''}`,
+    steps: 'Étapes',
+    cost: 'Coût',
+    delay: 'Délai',
+    validity: 'Validité',
+    notVerified: 'Variable / non vérifié',
+    sources: 'Sources',
+    verifiedAt: (date: string): string => `Vérifié le ${date}`,
+    newTab: '(nouvel onglet)',
+    unverifiedTitle: (count: number): string =>
+      `${count} information${count > 1 ? 's' : ''} non confirmée${count > 1 ? 's' : ''}`,
+    unverifiedLead:
+      'Ces points n’ont pas été confirmés par une source officielle. Renseignez-vous auprès du service avant de vous déplacer.',
+    fields: {
+      cost: 'Coût',
+      delay: 'Délai',
+      validity: 'Validité',
+      documents: 'Pièces à fournir',
+      where: 'Où aller',
+      steps: 'Étapes',
+      authority: 'Service compétent',
+    } as Readonly<Record<string, string>>,
+    copy: 'Copier la liste',
+    copied: 'Liste copiée',
+    copyFailed: 'Copie impossible',
+    print: 'Imprimer',
+    copyHeader: (title: string): string => `Pièces à fournir — ${title}`,
+    copyFooter: 'Liste indicative préparée avec Sonah : le service concerné fait foi.',
+    printHeader: 'Fiche préparée avec Sonah',
+    printNote:
+      'Fiche indicative : le service concerné fait foi. Vérifiez les points non confirmés avant de vous déplacer.',
+    printedOn: (date: string): string => `Imprimée le ${date}`,
+    orientationEyebrow: 'Orientation',
+    orientationTitle: 'Fiche officielle pas encore disponible',
+    orientationLead:
+      'Je n’ai pas encore de fiche vérifiée pour cette démarche. Plutôt que de deviner les pièces, le coût ou le délai, je vous indique où vous renseigner.',
+    orientationAuthority: 'Service à contacter',
+    orientationAsk:
+      'Sur place, demandez la liste à jour des pièces, le coût et le délai, et notez le nom du service et la date.',
+    orientationFallback:
+      'Adressez-vous à la mairie ou à la sous-préfecture la plus proche : elles vous indiqueront le service compétent.',
   },
   citation: {
     panelTitle: 'Extrait cité',

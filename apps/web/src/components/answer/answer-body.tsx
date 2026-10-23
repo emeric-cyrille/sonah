@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { useI18n } from '@/i18n/provider';
 import type { Citation, Source } from '@/lib/api-client';
 import { StatusBadge, VerdictBadge, type Tone } from './badges';
@@ -26,6 +26,7 @@ export function AnswerBody({
   traceId,
   feedbackId,
   tone,
+  attachment,
 }: {
   readonly content: string;
   readonly verdict?: string | null;
@@ -34,6 +35,8 @@ export function AnswerBody({
   readonly traceId?: string | null;
   readonly feedbackId?: string;
   readonly tone: Tone;
+  /** Bloc affiché juste sous le texte (fiche démarche, orientation). */
+  readonly attachment?: ReactNode;
 }): JSX.Element {
   const { dict } = useI18n();
   const [open, setOpen] = useState<Citation | null>(null);
@@ -85,6 +88,8 @@ export function AnswerBody({
         renderCitation={renderCitation}
         className={`text-[16px] leading-relaxed ${tone === 'dark' ? 'text-paper/90' : 'text-ink'}`}
       />
+
+      {attachment}
 
       {citations.length > 0 && (
         <section aria-label={dict.chat.citationsHeading}>

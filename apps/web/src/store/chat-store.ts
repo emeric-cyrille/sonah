@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import type { Locale } from '@/i18n/config';
-import { sendChatMessage, type Citation, type Source } from '@/lib/api-client';
+import {
+  sendChatMessage,
+  type AnswerType,
+  type Citation,
+  type Procedure,
+  type Source,
+} from '@/lib/api-client';
 import { toApiErrorKind, type ApiErrorKind } from '@/lib/api-errors';
 
 export interface ChatEntry {
@@ -11,6 +17,9 @@ export interface ChatEntry {
   readonly citations?: readonly Citation[];
   readonly sources?: readonly Source[];
   readonly traceId?: string;
+  readonly answerType?: AnswerType;
+  /** Fiche démarche structurée, si le serveur en renvoie une. */
+  readonly procedure?: Procedure;
   /** Erreur traduite à l'affichage, pour suivre la langue choisie. */
   readonly error?: ApiErrorKind;
 }
@@ -61,6 +70,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
             citations: response.citations,
             sources: response.sources,
             traceId: response.traceId,
+            answerType: response.answerType,
+            procedure: response.procedure,
           },
         ],
       }));

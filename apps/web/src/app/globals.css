@@ -229,3 +229,117 @@
     animation: none !important;
   }
 }
+
+/* ─── Impression d'une fiche démarche ─────────────────────────── */
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  html.sonah-printing,
+  html.sonah-printing body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  html.sonah-printing body > *:not(#sonah-print-root) {
+    display: none !important;
+  }
+
+  html.sonah-printing #sonah-print-root {
+    display: block;
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #000;
+  }
+
+  #sonah-print-root h1 {
+    margin: 4pt 0 6pt;
+    font-family: var(--font-display), Georgia, serif;
+    font-size: 20pt;
+    line-height: 1.15;
+  }
+
+  #sonah-print-root h2 {
+    margin: 14pt 0 4pt;
+    border-bottom: 1px solid #999;
+    padding-bottom: 2pt;
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    break-after: avoid;
+  }
+
+  #sonah-print-root ul,
+  #sonah-print-root ol {
+    margin: 0;
+    padding-left: 16pt;
+  }
+
+  #sonah-print-root ul {
+    list-style: disc;
+  }
+
+  #sonah-print-root ol {
+    list-style: decimal;
+  }
+
+  #sonah-print-root li {
+    margin: 2pt 0;
+    break-inside: avoid;
+  }
+
+  #sonah-print-root .print-kicker {
+    font-size: 9pt;
+    color: #444;
+  }
+
+  #sonah-print-root .print-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6pt;
+    margin-top: 10pt;
+  }
+
+  #sonah-print-root .print-facts div {
+    border: 1px solid #999;
+    padding: 4pt 6pt;
+  }
+
+  #sonah-print-root .print-facts dt {
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  #sonah-print-root .print-checklist {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  #sonah-print-root .print-box {
+    display: inline-block;
+    width: 11pt;
+    height: 11pt;
+    margin-right: 6pt;
+    border: 1.2pt solid #000;
+    text-align: center;
+    font-size: 9pt;
+    line-height: 10pt;
+    vertical-align: -1pt;
+  }
+
+  #sonah-print-root .print-note {
+    margin-top: 14pt;
+    border-top: 1px solid #999;
+    padding-top: 6pt;
+    font-size: 9pt;
+    color: #333;
+  }
+}

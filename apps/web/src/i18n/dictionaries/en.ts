@@ -178,6 +178,12 @@ export const en: Dictionary = {
     lead: 'Sonah only answers from the texts it has indexed. Here is what is covered, and what is coming. For anything else, it will tell you plainly.',
     availableEyebrow: 'Available',
     ask: 'Ask Sonah →',
+    procedures: {
+      id: 'demarches',
+      title: 'Administrative procedures',
+      source:
+        'Structured guides: where to go, documents, steps; cost and timing only when a source confirms them',
+    },
     available: [
       {
         id: 'travail',
@@ -226,7 +232,7 @@ export const en: Dictionary = {
     soonBadge: 'Not covered yet',
     soon: [
       {
-        title: 'National identity card and passport',
+        title: 'More procedure guides',
         description: 'Documents, costs and timelines, from verified official sources.',
       },
       {
@@ -299,10 +305,69 @@ export const en: Dictionary = {
       label: 'Outside covered scope',
       explanation: 'This topic is not yet part of the texts indexed by Sonah.',
     },
+    PROCEDURE_GUIDANCE: {
+      label: 'Procedure guide',
+      explanation:
+        'A structured guide comes with this answer. Check the sources and any unconfirmed points.',
+    },
     UNKNOWN: {
       label: 'Status not specified',
       explanation: 'The status of this answer was not specified.',
     },
+  },
+  procedure: {
+    eyebrow: 'Procedure guide',
+    authority: 'Responsible office',
+    levels: {
+      national: 'National',
+      regional: 'Regional',
+      departmental: 'Divisional',
+      local: 'Local',
+      communal: 'Council',
+    } as Readonly<Record<string, string>>,
+    where: 'Where to go',
+    documents: 'Documents to bring',
+    documentsHint: 'Tick them off as you go: the list stays on this device, nothing is sent.',
+    documentsProgress: (done: number, total: number): string => `${done} of ${total} ready`,
+    steps: 'Steps',
+    cost: 'Cost',
+    delay: 'Processing time',
+    validity: 'Validity',
+    notVerified: 'Varies / not verified',
+    sources: 'Sources',
+    verifiedAt: (date: string): string => `Verified on ${date}`,
+    newTab: '(new tab)',
+    unverifiedTitle: (count: number): string => `${count} unconfirmed item${count > 1 ? 's' : ''}`,
+    unverifiedLead:
+      'These points have not been confirmed by an official source. Check with the office before you travel.',
+    fields: {
+      cost: 'Cost',
+      delay: 'Processing time',
+      validity: 'Validity',
+      documents: 'Documents to bring',
+      where: 'Where to go',
+      steps: 'Steps',
+      authority: 'Responsible office',
+    } as Readonly<Record<string, string>>,
+    copy: 'Copy the list',
+    copied: 'List copied',
+    copyFailed: 'Could not copy',
+    print: 'Print',
+    copyHeader: (title: string): string => `Documents to bring — ${title}`,
+    copyFooter: 'Indicative list prepared with Sonah: the office concerned has the final say.',
+    printHeader: 'Guide prepared with Sonah',
+    printNote:
+      'Indicative guide: the office concerned has the final say. Check unconfirmed points before you travel.',
+    printedOn: (date: string): string => `Printed on ${date}`,
+    orientationEyebrow: 'Guidance',
+    orientationTitle: 'Official guide not yet available',
+    orientationLead:
+      'I do not have a verified guide for this procedure yet. Rather than guess the documents, cost or processing time, I am pointing you to where to ask.',
+    orientationAuthority: 'Office to contact',
+    orientationAsk:
+      'On site, ask for the current list of documents, the cost and the processing time, and note the office name and the date.',
+    orientationFallback:
+      'Go to the nearest council or sub-divisional office: they will tell you which office is responsible.',
   },
   citation: {
     panelTitle: 'Cited excerpt',
