@@ -1,0 +1,97 @@
+Title: Law No. 2008/001 of 14 April 2008 to amend and supplement some provisions of Law No. 96/6 of 18 January 1996 to amend the Constitution of 2 June 1972
+Titre : Loi n° 2008/001 du 14 avril 2008 modifiant et complétant certaines dispositions de la loi n° 96/06 du 18 janvier 1996 portant révision de la Constitution du 2 juin 1972 (version anglaise)
+Document ID: CMR-PRC-LAW-2008-001-EN
+Issuing body: Presidency of the Republic of Cameroon
+Country/jurisdiction: Cameroon
+Type: CONSTITUTION (binding)
+Version: English text (certified true copy, OCR) — 2008-04-14
+Source URL: https://www.prc.cm/en/multimedia/documents/6282-loi-n-2008-001-du-14-04-2008-modifian-constitution-1972-en
+Accessed: 2026-10-23 — SHA-256 of original: bb8e0edce32846dbbbd07f0db7a1771d1dafaebb11af1443414819ced9e2ee46
+Licence: Official legislative text published by the Presidency of the Republic (public domain in practice).
+ITU AI Readiness dimensions: ai_policies
+Derivation: OCR (Apple Vision, en-US, 300 dpi) du PDF scanné publié sur prc.cm ; texte non corrigé à la main, hormis les corrections typographiques listées dans « replacements ».
+Note: Section 1 of the English text lists Article 15(1) whereas the amended paragraph is 15(4), as in the French text. Articles 6 and 53 were rewritten again by Law No. 2026/002.
+
+### Section 1
+The provisions of Articles 6(2) and (4), 14 (3) (a), 15(1), 53 and 67 (6) of
+Law No. 96/6 of 18 January 1996 to amend the Constitution of 2 June 1972 are amended
+and supplemented as follows :
+
+### Article 6 (new) [AMENDED: current wording in constitution-2026-amendment-en:art-6-nouveau]
+(2) (new) The President of the Republic shall be elected for a term of office of
+7(seven) years. He shall be eligible for re-election.
+(4) (new) Where the office of President of the Republic becomes vacant as a result
+of death, resignation or permanent incapacity duly ascertained by the Constitutional
+Council, the polls for the election of the new President of the Republic must be held not
+less than 20 (twenty) days and not more than 120 (one hundred and twenty) days after the
+office becomes vacant.
+(a) The President of the Senate shall as of right act as interim President of the
+Republic until the new President of the Republic is elected. Where the President of
+the Senate is unable to exercise these powers, they shall be exercised by his Vice,
+following the order of precedence.
+(b) The interim President of the Republic - the President of the Senate or his Vice -
+may neither amend the Constitution nor the composition of the Government. He
+may not organize a referendum or run for the office of President of the Republic.
+(c) However, where the organization of the presidential election so requires, the
+interim President of the Republic may, after consultation with the Constitutional
+Council, amend the composition of the Government.
+
+### Article 14 (new)
+(3) Both houses of Parliament shall meet on the same dates :
+(a) (new) in ordinary session during the months of March, June and November
+each year, when convened by the Bureaux of the National Assembly and the
+Senate, after consultation with the President of the Republic ;
+
+### Article 15 (new)
+(4) (new) : In case of serious crisis or where circumstances so warrant, the
+President of the Republic may, after consultation with the President of the Constitutional
+Council and Bureaux of the National Assembly and the Senate, request the National
+Assembly to decide, by law, to extend or abridge its term of office. In this case, the
+election of a new Assembly shall take place not less than 40 (forty) days and not more
+than 120 (one hundred and twenty) days following the expiry of the extension or
+abridgement period
+
+### Article 51 (new)
+(1) (new): The Constitutional Council shall comprise 11 (eleven) members
+designated for an
+eventually renewable term of office of 6 (six years.
+These members shall be chosen from among personalities of established professional
+renown.
+They must be of high moral integrity and proven competence.
+
+### Article 53 (new) [AMENDED: current wording in constitution-2026-amendment-en:art-53-nouveau]
+Part VII - THE COURT OF IMPEACHMENT
+(new)
+(1) The Court of impeachment shall have jurisdiction, in respect of acts committed in
+the exercise of their functions to try :
+- the President of the Republic for high treason;
+- the Prime Minister, members of Government and persons ranking as such and
+senior government officials to whom powers have been delegate in pursuance of
+Articles 10 and 12 above, for conspiracy against the security of the State.
+(2) The President of the Republic shall be indicted only by the National Assembly and
+the Senate deciding through an identical vote by open ballot and by a four-fifth majority of
+their members.
+(3) Acts committed by the President of the Republic in pursuance of Articles 5, 8, 9 and
+10 above shall be covered by immunity and he shall not be accountable for them after the
+exercise of his functions.
+(4) The organization, composition and the conditions under which matters shall be
+referred to as well as the procedure applicable before the Court of Impeachment shall be laid
+down by law.
+
+### Article 67 (new)
+Part XIII - TRANSITIONAL AND FINAL PROVISIONS
+(6) (new): Where the Senate is put in place before the Regions, the electoral college for the
+election of Senate shall comprise exclusively Municipal Councillors.
+
+### Section 2
+Part XIII - TRANSITIONAL AND FINAL PROVISIONS
+This law shall be registered, published according to the procedure of urgency
+and inserted in the Official Gazette in English and French. /-
+REPUR-TRUE DENS
+PAIX-TRAVA
+OUNDE, 1 4 AVR 2008
+•PATRIE
+AEROUN
+PAUL BIYA
+CAMEROON
+PRESIDENT OF THE REPUBLIC
