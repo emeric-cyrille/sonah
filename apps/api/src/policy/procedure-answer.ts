@@ -107,6 +107,23 @@ const LABELS = {
   },
 } as const;
 
+/** Libellés des champs de fiche signalés comme non vérifiés. */
+const FIELD_LABELS: Record<string, Record<Language, string>> = {
+  authority: { fr: 'Autorité', en: 'Authority' },
+  where: { fr: 'Lieu', en: 'Where' },
+  who_can_apply: { fr: 'Demandeur', en: 'Who can apply' },
+  documents: { fr: 'Pièces', en: 'Documents' },
+  steps: { fr: 'Étapes', en: 'Steps' },
+  cost: { fr: 'Coût', en: 'Cost' },
+  delay: { fr: 'Délai', en: 'Processing time' },
+  validity: { fr: 'Validité', en: 'Validity' },
+  legal_basis: { fr: 'Base légale', en: 'Legal basis' },
+};
+
+function fieldLabel(field: string, language: Language): string {
+  return FIELD_LABELS[field]?.[language] ?? field;
+}
+
 /** Introduction déterministe (sans modèle de langage, ou brouillon rejeté). */
 export function procedureIntro(sheet: ProcedureSheet, language: Language): string {
   return LABELS[language].intro(procedureTitle(sheet, language), sheet.authority?.name ?? null);
@@ -165,7 +182,7 @@ export function renderProcedureBody(sheet: ProcedureSheet, language: Language): 
   if (sheet.unverified.length > 0) {
     section(
       `⚠️ ${t.unverified}`,
-      sheet.unverified.map((item) => `- ${item.field} : ${item.note}`),
+      sheet.unverified.map((item) => `- ${fieldLabel(item.field, language)} : ${item.note}`),
     );
   }
   section(t.sources, [

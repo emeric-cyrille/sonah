@@ -21,7 +21,7 @@ describe('rendu d’une fiche de démarche', () => {
     expect(reply).toContain('Décret fixant les caractéristiques de la CNI (FIXTURE), Article 3');
     expect(reply).toContain('https://example.org/fixtures/cni');
     expect(reply).toContain('Fiche vérifiée le 2026-10-01.');
-    expect(reply).toContain('delay : Délai de délivrance variable selon le poste.');
+    expect(reply).toContain('- Délai : Délai de délivrance variable selon le poste.');
     expect(reply).toContain('[1]');
   });
 

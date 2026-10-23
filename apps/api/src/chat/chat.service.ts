@@ -197,7 +197,8 @@ export class ChatService {
       citations: answer.citations,
       sources: answer.sources,
       traceId: recorder.id,
-      answerType: answer.answerType,
+      // Hors sujet : ni démarche, ni texte, ni orientation
+      ...(answer.verdict === 'OUT_OF_SCOPE' ? {} : { answerType: answer.answerType }),
       ...(answer.procedure ? { procedure: answer.procedure } : {}),
     };
   }

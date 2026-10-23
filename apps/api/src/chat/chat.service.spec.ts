@@ -184,5 +184,6 @@ describe('ChatService', () => {
     const response = await chat.reply('Quel temps fait-il ?');
     expect(response.verdict).toBe('OUT_OF_SCOPE');
     expect(response.citations).toEqual([]);
+    expect(response.answerType).toBeUndefined();
   });
 });
