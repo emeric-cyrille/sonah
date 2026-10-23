@@ -167,9 +167,21 @@ describe('applyPolicyGate', () => {
     expect(gate.reply).toContain('assistant administratif');
   });
 
+  it('sujet manifestement étranger : OUT_OF_SCOPE même avec des extraits (heuristique)', () => {
+    const gate = applyPolicyGate({
+      question: 'Donne-moi une recette de ndolé',
+      language: 'fr',
+      evidence: [LABOUR_ARTICLE],
+      draft: null,
+    });
+    expect(gate.verdict).toBe('OUT_OF_SCOPE');
+    expect(gate.rule).toBe('out_of_scope:off_topic:cooking');
+    expect(gate.citations).toEqual([]);
+  });
+
   it('le modèle peut signaler une question hors sujet malgré des extraits', () => {
     const gate = applyPolicyGate({
-      question: 'Raconte-moi une blague',
+      question: 'Quelle est ta couleur préférée ?',
       language: 'fr',
       evidence: [LABOUR_ARTICLE],
       draft: `${OUT_OF_SCOPE_TOKEN} Je ne peux pas.`,

@@ -176,6 +176,11 @@ describeDb('seedLegalSources (textes réels)', () => {
     const vectorRanked = await store.search(query, 3, { hybrid: false });
     expect(Object.keys(vectorRanked[0] ?? {}).sort()).toEqual(Object.keys(hybrid[0] ?? {}).sort());
   });
+
+  it('sans référence explicite, la recherche par défaut est purement vectorielle', async () => {
+    const query = 'durée du mandat du chef de l’État';
+    expect(await store.search(query, 5)).toEqual(await store.search(query, 5, { hybrid: false }));
+  });
 });
 
 describeGraph('GraphStoreService (Neo4j)', () => {

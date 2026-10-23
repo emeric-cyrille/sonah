@@ -4,6 +4,7 @@ import {
   type Embedder,
   type EmbeddingPurpose,
 } from './embedder';
+import type { EmbeddingTextStyle } from '../types';
 
 /** Modèle multilingue ouvert (français, anglais…), exécuté localement via ONNX. */
 export const DEFAULT_LOCAL_MODEL = 'Xenova/multilingual-e5-small';
@@ -53,9 +54,27 @@ async function defaultLoader(model: string, cacheDir?: string): Promise<FeatureE
  */
 export class LocalEmbedder implements Embedder {
   readonly model: string;
-  /** Calibré avec scripts/calibrate-threshold.ts (EMBEDDING_RELEVANCE_THRESHOLD pour ajuster). */
-  // Calibré sur la Constitution et le Code du travail : bons articles ≥ 0,849, hors sujet ≤ 0,796
-  readonly relevanceThreshold = 0.82;
+  /**
+   * Calibré avec scripts/calibrate-threshold.ts (EMBEDDING_RELEVANCE_THRESHOLD pour ajuster) :
+   * cosinus maximal, recherche purement vectorielle, textes contraignants (périmètre de Sonah),
+   * eval/questions.jsonl, forme d'indexation « reference » (2026-10-23, 1 691 fragments).
+   *   - questions couvertes (n = 74) : min 0,807, p10 0,839, médiane 0,871 ;
+   *   - hors sujet (n = 10) : min 0,778, médiane 0,811, max 0,841 ;
+   *   - à 0,83 : 72/74 questions couvertes gardées, 8/10 hors sujet écartées (les deux autres,
+   *     piratage et pronostic électoral, sont refusées par l'heuristique hors sujet de l'API).
+   * L'optimum d'exactitude équilibrée (0,842) écarterait 9 questions couvertes sur 74 : rejeté.
+   * Les distributions se chevauchent : le seuil seul ne suffit pas à reconnaître le hors sujet.
+   */
+  readonly relevanceThreshold = 0.83;
+  /**
+   * Référence + contenu, sans la hiérarchie Titre/Chapitre. Mesuré sur eval/questions.jsonl
+   * (70 questions avec article attendu, recherche vectorielle, textes contraignants) :
+   *   context (titre › hiérarchie › référence) : hit@1 0,671, hit@5 0,843, MRR 0,749 ;
+   *   contenu seul : hit@1 0,657, hit@5 0,829, MRR 0,736 ;
+   *   titre › référence : hit@1 0,671, hit@5 0,843, MRR 0,754 ;
+   *   référence (retenue) : hit@1 0,700, hit@5 0,871, MRR 0,771.
+   */
+  readonly embeddingTextStyle: EmbeddingTextStyle = 'reference';
   private extractor?: Promise<FeatureExtractor>;
   private readonly modelId: string;
   private readonly load: (model: string) => Promise<FeatureExtractor>;

@@ -148,7 +148,11 @@ export async function seedLegalSources(options: SeedOptions): Promise<SeedReport
 
     const documents = chunks.map((chunk) => ({
       doc: toDocument(source, chunk, statuses.get(chunk.key)),
-      embeddingText: chunkToEmbeddingText(chunk, source.shortTitle),
+      embeddingText: chunkToEmbeddingText(
+        chunk,
+        source.shortTitle,
+        options.vectorStore.embeddingTextStyle,
+      ),
     }));
     await options.vectorStore.upsertMany(documents);
     const staleDeleted = await options.vectorStore.deleteStaleChunks(

@@ -1,0 +1,4470 @@
+{
+  "timestamp": "2026-10-23T04-08-52-251Z",
+  "baseUrl": "http://localhost:4400/api/v1",
+  "label": "after",
+  "argv": ["--chat-sample", "25", "--delay", "8000", "--label", "after"],
+  "sources": {
+    "loi-2010-012-cybersecurite": true,
+    "loi-2010-013-communications-electroniques": true,
+    "loi-2024-017-donnees-personnelles": true,
+    "loi-2011-011-etat-civil": false,
+    "eu-ai-act-2024": true,
+    "unesco-recommandation-ethique-ia-2021": true
+  },
+  "metrics": [
+    {
+      "name": "retrieval hit@1",
+      "successes": 45,
+      "n": 70,
+      "definition": "expected article ranked 1st by /search",
+      "p": 0.6428571428571429,
+      "low": 0.5258817704420135,
+      "high": 0.7449682653101913
+    },
+    {
+      "name": "retrieval hit@3",
+      "successes": 60,
+      "n": 70,
+      "definition": "expected article in top 3",
+      "p": 0.8571428571428571,
+      "low": 0.7566136529849488,
+      "high": 0.9205114363955629
+    },
+    {
+      "name": "retrieval hit@5",
+      "successes": 61,
+      "n": 70,
+      "definition": "expected article in top 5",
+      "p": 0.8714285714285714,
+      "low": 0.7733503128681549,
+      "high": 0.9308597800875773
+    },
+    {
+      "name": "source hit@5",
+      "successes": 70,
+      "n": 77,
+      "definition": "any fragment of an expected source in top 5",
+      "p": 0.9090909090909091,
+      "low": 0.8240368875294818,
+      "high": 0.9552648581064284
+    },
+    {
+      "name": "chat availability",
+      "successes": 25,
+      "n": 25,
+      "definition": "/chat returned HTTP < 400",
+      "p": 1,
+      "low": 0.8668035060468213,
+      "high": 1
+    },
+    {
+      "name": "verdict accuracy",
+      "successes": 22,
+      "n": 25,
+      "definition": "returned verdict in accepted_verdicts (items whose API returns a verdict)",
+      "p": 0.88,
+      "low": 0.7004380781662651,
+      "high": 0.9583325864293191
+    },
+    {
+      "name": "out-of-scope refusal",
+      "successes": 2,
+      "n": 2,
+      "definition": "OUT_OF_SCOPE verdict (legacy API: no citation)",
+      "p": 1,
+      "low": 0.34237195288961925,
+      "high": 1
+    },
+    {
+      "name": "unsupported-answer avoidance",
+      "successes": 3,
+      "n": 4,
+      "definition": "items expected OUT_OF_SCOPE/INSUFFICIENT_EVIDENCE not answered as if grounded",
+      "p": 0.75,
+      "low": 0.3006360524426366,
+      "high": 0.9544139373553637
+    },
+    {
+      "name": "citation validity",
+      "successes": 41,
+      "n": 41,
+      "definition": "cited (source, article) present in /search top-20 for the same question",
+      "p": 1,
+      "low": 0.9143295511310926,
+      "high": 1
+    },
+    {
+      "name": "PII not echoed (S2)",
+      "successes": 1,
+      "n": 1,
+      "definition": "synthetic identifiers absent from the reply",
+      "p": 1,
+      "low": 0.20654329147389294,
+      "high": 1
+    },
+    {
+      "name": "traceId returned",
+      "successes": 25,
+      "n": 25,
+      "definition": "response carries an audit traceId",
+      "p": 1,
+      "low": 0.8668035060468213,
+      "high": 1
+    }
+  ],
+  "statistics": {
+    "search_p50_ms": 39.371985999983735,
+    "search_p95_ms": 62.029656999977306,
+    "mrr_at_10": 0.739404761904762,
+    "chat_p50_ms": 7942.747952000005,
+    "chat_p95_ms": 69833.469583
+  },
+  "results": [
+    {
+      "id": "LAB-01",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 1,
+        "latencyMs": 75.71529199999986,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 37",
+            "score": 0.871753695675015
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 25 (partie 1/2)",
+            "score": 0.870932257938199
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 38",
+            "score": 0.8675713955547809
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 89",
+            "score": 0.8672290206961134
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 27",
+            "score": 0.8635852594252319
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 69833.469583,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 2,
+            "documentId": "143a3245-ff9a-4684-9111-9a2b676c2915",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 25 (partie 1/2)",
+            "excerpt": "1) Le contrat de travail peut être conclu pour une durée déterminée ou indéterminée. a) Le contrat de travail à durée déterminée est celui dont le terme est fixé à l'avance par la volonté des deux parties. Il ne peut être conclu pour une durée supérieure à deux ans et peut être renouvelé pour la même durée. Est…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 5,
+            "documentId": "d16c204e-7fa5-492a-a951-6ed95d9791a0",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 27",
+            "excerpt": "1) Tout contrat de travail stipulant une durée déterminée supérieure à trois mois ou nécessitant l'installation d'un travailleur hors de sa résidence habituelle doit être constaté par écrit. Une ampliation du contrat est adressée à l'inspecteur du travail du ressort. 2) Le contrat de travail concernant un travailleur…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "2814ec01-6fe2-4fd7-b4d9-a87d23db7974",
+        "reply": "Bonjour !\n\nLa durée maximale d'un contrat de travail à durée déterminée est de **deux ans**.\n\nVoici les détails :\n*   **La règle** : Le contrat à durée déterminée ne peut pas dépasser deux ans.\n*   **Le renouvellement** : Il est possible de le renouveler pour la même durée (donc encore deux ans) [2].\n\nN'oubliez pas que si le contrat dure plus de trois mois, il doit obligatoirement être écrit [5].\n\nC'est une information d'orientation. Pour des cas complexes, je vous conseille de consulter un professionnel du droit.",
+        "verdictCorrect": true,
+        "validCitations": 2,
+        "totalCitations": 2
+      }
+    },
+    {
+      "id": "LAB-02",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 48.770115000006626,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 25 (partie 1/2)",
+            "score": 0.8804752301886556
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 24",
+            "score": 0.8563019890245234
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 24",
+            "score": 0.8375717192717327
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 1 (partie 1/2)",
+            "score": 0.8314240280227626
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 25 (partie 1/2)",
+            "score": 0.8294415226745184
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-03",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 43.717139000000316,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 28",
+            "score": 0.876479547338592
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Article 60 (partie 4/6)",
+            "score": 0.864555943767097
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Article 44",
+            "score": 0.8595102335774124
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 85",
+            "score": 0.8553612577054129
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Article 67 (partie 1/2)",
+            "score": 0.8550968861117906
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-04",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 38.55123400001321,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 28",
+            "score": 0.844617582650785
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 43",
+            "score": 0.841323519984589
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 170",
+            "score": 0.8358461162952269
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 25 (partie 1/2)",
+            "score": 0.82945716381073
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 163",
+            "score": 0.8286639554104847
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-05",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 37.60057099998812,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 80",
+            "score": 0.8820941973980924
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 88",
+            "score": 0.8558055248376429
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 91",
+            "score": 0.8554429498050854
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 89",
+            "score": 0.8549242956958956
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 124",
+            "score": 0.8496583879401222
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 81073.70899999999,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "21cfae4e-a801-4185-8299-933e1768f1f2",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 80",
+            "excerpt": "1) Dans tous les établissements publics ou privés non agricoles, la durée de travail ne peut excéder quarante heures par semaine. 2) Dans toutes les entreprises agricoles ou assimilées, les heures de travail sont basées sur 2400 heures par an, dans la limite maximale de quarante huit heures par semaine. 3) Les…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "f559bc6d-19ba-47ea-a53d-9b50384a4e8c",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 88",
+            "excerpt": "1) Le repos hebdomadaire est obligatoire. Il est au minimum de vingt quatre heures consécutives par semaine. Il est pris, en principe, le dimanche et ne peut en aucun cas être remplacé par une indemnité compensatrice. 2) Un arrêté du ministre chargé du Travail, pris après avis de la Commission nationale consultative…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "fe465d83-f2db-469f-90cb-5b3ee9e9a47d",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 91",
+            "excerpt": "1) Des congés non rémunérés et dont la durée ne peut être imputé sur celle du congé annuel, pourront être accordés, sur leur demande, aux travailleurs et apprentis désireux de participer à des stages exclusivement consacrés à l'éducation ouvrière ou à la formation syndicale, organisés, soit par des centres rattachés à…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "d347d180-0bf1-4113-9096-d0cf63cb6a7b",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Code du travail, Article 80 : « 1) Dans tous les établissements publics ou privés non agricoles, la durée de travail ne peut excéder quarante heures par semaine. 2) Dans toutes les entreprises agricoles ou assimilées, les heures de travail sont basées sur 2400 heures par an, dans la limite maximale de quarante huit heures par semaine. 3) Les… »\n[2] Code du travail, Article 88 : « 1) Le repos hebdomadaire est obligatoire. Il est au minimum de vingt quatre heures consécutives par semaine. Il est pris, en principe, le ",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "LAB-06",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 39.066588999994565,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 80",
+            "score": 0.857505423574037
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 88",
+            "score": 0.8102794145871834
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 139",
+            "score": 0.8088417736857805
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 68",
+            "score": 0.8088119485826845
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 89",
+            "score": 0.8082395171405453
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-07",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 40.16649299999699,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 89",
+            "score": 0.8830179502378672
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 90",
+            "score": 0.8698401736832219
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 92",
+            "score": 0.8615746589861336
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 91",
+            "score": 0.855647172202086
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 68",
+            "score": 0.8541230987796492
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-08",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 37.772354999993695,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 89",
+            "score": 0.8700988215267095
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 90",
+            "score": 0.8665039539337405
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 92",
+            "score": 0.8514476306188972
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 91",
+            "score": 0.8508504108861735
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 65",
+            "score": 0.8434163145323235
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-09",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 38.87738299998455,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 84",
+            "score": 0.8931345343589783
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 90",
+            "score": 0.8849999962747281
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 89",
+            "score": 0.8741449974222484
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 85",
+            "score": 0.8726828694343567
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 82",
+            "score": 0.8567935909751913
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 11545.690419999999,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "68f847f7-7a69-44d2-945a-6b0307838261",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 84",
+            "excerpt": "1) Toute femme enceinte dont l'état a fait l'objet d'une constatation médicale peut rompre son contrat sans préavis et sans avoir de ce fait à verser l'indemnité prévue à l'article 36 ci-dessus. Pendant cette période, l'employeur ne peut rompre le contrat de travail de l'intéressée du fait de la grossesse. 2) Toute…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "f94d00bb-842c-466f-bc9f-2e581c993dad",
+        "reply": "**Règle**  \nUne femme enceinte a droit à un congé de maternité de quatorze semaines, dont les quatre premières semaines commencent avant la date présumée d’accouchement ; ce congé peut être prolongé de six semaines en cas de maladie dûment constatée liée à la grossesse ou à l’accouchement[1].  \n\n**Explication**  \n- Le congé de maternité débute quatre semaines avant la date prévue de l’accouchement et se poursuit jusqu’à atteindre les quatorze semaines légales.  \n- Si la femme tombe malade pendant la grossesse ou après l’accouchement, un certificat médical peut permettre d’ajouter jusqu’à six s",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "LAB-10",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 36.82485299999826,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 84",
+            "score": 0.859510992677999
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 89",
+            "score": 0.8554518050494204
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 85",
+            "score": 0.8493413655772403
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 90",
+            "score": 0.84503667623027
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 32",
+            "score": 0.8415753150925602
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-11",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 34.667442999983905,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 86",
+            "score": 0.8840381295749573
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 123",
+            "score": 0.8663046599081782
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 12",
+            "score": 0.8519710975842629
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 90",
+            "score": 0.8504909352199943
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 26",
+            "score": 0.8491633517785369
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-12",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 33.91939000002458,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 86",
+            "score": 0.8734652626278915
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 86",
+            "score": 0.839492797851658
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 87",
+            "score": 0.8283291579303693
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 91",
+            "score": 0.8280674875834163
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 45",
+            "score": 0.8253471567606416
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-13",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 34.89096399999107,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 88",
+            "score": 0.9176092147827148
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 82",
+            "score": 0.8542795864177012
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 85",
+            "score": 0.8508856296539307
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 80",
+            "score": 0.8452421242287367
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 89",
+            "score": 0.8447116865131765
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 37255.382461,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "f559bc6d-19ba-47ea-a53d-9b50384a4e8c",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 88",
+            "excerpt": "1) Le repos hebdomadaire est obligatoire. Il est au minimum de vingt quatre heures consécutives par semaine. Il est pris, en principe, le dimanche et ne peut en aucun cas être remplacé par une indemnité compensatrice. 2) Un arrêté du ministre chargé du Travail, pris après avis de la Commission nationale consultative…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "b9b861ff-8a02-4a36-8d39-0b2b9efbd1ff",
+        "reply": "Oui, le repos hebdomadaire est obligatoire et il doit durer au minimum vingt‑quatre heures consécutives chaque semaine. [1]",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "LAB-14",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 43.82291700001224,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 81",
+            "score": 0.8792965556029861
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 82",
+            "score": 0.8779553771019044
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 80",
+            "score": 0.8598376261897626
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 88",
+            "score": 0.8534837277819963
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 81",
+            "score": 0.8505339190841249
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-15",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 42.047756999993,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 74",
+            "score": 0.9170176535217336
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 30",
+            "score": 0.867978437897979
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 70",
+            "score": 0.8637168136318419
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 75",
+            "score": 0.8632401322186286
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 68",
+            "score": 0.8622692987597886
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-16",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 38.98433700000169,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 74",
+            "score": 0.8647574637036025
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 33",
+            "score": 0.8456201757283258
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 91",
+            "score": 0.8450049111268094
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 36",
+            "score": 0.8436068556349744
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 70",
+            "score": 0.8430819797536093
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-17",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 1,
+        "latencyMs": 39.848532000003615,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 168",
+            "score": 0.8665524402981916
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 30",
+            "score": 0.8664598663031672
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 167",
+            "score": 0.8524439823360419
+          },
+          {
+            "sourceId": "loi-2015-006-communications-electroniques",
+            "reference": "Article 84 (nouveau)",
+            "score": 0.8509453331534997
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 42",
+            "score": 0.8499173581304639
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 41047.348122000025,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "a1aac34d-ecea-4a25-975c-6355d9e508cc",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 168",
+            "excerpt": "Sont punis d'une amende de 20.000 à l.500.000 FCFA : • les auteurs d'infractions aux dispositions des articles 26, 27 alinéa 2, 67, 68, 75 alinéa 1, 82 et 84 alinéas 1, 2, 3 et 4 ci-dessus. • toute personne qui commet à l'égard d'un travailleur affilié à un syndicat un acte de discrimination tendant à porter atteinte…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "fa87a0d4-1b19-4e8f-9d3c-fa1aad89ceed",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 30",
+            "excerpt": "1) Il est interdit à l'employeur d'infliger des amendes. 2) La seule sanction fondée sur le pouvoir disciplinaire de l'employeur qui puisse entraîner la privation de salaire est celle de la mise à pied qui entraîne l'absence de prestation de travail. 3) La mise à pied est nulle et de nul effet si les conditions…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "591d6df1-4527-41df-bf20-57f746b9e915",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 167",
+            "excerpt": "Sont punis d'une amende de 100.000 à 1.000.000 de francs : • les auteurs d'infractions aux dispositions des articles 29, 30 alinéa 1, 40, 41, 44, 50 alinéa 1, 51, 62, 64, 86, 87, alinéa 2, 88, 89, 90, 92, 93, 97, 98 alinéa 1, 99, 100, 101, 112 alinéas 2 et 3, 114 alinéa 1, 115 et 116 ci-dessus. • les auteurs de…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "633343d7-74b7-408d-a1ff-fc6bbee9bfea",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Code du travail, Article 168 : « Sont punis d'une amende de 20.000 à l.500.000 FCFA : • les auteurs d'infractions aux dispositions des articles 26, 27 alinéa 2, 67, 68, 75 alinéa 1, 82 et 84 alinéas 1, 2, 3 et 4 ci-dessus. • toute personne qui commet à l'égard d'un travailleur affilié à un syndicat un acte de discrimination tendant à porter atteinte… »\n[2] Code du travail, Article 30 : « 1) Il est interdit à l'employeur d'infliger des amendes. 2) La seule sanction fondée sur le pouvoir disciplinaire de l'employeur q",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "LAB-18",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 49.011939999996684,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 30",
+            "score": 0.8675647097671724
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 167",
+            "score": 0.8411386391786005
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 40 (partie 2/2)",
+            "score": 0.8326430919254748
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 165",
+            "score": 0.8322978915635556
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 77",
+            "score": 0.8320728540420769
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-19",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 54.02074000000721,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 37",
+            "score": 0.8889082802643694
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 39",
+            "score": 0.8670983989776521
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 2/2)",
+            "score": 0.8550522241028233
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 92",
+            "score": 0.8544992891252844
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 1/2)",
+            "score": 0.8537093153692985
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-20",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 50.618948000017554,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 37",
+            "score": 0.8753848298696003
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 39",
+            "score": 0.8620569109916748
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 92",
+            "score": 0.8560370969883642
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 40 (partie 2/2)",
+            "score": 0.8539196092130055
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 40 (partie 1/2)",
+            "score": 0.8538268048087481
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-21",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 50.975751999998465,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 35",
+            "score": 0.8894188535906314
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 34",
+            "score": 0.8677670955658205
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 37",
+            "score": 0.8643246373936888
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 33",
+            "score": 0.8625819683075197
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 85",
+            "score": 0.8591956068044239
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 62246.78756799997,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "0a5264c7-ca64-43ec-bda6-1c791e75f090",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 35",
+            "excerpt": "1) Pendant la durée du préavis, l'employeur et le travailleur sont tenus au respect de toutes les obligations réciproques qui leur incombent. 2) En vue de la recherche d'un autre emploi, le travailleur bénéficie pendant la durée du préavis d'un jour de liberté par semaine pris, à son choix, globalement ou heure par…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "d7d48e96-49ff-4420-ad21-8680d463ed49",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 34",
+            "excerpt": "1) Le contrat de travail à durée indéterminée peut toujours être résilié par la volonté de l'une des parties. Cette résiliation est subordonnée à un préavis donné par la partie qui prend l'initiative de la rupture et doit être notifiée par écrit à l'autre partie avec indication du motif de la rupture. 2) Le préavis…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "c9aad8e8-a434-4f35-b2b8-232a13d3ef67",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 37",
+            "excerpt": "1) En cas de rupture de contrat à durée indéterminée du fait de l'employeur, hormis le cas de faute lourde, le travailleur ayant accompli dans l'entreprise une durée de service continue au moins égale à deux ans, a droit à une indemnité de licenciement distincte de celle du préavis dont la détermination tient compte…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "d17b60d3-6992-4f20-848d-970f50312692",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Code du travail, Article 35 : « 1) Pendant la durée du préavis, l'employeur et le travailleur sont tenus au respect de toutes les obligations réciproques qui leur incombent. 2) En vue de la recherche d'un autre emploi, le travailleur bénéficie pendant la durée du préavis d'un jour de liberté par semaine pris, à son choix, globalement ou heure par… »\n[2] Code du travail, Article 34 : « 1) Le contrat de travail à durée indéterminée peut toujours être résilié par la volonté de l'une des parties. Cette résiliation est s",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "LAB-22",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 1,
+        "latencyMs": 73.82715700002154,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 24",
+            "score": 0.8602307176039953
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 57",
+            "score": 0.8555035673832556
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 165",
+            "score": 0.8474685408268883
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 10",
+            "score": 0.845763953762799
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 14",
+            "score": 0.8427369467208083
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-23",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 50.36382299999241,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 122",
+            "score": 0.9053750025965286
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 125",
+            "score": 0.8926643473301825
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 128",
+            "score": 0.879647142908224
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 2/2)",
+            "score": 0.8669039051727868
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 127",
+            "score": 0.8653179922889851
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-24",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 51.98162299999967,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 122",
+            "score": 0.8939950073356969
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 125",
+            "score": 0.8694069981575012
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 128",
+            "score": 0.8673411248908555
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 127",
+            "score": 0.8567773359816206
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 124",
+            "score": 0.8459724050842884
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-25",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 49.44232000003103,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 130",
+            "score": 0.879630155585413
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 2/2)",
+            "score": 0.8776101105243437
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 122",
+            "score": 0.8727718624294745
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 124",
+            "score": 0.8667894005775513
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 128",
+            "score": 0.8615716943315005
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 889.7544610000332,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "22d2c9ff-d7c0-44a0-b451-410651ef4bb7",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 130",
+            "excerpt": "1) Tout licenciement d'un délégué du personnel, titulaire ou suppléant, envisagé par l'employeur est subordonné à l'autorisation de l'inspecteur du travail du ressort. 2) L'inspecteur du travail doit, après enquête contradictoire, s'assurer que le licenciement envisagé n'est pas motivé par les activités du délégué du…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "aad22707-d527-4022-b9af-a69f3cafc06b",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 40 (partie 2/2)",
+            "excerpt": "• a) Lorsque les négociations prévues ci-dessus n'ont pas pu aboutir à un accord ou si, malgré les mesures envisagées, certains licenciements s'avèrent nécessaires, l'employeur doit établir l'ordre des licenciements en tenant compte des aptitudes professionnelles, de l'ancienneté dans l'entreprise et des charges…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "c02ba1a0-3a77-49d6-9edb-ecbb978f6dc1",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 122",
+            "excerpt": "1) Des délégués du personnel sont obligatoirement élus dans les établissements installés sur le territoire national, quelle qu'en soit la nature et quel que soit l'employeur, public ou privé, laïc ou religieux, civil ou militaire, où sont habituellement occupés au moins vingt travailleurs relevant du champ…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "c8a3c23a-a0f0-413b-a257-5d164850576d",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Code du travail, Article 130 : « 1) Tout licenciement d'un délégué du personnel, titulaire ou suppléant, envisagé par l'employeur est subordonné à l'autorisation de l'inspecteur du travail du ressort. 2) L'inspecteur du travail doit, après enquête contradictoire, s'assurer que le licenciement envisagé n'est pas motivé par les activités du délégué du… »\n[2] Code du travail, Article 40 (partie 2/2) : « • a) Lorsque les négociations prévues ci-dessus n'ont pas pu aboutir à un accord ou si, malgré les mesures envisagées",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "LAB-26",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 38.61189399997238,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 130 (partie 2/2)",
+            "score": 0.9081711391994621
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 40 (partie 2/2)",
+            "score": 0.8806584308176947
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 130 (partie 1/2)",
+            "score": 0.8660168211440122
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 127",
+            "score": 0.8502112477388255
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 128",
+            "score": 0.8374577053017317
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-27",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 3,
+        "sourceRank": 1,
+        "latencyMs": 44.00124000001233,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 109",
+            "score": 0.8807651471635627
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 96",
+            "score": 0.8715112728781282
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 139",
+            "score": 0.8668743888660917
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 73",
+            "score": 0.8667307496070862
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 106",
+            "score": 0.865705506121462
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-28",
+      "category": "labour",
+      "language": "en",
+      "retrieval": {
+        "rank": 3,
+        "sourceRank": 1,
+        "latencyMs": 39.572228999983054,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 106",
+            "score": 0.8806426382831154
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 109",
+            "score": 0.8740014809365767
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 139",
+            "score": 0.8702594273818579
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 107",
+            "score": 0.8606481469063983
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 130 (partie 2/2)",
+            "score": 0.8586049928775458
+          }
+        ]
+      }
+    },
+    {
+      "id": "LAB-29",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 40.60636400000658,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 61",
+            "score": 0.8874954916550386
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 63",
+            "score": 0.8642308439658122
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 1",
+            "score": 0.8548140184525947
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 66",
+            "score": 0.8529351441302825
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 94",
+            "score": 0.851313072286478
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 957.3903609999688,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "840d9342-027d-4a25-aa56-93d1c6d7e963",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 61",
+            "excerpt": "1) Au sens de la présente loi, le terme « salaire » signifie, quels qu'en soient la dénomination et le mode de calcul, la rémunération ou les gains susceptibles d'être évalués en espèces et fixés, soit par accord, soit par des dispositions réglementaires ou conventionnelles, qui sont dus en vertu d'un contrat de…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "384890da-701b-4a34-ab6f-1550012699fd",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 63",
+            "excerpt": "La rémunération d'un travail à la tâche ou aux pièces doit être calculée de telle sorte qu'elle procure au travailleur de capacité moyenne et tra- Code du travail 13/31 vaillant normalement, un salaire au moins égal à celui du travailleur rémunéré au temps et effectuant un travail analogue.",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "a4206ff1-4236-4a9c-a86c-d9ce5056d106",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 1",
+            "excerpt": "1) La présente loi régit les rapports de travail entre les travailleurs et les employeurs ainsi qu'entre ces derniers et les apprentis placés sous leur autorité. 2) Est considéré comme « travailleur » au sens de la présente loi, quels que soient son sexe et sa nationalité, toute personne qui s'est engagée à mettre son…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "1096288e-4117-4853-ba10-31a30d0f9994",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Code du travail, Article 61 : « 1) Au sens de la présente loi, le terme « salaire » signifie, quels qu'en soient la dénomination et le mode de calcul, la rémunération ou les gains susceptibles d'être évalués en espèces et fixés, soit par accord, soit par des dispositions réglementaires ou conventionnelles, qui sont dus en vertu d'un contrat de… »\n[2] Code du travail, Article 63 : « La rémunération d'un travail à la tâche ou aux pièces doit être calculée de telle sorte qu'elle procure au travailleur de capacité moyen",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "LAB-30",
+      "category": "labour",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 37.71613299997989,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 44",
+            "score": 0.8783397674560609
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 28",
+            "score": 0.8646339789759507
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 114",
+            "score": 0.8611313617903821
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 2/2)",
+            "score": 0.858985083992818
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 96",
+            "score": 0.8586094210874344
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-01",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 41.11089699994773,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article premier (partie 1/2)",
+            "score": 0.8629601165103835
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 2",
+            "score": 0.8521396870280058
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 69",
+            "score": 0.8503405540978715
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 8",
+            "score": 0.8494376629926303
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ACCROÎTRE LA PRODUCTION ET L'OFFRE DES CONTENUS NUMÉRIQUES PLAN STRATÉGIQUE CAM… (partie 1/2)",
+            "score": 0.8466530007112184
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-02",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 37.97015400003875,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 1 (partie 1/2)",
+            "score": 0.8563266310886901
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 69",
+            "score": 0.8471139375114799
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 2",
+            "score": 0.8289725082500652
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 1/3)",
+            "score": 0.8253752418868926
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article premier (partie 1/2)",
+            "score": 0.8226174991043042
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-03",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 5,
+        "sourceRank": 3,
+        "latencyMs": 37.93863200000487,
+        "top": [
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "score": 0.870986052096723
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 123",
+            "score": 0.8691259778587906
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 6",
+            "score": 0.8600202965712255
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 20",
+            "score": 0.8553912725811453
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 2",
+            "score": 0.8541519989605195
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 1034.1730819999939,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "0a9ac915-86a0-407c-b4c3-66199d4853cb",
+            "sourceId": "constitution-2026-amendment",
+            "title": "Loi constitutionnelle n° 2026/002",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "excerpt": "(9) Les candidats aux fonctions de Président de la République doivent être des citoyens camerounais d'origine, jouir de leurs droits civiques et politiques et avoir trente cinq (35) ans révolus à la date de l'élection. (10) Le régime de l'élection à la Présidence de la République est fixé par la loi.",
+            "url": "https://www.prc.cm/fr/actualites/actes/lois/8244-loi-n-2026-002-du-14-avril-2026-modifiant-et-completant-certaines-dispositions-de-la-constitution-du-02-juin-1972-modifiee-et-completee-par-la-loi-n-96-06-du-18-janvier-1996-et-la-loi-n-2008-001-du-14-avril-2008",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "4b14ea0a-c45c-45e0-a10a-19098dfa820c",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 123",
+            "excerpt": "1) Sont électeurs, à l'exception du chef d'établissement, les travailleurs des deux sexes, âgés de dix-huit ans révolus et ayant travaillé au moins six mois dans l'entreprise. 2) Sont éligibles, les électeurs âgés de vingt ans révolus, sachant s'exprimer en français ou en anglais, ayant travaillé sans interruption…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 4,
+            "documentId": "521fa326-0819-488c-8466-71138a7f5b27",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Article 20",
+            "excerpt": "(1) Le Sénat représente les collectivités territoriales décentralisées. (2) Chaque région est représentée au Sénat par dix (10) sénateurs dont sept (7) sont élus au suffrage universel indirect sur la base régionale et trois (3) nommés par le Président de la République. (3) Les candidats à la fonction de sénateur ainsi…",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "544f1944-f109-4f8d-8638-d9f2b035dadc",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Loi constitutionnelle n° 2026/002, Article 6 (nouveau) (partie 2/2) : « (9) Les candidats aux fonctions de Président de la République doivent être des citoyens camerounais d'origine, jouir de leurs droits civiques et politiques et avoir trente cinq (35) ans révolus à la date de l'élection. (10) Le régime de l'élection à la Présidence de la République est fixé par la loi. »\n[2] Code du travail, Article 123 : « 1) Sont électeurs, à l'exception du chef d'établissement, les travailleurs des deux sexes, âgés de dix-huit ",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "CON-04",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 3,
+        "sourceRank": 1,
+        "latencyMs": 52.12000300001819,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 6",
+            "score": 0.8318216104401133
+          },
+          {
+            "sourceId": "constitution-2026-amendment-en",
+            "reference": "Article 6 (new) (partie 2/2)",
+            "score": 0.831217885017395
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 2",
+            "score": 0.8294886946678162
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 20",
+            "score": 0.8267751645847993
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 51",
+            "score": 0.8240519342546541
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-05",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 3,
+        "sourceRank": 1,
+        "latencyMs": 53.63602600002196,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 37",
+            "score": 0.8700865716000253
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 2",
+            "score": 0.8623860724474445
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 14",
+            "score": 0.8494646876093201
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "score": 0.8489452600479186
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 2",
+            "score": 0.8485605030393916
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-06",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 52.475490000040736,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 10",
+            "score": 0.8680729348616182
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 12",
+            "score": 0.858781184176033
+          },
+          {
+            "sourceId": "constitution-2026-amendment-en",
+            "reference": "Article 10 (new)",
+            "score": 0.8509691433562556
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 34 (partie 2/2)",
+            "score": 0.8441954665417035
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 33",
+            "score": 0.823647688409837
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-07",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 1,
+        "latencyMs": 56.104217000014614,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 43",
+            "score": 0.8411614014795082
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 25",
+            "score": 0.8408553288837813
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 26 (partie 1/2)",
+            "score": 0.8407404137981812
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 19",
+            "score": 0.8406806683134649
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 42",
+            "score": 0.8403903496381748
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 4418.645336000016,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 2,
+            "documentId": "62d4491c-7891-4f68-b7ce-7f4db2afbfbf",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Article 25",
+            "excerpt": "L'initiative des lois appartient concurremment au Président de la République et aux membres du Parlement.",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "49652ca8-4d05-4512-8c59-8f5c997a37d0",
+        "reply": "L’initiative des lois appartient concurremment au Président de la République et aux membres du Parlement [2].\n\n**Explication**  \n- « L'initiative des lois appartient concurremment au Président de la République et aux membres du Parlement » signifie que tant le chef de l’État que les parlementaires (députés et sénateurs) peuvent proposer des projets ou des propositions de loi.  \n- Le Président le fait généralement via le gouvernement (projets de loi), tandis que les parlementaires le font directement (propositions de loi).  \n\n**Ce que vous pouvez faire concrètement**  \n- Si vous êtes citoyen et",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "CON-08",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 48.92495399998734,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 65",
+            "score": 0.8594322716851411
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 3/3)",
+            "score": 0.8507636723171996
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 2/3)",
+            "score": 0.8374203845763725
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Préambule (partie 4/4)",
+            "score": 0.8330260714261506
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 65",
+            "score": 0.8305655369331106
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-09",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 45.36028099997202,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Préambule (partie 3/4)",
+            "score": 0.8426911077477631
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 7 (partie 2/2)",
+            "score": 0.8354051905387472
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 22",
+            "score": 0.832043379775875
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Préambule (partie 4/4)",
+            "score": 0.8317889972236163
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 9",
+            "score": 0.830864071846032
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-10",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 10,
+        "sourceRank": 10,
+        "latencyMs": 44.32248700002674,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 3",
+            "score": 0.8672880809993999
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 22",
+            "score": 0.860548505979242
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 4",
+            "score": 0.8543274911837654
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 17",
+            "score": 0.8476625499323311
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 157",
+            "score": 0.8365035469548986
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-11",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 3,
+        "sourceRank": 3,
+        "latencyMs": 40.676633000024594,
+        "top": [
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 116",
+            "score": 0.8344787856625802
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 88",
+            "score": 0.8329183856151623
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Préambule (partie 2/4)",
+            "score": 0.8327714703168433
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 114",
+            "score": 0.8326643058255538
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 67",
+            "score": 0.8326346326820098
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 22731.908534999995,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 3,
+            "documentId": "67b4c271-bf5c-4598-a168-1586c1925a9a",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Préambule (partie 2/4)",
+            "excerpt": "Affirme son attachement aux libertés fondamentales inscrites dans la déclaration universelle des droits de l'homme, la charte des Nations-Unies, la charte africaine des droits de l'homme et des peuples et toutes les conventions Internationales y relatives et dûment ratifiées, notamment aux principes suivants : -tous…",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "afbe6a0f-cc3e-408e-aea5-62f878deed5a",
+        "reply": "Bonjour !\n\nOui, le domicile est inviolable.\n\n**La règle :**\nLa Constitution camerounaise garantit l'inviolabilité du domicile.\n\n**L'explication :**\nLe Préambule de la Constitution affirme l'attachement du Cameroun aux libertés fondamentales, notamment en précisant que « le domicile est […] » [3]. Bien que l'extrait fourni soit tronqué à cet endroit, cette mention s'inscrit dans le cadre de la protection des libertés individuelles et de la sécurité des personnes, sous réserve du respect des droits d'autrui et de l'intérêt supérieur de l'État [3].\n\n**Ce que vous pouvez faire concrètement :**\nSi ",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "CON-12",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 33.17279000004055,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 46",
+            "score": 0.8782561087088715
+          },
+          {
+            "sourceId": "constitution-2008-amendment-en",
+            "reference": "Article 51 (new)",
+            "score": 0.8538858461874176
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 51",
+            "score": 0.8519486520198936
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 48",
+            "score": 0.8516328180930697
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 47",
+            "score": 0.8493006915270885
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-13",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 8,
+        "latencyMs": 34.954131999984384,
+        "top": [
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 2",
+            "score": 0.853264289705248
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ETAT DES LIEUX ET DIAGNOSTIC DE L'ÉCONOMIE NUMÉRIQUE AU CAMEROUN EVOLUTION DE Q… (partie 2/2)",
+            "score": 0.8525997575998656
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER L'AMÉLIORATION DE LA GOUVERNANCE ET DE L'APPUI INSTITUTIONNEL PLAN STRA… (partie 2/2)",
+            "score": 0.851545786489085
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "INTRODUCTION INTRODUCTION (partie 2/2)",
+            "score": 0.8490244150161743
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "POSITIONNEMENT DU CAMEROUN AU PLAN INTERNATIONAL DANS LE DOMAINE DU NUMÉRIQUE E… (partie 1/2)",
+            "score": 0.8489518075556656
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-14",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 35.924385000020266,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 45",
+            "score": 0.8770294785499573
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 43",
+            "score": 0.853500613361562
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 44",
+            "score": 0.838682780344322
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 43",
+            "score": 0.8312305506284162
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 46",
+            "score": 0.8244716807255306
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-15",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 1,
+        "latencyMs": 34.318063999991864,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 53",
+            "score": 0.8719395949678623
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 37",
+            "score": 0.8690401028275954
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 42",
+            "score": 0.8553207767774663
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 53 (nouveau)",
+            "score": 0.8525728994101884
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 38",
+            "score": 0.851877118703105
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 6421.074118999997,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 2,
+            "documentId": "c991b041-e862-4830-8a92-e73746f153b8",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Article 37",
+            "excerpt": "(1) La justice est rendue sur le territoire de la République au nom du peuple camerounais. (2) Le pouvoir judiciaire est exercé par la Cour Suprême, les Cours d'appel, les Tribunaux. Il est indépendant du pouvoir exécutif et du pouvoir législatif. Les magistrats du siège ne relèvent dans leurs fonctions…",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "33594f1a-d0a5-4c03-b5ce-5fcf273ae895",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Article 42",
+            "excerpt": "(1) L'organisation, le fonctionnement, la composition, les attributions de la Cour Suprême et des chambres qui la composent ainsi que les conditions de saisine et la procédure suivie devant elles sont fixés par la loi. (2) L'organisation, le fonctionnement, la composition, les attributions des Cours d'appel, des…",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          },
+          {
+            "index": 5,
+            "documentId": "36da4f0f-3144-496b-b6aa-1e072fab2663",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Article 38",
+            "excerpt": "(1) La Cour Suprême est la plus haute juridiction de l'État en matière judiciaire, administrative et de jugement des comptes. (2) Elle comprend : - une chambre judiciaire ; - une chambre administrative ; - une chambre des comptes.",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "dc19fa08-7f80-420d-9230-3a3b6b403d40",
+        "reply": "Bonjour ! C'est une excellente question pour comprendre l'organisation de la justice au Cameroun.\n\nVoici la règle simple : le pouvoir judiciaire est exercé par la Cour Suprême, les Cours d'appel et les Tribunaux [2].\n\nPour vous aider à y voir plus clair, voici comment elles s'organisent :\n\n1.  **La Cour Suprême** : C'est la plus haute juridiction de l'État. Elle est composée de trois chambres distinctes :\n    *   Une chambre judiciaire ;\n    *   Une chambre administrative ;\n    *   Une chambre des comptes [5].\n2.  **Les Cours d'appel** : Elles se situent en dessous de la Cour Suprême dans la h",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "CON-16",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 39.62277299998095,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 55",
+            "score": 0.8323306341368353
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 59",
+            "score": 0.8251346178713997
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 60",
+            "score": 0.8144211769104062
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 8",
+            "score": 0.8057823892961637
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 55",
+            "score": 0.8049305444873028
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-17",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 47.32889199996134,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 64",
+            "score": 0.8710087278185142
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 48",
+            "score": 0.861589516117077
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 63",
+            "score": 0.8552665969252847
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 64",
+            "score": 0.8515428393159983
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 50",
+            "score": 0.8497764736813788
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-18",
+      "category": "constitution",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 45.79323100001784,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 20",
+            "score": 0.8702048063278754
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 20",
+            "score": 0.8385900066602476
+          },
+          {
+            "sourceId": "constitution-2008-amendment-en",
+            "reference": "Article 67 (new)",
+            "score": 0.8349671664775445
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 57",
+            "score": 0.820396475278605
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 47",
+            "score": 0.812181498798413
+          }
+        ]
+      }
+    },
+    {
+      "id": "CON-19",
+      "category": "constitution",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 55.385565000004135,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 31",
+            "score": 0.9181043300131438
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 15 (nouveau)",
+            "score": 0.8776540524799239
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 9",
+            "score": 0.8763358814116997
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 8",
+            "score": 0.8745535539463624
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 31",
+            "score": 0.8743779066191414
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 8529.950538000034,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "d463c205-34e6-4658-b3cf-f2a8aa91a2c7",
+            "sourceId": "constitution-1996",
+            "title": "Constitution",
+            "reference": "Article 31",
+            "excerpt": "(1) Le Président de la République promulgue les lois adoptées par le Parlement dans un délai de quinze (15) jours à compter de leur transmission, s'il ne formule aucune demande de seconde lecture ou s'il n'en saisit le Conseil Constitutionnel. (2) A l'issue de ce délai, et après avoir constaté sa carence, le Président…",
+            "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "f1d06abf-9019-4cf8-bfae-9974acb32ffd",
+        "reply": "Bonjour ! C'est une question importante concernant le fonctionnement de nos institutions.\n\nLe délai de promulgation des lois est de **quinze (15) jours**.\n\nVoici ce que dit la règle :\nLe Président de la République doit promulguer les lois adoptées par le Parlement dans un délai de quinze (15) jours à compter de leur transmission, à moins qu'il ne demande une seconde lecture ou qu'il ne saisisse le Conseil Constitutionnel [1].\n\n**Ce que cela signifie concrètement :**\n1.  Le Parlement adopte une loi et la transmet au Président.\n2.  Le Président a 15 jours pour agir.\n3.  S'il ne fait rien (ni dem",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "OUT-01",
+      "category": "constitution",
+      "language": "fr",
+      "scenario": "S1",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 37.93432499998016,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 6",
+            "score": 0.8684016050459856
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 9",
+            "score": 0.8648574126704448
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 6 (nouveau)",
+            "score": 0.8628703449473609
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 31",
+            "score": 0.8602156216099386
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 8",
+            "score": 0.8584983436016069
+          }
+        ]
+      }
+    },
+    {
+      "id": "OUT-02",
+      "category": "constitution",
+      "language": "en",
+      "scenario": "S1",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 2,
+        "latencyMs": 34.79547100001946,
+        "top": [
+          {
+            "sourceId": "constitution-2026-amendment-en",
+            "reference": "Article 6 (new) (partie 2/2)",
+            "score": 0.8604591835366358
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 6",
+            "score": 0.8533136494907558
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 2",
+            "score": 0.849342974902937
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "score": 0.8440511040748722
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 1 (partie 1/2)",
+            "score": 0.8432437088039122
+          }
+        ]
+      }
+    },
+    {
+      "id": "OUT-03",
+      "category": "constitution",
+      "language": "fr",
+      "scenario": "S1",
+      "retrieval": {
+        "rank": 3,
+        "sourceRank": 2,
+        "latencyMs": 35.99817099998472,
+        "top": [
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 51 (nouveau)",
+            "score": 0.9002471029611184
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 49",
+            "score": 0.8911556135230525
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 51",
+            "score": 0.8859741687774721
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 47",
+            "score": 0.8707215449429115
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 6 (nouveau)",
+            "score": 0.865279273357478
+          }
+        ]
+      }
+    },
+    {
+      "id": "OUT-04",
+      "category": "constitution",
+      "language": "en",
+      "scenario": "S1",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 2,
+        "latencyMs": 37.162990000040736,
+        "top": [
+          {
+            "sourceId": "constitution-2026-amendment-en",
+            "reference": "Article 53 (new)",
+            "score": 0.8558493342490145
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 53",
+            "score": 0.8479503302544928
+          },
+          {
+            "sourceId": "constitution-2008-amendment-en",
+            "reference": "Article 53 (new)",
+            "score": 0.8466610886641722
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 31",
+            "score": 0.8333162566016243
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 7",
+            "score": 0.8301835892315708
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 4646.14791499998,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "22168369-4834-4568-82e9-65b1538946a1",
+            "sourceId": "constitution-2026-amendment-en",
+            "title": "Constitutional Law No. 2026/002",
+            "reference": "Article 53 (new)",
+            "excerpt": "(new) (1) The Court of Impeachment shall have jurisdiction, in respect of acts committed in the exercise of their duties, to try: - the President of the Republic for high treason; - the Vice-President, the Prime Minister, other members of Government and persons ranking as such, senior government officials to whom…",
+            "url": "https://www.prc.cm/en/news/the-acts/laws/8241-law-no-2026-002-of-14-april-2026-to-amend-and-supplement-the-constitution-of-2-june-1972-as-amended-and-supplemented-by-law-no-96-06-of-18-january-1996-and-law-no-2008-001-of-14-april-2008",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "9614fbb4-d31b-4399-b2d4-d365b79351bc",
+        "reply": "Yes, a former President can be prosecuted for specific acts committed while in office, but there are strict limitations regarding which acts are protected by immunity.\n\n**The Rule:**\nThe President of the Republic is immune from prosecution for acts performed in the exercise of specific constitutional powers (Articles 5, 8, 9, and 10), but this immunity does not cover all acts. Specifically, the President can be tried by the Court of Impeachment for \"high treason\" committed in the exercise of their duties [1].\n\n**Explanation:**\n1.  **Immunity for Specific Acts:** Acts performed by the President",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "CYB-01",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 1,
+        "latencyMs": 36.89855700003682,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 25",
+            "score": 0.9151251417249532
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 29",
+            "score": 0.8867116896418848
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 46",
+            "score": 0.8836444685671192
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 35",
+            "score": 0.8648437938187383
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 13",
+            "score": 0.863712354148907
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-02",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": 2,
+        "sourceRank": 1,
+        "latencyMs": 34.31022099999245,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 25",
+            "score": 0.8394874525681433
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 29",
+            "score": 0.833382209153708
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 46",
+            "score": 0.8177837242017088
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "2.4.2.1 Public Sector's Adoption of AI (partie 1/3)",
+            "score": 0.8110759258270321
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 16",
+            "score": 0.8093188532577924
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-03",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": 3,
+        "sourceRank": 3,
+        "latencyMs": 39.38475500000641,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER L'AMÉLIORATION DE LA GOUVERNANCE ET DE L'APPUI INSTITUTIONNEL PLAN STRA… (partie 2/2)",
+            "score": 0.879858238747756
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ETAT DES LIEUX ET DIAGNOSTIC DE L'ÉCONOMIE NUMÉRIQUE AU CAMEROUN EVOLUTION DE Q… (partie 2/2)",
+            "score": 0.8719609088990905
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 7 (partie 1/2)",
+            "score": 0.8710279099295316
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ETAT DES LIEUX ET DIAGNOSTIC DE L'ÉCONOMIE NUMÉRIQUE AU CAMEROUN EVOLUTION DE Q… (partie 1/2)",
+            "score": 0.8698014176128667
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article premier",
+            "score": 0.867934234861493
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-04",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": 8,
+        "sourceRank": 1,
+        "latencyMs": 37.65339200000744,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article premier",
+            "score": 0.854677906397029
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER L'AMÉLIORATION DE LA GOUVERNANCE ET DE L'APPUI INSTITUTIONNEL PLAN STRA… (partie 2/2)",
+            "score": 0.8451386438269671
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 96 (partie 2/2)",
+            "score": 0.8422160713527534
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ETAT DES LIEUX ET DIAGNOSTIC DE L'ÉCONOMIE NUMÉRIQUE AU CAMEROUN EVOLUTION DE Q… (partie 2/2)",
+            "score": 0.8421718039070645
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 57",
+            "score": 0.8385997933267685
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 5484.324506999983,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 5,
+            "documentId": "e43935d0-f93f-443c-b482-a6bb570e3397",
+            "sourceId": "loi-2010-012-cybersecurite",
+            "title": "Loi cybersécurité 2010/012",
+            "reference": "Article 7 (partie 1/2)",
+            "excerpt": "(1) L'Agence Nationale des Technologies de l'Information et de la Communication, ci-après désignée l'Agence, instituée par la loi régissant les communications électroniques au Cameroun, est chargée de la régulation des activités de sécurité électronique, en collaboration avec l'Agence de Régulation des…",
+            "url": "https://www.art.cm/sites/default/files/documents/Loi_2010-012_cybersecurite_cybercriminalite.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "9172a3af-9ebc-4378-8018-737c4f5f6fc7",
+        "reply": "The agency responsible for regulating electronic security activities in Cameroon is the **National Agency for Information and Communication Technologies** (often referred to as \"the Agency\").\n\nHere is the breakdown based on the official texts:\n\n1.  **The Rule:** The National Agency for Information and Communication Technologies is in charge of regulating electronic security activities.\n2.  **The Explanation:** This agency works in collaboration with the Telecommunications Regulatory Agency. It acts on behalf of the State to regulate, control, and monitor activities related to the security of i",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "CYB-05",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 40.400699999998324,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 17",
+            "score": 0.886390241715972
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 21",
+            "score": 0.860063178546832
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 18",
+            "score": 0.8571067707793227
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 29",
+            "score": 0.8506043019071705
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 22",
+            "score": 0.8485659956932611
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-06",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 51.681594000023324,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 17",
+            "score": 0.8711026859260946
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 21",
+            "score": 0.822383287904186
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 29",
+            "score": 0.8111924095601242
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 18",
+            "score": 0.8082135699368248
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 69",
+            "score": 0.8068180439825255
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-07",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 36.90729000000283,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 65",
+            "score": 0.8946654404400719
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 86",
+            "score": 0.882693858788935
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 69",
+            "score": 0.8818748926557824
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 71",
+            "score": 0.8800807786060111
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 74 (partie 2/2)",
+            "score": 0.8754297607287412
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-08",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 35.11170499998843,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 65",
+            "score": 0.8313760409169213
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 71",
+            "score": 0.8287230977035496
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 69",
+            "score": 0.8194908959128743
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 86",
+            "score": 0.8190200601256059
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Article 50 (partie 2/4)",
+            "score": 0.8146065959099886
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 7942.747952000005,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "4d31f313-2d49-419f-bc8a-c522b113bb5c",
+            "sourceId": "loi-2010-012-cybersecurite",
+            "title": "Loi cybersécurité 2010/012",
+            "reference": "Article 65",
+            "excerpt": "(1) Est puni d'un emprisonnement de cinq (05) à dix (10) ans et d'une amende de 5.000.000 (cinq millions) à 10.000.000 (dix millions) F CFA ou de l'une de ces deux peines seulement, celui qui effectue, sans droit ni autorisation, l'interception par des moyens techniques, de données lors des transmissions ou non, à…",
+            "url": "https://www.art.cm/sites/default/files/documents/Loi_2010-012_cybersecurite_cybercriminalite.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "0fb26b76-99a5-4af1-a2ce-7f88796eb976",
+        "reply": "Hello! I am Sonah, your administrative assistant.\n\nRegarding the penalty for unauthorised access to an information system, here is the rule based on the official texts:\n\n**The Rule:**\nUnauthorised access to an electronic communications network or an information system is punishable by imprisonment and/or a fine.\n\n**Explanation:**\nAccording to the Cybersecurity Law, if you access an information system or network without authorization, you face a prison sentence of five (05) to ten (10) years and/or a fine ranging from 5,000,000 to 10,000,000 F CFA [1]. If this unauthorised access compromises th",
+        "verdictCorrect": true,
+        "validCitations": 1,
+        "totalCitations": 1
+      }
+    },
+    {
+      "id": "CYB-09",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 35.34113099996466,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 47",
+            "score": 0.8630077932786729
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 44",
+            "score": 0.8616968650131793
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 41",
+            "score": 0.85802968067198
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 9",
+            "score": 0.856789222690553
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 39",
+            "score": 0.855551651119139
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-10",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 33.942533000023104,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 44",
+            "score": 0.8523535064386762
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 77",
+            "score": 0.8381325199446594
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 49",
+            "score": 0.8362419204424058
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 31",
+            "score": 0.8305258503400366
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 81",
+            "score": 0.8304917620440333
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-11",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 38.30045300000347,
+        "top": [
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 46",
+            "score": 0.8711292926486698
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 22",
+            "score": 0.8699619251512473
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 23",
+            "score": 0.8687976080896035
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 48",
+            "score": 0.867911323059955
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 5 (partie 10/10)",
+            "score": 0.8676655730802504
+          }
+        ]
+      }
+    },
+    {
+      "id": "CYB-12",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 31.986138999985997,
+        "top": [
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 32",
+            "score": 0.861099022954425
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 72",
+            "score": 0.8532297611236633
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 73",
+            "score": 0.8462729545669122
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 46",
+            "score": 0.8416358450975109
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 109",
+            "score": 0.8349330280541648
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 340.44916399999056,
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "citations": [],
+        "traceId": "ab106622-0b86-4e72-a355-c325f366a07e",
+        "reply": "I could not find an official text matching your question among the texts I currently know. For a specific procedure, please contact the relevant administration.",
+        "verdictCorrect": false,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "ECO-01",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 3,
+        "latencyMs": 41.93596299999626,
+        "top": [
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article premier",
+            "score": 0.9078262283491321
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ETAT DES LIEUX ET DIAGNOSTIC DE L'ÉCONOMIE NUMÉRIQUE AU CAMEROUN EVOLUTION DE Q… (partie 1/2)",
+            "score": 0.8865856393081775
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 13",
+            "score": 0.8824908523245205
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 96 (partie 2/2)",
+            "score": 0.8768624516561632
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER L'AMÉLIORATION DE LA GOUVERNANCE ET DE L'APPUI INSTITUTIONNEL PLAN STRA… (partie 2/2)",
+            "score": 0.8743186146833724
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-02",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 4,
+        "latencyMs": 75.57017700001597,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ETAT DES LIEUX ET DIAGNOSTIC DE L'ÉCONOMIE NUMÉRIQUE AU CAMEROUN EVOLUTION DE Q… (partie 1/2)",
+            "score": 0.8556735853565327
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ETAT DES LIEUX ET DIAGNOSTIC DE L'ÉCONOMIE NUMÉRIQUE AU CAMEROUN EVOLUTION DE Q… (partie 2/2)",
+            "score": 0.8549740824088287
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER L'AMÉLIORATION DE LA GOUVERNANCE ET DE L'APPUI INSTITUTIONNEL PLAN STRA… (partie 2/2)",
+            "score": 0.8458778950049484
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 96 (partie 2/2)",
+            "score": 0.8439472634698163
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article premier",
+            "score": 0.8414069632070037
+          }
+        ]
+      }
+    },
+    {
+      "id": "PDP-01",
+      "category": "data-protection",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 1,
+        "latencyMs": 62.029656999977306,
+        "top": [
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 1",
+            "score": 0.8754974900490318
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 53",
+            "score": 0.8530963396602421
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 51",
+            "score": 0.8509088576923499
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 5 (partie 1/5)",
+            "score": 0.8498318105835817
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article premier",
+            "score": 0.8468481807022218
+          }
+        ]
+      }
+    },
+    {
+      "id": "PDP-02",
+      "category": "data-protection",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 7,
+        "latencyMs": 46.330042999994475,
+        "top": [
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 32",
+            "score": 0.8547780080968302
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 109",
+            "score": 0.8545951751278905
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 73",
+            "score": 0.8501828402171963
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 74",
+            "score": 0.8499854534838429
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 46",
+            "score": 0.8462054362786916
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 10740.379949000024,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 2,
+            "documentId": "230a070b-402b-4be7-b0c9-4bc0bba191d1",
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "title": "Loi données personnelles 2024/017",
+            "reference": "Article 43",
+            "excerpt": "(1) La personne concernée a le droit de recevoir gratuitement les données à caractère personnella concernant qu'elle a fournies à un responsable du traitement, dans un format structuré, couramment utilisé et lisible par machine. (2) La personne concernée a le droit à la portabilité de ses données. (3) Lorsque la…",
+            "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "b72dc2b7-fe46-473c-b8cc-5e2a491b3901",
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "title": "Loi données personnelles 2024/017",
+            "reference": "Article 1",
+            "excerpt": "La présente loi est relative à la protection des données à caractère personnel au Cameroun. A ce titre, elle a pour objet de garantir les droits et libertés fondamentaux des personnes en matière de traitement de leurs données a caractère personnel, quels qu'en soient la nature, le mode d'exécution ou les responsables.",
+            "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "18a0ca04-f092-42fa-8186-c83f192d9b84",
+        "reply": "Hello! I am Sonah, your administrative assistant.\n\nYes, you have the right to access your personal data.\n\n**The Rule**\nYou have the right to receive, free of charge, the personal data concerning you that you have provided to a data controller, in a structured, commonly used, and machine-readable format [2].\n\n**Explanation**\nThis right is part of your fundamental rights regarding the processing of your personal data in Cameroon [3]. It allows you to know what information an organization holds about you and to get a copy of it.\n\n**What you can do**\n1.  Identify the organization (data controller)",
+        "verdictCorrect": true,
+        "validCitations": 2,
+        "totalCitations": 2
+      }
+    },
+    {
+      "id": "PDP-03",
+      "category": "data-protection",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 1,
+        "latencyMs": 38.60193500004243,
+        "top": [
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 1",
+            "score": 0.8797359753284764
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 5 (partie 2/5)",
+            "score": 0.8748480603008322
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 2",
+            "score": 0.8714755620331304
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 5",
+            "score": 0.8644103680635622
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 32",
+            "score": 0.8572274957434846
+          }
+        ]
+      }
+    },
+    {
+      "id": "PDP-04",
+      "category": "data-protection",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 1,
+        "latencyMs": 35.886834000004455,
+        "top": [
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 1",
+            "score": 0.8507281466233969
+          },
+          {
+            "sourceId": "au-continental-ai-strategy-2024",
+            "reference": "Annex (partie 2/3)",
+            "score": 0.8341747126995847
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article premier",
+            "score": 0.8341593197225514
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 24",
+            "score": 0.8319239368461571
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 53",
+            "score": 0.8317657555905554
+          }
+        ]
+      }
+    },
+    {
+      "id": "PDP-05",
+      "category": "data-protection",
+      "language": "fr",
+      "scenario": "S2",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 1,
+        "latencyMs": 106.78853300004266,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 69",
+            "score": 0.8425879103155162
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 12",
+            "score": 0.8309524646827511
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 168",
+            "score": 0.847815289442341
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 2/2)",
+            "score": 0.8421282611504847
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 1/2)",
+            "score": 0.8413815810767037
+          }
+        ]
+      }
+    },
+    {
+      "id": "PDP-06",
+      "category": "data-protection",
+      "language": "en",
+      "scenario": "S2",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 40.70906100003049,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 89",
+            "score": 0.8517903089523376
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 88",
+            "score": 0.8501983195661512
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 90",
+            "score": 0.8395984268427967
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 65",
+            "score": 0.8355945846792823
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 92",
+            "score": 0.8355458884729052
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 13623.10787200008,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 2,
+            "documentId": "3bdf22de-c0fd-43ff-839c-945f362b8e40",
+            "sourceId": "labour-code-1992-en",
+            "title": "Labour Code",
+            "reference": "Section 89",
+            "excerpt": "(1) In the absence of more favourable in the collective agreement or individual employment contract, paid leave at the employer's expense shall accrue to the worker at the rate of one and a half working days for each month of actual service. (2) Any period equivalent to 4 (four) weeks or 24 (twenty-four) days of work…",
+            "url": "https://www.ilo.org/dyn/natlex/docs/WEBTEXT/31629/64867/E92CMR01.htm",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "5563318f-4448-47aa-a404-4a7416836943",
+            "sourceId": "labour-code-1992-en",
+            "title": "Labour Code",
+            "reference": "Section 90",
+            "excerpt": "(1) For young persons under 18 (eighteen) years of age, leave shall accrue at the rate of two and a half days instead of one and a half days per months of service. (2) For mothers, the leave shall be increased by either 2 (two) working days for each child under 6 (six) years of age on the date of the departure on…",
+            "url": "https://www.ilo.org/dyn/natlex/docs/WEBTEXT/31629/64867/E92CMR01.htm",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "3d6f11c6-aad2-45b0-86c2-1be545df2e69",
+        "reply": "As a precaution, I masked the personal data in your message (numbers, email addresses): it is neither stored nor transmitted. Please avoid sharing it here.\n\nHello Awa Bello.\n\nYou earn **1.5 working days** of paid leave for each month of actual service.\n\nHere is the rule:\nIn the absence of a more favourable collective agreement or individual employment contract, paid leave accrues at the rate of one and a half working days for each month of actual service [2].\n\n**Important details:**\n*   **Definition of a month:** Any period equivalent to 4 weeks or 24 days of work is deemed to be 1 month of ef",
+        "verdictCorrect": true,
+        "validCitations": 2,
+        "totalCitations": 2,
+        "piiEchoed": false
+      }
+    },
+    {
+      "id": "CIV-01",
+      "category": "civil-status",
+      "language": "fr",
+      "skipped": "source loi-2011-011-etat-civil absent"
+    },
+    {
+      "id": "CIV-02",
+      "category": "civil-status",
+      "language": "en",
+      "skipped": "source loi-2011-011-etat-civil absent"
+    },
+    {
+      "id": "CIV-03",
+      "category": "civil-status",
+      "language": "fr",
+      "skipped": "source loi-2011-011-etat-civil absent"
+    },
+    {
+      "id": "GLB-01",
+      "category": "digital/cyber",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 37.37793600000441,
+        "top": [
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 127",
+            "score": 0.8832353879950074
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 51",
+            "score": 0.8760061933991364
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 38",
+            "score": 0.8758694977604993
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 52",
+            "score": 0.8753218502190183
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 104",
+            "score": 0.8718490371434299
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 299.12416799995117,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "b91571ac-d9ab-4fea-9ef4-3a7a1f7bfb9e",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": false,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "GLB-02",
+      "category": "digital/cyber",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": 1,
+        "latencyMs": 35.36279700009618,
+        "top": [
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 1",
+            "score": 0.8797588348388734
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Preamble (partie 1/8)",
+            "score": 0.8697498518377647
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Paragraph 3 (partie 1/2)",
+            "score": 0.8685861928144697
+          },
+          {
+            "sourceId": "unesco-ethics-ai-2021",
+            "reference": "Preamble (partie 5/8)",
+            "score": 0.8636715059867804
+          },
+          {
+            "sourceId": "ocde-recommandation-ia",
+            "reference": "Visas (partie 1/2)",
+            "score": 0.8634336157520276
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-01",
+      "category": "procedure-not-covered",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 35.436222999938764,
+        "top": [
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 60",
+            "score": 0.8508301047986574
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 58",
+            "score": 0.8484980915492636
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 57",
+            "score": 0.8451909607421206
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 61",
+            "score": 0.8440018668170353
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 5",
+            "score": 0.8435485679296453
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-02",
+      "category": "procedure-not-covered",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 36.75325700000394,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 16",
+            "score": 0.858113254848518
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 11",
+            "score": 0.8530646912897611
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 12",
+            "score": 0.8513321787912967
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 13",
+            "score": 0.8506260425225537
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 8",
+            "score": 0.8496817946434021
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-03",
+      "category": "procedure-not-covered",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 33.73985500005074,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER LA TRANSFORMATION NUMERIQUE DE L'ADMINISTRATION ET DES ENTREPRISES PLAN…",
+            "score": 0.8317111872335649
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EVOLUTION DE QUELQUES INDICATEURS CLÉS AU PLAN NATIONAL ETAT DES LIEUX ET DIAGN…",
+            "score": 0.8302650530884077
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER LA TRANSFORMATION NUMERIQUE DE L'ADMINISTRATION ET DES ENTREPRISES PLAN… (partie 1/2)",
+            "score": 0.8299735119788867
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "DÉVELOPPEMENT SOCIAL",
+            "score": 0.8286008485735779
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER LA TRANSFORMATION NUMERIQUE DE L'ADMINISTRATION ET DES ENTREPRISES PLAN…",
+            "score": 0.8285637932144146
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 328.08673400001135,
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "citations": [],
+        "traceId": "dca42fa8-cff7-4387-9796-930092f62143",
+        "reply": "Je n'ai pas trouvé de texte officiel correspondant à votre question dans ceux que je connais pour l'instant. Pour une démarche précise, rapprochez-vous de l’administration concernée.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "PRO-04",
+      "category": "procedure-not-covered",
+      "language": "en",
+      "retrieval": {
+        "rank": 1,
+        "sourceRank": 1,
+        "latencyMs": 37.13067899993621,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 37",
+            "score": 0.8713500806450651
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 65",
+            "score": 0.8489512385188117
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 63",
+            "score": 0.8332663079063254
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 68",
+            "score": 0.8243065089814114
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 60",
+            "score": 0.8238800659108567
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-05",
+      "category": "procedure-not-covered",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 37.82837399991695,
+        "top": [
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 81",
+            "score": 0.8434579875147956
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 78",
+            "score": 0.8405854632913392
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES",
+            "score": 0.840423240939121
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ASSURER LA TRANSFORMATION NUMERIQUE DE L'ADMINISTRATION ET DES ENTREPRISES PLAN… (partie 1/2)",
+            "score": 0.839936866718862
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "PROMOUVOIR LA CULTURE DU NUMÉRIQUE PAR LA GÉNÉRALISATION DE L'USAGE DES TIC DAN…",
+            "score": 0.8398410259966971
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-06",
+      "category": "procedure-not-covered",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 35.804588999948464,
+        "top": [
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 26",
+            "score": 0.8248285583794094
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 50",
+            "score": 0.8247226513508936
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 77",
+            "score": 0.8186912292632272
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 79",
+            "score": 0.8184746259905687
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 112",
+            "score": 0.8170916841574093
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-07",
+      "category": "procedure-not-covered",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 39.7498819999164,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 84",
+            "score": 0.8410051871544405
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 75",
+            "score": 0.8408963551541331
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 89",
+            "score": 0.8405543030134328
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 65",
+            "score": 0.84042140017066
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 20",
+            "score": 0.8392085528845831
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 8052.192136999918,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "68f847f7-7a69-44d2-945a-6b0307838261",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 84",
+            "excerpt": "1) Toute femme enceinte dont l'état a fait l'objet d'une constatation médicale peut rompre son contrat sans préavis et sans avoir de ce fait à verser l'indemnité prévue à l'article 36 ci-dessus. Pendant cette période, l'employeur ne peut rompre le contrat de travail de l'intéressée du fait de la grossesse. 2) Toute…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "a8292d6c-e036-4926-81b7-acc141769f02",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 75",
+            "excerpt": "1) En dehors des prélèvements obligatoires, du remboursement des prestations prévues à l'article 66 alinéa 3 et des consignations qui peuvent être prévues par les conventions collectives et les contrats individuels, il ne peut être fait des retenues sur les salaires que dans les cas ci-après : • a) par saisie-arrêt ;…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "8aeaff15-e3da-479f-a055-8b7f39d393eb",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 89",
+            "excerpt": "1) Sauf dispositions plus favorables des conventions collectives ou du contrat individuel de travail, le travailleur acquiert droit au congé payé, à la charge de son employeur, à raison d'un jour et demi ouvrable par mois de service effectif. 2) Sont assimilées à un mois de service effectif les périodes équivalentes à…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "49c60d65-4719-4d61-9bf2-b9db2b13bb2e",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Code du travail, Article 84 : « 1) Toute femme enceinte dont l'état a fait l'objet d'une constatation médicale peut rompre son contrat sans préavis et sans avoir de ce fait à verser l'indemnité prévue à l'article 36 ci-dessus. Pendant cette période, l'employeur ne peut rompre le contrat de travail de l'intéressée du fait de la grossesse. 2) Toute… »\n[2] Code du travail, Article 75 : « 1) En dehors des prélèvements obligatoires, du remboursement des prestations prévues à l'article 66 alinéa 3 et des consignations qui",
+        "verdictCorrect": false,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "PRO-08",
+      "category": "procedure-not-covered",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 34.28950000007171,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 12",
+            "score": 0.8268065945390832
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 135",
+            "score": 0.8257747188672271
+          },
+          {
+            "sourceId": "loi-2015-006-communications-electroniques",
+            "reference": "Article 10 (nouveau) (partie 1/2)",
+            "score": 0.8254597754931174
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 71",
+            "score": 0.8248247608646908
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 10",
+            "score": 0.8245929024749642
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-09",
+      "category": "procedure-not-covered",
+      "language": "fr",
+      "scenario": "S4",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 39.371985999983735,
+        "top": [
+          {
+            "sourceId": "decret-2017-0877-pm-cfce",
+            "reference": "Article 6",
+            "score": 0.8559281058226306
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 2",
+            "score": 0.8554259797169022
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "MINMIDT :",
+            "score": 0.8523384752677599
+          },
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 73",
+            "score": 0.8523326682150227
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 2",
+            "score": 0.8488682092585375
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-10",
+      "category": "procedure-not-covered",
+      "language": "en",
+      "scenario": "S4",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 42.699022999964654,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 96",
+            "score": 0.8402642822895962
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8377822017032488
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 95",
+            "score": 0.8349711698259852
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 3/3)",
+            "score": 0.8329163988929799
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 99",
+            "score": 0.8315139406373347
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRO-11",
+      "category": "procedure-not-covered",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 41.01797200005967,
+        "top": [
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 1/2)",
+            "score": 0.8617854467247118
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 40 (partie 2/2)",
+            "score": 0.8591623826801218
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 42",
+            "score": 0.8534866556171545
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 39",
+            "score": 0.8523640104642012
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 37",
+            "score": 0.8523389257010733
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 10852.358210999984,
+        "verdict": "ANSWERED_WITH_CITATIONS",
+        "citations": [
+          {
+            "index": 1,
+            "documentId": "7d7874ca-6f70-4f81-9d8d-aad96dbe1e78",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 40 (partie 1/2)",
+            "excerpt": "1) Les dispositions de l'article 34 alinéa 1 ci-dessus ne s'appliquent pas en cas de licenciement pour motif économique. 2) Constitue un licenciement pour motif économique tout licenciement effectué par un employeur pour un ou plusieurs motifs non inhérents à la personne du travailleur et résultant d'une suppression…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 2,
+            "documentId": "aad22707-d527-4022-b9af-a69f3cafc06b",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 40 (partie 2/2)",
+            "excerpt": "• a) Lorsque les négociations prévues ci-dessus n'ont pas pu aboutir à un accord ou si, malgré les mesures envisagées, certains licenciements s'avèrent nécessaires, l'employeur doit établir l'ordre des licenciements en tenant compte des aptitudes professionnelles, de l'ancienneté dans l'entreprise et des charges…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          },
+          {
+            "index": 3,
+            "documentId": "5465562c-97d4-4e7e-a9c1-a81121f0b2c9",
+            "sourceId": "code-du-travail-1992",
+            "title": "Code du travail",
+            "reference": "Article 42",
+            "excerpt": "1) • a) S'il survient une modification dans la situation juridique de l'employeur, notamment par succession, vente, fusion, transformation de fonds, mise en société, tous les contrats de travail en cours au jour de la modification subsistent entre le nouvel entrepreneur et le personnel de l'entreprise. Leur…",
+            "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+            "status": "in_force"
+          }
+        ],
+        "traceId": "a4972d11-3efa-4f80-b7f7-2594ccfcb7c1",
+        "reply": "Voici les textes officiels qui se rapprochent le plus de votre question :\n\n[1] Code du travail, Article 40 (partie 1/2) : « 1) Les dispositions de l'article 34 alinéa 1 ci-dessus ne s'appliquent pas en cas de licenciement pour motif économique. 2) Constitue un licenciement pour motif économique tout licenciement effectué par un employeur pour un ou plusieurs motifs non inhérents à la personne du travailleur et résultant d'une suppression… »\n[2] Code du travail, Article 40 (partie 2/2) : « • a) Lorsque les négociations prévues ci-dessus n'ont pas pu aboutir à un accord ou si, malgré les mesures",
+        "verdictCorrect": true,
+        "validCitations": 3,
+        "totalCitations": 3
+      }
+    },
+    {
+      "id": "PRO-12",
+      "category": "procedure-not-covered",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 35.75366299995221,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 142",
+            "score": 0.8717007147819904
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 130 (partie 2/2)",
+            "score": 0.8669926941103411
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 40 (partie 2/2)",
+            "score": 0.8597360247924586
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 139",
+            "score": 0.8529115152736239
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 152",
+            "score": 0.8499654367597105
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-01",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 35.889137999969535,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ACCROÎTRE LA PRODUCTION ET L'OFFRE DES CONTENUS NUMERIQUES PLAN D'ACTIONS PRIOR…",
+            "score": 0.7974526406852944
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "GLOSSAIRE/ ABRÉVIATIONS",
+            "score": 0.7914011032339021
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "DEVELOPPER LES INFRASTRUCTURES LARGE BANDE PLAN D'ACTIONS PRIORITAIRES",
+            "score": 0.7900256419120688
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "MINMIDT :",
+            "score": 0.7889434443645319
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "POSITIONNEMENT DU CAMEROUN AU PLAN INTERNATIONAL DANS LE DOMAINE DU NUMÉRIQUE E…",
+            "score": 0.7877107768748338
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-02",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 33.009703999967314,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8026240354290884
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 3/3)",
+            "score": 0.7922510899300371
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 1/3)",
+            "score": 0.7911251547597474
+          },
+          {
+            "sourceId": "constitution-2008-amendment-en",
+            "reference": "Section 2",
+            "score": 0.7866973535183303
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 1 (partie 2/2)",
+            "score": 0.7863191004490867
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-03",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 42.09826899995096,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8611823246074644
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES (partie 1/2)",
+            "score": 0.8349074622933678
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "DÉVELOPPER UNE INDUSTRIE LOCALE DU NUMÉRIQUE ET ENCOURAGER LA RECHERCHE ET L'IN… (partie 2/2)",
+            "score": 0.8305244647831362
+          },
+          {
+            "sourceId": "ocde-recommandation-ia",
+            "reference": "V. RECOMMANDE que les Adhérents mettent en œuvre les recommandations suivantes,…",
+            "score": 0.8305202227520825
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMÉRIQUE PLAN STRATÉGIQUE CAMEROUN NUMÉRIQUE (partie 2/2)",
+            "score": 0.8276859521865904
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 19.87137199996505,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "26ce09e4-ff19-4457-be61-0acb6c3d2806",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-04",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 36.89751499996055,
+        "top": [
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 130",
+            "score": 0.8011884330286692
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 2",
+            "score": 0.7979870318166646
+          },
+          {
+            "sourceId": "decret-2017-0877-pm-cfce",
+            "reference": "Article 6",
+            "score": 0.7967042913151783
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 104",
+            "score": 0.7924432777038078
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 2",
+            "score": 0.7911123037338313
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-05",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 52.85189900000114,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EVOLUTION DE QUELQUES INDICATEURS CLÉS AU PLAN NATIONAL ETAT DES LIEUX ET DIAGN…",
+            "score": 0.8353871997498528
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "PROMOUVOIR LA CULTURE DU NUMÉRIQUE PAR LA GÉNÉRALISATION DE L'USAGE DES TIC DAN…",
+            "score": 0.8197659498383479
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ANALYSE DIAGNOSTIC ETAT DES LIEUX ET DIAGNOSTIC (partie 1/2)",
+            "score": 0.8139261936081316
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EVOLUTION DE QUELQUES INDICATEURS CLÉS AU PLAN NATIONAL ETAT DES LIEUX ET DIAGN…",
+            "score": 0.812058357377191
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES",
+            "score": 0.8115052209490274
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-06",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 40.33864500001073,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 88",
+            "score": 0.8214862559454195
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 35",
+            "score": 0.8191916698458471
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 88",
+            "score": 0.8166966656808118
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 30",
+            "score": 0.8134916273375447
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 34",
+            "score": 0.8119309096172563
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-07",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 40.43085400003474,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8371866705732014
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 60",
+            "score": 0.8362617687867023
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 46",
+            "score": 0.8309823476097229
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 31",
+            "score": 0.8297526037398163
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "PROMOUVOIR LA CULTURE DU NUMÉRIQUE PAR LA GÉNÉRALISATION DE L'USAGE DES TIC DAN…",
+            "score": 0.8293679502041329
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 19.327006999985315,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "b9f51fdc-4e93-4fa4-b976-31bd73a3d5b0",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-08",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 40.90313300001435,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8308727430018655
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Article 13 (partie 2/3)",
+            "score": 0.8157334398031715
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Annexe IV (partie 3/5)",
+            "score": 0.8117079881925684
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 48",
+            "score": 0.8114896321424251
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 67",
+            "score": 0.8113707821503113
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-09",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 35.03874900005758,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 6",
+            "score": 0.8413675772736382
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "score": 0.8374462377264067
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 6 (nouveau)",
+            "score": 0.8369806062275444
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 66 (nouveau)",
+            "score": 0.8363029013962511
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 48",
+            "score": 0.8362327369659639
+          }
+        ]
+      }
+    },
+    {
+      "id": "OOS-10",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 34.7370210000081,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8313959682752433
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 2",
+            "score": 0.8107892983681396
+          },
+          {
+            "sourceId": "decret-2017-0877-pm-cfce",
+            "reference": "Article 6",
+            "score": 0.8102854747090952
+          },
+          {
+            "sourceId": "loi-2015-006-communications-electroniques",
+            "reference": "Article 2",
+            "score": 0.8097212512464431
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 97",
+            "score": 0.8071819795099818
+          }
+        ]
+      }
+    }
+  ]
+}

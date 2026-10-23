@@ -121,6 +121,8 @@ describe('situations', () => {
     expect(isAdministrativeQuestion('Comment créer une SARL ?')).toBe(true);
     expect(isAdministrativeQuestion('Comment créer une entreprise ?')).toBe(true);
     expect(isAdministrativeQuestion('How do I renew my passport?')).toBe(true);
+    expect(isAdministrativeQuestion('Quel est le montant actuel du SMIG ?')).toBe(true);
+    expect(isAdministrativeQuestion('How is severance pay calculated?')).toBe(true);
     expect(isAdministrativeQuestion('Quel temps fait-il ?')).toBe(false);
   });
 });

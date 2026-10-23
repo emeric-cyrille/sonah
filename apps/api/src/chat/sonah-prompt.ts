@@ -5,7 +5,33 @@ import { OUT_OF_SCOPE_TOKEN } from '../policy/policy-gate';
 import type { Language } from '../policy/policy.types';
 
 /** Version des prompts, enregistrée dans chaque trace : toute modification doit l'incrémenter. */
-export const PROMPT_VERSION = 'sonah-prompts-2026-10-25.1';
+export const PROMPT_VERSION = 'sonah-prompts-2026-10-23.2';
+
+/**
+ * Longueur maximale d'un extrait transmis au modèle. L'extrait complet reste la référence des
+ * citations et du contrôle « mot pour mot » du nœud de politique.
+ */
+export const EXCERPT_CHAR_LIMIT = 900;
+/** Longueur maximale d'un message de l'historique transmis au modèle. */
+export const HISTORY_TURN_CHAR_LIMIT = 400;
+/**
+ * Budget du prompt complet (système + extraits + historique + question), en jetons estimés.
+ * Le palier gratuit de Groq limite chaque modèle à 8 000 jetons par minute (entrée et sortie).
+ */
+export const PROMPT_TOKEN_BUDGET = 2500;
+
+/** Estimation prudente du nombre de jetons (≈ 3,5 caractères par jeton en français et en anglais). */
+export function estimateTokens(chars: number): number {
+  return Math.ceil(chars / 3.5);
+}
+
+/** Tronque un extrait sur une frontière de mot, avec la marque « […] ». */
+export function truncateExcerpt(content: string, limit = EXCERPT_CHAR_LIMIT): string {
+  if (content.length <= limit) return content;
+  const cut = content.slice(0, limit);
+  const boundary = cut.lastIndexOf(' ');
+  return `${(boundary > limit * 0.8 ? cut.slice(0, boundary) : cut).trimEnd()} […]`;
+}
 
 const LANGUAGE_NAMES: Record<Language, string> = { fr: 'français', en: 'anglais (English)' };
 
@@ -51,15 +77,20 @@ export function formatContext(results: readonly SearchResult[]): string {
   }
   const blocks = results.map((result, index) => {
     const note = noteOf(result);
-    const heading = [shortTitleOf(result), ...pathOf(result), result.reference ?? '']
+    // Titre court, dernier niveau de la hiérarchie (chapitre ou section) et référence
+    const heading = [
+      shortTitleOf(result),
+      pathOf(result).slice(-1)[0] ?? '',
+      result.reference ?? '',
+    ]
       .filter(Boolean)
       .join(' › ');
     return [
       `[${index + 1}] ${heading}`,
       `Statut : ${statusLabel(result)}`,
-      result.content,
+      truncateExcerpt(result.content),
       ...(note ? [`(Note de version : ${note})`] : []),
     ].join('\n');
   });
-  return `EXTRAITS DES TEXTES OFFICIELS :\n\n${blocks.join('\n\n')}`;
+  return `EXTRAITS DES TEXTES OFFICIELS (les extraits longs sont abrégés par « […] ») :\n\n${blocks.join('\n\n')}`;
 }

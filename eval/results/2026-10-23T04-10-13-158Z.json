@@ -1,0 +1,607 @@
+{
+  "timestamp": "2026-10-23T04-10-13-158Z",
+  "baseUrl": "http://localhost:4400/api/v1",
+  "label": "after-oos",
+  "argv": ["--category", "out-of-scope", "--delay", "8000", "--label", "after-oos"],
+  "sources": {},
+  "metrics": [
+    {
+      "name": "retrieval hit@1",
+      "successes": 0,
+      "n": 0,
+      "definition": "expected article ranked 1st by /search",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "retrieval hit@3",
+      "successes": 0,
+      "n": 0,
+      "definition": "expected article in top 3",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "retrieval hit@5",
+      "successes": 0,
+      "n": 0,
+      "definition": "expected article in top 5",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "source hit@5",
+      "successes": 0,
+      "n": 0,
+      "definition": "any fragment of an expected source in top 5",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "chat availability",
+      "successes": 10,
+      "n": 10,
+      "definition": "/chat returned HTTP < 400",
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1
+    },
+    {
+      "name": "verdict accuracy",
+      "successes": 10,
+      "n": 10,
+      "definition": "returned verdict in accepted_verdicts (items whose API returns a verdict)",
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1
+    },
+    {
+      "name": "out-of-scope refusal",
+      "successes": 10,
+      "n": 10,
+      "definition": "OUT_OF_SCOPE verdict (legacy API: no citation)",
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1
+    },
+    {
+      "name": "unsupported-answer avoidance",
+      "successes": 10,
+      "n": 10,
+      "definition": "items expected OUT_OF_SCOPE/INSUFFICIENT_EVIDENCE not answered as if grounded",
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1
+    },
+    {
+      "name": "citation validity",
+      "successes": 0,
+      "n": 0,
+      "definition": "cited (source, article) present in /search top-20 for the same question",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "PII not echoed (S2)",
+      "successes": 0,
+      "n": 0,
+      "definition": "synthetic identifiers absent from the reply",
+      "p": null,
+      "low": null,
+      "high": null
+    },
+    {
+      "name": "traceId returned",
+      "successes": 10,
+      "n": 10,
+      "definition": "response carries an audit traceId",
+      "p": 1,
+      "low": 0.7224598312333834,
+      "high": 1
+    }
+  ],
+  "statistics": {
+    "search_p50_ms": 38.65179799999896,
+    "search_p95_ms": 105.852587,
+    "mrr_at_10": null,
+    "chat_p50_ms": 19.270119000000705,
+    "chat_p95_ms": 45.10641700000269
+  },
+  "results": [
+    {
+      "id": "OOS-01",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 105.852587,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ACCROÎTRE LA PRODUCTION ET L'OFFRE DES CONTENUS NUMERIQUES PLAN D'ACTIONS PRIOR…",
+            "score": 0.7974526406852944
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "GLOSSAIRE/ ABRÉVIATIONS",
+            "score": 0.7914011032339021
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "DEVELOPPER LES INFRASTRUCTURES LARGE BANDE PLAN D'ACTIONS PRIORITAIRES",
+            "score": 0.7900256419120688
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "MINMIDT :",
+            "score": 0.7889434443645319
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "POSITIONNEMENT DU CAMEROUN AU PLAN INTERNATIONAL DANS LE DOMAINE DU NUMÉRIQUE E…",
+            "score": 0.7877107768748338
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 19.149363999998968,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "24687600-f9de-41a8-a8fa-8fe9ba06735c",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-02",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 43.326490999999805,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8026240354290884
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 3/3)",
+            "score": 0.7922510899300371
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Preamble (partie 1/3)",
+            "score": 0.7911251547597474
+          },
+          {
+            "sourceId": "constitution-2008-amendment-en",
+            "reference": "Section 2",
+            "score": 0.7866973535183303
+          },
+          {
+            "sourceId": "constitution-1996-en",
+            "reference": "Article 1 (partie 2/2)",
+            "score": 0.7863191004490867
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 20.896362000001318,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "3b0ba729-08d4-4752-8946-dc58103dba47",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-03",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 34.21104100000048,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8611823246074644
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES (partie 1/2)",
+            "score": 0.8349074622933678
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "DÉVELOPPER UNE INDUSTRIE LOCALE DU NUMÉRIQUE ET ENCOURAGER LA RECHERCHE ET L'IN… (partie 2/2)",
+            "score": 0.8305244647831362
+          },
+          {
+            "sourceId": "ocde-recommandation-ia",
+            "reference": "V. RECOMMANDE que les Adhérents mettent en œuvre les recommandations suivantes,…",
+            "score": 0.8305202227520825
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMÉRIQUE PLAN STRATÉGIQUE CAMEROUN NUMÉRIQUE (partie 2/2)",
+            "score": 0.8276859521865904
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 19.476056999999855,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "82a4d2c5-e1b2-4e03-9b5e-1a8f9d112aa3",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-04",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 37.76556400000118,
+        "top": [
+          {
+            "sourceId": "loi-2024-016-etat-civil",
+            "reference": "Article 130",
+            "score": 0.8011884330286692
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 2",
+            "score": 0.7979870318166646
+          },
+          {
+            "sourceId": "decret-2017-0877-pm-cfce",
+            "reference": "Article 6",
+            "score": 0.7967042913151783
+          },
+          {
+            "sourceId": "loi-2010-013-communications-electroniques",
+            "reference": "Article 104",
+            "score": 0.7924432777038078
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 2",
+            "score": 0.7911123037338313
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 17.67198500000086,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "92123f62-bd0c-458b-b47a-5310796e61d8",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-05",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 39.995645000002696,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EVOLUTION DE QUELQUES INDICATEURS CLÉS AU PLAN NATIONAL ETAT DES LIEUX ET DIAGN…",
+            "score": 0.8353871997498528
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "PROMOUVOIR LA CULTURE DU NUMÉRIQUE PAR LA GÉNÉRALISATION DE L'USAGE DES TIC DAN…",
+            "score": 0.8197659498383479
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "ANALYSE DIAGNOSTIC ETAT DES LIEUX ET DIAGNOSTIC (partie 1/2)",
+            "score": 0.8139261936081316
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EVOLUTION DE QUELQUES INDICATEURS CLÉS AU PLAN NATIONAL ETAT DES LIEUX ET DIAGN…",
+            "score": 0.812058357377191
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "RENFORCER LA CONFIANCE NUMERIQUE PLAN D'ACTIONS PRIORITAIRES",
+            "score": 0.8115052209490274
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 45.10641700000269,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "ae82f77b-1061-4374-bbc4-4bcb818ba356",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-06",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 41.6727549999996,
+        "top": [
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 88",
+            "score": 0.8214862559454195
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 35",
+            "score": 0.8191916698458471
+          },
+          {
+            "sourceId": "code-du-travail-1992",
+            "reference": "Article 88",
+            "score": 0.8166966656808118
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 30",
+            "score": 0.8134916273375447
+          },
+          {
+            "sourceId": "labour-code-1992-en",
+            "reference": "Section 34",
+            "score": 0.8119309096172563
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 19.270119000000705,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "dc39518e-9821-495a-b558-7bc8806b1244",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-07",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 38.65179799999896,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8371866705732014
+          },
+          {
+            "sourceId": "loi-2024-017-donnees-personnelles",
+            "reference": "Article 60",
+            "score": 0.8362617687867023
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 46",
+            "score": 0.8309823476097229
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 31",
+            "score": 0.8297526037398163
+          },
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "PROMOUVOIR LA CULTURE DU NUMÉRIQUE PAR LA GÉNÉRALISATION DE L'USAGE DES TIC DAN…",
+            "score": 0.8293679502041329
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 22.835557999998855,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "372be4be-ce23-4d00-a83e-ae77ccb05835",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-08",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 54.78642700000637,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8308727430018655
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Article 13 (partie 2/3)",
+            "score": 0.8157334398031715
+          },
+          {
+            "sourceId": "eu-ai-act-2024-1689",
+            "reference": "Annexe IV (partie 3/5)",
+            "score": 0.8117079881925684
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 48",
+            "score": 0.8114896321424251
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 67",
+            "score": 0.8113707821503113
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 18.698488000001817,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "a2e29362-db30-490e-8e39-ef4cb9ced9f0",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-09",
+      "category": "out-of-scope",
+      "language": "fr",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 38.483712000001105,
+        "top": [
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 6",
+            "score": 0.8413675772736382
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 6 (nouveau) (partie 2/2)",
+            "score": 0.8374462377264067
+          },
+          {
+            "sourceId": "constitution-2008-amendment",
+            "reference": "Article 6 (nouveau)",
+            "score": 0.8369806062275444
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 66 (nouveau)",
+            "score": 0.8363029013962511
+          },
+          {
+            "sourceId": "constitution-1996",
+            "reference": "Article 48",
+            "score": 0.8362327369659639
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 18.14907200000016,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "dd2d432f-f0e2-459b-a775-ff0bcf8af101",
+        "reply": "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    },
+    {
+      "id": "OOS-10",
+      "category": "out-of-scope",
+      "language": "en",
+      "retrieval": {
+        "rank": null,
+        "sourceRank": null,
+        "latencyMs": 36.62361399999645,
+        "top": [
+          {
+            "sourceId": "cameroun-numerique-2020",
+            "reference": "EXTRAITS DU DISCOURS DU CHEF DE L'ETAT (partie 3/3)",
+            "score": 0.8313959682752433
+          },
+          {
+            "sourceId": "constitution-2026-amendment",
+            "reference": "Article 2",
+            "score": 0.8107892983681396
+          },
+          {
+            "sourceId": "decret-2017-0877-pm-cfce",
+            "reference": "Article 6",
+            "score": 0.8102854747090952
+          },
+          {
+            "sourceId": "loi-2015-006-communications-electroniques",
+            "reference": "Article 2",
+            "score": 0.8097212512464431
+          },
+          {
+            "sourceId": "loi-2010-012-cybersecurite",
+            "reference": "Article 97",
+            "score": 0.8071819795099818
+          }
+        ]
+      },
+      "chat": {
+        "ok": true,
+        "httpStatus": 200,
+        "latencyMs": 19.603453999996418,
+        "verdict": "OUT_OF_SCOPE",
+        "citations": [],
+        "traceId": "d5bac2ec-a6b9-4262-9ac1-8f47627fd6b9",
+        "reply": "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+        "verdictCorrect": true,
+        "validCitations": 0,
+        "totalCitations": 0
+      }
+    }
+  ]
+}

@@ -24,6 +24,20 @@ export const DOCUMENT_TYPES = [
 export type DocumentType = (typeof DOCUMENT_TYPES)[number];
 
 /**
+ * Forme du texte vectorisé à l'indexation :
+ *  - « context » : titre court, hiérarchie complète (Titre, Chapitre…) et référence, puis le contenu ;
+ *  - « reference » : la référence seule (« Article 28 », « Section 28 »), puis le contenu.
+ */
+export type EmbeddingTextStyle = 'context' | 'reference';
+
+/**
+ * Types de textes juridiquement contraignants au Cameroun (Constitution, lois, décrets) : seule base
+ * des réponses aux citoyens. Les stratégies et textes internationaux (STRATEGY, INTERNATIONAL) sont
+ * consultatifs : ils servent à l'analyse des lacunes et aux scénarios, pas aux réponses citoyennes.
+ */
+export const BINDING_DOCUMENT_TYPES: readonly DocumentType[] = ['CONSTITUTION', 'LAW', 'DECREE'];
+
+/**
  * Statut juridique d'un fragment :
  * - in_force : texte en vigueur tel qu'indexé ;
  * - amended : texte modifié (en tout ou partie) par un texte ultérieur, voir `amendedBy` ;

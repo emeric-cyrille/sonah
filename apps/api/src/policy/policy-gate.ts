@@ -10,6 +10,7 @@
 import type { SearchResult } from '@sonah/rag';
 import { amendedByOf, conflictsWithOf, shortTitleOf, statusOf, toCitation } from './evidence';
 import { extractiveReply, noEvidenceReply, outOfScopeReply } from './extractive';
+import { detectOffTopic } from './off-topic';
 import type { Citation, ConflictHint, Language, Verdict } from './policy.types';
 import {
   detectSensitiveSituation,
@@ -27,7 +28,7 @@ const MIN_QUOTE_WORDS = 4;
 /** Un fragment de citation (entre deux ellipses) n'est vérifié qu'à partir de ce nombre de mots. */
 const MIN_SEGMENT_WORDS = 3;
 
-export const POLICY_GATE_VERSION = 'policy-gate-1.0';
+export const POLICY_GATE_VERSION = 'policy-gate-1.1';
 
 export interface GateInput {
   /** Question de l'utilisateur (déjà masquée). */
@@ -276,6 +277,7 @@ export function applyPolicyGate(input: GateInput): GateResult {
   const { evidence, language } = input;
   const sensitiveCategory = detectSensitiveSituation(input.question);
   const administrative = isAdministrativeQuestion(input.question);
+  const offTopic = sensitiveCategory ? null : detectOffTopic(input.question);
   const modelSaysOutOfScope = input.draft?.includes(OUT_OF_SCOPE_TOKEN) ?? false;
   const draft = input.draft?.split(OUT_OF_SCOPE_TOKEN).join('').trim() ?? null;
   const referral = sensitiveCategory ? referralText(sensitiveCategory, language) : null;
@@ -286,8 +288,12 @@ export function applyPolicyGate(input: GateInput): GateResult {
     conflicts: [] as string[],
   };
 
-  // Hors sujet : ni mot du domaine, ni extrait (ou le modèle le signale)
-  if (!sensitiveCategory && !administrative && (evidence.length === 0 || modelSaysOutOfScope)) {
+  // Hors sujet : sujet manifestement étranger (cuisine, météo, sport…), ou ni mot du domaine
+  // ni extrait (ou le modèle le signale)
+  if (
+    offTopic !== null ||
+    (!sensitiveCategory && !administrative && (evidence.length === 0 || modelSaysOutOfScope))
+  ) {
     return {
       ...base,
       verdict: 'OUT_OF_SCOPE',
@@ -297,7 +303,11 @@ export function applyPolicyGate(input: GateInput): GateResult {
       rejectionReasons:
         draft === null ? [] : ['question hors du domaine administratif et juridique'],
       checks: [],
-      rule: modelSaysOutOfScope ? 'out_of_scope:model_hint' : 'out_of_scope:no_domain_keyword',
+      rule: offTopic
+        ? `out_of_scope:off_topic:${offTopic}`
+        : modelSaysOutOfScope
+          ? 'out_of_scope:model_hint'
+          : 'out_of_scope:no_domain_keyword',
     };
   }
 

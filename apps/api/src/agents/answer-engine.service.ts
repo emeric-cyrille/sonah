@@ -2,8 +2,16 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import type { SearchResult, VectorStoreService } from '@sonah/rag';
 import { TraceRecorder } from '../audit/trace-recorder';
 import { LANGUAGE_MODEL, type ChatTurn, type LanguageModel } from '../chat/language-model';
-import { buildSystemPrompt, formatContext, PROMPT_VERSION } from '../chat/sonah-prompt';
+import {
+  buildSystemPrompt,
+  estimateTokens,
+  formatContext,
+  HISTORY_TURN_CHAR_LIMIT,
+  PROMPT_TOKEN_BUDGET,
+  PROMPT_VERSION,
+} from '../chat/sonah-prompt';
 import { shortTitleOf, statusOf } from '../policy/evidence';
+import { detectOffTopic } from '../policy/off-topic';
 import {
   applyPolicyGate,
   normalizeCitationMarkers,
@@ -11,12 +19,18 @@ import {
   type GateResult,
 } from '../policy/policy-gate';
 import type { Citation, ConflictHint, Language, TextStatus, Verdict } from '../policy/policy.types';
+import { detectSensitiveSituation } from '../policy/situations';
 import { VECTOR_STORE } from '../rag/rag.tokens';
 import type { AgentDefinition } from './agent.types';
 import { CORPUS_CATALOG, type CorpusCatalog } from './corpus-catalog';
 
-/** Nombre d'extraits fournis au modèle. */
-export const CONTEXT_SIZE = 6;
+/**
+ * Nombre d'extraits fournis au modèle. Avec des extraits tronqués à EXCERPT_CHAR_LIMIT caractères,
+ * le prompt reste sous PROMPT_TOKEN_BUDGET (palier gratuit de Groq : 8 000 jetons par minute).
+ */
+export const CONTEXT_SIZE = 5;
+/** Messages précédents au plus transmis au modèle (le reste de l'historique est conservé en base). */
+export const HISTORY_TURNS_FOR_MODEL = 4;
 /** Taille maximale d'un brouillon conservé dans la trace. */
 const TRACE_DRAFT_LIMIT = 4000;
 
@@ -112,14 +126,22 @@ export class AnswerEngine {
 
   async answer(request: AnswerRequest): Promise<AnswerOutcome> {
     const { agent, recorder, language } = request;
-    const evidence = await this.retrieve(request);
+    // Sujet manifestement étranger (cuisine, météo, sport…) : ni recherche ni modèle de langage
+    const offTopic = detectSensitiveSituation(request.question)
+      ? null
+      : detectOffTopic(request.question);
+    const evidence = offTopic
+      ? this.skipRetrieval(request, offTopic)
+      : await this.retrieve(request);
 
-    // Brouillon du modèle, ou repli extractif tracé
+    // Brouillon du modèle, ou repli extractif tracé. Sans extrait pertinent, le modèle n'est pas
+    // appelé : le contrôle de politique répond aussitôt (preuves insuffisantes ou hors sujet).
     let draft: string | null = null;
     let model = EXTRACTIVE_MODEL;
     let usedFallback = false;
     if (this.languageModel && evidence.length > 0) {
       const turns = this.buildTurns(request, evidence);
+      const promptChars = turns.reduce((sum, turn) => sum + turn.content.length, 0);
       const start = performance.now();
       try {
         if (request.simulateModelOutage) {
@@ -136,6 +158,8 @@ export class AnswerEngine {
             model,
             promptVersion: PROMPT_VERSION,
             turns: turns.length,
+            promptChars,
+            promptTokensEstimate: estimateTokens(promptChars),
             draft: draft.slice(0, TRACE_DRAFT_LIMIT),
           },
           durationMs: performance.now() - start,
@@ -234,7 +258,21 @@ export class AnswerEngine {
     };
   }
 
-  /** Recherche limitée aux sources de l'agent quand le corpus les contient, sinon tout le corpus. */
+  /** Question hors sujet : aucune recherche, trace explicite. */
+  private skipRetrieval(request: AnswerRequest, category: string): SearchResult[] {
+    request.recorder.add({
+      type: 'retrieval',
+      agent: request.agent.id,
+      summary: `Recherche omise : question hors sujet (${category})`,
+      data: { skipped: true, offTopic: category, results: [] },
+    });
+    return [];
+  }
+
+  /**
+   * Recherche limitée aux sources de l'agent quand le corpus les contient, sinon tout le corpus,
+   * et aux types de textes de l'agent (textes contraignants pour Sonah et le conseiller juridique).
+   */
   private async retrieve(request: AnswerRequest): Promise<SearchResult[]> {
     const { agent, recorder } = request;
     const start = performance.now();
@@ -244,12 +282,20 @@ export class AnswerEngine {
       (id) => agent.sources.includes(id) || agent.sourcePatterns.some((p) => p.test(id)),
     );
     const sourceIds = matched.length > 0 ? matched : undefined;
-    const scope = !declared ? 'all_sources' : sourceIds ? 'agent_sources' : 'fallback_all_sources';
+    const types =
+      agent.documentTypes && agent.documentTypes.length > 0 ? agent.documentTypes : undefined;
+    const scope = !declared
+      ? types
+        ? 'binding_texts'
+        : 'all_sources'
+      : sourceIds
+        ? 'agent_sources'
+        : 'fallback_all_sources';
 
     let results = await this.vectorStore.search(
       request.retrievalQuery ?? request.question,
       CONTEXT_SIZE,
-      { minScore: this.vectorStore.relevanceThreshold, sourceIds },
+      { minScore: this.vectorStore.relevanceThreshold, sourceIds, types },
     );
 
     // Articles imposés par le scénario : placés en tête (événement reproductible)
@@ -274,6 +320,7 @@ export class AnswerEngine {
         query: (request.retrievalQuery ?? request.question).slice(0, 500),
         scope,
         sourceIds: sourceIds ?? null,
+        documentTypes: types ?? null,
         embeddingModel: this.vectorStore.embeddingModel,
         minScore: this.vectorStore.relevanceThreshold,
         pinnedByScenario: pinned,
@@ -292,16 +339,32 @@ export class AnswerEngine {
     return results;
   }
 
+  /**
+   * Prompt compact : extraits tronqués (formatContext), historique limité aux derniers messages
+   * raccourcis, puis retiré du plus ancien au plus récent si le budget de jetons est dépassé.
+   */
   private buildTurns(request: AnswerRequest, evidence: readonly SearchResult[]): ChatTurn[] {
-    return [
+    const head: ChatTurn[] = [
       { role: 'system', content: buildSystemPrompt(request.agent, request.language) },
       { role: 'system', content: formatContext(evidence) },
       ...(request.context
         ? [{ role: 'system' as const, content: `CONTEXTE DE L'ÉVÉNEMENT :\n${request.context}` }]
         : []),
-      ...(request.history ?? []),
-      { role: 'user', content: request.question },
     ];
+    const question: ChatTurn = { role: 'user', content: request.question };
+    const history = (request.history ?? []).slice(-HISTORY_TURNS_FOR_MODEL).map((turn) => ({
+      ...turn,
+      content:
+        turn.content.length > HISTORY_TURN_CHAR_LIMIT
+          ? `${turn.content.slice(0, HISTORY_TURN_CHAR_LIMIT)}…`
+          : turn.content,
+    }));
+    const size = (turns: readonly ChatTurn[]) =>
+      estimateTokens(turns.reduce((sum, turn) => sum + turn.content.length, 0));
+    while (history.length > 0 && size([...head, ...history, question]) > PROMPT_TOKEN_BUDGET) {
+      history.shift();
+    }
+    return [...head, ...history, question];
   }
 
   /** Explication déterministe de la décision : preuves, règle appliquée, rédacteur. */

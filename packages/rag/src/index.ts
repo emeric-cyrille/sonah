@@ -29,6 +29,7 @@ export {
 export {
   VectorStoreService,
   extractQueryTerms,
+  hasExplicitReference,
   reciprocalRankFusion,
   type SearchOptions,
 } from './vector-store.service';

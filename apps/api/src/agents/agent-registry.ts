@@ -1,3 +1,4 @@
+import { BINDING_DOCUMENT_TYPES } from '@sonah/rag';
 import type { Language } from '../policy/policy.types';
 import type { AgentDefinition, AgentId } from './agent.types';
 
@@ -25,6 +26,9 @@ export const AGENTS: readonly AgentDefinition[] = [
     },
     sources: [],
     sourcePatterns: [],
+    // Réponses fondées sur le droit camerounais en vigueur : les stratégies et textes internationaux
+    // (consultatifs) restent réservés à l'analyse des lacunes et aux scénarios
+    documentTypes: BINDING_DOCUMENT_TYPES,
     keywords: [
       'citoyen',
       'usager',
@@ -52,6 +56,9 @@ export const AGENTS: readonly AgentDefinition[] = [
     },
     sources: [],
     sourcePatterns: [],
+    // Réponses fondées sur le droit camerounais en vigueur : les stratégies et textes internationaux
+    // (consultatifs) restent réservés à l'analyse des lacunes et aux scénarios
+    documentTypes: BINDING_DOCUMENT_TYPES,
     keywords: [
       'loi',
       'legal',

@@ -19,6 +19,7 @@
  *   --category <name>     only run one category
  *   --limit <n>           only run the first n items
  *   --delay <ms>          pause between /chat calls (quota-friendly, default 0)
+ *   --chat-sample <n>     run /search on every item but /chat on n evenly spaced items only
  *   --label <text>        free-text label stored in the result file (e.g. "S3 llm-off")
  */
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -120,6 +121,9 @@ const ALIASES = String(args.aliases ?? path.join(ROOT, 'eval', 'source-aliases.j
 const SEARCH_ONLY = args['search-only'] === true;
 const SKIP_MISSING = args['skip-missing'] === true;
 const DELAY_MS = Number(args.delay ?? 0);
+const CHAT_SAMPLE = typeof args['chat-sample'] === 'string' ? Number(args['chat-sample']) : null;
+/** HTTP 429 (API rate limit): wait for Retry-After, then retry, at most this many times. */
+const MAX_RATE_LIMIT_RETRIES = 6;
 const LABEL = typeof args.label === 'string' ? args.label : '';
 
 function __dirname_safe(): string {
@@ -168,12 +172,24 @@ async function postJson(
   route: string,
   body: unknown,
 ): Promise<{ status: number; json: unknown; ms: number }> {
-  const started = performance.now();
-  const response = await fetch(`${BASE_URL}${route}`, {
+  let started = performance.now();
+  let response = await fetch(`${BASE_URL}${route}`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
   });
+  // The API rate-limits /search and /chat per IP: wait and retry (latency counts the last attempt only)
+  for (let attempt = 0; response.status === 429 && attempt < MAX_RATE_LIMIT_RETRIES; attempt += 1) {
+    const retryAfter = Number(response.headers.get('retry-after') ?? '5');
+    await response.text();
+    await sleep((Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : 5) * 1000 + 250);
+    started = performance.now();
+    response = await fetch(`${BASE_URL}${route}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  }
   const text = await response.text();
   const ms = performance.now() - started;
   let json: unknown = null;
@@ -290,7 +306,11 @@ async function presentSources(items: GoldItem[]): Promise<Map<string, boolean>> 
 
 const PII_PATTERNS = [/\b\d{9}\b/, /\b6\d{2}[\s.]?\d{2}[\s.]?\d{2}[\s.]?\d{2}\b/, /\+237\s?\d/];
 
-async function evaluateItem(item: GoldItem, present: Map<string, boolean>): Promise<ItemResult> {
+async function evaluateItem(
+  item: GoldItem,
+  present: Map<string, boolean>,
+  runChat = !SEARCH_ONLY,
+): Promise<ItemResult> {
   const base: ItemResult = {
     id: item.id,
     category: item.category,
@@ -326,7 +346,7 @@ async function evaluateItem(item: GoldItem, present: Map<string, boolean>): Prom
     },
   };
 
-  if (SEARCH_ONLY) return result;
+  if (!runChat) return result;
   if (DELAY_MS > 0) await sleep(DELAY_MS);
 
   const outcome = await chat(item.question, item.language);
@@ -531,10 +551,19 @@ async function main(): Promise<void> {
   if (typeof args.limit === 'string') items = items.slice(0, Number(args.limit));
 
   const present = await presentSources(items);
+  // Evenly spaced /chat sample (deterministic, covers every category of the ordered gold set)
+  const chatIds = new Set(
+    CHAT_SAMPLE !== null && CHAT_SAMPLE < items.length
+      ? Array.from(
+          { length: CHAT_SAMPLE },
+          (_, i) => items[Math.floor((i * items.length) / CHAT_SAMPLE)]?.id,
+        )
+      : items.map((item) => item.id),
+  );
   const results: ItemResult[] = [];
   for (const item of items) {
     try {
-      results.push(await evaluateItem(item, present));
+      results.push(await evaluateItem(item, present, !SEARCH_ONLY && chatIds.has(item.id)));
     } catch (error) {
       results.push({
         id: item.id,
