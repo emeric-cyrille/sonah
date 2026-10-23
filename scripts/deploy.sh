@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Déploiement SONAH sur le VPS — exécuté par la CI (ou à la main) depuis /home/deploy/sonah.
+# Déploiement SONAH sur le VPS — exécuté par la CI (ou à la main) depuis ~/sonah.
 #
 # Usage : ./scripts/deploy.sh <image-tag>
+#         ./scripts/deploy.sh --sync-gemini-key   (clé lue sur l'entrée standard)
 #
 # 1. Génère les secrets manquants (mot de passe PostgreSQL) et installe la route Traefik
 # 2. Démarre PostgreSQL, applique les migrations Prisma
@@ -10,9 +11,8 @@
 # 5. Indexe les textes officiels s'ils ne le sont pas encore pour le modèle d'embedding courant
 set -euo pipefail
 
-IMAGE_TAG="${1:?Usage: deploy.sh <image-tag>}"
-APP_DIR="${APP_DIR:-/home/deploy/sonah}"
-TRAEFIK_DYNAMIC_DIR="${TRAEFIK_DYNAMIC_DIR:-/home/deploy/portfolio/traefik/dynamic}"
+APP_DIR="${APP_DIR:-$HOME/sonah}"
+TRAEFIK_DYNAMIC_DIR="${TRAEFIK_DYNAMIC_DIR:-$HOME/portfolio/traefik/dynamic}"
 COMPOSE_FILE="docker-compose.prod.yml"
 STATE_FILE=".deployed-tag"
 HEALTH_TIMEOUT_SECONDS=120
@@ -22,6 +22,32 @@ PROFILES=()
 cd "$APP_DIR"
 
 log() { printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
+
+# Met à jour GEMINI_API_KEY dans .env.production à partir de l'entrée standard.
+# La clé ne passe jamais en argument (invisible dans ps et dans les logs) ; vide : rien n'est modifié.
+sync_gemini_key() {
+  local key tmp
+  IFS= read -r key || true
+  key="${key%$'\r'}"
+  if [[ -z "$key" ]]; then
+    log "GEMINI_API_KEY vide : .env.production inchangé"
+    return 0
+  fi
+  [[ -f .env.production ]] || install -m 600 /dev/null .env.production
+  tmp="$(mktemp .env.production.XXXXXX)"
+  chmod 600 "$tmp"
+  grep -v '^GEMINI_API_KEY=' .env.production > "$tmp" || true
+  printf 'GEMINI_API_KEY=%s\n' "$key" >> "$tmp"
+  mv "$tmp" .env.production
+  log "GEMINI_API_KEY synchronisée"
+}
+
+if [[ "${1:-}" == "--sync-gemini-key" ]]; then
+  sync_gemini_key
+  exit 0
+fi
+
+IMAGE_TAG="${1:?Usage: deploy.sh <image-tag> | --sync-gemini-key}"
 
 compose() { IMAGE_TAG="$1" docker compose -f "$COMPOSE_FILE" --env-file .env.production "${PROFILES[@]}" "${@:2}"; }
 
