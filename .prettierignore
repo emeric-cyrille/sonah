@@ -4,3 +4,7 @@ dist
 .turbo
 coverage
 pnpm-lock.yaml
+
+# Enregistrements bruts (preuves) : jamais reformatés
+eval/scenario-runs/
+eval/results/
