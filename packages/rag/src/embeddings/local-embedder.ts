@@ -8,18 +8,24 @@ import type { EmbeddingTextStyle } from '../types';
 
 /** Modèle multilingue ouvert (français, anglais…), exécuté localement via ONNX. */
 export const DEFAULT_LOCAL_MODEL = 'Xenova/multilingual-e5-small';
-const BATCH_SIZE = 32;
+/**
+ * Passages traités par appel au modèle. Mesuré sur le VPS : 32 passages par lot font monter
+ * l'API au-delà de 1 Go pendant l'indexation ; 8 reste sous ~400 Mo.
+ */
+export const DEFAULT_LOCAL_BATCH_SIZE = 8;
 
 /** Fonction d'extraction de traits renvoyée par transformers.js (typage minimal). */
 type FeatureExtractor = (
   texts: string[],
   options: { pooling: 'mean'; normalize: boolean },
-) => Promise<{ tolist(): number[][] }>;
+) => Promise<{ tolist(): number[][]; dispose?: () => void }>;
 
 export interface LocalEmbedderOptions {
   readonly model?: string;
   /** Dossier de cache des modèles (pré-rempli dans l'image Docker). */
   readonly cacheDir?: string;
+  /** Passages par appel au modèle (mémoire ∝ taille du lot). */
+  readonly batchSize?: number;
   /** Injection pour les tests : évite de charger le vrai modèle. */
   readonly loadExtractor?: (model: string) => Promise<FeatureExtractor>;
 }
@@ -78,11 +84,13 @@ export class LocalEmbedder implements Embedder {
   private extractor?: Promise<FeatureExtractor>;
   private readonly modelId: string;
   private readonly load: (model: string) => Promise<FeatureExtractor>;
+  private readonly batchSize: number;
 
   constructor(options: LocalEmbedderOptions = {}) {
     this.modelId = options.model ?? DEFAULT_LOCAL_MODEL;
     this.model = `local:${this.modelId.split('/').pop() ?? this.modelId}`;
     this.load = options.loadExtractor ?? ((model) => defaultLoader(model, options.cacheDir));
+    this.batchSize = Math.max(1, Math.floor(options.batchSize ?? DEFAULT_LOCAL_BATCH_SIZE));
   }
 
   /** Charge le modèle une seule fois (chargement paresseux, partagé entre les appels). */
@@ -100,12 +108,18 @@ export class LocalEmbedder implements Embedder {
   ): Promise<number[][]> {
     const extractor = await this.getExtractor();
     const vectors: number[][] = [];
-    for (let start = 0; start < texts.length; start += BATCH_SIZE) {
+    for (let start = 0; start < texts.length; start += this.batchSize) {
       const batch = texts
-        .slice(start, start + BATCH_SIZE)
+        .slice(start, start + this.batchSize)
         .map((text) => formatForE5(text, purpose));
       const output = await extractor(batch, { pooling: 'mean', normalize: true });
-      vectors.push(...output.tolist().map((vector) => padVector(vector)));
+      try {
+        vectors.push(...output.tolist().map((vector) => padVector(vector)));
+      } finally {
+        // Les tenseurs ONNX vivent hors du tas JavaScript : sans libération explicite,
+        // la mémoire croît à chaque lot jusqu'à l'arrêt du processus (OOM constaté en production)
+        output.dispose?.();
+      }
     }
     assertDimensions(vectors);
     return vectors;

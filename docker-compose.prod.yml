@@ -54,10 +54,31 @@ services:
     networks:
       - portfolio-net
       - sonah-internal
-    # Modèle chargé : voir docs/DEPLOYMENT.md (mesures). Le seed tourne dans un conteneur
-    # éphémère du même service, avec les mêmes limites.
-    mem_limit: 1g
-    # ONNX Runtime utilise tous les cœurs pendant l'indexation : on en laisse aux autres applications
+    # Modèle multilingue chargé : ~850 Mo mesurés (moteur ONNX compris), marge pour les requêtes.
+    mem_limit: 1536m
+    cpus: 2
+    logging: *default-logging
+
+  # Indexation des textes officiels : conteneur éphémère lancé par scripts/deploy.sh
+  # (docker compose run --rm seed). Pic mesuré ~1,4 Go pendant le calcul des embeddings :
+  # isolé de l'API qui sert les citoyens, libéré dès la fin.
+  seed:
+    profiles: ['tools']
+    image: ghcr.io/emeric-cyrille/sonah-api:${IMAGE_TAG:-latest}
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://sonah_user:${POSTGRES_PASSWORD:-}@postgres:5432/sonah_prod
+      EMBEDDING_PROVIDER: local
+      EMBEDDINGS_CACHE_DIR: /app/models
+    command: ['node', 'dist/scripts/seed.js', '--if-empty']
+    volumes:
+      - sources_cache:/app/data/sources/.cache
+    networks:
+      - sonah-internal
+    mem_limit: 2g
+    # ONNX Runtime utilise tous les cœurs : on en laisse aux autres applications du VPS
     cpus: 2
     logging: *default-logging
 

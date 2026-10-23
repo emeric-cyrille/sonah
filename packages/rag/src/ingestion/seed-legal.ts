@@ -33,6 +33,11 @@ export interface SeedOptions {
   readonly remote?: SourceTextOptions['remote'];
   /** Restreint l'indexation à certains textes (les statuts restent calculés sur tout le manifeste). */
   readonly sourceIds?: readonly string[];
+  /**
+   * N'indexe que les fragments absents pour le modèle d'embedding courant : reprend une indexation
+   * interrompue (arrêt, manque de mémoire) sans recalculer ce qui est déjà en base.
+   */
+  readonly onlyMissing?: boolean;
 }
 
 /** Découpe une source selon sa configuration du manifeste. */
@@ -154,7 +159,14 @@ export async function seedLegalSources(options: SeedOptions): Promise<SeedReport
         options.vectorStore.embeddingTextStyle,
       ),
     }));
-    await options.vectorStore.upsertMany(documents);
+    const existing = options.onlyMissing
+      ? await options.vectorStore.indexedChunkKeys(source.id)
+      : new Set<string>();
+    const missing = documents.filter((item) => !existing.has(item.doc.chunkKey));
+    if (missing.length > 0) await options.vectorStore.upsertMany(missing);
+    if (options.onlyMissing) {
+      logger.log(`  ${existing.size} fragments déjà indexés, ${missing.length} à indexer`);
+    }
     const staleDeleted = await options.vectorStore.deleteStaleChunks(
       source.id,
       chunks.map((chunk) => chunk.key),

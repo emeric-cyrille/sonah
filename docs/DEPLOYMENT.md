@@ -150,8 +150,10 @@ bash scripts/deploy.sh --sync-groq-key   # paste the key, Enter
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d api
 
 # Index if empty for the current model / re-index everything (idempotent), in a temporary container
-docker compose -f docker-compose.prod.yml --env-file .env.production run --rm --no-deps -T api node dist/scripts/seed.js --if-empty
-docker compose -f docker-compose.prod.yml --env-file .env.production run --rm --no-deps -T api node dist/scripts/seed.js
+# Resume indexing: only missing fragments are computed (2 GB ephemeral container)
+docker compose -f docker-compose.prod.yml --env-file .env.production run --rm --no-deps -T seed
+# Full re-index (recomputes every fragment)
+docker compose -f docker-compose.prod.yml --env-file .env.production run --rm --no-deps -T seed node dist/scripts/seed.js
 
 # Dependency status (database, graph, model, number of indexed articles)
 curl -s https://sonah.fokamemeric.com/api/v1/health/ready

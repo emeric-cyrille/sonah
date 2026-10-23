@@ -124,12 +124,12 @@ compose "$IMAGE_TAG" up -d --remove-orphans "${SERVICES[@]}"
 
 if wait_healthy; then
   echo "$IMAGE_TAG" > "$STATE_FILE"
-  # Indexation dans un conteneur éphémère (même image, mêmes variables et limites que l'API) : le site
-  # reste servi pendant ce temps et un échec du seed n'entraîne pas de rollback. La CI attend la fin
-  # avant les tests de fumée (index non vide, vraie question à Sonah).
+  # Indexation dans le service éphémère « seed » (même image, 2 Go : le calcul des embeddings dépasse
+  # la limite de l'API). Reprenable : seuls les fragments absents sont calculés. Le site reste servi
+  # pendant ce temps ; la CI attend la fin avant les tests de fumée (index non vide, vraie question).
   log "Indexation des textes officiels si nécessaire (plusieurs minutes au premier déploiement)"
   seed_start=$SECONDS
-  if compose "$IMAGE_TAG" run --rm --no-deps -T api node dist/scripts/seed.js --if-empty; then
+  if compose "$IMAGE_TAG" run --rm --no-deps -T seed; then
     log "Indexation terminée en $((SECONDS - seed_start))s"
   else
     log "⚠️  Indexation échouée après $((SECONDS - seed_start))s (Sonah reste en ligne, index incomplet)"
