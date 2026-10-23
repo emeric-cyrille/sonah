@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ScrollMotion } from '@/components/motion/scroll-motion';
 import { PatternFill } from '@/components/patterns/cameroon-patterns';
 import { getServerDictionary } from '@/i18n/server';
+import { procedureQuestions } from '@/lib/procedure-questions';
 
 export function generateMetadata(): Metadata {
   const { dict } = getServerDictionary();
@@ -10,8 +11,13 @@ export function generateMetadata(): Metadata {
 }
 
 export default function TopicsPage(): JSX.Element {
-  const { dict } = getServerDictionary();
+  const { dict, locale } = getServerDictionary();
   const t = dict.topics;
+  const procedures = procedureQuestions(locale).map((item) => item.question);
+  const topics =
+    procedures.length > 0
+      ? [{ ...t.procedures, questions: procedures }, ...t.available]
+      : t.available;
 
   return (
     <ScrollMotion>
@@ -33,7 +39,7 @@ export default function TopicsPage(): JSX.Element {
         {/* ─── Sujets couverts par le corpus ───────────────────── */}
         <div className="container-page mt-16 space-y-16">
           <p className="eyebrow">{t.availableEyebrow}</p>
-          {t.available.map((topic) => (
+          {topics.map((topic) => (
             <section
               data-reveal
               key={topic.id}
