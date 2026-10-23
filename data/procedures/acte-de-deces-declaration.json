@@ -1,0 +1,140 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "acte-de-deces-declaration",
+  "title_fr": "Déclaration de décès et acte de décès",
+  "title_en": "Death declaration and death certificate",
+  "category": "etat-civil",
+  "keywords_fr": [
+    "acte de décès",
+    "déclarer un décès",
+    "déclaration de décès",
+    "décès",
+    "mort",
+    "certificat de décès",
+    "parent décédé",
+    "jugement déclaratif de décès",
+    "décès à l'étranger"
+  ],
+  "keywords_en": [
+    "death certificate",
+    "register a death",
+    "death declaration",
+    "deceased",
+    "death registration"
+  ],
+  "authority": {
+    "name": "Officier d'état civil du centre d'état civil (maire ou adjoint au maire de la commune ; chef de mission diplomatique ou de poste consulaire à l'étranger)",
+    "level": "communal",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Centre d'état civil du lieu du décès, ou du lieu de naissance, de résidence ou d'inhumation du défunt",
+      "source_refs": [0]
+    },
+    {
+      "text": "Décès à l'étranger : mission diplomatique ou poste consulaire du Cameroun",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Les parents du défunt, son conjoint, ses enfants ou toute personne ayant un intérêt légitime ou une connaissance certaine du décès. Si le décès survient dans un établissement sanitaire ou pénitentiaire, le responsable de l'établissement (ou le médecin) doit le déclarer dans les 30 jours ; à défaut, la famille dispose de 60 jours supplémentaires.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Deux témoins attestant le décès (majeurs, capables, ayant vécu les faits ou en détenant les preuves)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Pièce d'identité du déclarant ; à défaut, la déclaration se fait sur témoignage du chef traditionnel du ressort",
+      "source_refs": [0]
+    },
+    {
+      "text": "Informations à déclarer : noms, prénoms, sexe, date et lieu de naissance du défunt ; date et lieu du décès ; résidence ; situation matrimoniale ; identité du déclarant, des témoins et lien avec le défunt",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Déclarer le décès (oralement ou par écrit) à l'officier d'état civil compétent dans les 90 jours (décès en communauté) ; en établissement sanitaire, la déclaration incombe à l'établissement dans les 30 jours.",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Présenter les deux témoins et les informations sur le défunt ; l'officier enregistre la déclaration et établit l'acte de décès.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "L'acte est lu au déclarant et aux témoins avant signature par l'officier et le secrétaire d'état civil ; signaler immédiatement toute erreur.",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "Retirer l'original de l'acte de décès (gratuit).",
+      "source_refs": [0]
+    },
+    {
+      "order": 5,
+      "description": "Passé les délais, ou pour un décès à l'étranger non déclaré dans les 12 mois du retour au Cameroun sans pièces justificatives, l'acte ne peut être établi qu'en vertu d'un jugement déclaratif de décès.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 0,
+    "description": "Gratuit : déclaration, enregistrement et délivrance de l'original de l'acte (art. 5). Les copies et extraits ultérieurs sont soumis au droit de timbre.",
+    "source_refs": [0]
+  },
+  "delay": {
+    "text": "90 jours après le décès (décès en communauté) ; 30 jours pour l'établissement sanitaire ou pénitentiaire, puis 60 jours supplémentaires pour la famille ; 12 mois après le retour au Cameroun pour un décès survenu dans un pays sans représentation camerounaise.",
+    "source_refs": [0]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 21 à 27 (déclaration et enregistrement du décès)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 31, 52 à 55 et 61 (témoins, mentions de l'acte, jugement déclaratif)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Si un enfant décède avant que sa naissance ait été déclarée, la naissance doit d'abord être déclarée et enregistrée, puis le décès.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Un acte de décès dressé par erreur (personne vivante) peut être annulé par le tribunal à la demande de l'intéressé, de ses ayants droit ou du Ministère public.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7589-loi-n-2024-016-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-10",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "La loi ne cite pas le certificat médical de décès comme pièce obligatoire pour les décès en communauté ; les pièces exigées en pratique (certificat de décès médical, acte de naissance du défunt, etc.) n'ont pas pu être vérifiées sur une source officielle."
+    },
+    {
+      "field": "validity",
+      "note": "Sans objet pour l'acte ; durée de validité des copies non fixée par la loi."
+    }
+  ],
+  "language_versions": ["fr"]
+}

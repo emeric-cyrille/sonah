@@ -1,0 +1,180 @@
+{
+  "id": "numero-identifiant-unique-niu",
+  "title_fr": "Obtenir son Numéro d'Identifiant Unique (NIU) et son attestation d'immatriculation fiscale",
+  "title_en": "Obtaining a Unique Taxpayer Identification Number (NIU) and tax registration certificate",
+  "category": "fiscalite",
+  "keywords_fr": [
+    "NIU",
+    "numéro d'identifiant unique",
+    "numéro contribuable",
+    "carte de contribuable",
+    "immatriculation fiscale",
+    "attestation d'immatriculation",
+    "s'immatriculer aux impôts",
+    "numéro impôt",
+    "DGI",
+    "impots.cm"
+  ],
+  "keywords_en": [
+    "NIU",
+    "taxpayer number",
+    "tax identification number",
+    "TIN",
+    "taxpayer card",
+    "tax registration",
+    "tax registration certificate"
+  ],
+  "authority": {
+    "name": "Direction générale des Impôts (DGI), Ministère des Finances",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "En ligne uniquement, sur le site de la DGI : https://immatriculation.dgi.cm/ pour les contribuables non professionnels.",
+      "source_refs": [0]
+    },
+    {
+      "text": "En ligne pour les contribuables professionnels : https://teledeclaration-dgi.cm/modules/Common/Account/eregistration.aspx?er=empty",
+      "source_refs": [0]
+    },
+    {
+      "text": "Pour une entreprise créée au CFCE, la carte de contribuable est délivrée par le CFCE avec le registre du commerce.",
+      "source_refs": [1]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne physique ou morale redevable d'un impôt, droit ou taxe au Cameroun : personnes physiques professionnelles, personnes physiques non professionnelles (ex. salariés) et personnes morales. L'immatriculation est obligatoire dans les 15 jours ouvrables suivant le début d'activité.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Personne physique non professionnelle : CNI en cours de validité (titre de séjour pour les étrangers résidents, passeport pour les non-résidents), plan de localisation, relevé d'identité bancaire (RIB).",
+      "source_refs": [0]
+    },
+    {
+      "text": "Personne physique professionnelle : CNI en cours de validité, plan de localisation, registre du commerce (RCCM), RIB.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Personne morale : RCCM (professionnels) ou acte de création (non professionnels) ; accord de siège pour les missions diplomatiques et organisations internationales ; plan de localisation ; RIB.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Se rendre sur le site de la DGI et choisir le lien d'immatriculation correspondant à son profil (non professionnel ou professionnel), puis « Je ne suis pas encore immatriculé(e) ».",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 2,
+      "description": "Remplir le formulaire et joindre les pièces scannées (identité, plan de localisation, RIB, RCCM le cas échéant).",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 3,
+      "description": "Le système attribue automatiquement le NIU ; le contribuable génère lui-même son attestation d'immatriculation (nom, NIU, régime fiscal, activité, centre des impôts de rattachement, principales obligations).",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 4,
+      "description": "La DGI procède à une vérification a posteriori ; en cas de non-conformité, une mise en demeure est notifiée et le contribuable dispose de 15 jours pour régulariser, faute de quoi l'immatriculation est suspendue.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "La page officielle de la DGI n'indique aucun frais. Un communiqué de la DGI relayé par des sites tiers indique que l'immatriculation en ligne est gratuite pour tous les contribuables (non confirmé sur un domaine officiel).",
+    "source_refs": [0, 3]
+  },
+  "delay": {
+    "text": "Immédiat : le NIU est généré automatiquement par le système à la soumission du formulaire en ligne.",
+    "source_refs": [0, 2]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Article L1 du Livre des procédures fiscales (obligation d'immatriculation dans les 15 jours ouvrables)",
+      "title": "Code général des impôts – Livre des procédures fiscales",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article L3 du Livre des procédures fiscales (mise en demeure, 15 jours pour régulariser)",
+      "title": "Code général des impôts – Livre des procédures fiscales",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": null,
+      "reference": "Décret n° 2012/3731/PM du 13 novembre 2012",
+      "title": "Décret cité par la DGI au titre de l'immatriculation des contribuables",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Causes fréquentes de rejet : RCCM ou acte de création manquant, pièce d'identité expirée, pièces illisibles, plan de localisation ou RIB absent, copie de facture ENEO manquante, adresse erronée.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Tout changement (nom ou raison sociale, activité, adresse, RIB, dirigeants…) doit être déclaré dans les 15 jours ouvrables ; la mise à jour peut se faire en ligne.",
+      "source_refs": [0]
+    },
+    {
+      "text": "En cas de rejet, un recours est possible dans les 30 jours suivant la notification, sous forme de réclamation contentieuse.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Assistance de la DGI : centre d'appels au 8200.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Immatriculation",
+      "url": "https://www.impots.cm/fr/immatriculation",
+      "publisher": "Direction générale des Impôts (DGI)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "CFCE in brief / Business creation space in the Republic of Cameroon",
+      "url": "https://minfi.gov.cm/en/business-creation-space-in-the-republic-of-cameroon/",
+      "publisher": "Ministère des Finances (MINFI)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Guide d'utilisateur – déclaration annuelle des particuliers",
+      "url": "https://www.impots.cm/sites/default/files/documents/Guide%20d%27utilisateur%20de%CC%81claration%20annuelle%20des%20particuliers_082146.pdf",
+      "publisher": "Direction générale des Impôts (DGI)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "www.impots.cm numéro d'immatriculation en ligne Cameroun (reprise du communiqué DGI)",
+      "url": "https://kamerpower.com/fr/www-impots-cm-numero-dimmatriculation-en-ligne-cameroun",
+      "publisher": "Kamerpower",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost",
+      "note": "La gratuité repose sur un communiqué DGI (avril 2020) reproduit par un site tiers ; la page officielle impots.cm ne mentionne pas de frais. Montant laissé à null."
+    },
+    {
+      "field": "validity",
+      "note": "La durée de validité du NIU ou de l'attestation d'immatriculation n'est pas indiquée par la DGI."
+    },
+    {
+      "field": "steps",
+      "note": "Les étapes 1 à 3 s'appuient sur le guide DGI des particuliers (consulté via les résultats de recherche) ; l'interface du portail peut avoir changé."
+    }
+  ],
+  "language_versions": ["fr"]
+}

@@ -1,0 +1,161 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "permis-de-conduire-obtention",
+  "title_fr": "Obtenir le permis de conduire (première demande)",
+  "title_en": "Getting a driving licence (first application)",
+  "category": "transport",
+  "keywords_fr": [
+    "permis de conduire",
+    "permis",
+    "passer le permis",
+    "faire mon permis",
+    "auto-école",
+    "auto école",
+    "examen du permis",
+    "code de la route",
+    "permis catégorie B",
+    "permis moto",
+    "résultats examen permis",
+    "ssdtmint",
+    "permis sécurisé"
+  ],
+  "keywords_en": [
+    "driving licence",
+    "driver's license",
+    "driving test",
+    "driving school",
+    "learner driver"
+  ],
+  "authority": {
+    "name": "Ministère des Transports (MINT)",
+    "level": "national",
+    "source_refs": [0, 1]
+  },
+  "where": [
+    {
+      "text": "Plateforme en ligne des titres de transport du ministère des Transports : https://ssdtmint.cm (rubrique « Permis de conduire et badges »), obligatoire depuis le 2 décembre 2024",
+      "source_refs": [1, 2]
+    },
+    {
+      "text": "Délégations régionales des transports du ministère des Transports",
+      "source_refs": [3]
+    }
+  ],
+  "who_can_apply": null,
+  "documents": [],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Suivre la formation dans un établissement de formation à la conduite automobile (auto-école) agréé par le ministère des Transports.",
+      "source_refs": [2, 4]
+    },
+    {
+      "order": 2,
+      "description": "Créer un compte sur la plateforme ssdtmint.cm et y saisir ses informations pour accéder au formulaire de demande de permis de conduire.",
+      "source_refs": [1, 2]
+    },
+    {
+      "order": 3,
+      "description": "Passer l'examen du permis de conduire ; le ministère des Transports publie les résultats des examens sur son site (rubrique « Résultats examens permis »).",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Montant officiel du timbre et des frais d'établissement non vérifié. Le ministère des Transports a démenti le 13 novembre 2023 toute augmentation du timbre du permis, et a indiqué que le passage à la demande en ligne n'entraîne aucune augmentation des coûts. Les frais d'auto-école sont fixés librement par chaque établissement.",
+    "source_refs": [2, 5]
+  },
+  "delay": null,
+  "validity": null,
+  "legal_basis": [],
+  "tips": [
+    {
+      "text": "Faites votre demande uniquement sur le portail officiel ssdtmint.cm, accessible depuis le site du ministère des Transports (rubrique « Titres des transports »).",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Méfiez-vous des faux permis : le ministère des Transports mène une lutte contre les faux permis de conduire.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Un permis camerounais présenté à l'étranger peut nécessiter un certificat d'authenticité délivré par la délégation régionale des transports, légalisé par le ministère des Relations extérieures.",
+      "source_refs": [3]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Ministère des Transports – page d'accueil (Résultats examens permis, Titres des transports)",
+      "url": "https://mintransports.cm/",
+      "publisher": "Ministère des Transports du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Portail des services des transports (permis de conduire et badges, carte grise)",
+      "url": "https://ssdtmint.cm/",
+      "publisher": "Ministère des Transports du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Les Camerounais peuvent désormais demander un permis de conduire en ligne (communiqué du ministre des Transports du 14 novembre 2024)",
+      "url": "https://laminute.info/2024/11/15/les-camerounais-peuvent-desormais-demander-un-permis-de-conduire-en-ligne/",
+      "publisher": "La Minute",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Request for Driving License Documents (certificat d'authenticité du permis)",
+      "url": "http://cameroonemb-jp.org/legalization-certification/driving-license-documents/",
+      "publisher": "Ambassade de la République du Cameroun au Japon",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Ordonnance de juin 2024 modifiant la loi de finances 2024 – recettes « Production des documents sécurisés de transport » (agrément des établissements de formation à la conduite automobile, permis de conduire national et international)",
+      "url": "https://prc.cm/files/41/5c/26/3621ac2603f3f0a3d2ebf7657b1202f3.pdf",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Cameroun : pas d'augmentation des frais du timbre du permis de conduire (14 novembre 2023)",
+      "url": "https://fr.journalducameroun.com/cameroun-pas-daugmentation-des-frais-du-timbre-du-permis-de-conduire/",
+      "publisher": "Journal du Cameroun",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "who_can_apply",
+      "note": "Âges minimums par catégorie (A, B, C, D, E, F) cités seulement par des guides non officiels ; texte réglementaire (arrêtés du ministre des Transports de 2015) non retrouvé en ligne."
+    },
+    {
+      "field": "documents",
+      "note": "Aucune liste officielle des pièces (CNI, certificat médical d'aptitude, attestation d'auto-école, photos, etc.) n'a été trouvée ; seuls des blogs en publient. La plateforme ssdtmint.cm n'expose pas de guide public."
+    },
+    {
+      "field": "cost",
+      "note": "Montant du timbre / des frais d'établissement non publié par une source officielle accessible ; le chiffre de 5 000 FCFA n'apparaît que dans une rumeur démentie rapportée par la presse, sans confirmation du montant actuel."
+    },
+    {
+      "field": "delay",
+      "note": "Aucun délai officiel de délivrance trouvé."
+    },
+    {
+      "field": "validity",
+      "note": "Durée de validité du permis national non trouvée dans une source officielle."
+    },
+    {
+      "field": "legal_basis",
+      "note": "Les arrêtés de 2015 du ministre des Transports sur les auto-écoles et les conditions d'obtention du permis sont mentionnés par la presse mais leurs numéros et textes n'ont pas été retrouvés."
+    },
+    {
+      "field": "steps",
+      "note": "Les modalités exactes de l'examen (épreuves théorique et pratique, inscription par l'auto-école), du paiement en ligne et du retrait du titre (permis sécurisé) n'ont pas été confirmées par une source officielle."
+    }
+  ],
+  "language_versions": ["fr"]
+}

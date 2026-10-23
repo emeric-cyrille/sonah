@@ -1,0 +1,184 @@
+{
+  "id": "extrait-casier-judiciaire-bulletin-3",
+  "title_fr": "Extrait de casier judiciaire (bulletin n° 3)",
+  "title_en": "Criminal record extract (bulletin No. 3)",
+  "category": "justice",
+  "keywords_fr": [
+    "casier judiciaire",
+    "extrait de casier judiciaire",
+    "bulletin n°3",
+    "bulletin numéro 3",
+    "B3",
+    "casier",
+    "certificat de bonne vie et moeurs",
+    "je veux mon casier judiciaire",
+    "casier judiciaire pour concours",
+    "casier judiciaire pour visa"
+  ],
+  "keywords_en": [
+    "criminal record",
+    "criminal record extract",
+    "police record",
+    "bulletin number 3",
+    "certificate of good conduct",
+    "background check"
+  ],
+  "authority": {
+    "name": "Greffe du Tribunal de Première Instance (TPI) du lieu de naissance ; Ministère de la Justice (fichier central) pour certains demandeurs",
+    "level": "national",
+    "source_refs": [0, 2]
+  },
+  "where": [
+    {
+      "text": "Tribunal de Première Instance (section correctionnelle, greffe) du lieu de naissance du demandeur. Exemple à Yaoundé : Palais de Justice, rue du Musée National (ancien Palais présidentiel), lundi–vendredi 07h30–15h30 ; dépôt des demandes de 8h à 11h, retrait de 14h à 15h.",
+      "source_refs": [0, 1, 2]
+    },
+    {
+      "text": "Ministère de la Justice à Yaoundé (Service des affaires pénales et des grâces / fichier central) pour les étrangers, les personnes nées dans la zone anglophone et les personnes nées dans les régions de l'Adamaoua, du Nord et de l'Extrême-Nord.",
+      "source_refs": [0, 2]
+    }
+  ],
+  "who_can_apply": {
+    "text": "La personne concernée (le bulletin n° 3 est délivré à l'intéressé). Un Camerounais vivant à l'étranger peut donner procuration à une personne au Cameroun, avec l'original de son acte de naissance.",
+    "source_refs": [2]
+  },
+  "documents": [
+    {
+      "text": "Formulaire de demande d'extrait de casier judiciaire (modèle disponible au greffe / sur eRegulations).",
+      "source_refs": [0]
+    },
+    {
+      "text": "Deux timbres fiscaux de 1 000 FCFA : l'un sur la demande, l'autre sur l'extrait.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Acte de naissance, ou copie certifiée conforme de l'acte de naissance, ou carte nationale d'identité.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Au retrait : une pièce d'identité (original ou copie certifiée conforme) ou l'acte de naissance.",
+      "source_refs": [1]
+    },
+    {
+      "text": "Pour une demande faite par un tiers pour un Camerounais à l'étranger : procuration et original de l'acte de naissance.",
+      "source_refs": [2]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Identifier le service compétent : TPI de votre lieu de naissance, ou Ministère de la Justice à Yaoundé si vous êtes étranger, né en zone anglophone ou dans l'Adamaoua, le Nord ou l'Extrême-Nord.",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 2,
+      "description": "Acheter deux timbres fiscaux de 1 000 FCFA et remplir le formulaire de demande.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Déposer la demande timbrée avec l'acte de naissance (ou la CNI) au greffe de la section correctionnelle et payer les frais de recherche (espèces).",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "Revenir retirer l'extrait (généralement une demi-journée à un jour plus tard) en présentant une pièce d'identité.",
+      "source_refs": [0, 1]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 2200,
+    "description": "Exemple du TPI de Yaoundé (eRegulations) : 2 timbres fiscaux de 1 000 FCFA + 200 FCFA de frais de recherche, payés en espèces. La fiche eRegulations affiche par endroits un total de 2 000 FCFA ; le détail donne 2 200 FCFA. Données datant de 2015, à confirmer au greffe.",
+    "source_refs": [0]
+  },
+  "delay": {
+    "text": "Dépôt : 15 à 40 minutes sur place ; retrait de 0,5 à 1 jour après le dépôt (exemple du TPI de Yaoundé).",
+    "source_refs": [0, 1]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Loi n° 2005/007 du 27 juillet 2005 portant Code de procédure pénale (dispositions relatives au casier judiciaire)",
+      "title": "Code de procédure pénale",
+      "source_refs": [3]
+    },
+    {
+      "sourceId": null,
+      "reference": "Acte uniforme OHADA relatif au droit commercial général (15 décembre 2010), art. 45-3 et 47-4 (extrait exigé pour l'immatriculation des commerçants)",
+      "title": "AUDCG OHADA",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Le bulletin n° 3 n'est pas un « certificat de police ». Pour un certificat de police (exigé par exemple pour l'immigration au Canada), il faut d'abord obtenir le bulletin n° 3, puis s'adresser à la Direction de la Police Judiciaire (Elig-Essono) à Yaoundé.",
+      "source_refs": [2]
+    },
+    {
+      "text": "Pour l'immatriculation d'un commerçant au RCCM, une déclaration sur l'honneur peut remplacer provisoirement l'extrait, à condition de fournir l'extrait dans les 75 jours.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Si le document doit servir à l'étranger, il doit ensuite être légalisé par le Ministère des Relations Extérieures (voir la fiche légalisation).",
+      "source_refs": [4]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Demande d'extrait de casier judiciaire (étape 384, procédure « S'enregistrer comme commerçant individuel - Initiale »)",
+      "url": "https://yaounde.eregulations.org/procedure/175/69/step/384?l=fr",
+      "publisher": "eRegulations Yaoundé (MINPMEESA)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Retrait de l'extrait de casier judiciaire (étape 385)",
+      "url": "https://yaounde.eregulations.org/procedure/175/69/step/385?l=fr",
+      "publisher": "eRegulations Yaoundé (MINPMEESA)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Comment obtenir un certificat de police – Cameroun",
+      "url": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/demande/medical-police/certificats-police/comment/cameroun.html",
+      "publisher": "Immigration, Réfugiés et Citoyenneté Canada",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "La coopération judiciaire pénale en zone CEMAC (mémoire, section casier judiciaire)",
+      "url": "https://www.memoireonline.com/03/08/989/m_cooperation-judiciaire-penale-zone-cemac35.html",
+      "publisher": "Memoire Online",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Authentication / Legalization of official Cameroonian documents (version January 2023)",
+      "url": "https://www.cameroonembassyusa.org/main23/Images/documents_folder/AuthenticationLegalizationofOfficialCameroonianDocuments.pdf",
+      "publisher": "Ambassade de la République du Cameroun aux États-Unis",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "validity",
+      "note": "Aucune source officielle trouvée sur la durée de validité. Des guides non officiels parlent de 3 mois ; les administrations qui exigent le document fixent souvent elles-mêmes une ancienneté maximale."
+    },
+    {
+      "field": "cost",
+      "note": "Montant issu d'une fiche eRegulations de 2015 (TPI de Yaoundé) ; la page procédure officielle du MINJUSTICE (« Procédure de délivrance de Casier Judiciaire ») est vide (« Contenu en attente »). Peut varier selon le tribunal."
+    },
+    {
+      "field": "legal_basis",
+      "note": "Les numéros exacts des articles du Code de procédure pénale relatifs au casier judiciaire n'ont pas pu être vérifiés sur un texte officiel ; le Code n'est pas dans le corpus data/sources."
+    },
+    {
+      "field": "where",
+      "note": "Aucune plateforme officielle de demande en ligne n'a été trouvée ; la démarche est décrite comme physique."
+    }
+  ],
+  "language_versions": ["fr"]
+}

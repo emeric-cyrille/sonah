@@ -1,0 +1,133 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "rectification-reconstitution-acte-etat-civil",
+  "title_fr": "Rectification ou reconstitution d'un acte d'état civil (erreur de nom, de date, acte détruit)",
+  "title_en": "Correction or reconstitution of a civil status record (wrong name or date, destroyed record)",
+  "category": "etat-civil",
+  "keywords_fr": [
+    "rectification acte de naissance",
+    "erreur sur l'acte de naissance",
+    "corriger mon nom",
+    "faute sur l'acte",
+    "jugement rectificatif",
+    "reconstitution acte",
+    "acte détruit",
+    "registre brûlé",
+    "erreur de date de naissance"
+  ],
+  "keywords_en": [
+    "correct birth certificate",
+    "error on birth certificate",
+    "name correction",
+    "rectification judgment",
+    "reconstitute civil record",
+    "destroyed register"
+  ],
+  "authority": {
+    "name": "Tribunal compétent (sur enquête du Procureur de la République), puis officier d'état civil",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Tribunal du lieu où le fait est survenu, où il a été enregistré, ou du lieu où l'acte a été (ou aurait dû être) établi",
+      "source_refs": [0]
+    },
+    {
+      "text": "Actes dressés ou transcrits dans les ambassades et consulats du Cameroun : Président du Tribunal de Première Instance de Yaoundé Centre-Administratif",
+      "source_refs": [0]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Toute personne justifiant d'un intérêt légitime.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Requête énonçant notamment : noms et prénoms du requérant ; noms, prénoms, filiation, date et lieu de naissance de la personne concernée ; motifs détaillés de la rectification ou de la reconstitution ; noms, prénoms, âge et résidence des témoins, selon le cas ; centre d'état civil où l'acte a été établi",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Avant la signature d'un acte, toute erreur se corrige séance tenante devant l'officier d'état civil (nouvel acte établi). Après signature, il faut un jugement.",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Déposer la requête en rectification (mentions erronées) ou en reconstitution (acte papier perdu, détruit ou altéré) devant le tribunal compétent.",
+      "source_refs": [0]
+    },
+    {
+      "order": 3,
+      "description": "Le tribunal communique la requête au Procureur pour enquête (pas obligatoire pour les mineurs de moins de 15 ans).",
+      "source_refs": [0]
+    },
+    {
+      "order": 4,
+      "description": "Le tribunal statue dans un délai maximum de 6 mois ; recours possible devant la Cour d'appel dans les 30 jours.",
+      "source_refs": [0]
+    },
+    {
+      "order": 5,
+      "description": "Le jugement est transmis à l'officier d'état civil compétent (avec copie à l'organisme de gestion de l'état civil) dans les 30 jours de sa signature ; la mention est portée en marge de l'acte.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": null,
+    "source_refs": []
+  },
+  "delay": {
+    "text": "Décision du tribunal dans un délai maximum de 6 mois ; Cour d'appel dans un délai maximum de 6 mois en cas de recours.",
+    "source_refs": [0]
+  },
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 32, 36 alinéa 5, 38, 58 à 60, 63 à 66",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    },
+    {
+      "sourceId": "loi-2024-016-etat-civil",
+      "reference": "Articles 56 et 57 (reconstitution par voie administrative en cas de guerre, conflit ou catastrophe ; personnes déplacées internes)",
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Personne inscrite par erreur ou fraude comme père ou mère sur un acte de naissance : elle peut demander la rectification devant la juridiction du ressort du centre d'état civil concerné.",
+      "source_refs": [0]
+    },
+    {
+      "text": "En cas de guerre, conflit armé ou catastrophe, le Préfet peut requérir l'enregistrement hors délai et la reconstitution des actes par voie administrative.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Loi n° 2024/016 du 23 décembre 2024 portant organisation du système d'enregistrement des faits d'état civil au Cameroun",
+      "url": "https://www.prc.cm/fr/actualites/actes/lois/7589-loi-n-2024-016-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-10",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost",
+      "note": "Frais de justice non fixés par la loi n° 2024/016 et non vérifiés."
+    },
+    {
+      "field": "documents",
+      "note": "Pièces annexes exigées par les greffes (copie de l'acte erroné, pièces d'identité, preuves) non vérifiées sur une source officielle."
+    }
+  ],
+  "language_versions": ["fr"]
+}

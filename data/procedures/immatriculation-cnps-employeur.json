@@ -1,0 +1,174 @@
+{
+  "id": "immatriculation-cnps-employeur",
+  "title_fr": "Immatriculer un employeur à la CNPS",
+  "title_en": "Registering as an employer with the National Social Insurance Fund (CNPS)",
+  "category": "social",
+  "keywords_fr": [
+    "CNPS",
+    "immatriculation CNPS",
+    "numéro employeur CNPS",
+    "matricule employeur",
+    "déclarer mes employés",
+    "affilier mon entreprise à la CNPS",
+    "sécurité sociale entreprise",
+    "employeur domestique",
+    "déclarer ma ménagère",
+    "téléimmatriculation"
+  ],
+  "keywords_en": [
+    "CNPS",
+    "employer registration",
+    "social security registration",
+    "National Social Insurance Fund",
+    "employer number",
+    "domestic employer"
+  ],
+  "authority": {
+    "name": "Caisse nationale de prévoyance sociale (CNPS) – Centre de prévoyance sociale (CPS)",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Centre de prévoyance sociale (CPS) de la CNPS le plus proche.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Pré-immatriculation en ligne (« Téléimmatriculation totale employeur ») : https://e-services.cnps.cm/immatriculer/teleImmat_0.1/default1.jsp, à confirmer ensuite au CPS.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Pour une entreprise créée au CFCE, la fiche CNPS employeur peut être délivrée par le CFCE.",
+      "source_refs": [3]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Tout employeur de travailleurs salariés : employeurs professionnels (entreprises) et employeurs de personnel domestique.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Employeur professionnel : demande d'immatriculation CNPS (formulaire), copie du registre de commerce ou des statuts, patente en cours de validité, carte de contribuable, plan de localisation, liste du personnel ; pour un établissement d'enseignement, autorisation d'ouverture.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Employeur domestique : demande d'immatriculation, copie de la CNI ou du titre de séjour, plan de localisation, liste du personnel.",
+      "source_refs": [0, 1]
+    },
+    {
+      "text": "Pour chaque salarié : demande d'immatriculation, avis d'embauche sur imprimé CNPS, copie certifiée de l'acte de naissance ou de la CNI (voir la fiche « immatriculation-cnps-travailleur »).",
+      "source_refs": [0, 2]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Retirer le formulaire de demande d'immatriculation au CPS (ou le télécharger dans la rubrique « Imprimés » du site CNPS), ou faire une pré-immatriculation en ligne.",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 2,
+      "description": "Déposer au CPS le dossier physique complet (employeur et salariés) ; en cas de pré-immatriculation en ligne, ce dépôt doit intervenir dans les 30 jours qui suivent.",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 3,
+      "description": "La CNPS inscrit l'employeur dans son fichier et lui attribue un numéro matricule, conservé pendant toute sa relation avec la CNPS ; des récépissés de dépôt et la fiche signalétique employeur sont remis.",
+      "source_refs": [0, 2]
+    },
+    {
+      "order": 4,
+      "description": "Déclarer ensuite les salaires en ligne (télédéclaration) et payer les cotisations mensuellement ou trimestriellement dans les comptes bancaires de la CNPS.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Aucun frais d'immatriculation n'est indiqué par la CNPS. eRegulations Yaoundé ne mentionne que l'achat de formulaires d'actes d'état civil (100 FCFA chacun) pour les copies demandées au salarié.",
+    "source_refs": [0, 2]
+  },
+  "delay": {
+    "text": "Traitement d'un dossier physique complet annoncé en 15 minutes par la CNPS (note de service n° 067 du 20 avril 2016) ; eRegulations Yaoundé estime 2 à 7 jours pour l'ensemble de la démarche.",
+    "source_refs": [1, 2]
+  },
+  "validity": {
+    "text": "Le numéro matricule employeur est conservé tout au long de la relation avec la CNPS.",
+    "source_refs": [0]
+  },
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Articles 2, 5, 7 et 9",
+      "title": "Décret n° 74-733 du 19 août 1974",
+      "source_refs": [2]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article 4",
+      "title": "Ordonnance n° 73-17 du 22 mai 1973 portant organisation de la prévoyance sociale",
+      "source_refs": [2]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article 6",
+      "title": "Arrêté conjoint METPS/MINEFI n° 035 du 12 juillet 2002",
+      "source_refs": [2]
+    }
+  ],
+  "tips": [
+    {
+      "text": "L'employeur calcule et verse l'ensemble des cotisations : part patronale et part salariale retenue sur chaque paie.",
+      "source_refs": [0]
+    },
+    {
+      "text": "L'absence de déclaration, une comptabilité insuffisante ou le refus de recevoir un inspecteur de la CNPS peuvent entraîner une taxation d'office.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Règles générales pour les employeurs",
+      "url": "https://www.cnps.cm/fr/employeurs/regles-generales-pour-les-employeurs1.html",
+      "publisher": "Caisse nationale de prévoyance sociale (CNPS)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Services en ligne pour employeurs",
+      "url": "https://www.cnps.cm/fr/employeurs/services-en-ligne-pour-employeurs.html",
+      "publisher": "Caisse nationale de prévoyance sociale (CNPS)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Immatriculation de l'entreprise et du salarié à la CNPS",
+      "url": "https://yaounde.eregulations.org/procedure/93/53?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "S'enregistrer comme commerçant individuel – en ligne (résultats : fiche CNPS employeur)",
+      "url": "https://yaounde.eregulations.org/procedure/181/136?l=fr",
+      "publisher": "eRegulations Yaoundé (portail des procédures administratives)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "cost.amount_fcfa",
+      "note": "La CNPS ne publie aucun frais d'immatriculation ; montant laissé à null plutôt que 0."
+    },
+    {
+      "field": "legal_basis",
+      "note": "Références reprises d'eRegulations, qui signale une incohérence entre le numéro de l'ordonnance (73-17) et le nom du fichier joint (73-14) ; textes non consultés directement."
+    },
+    {
+      "field": "documents",
+      "note": "La patente demandée par la CNPS peut ne plus exister pour les petites entreprises soumises à l'IGS depuis la réforme de 2024 ; pièce de substitution non vérifiée."
+    }
+  ],
+  "language_versions": ["fr"]
+}

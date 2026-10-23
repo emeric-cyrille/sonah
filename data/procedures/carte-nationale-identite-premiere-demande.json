@@ -1,0 +1,190 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "carte-nationale-identite-premiere-demande",
+  "title_fr": "Carte nationale d'identité (CNI) : première demande",
+  "title_en": "National identity card (CNI): first application",
+  "category": "identite",
+  "keywords_fr": [
+    "CNI",
+    "carte d'identité",
+    "carte nationale d'identité",
+    "première CNI",
+    "faire ma CNI",
+    "établir sa carte d'identité",
+    "nouvelle CNI",
+    "CNI biométrique",
+    "idcam",
+    "pré-enrôlement CNI",
+    "carte d'identité 18 ans"
+  ],
+  "keywords_en": [
+    "national ID card",
+    "identity card",
+    "ID card",
+    "first ID card",
+    "CNI Cameroon",
+    "apply for ID card",
+    "idcam"
+  ],
+  "authority": {
+    "name": "Délégation Générale à la Sûreté Nationale (DGSN)",
+    "level": "national",
+    "source_refs": [0, 2]
+  },
+  "where": [
+    {
+      "text": "Pré-enrôlement en ligne sur le portail officiel www.idcam.cm (saisie des informations, paiement, choix du centre d'enrôlement).",
+      "source_refs": [3]
+    },
+    {
+      "text": "Enrôlement physique (prise des données biométriques) dans un centre d'enrôlement / poste d'identification de la police ; le retrait se fait au poste ou centre où le demandeur a été enrôlé.",
+      "source_refs": [0, 2, 3]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Tout citoyen camerounais âgé de 18 ans révolus : la possession de la CNI est obligatoire à partir de cet âge sur tout le territoire national.",
+    "source_refs": [0, 2]
+  },
+  "documents": [
+    {
+      "text": "Un certificat de nationalité signé du Président du Tribunal de Première Instance.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une copie certifiée conforme de l'acte de naissance, ou d'un extrait d'acte de naissance, ou d'un jugement supplétif d'acte de naissance, ou un livret familial signé des autorités compétentes.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une copie de l'acte de mariage, pour les femmes mariées.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une pièce justificative de la profession, s'il y a lieu.",
+      "source_refs": [0]
+    },
+    {
+      "text": "La preuve du paiement du droit de timbre (payé en ligne lors du pré-enrôlement).",
+      "source_refs": [1, 3]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Se pré-enrôler sur www.idcam.cm : choisir la langue, renseigner ses informations personnelles.",
+      "source_refs": [3]
+    },
+    {
+      "order": 2,
+      "description": "Payer le droit de timbre de 10 000 FCFA (paiement mobile) et choisir le centre d'enrôlement physique.",
+      "source_refs": [1, 3]
+    },
+    {
+      "order": 3,
+      "description": "Se présenter au centre d'enrôlement choisi avec les pièces justificatives pour la capture des données biométriques par les services de police.",
+      "source_refs": [0, 3]
+    },
+    {
+      "order": 4,
+      "description": "Attendre le SMS indiquant que la carte est prête, puis la retirer au centre où l'on a été enrôlé, contre restitution du récépissé (titre identitaire provisoire).",
+      "source_refs": [0, 3]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 10000,
+    "description": "Droit de timbre sur la carte nationale d'identité fixé à 10 000 FCFA par l'article 549 du Code général des impôts (modifié par l'ordonnance n° 2024/001 du 20 juin 2024), payé en ligne. Les frais d'obtention des pièces justificatives (certificat de nationalité, copies certifiées) ne sont pas inclus.",
+    "source_refs": [1, 3]
+  },
+  "delay": {
+    "text": "La DGSN a annoncé une délivrance en 48 heures après l'enrôlement physique (annonce de février 2025 rapportée par la presse) ; le demandeur est prévenu par SMS.",
+    "source_refs": [3]
+  },
+  "validity": {
+    "text": "10 ans.",
+    "source_refs": [0, 2]
+  },
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Décret n° 2016/375 du 4 août 2016",
+      "title": "Décret fixant les caractéristiques et les modalités d'établissement et de délivrance de la carte nationale d'identité",
+      "source_refs": [2]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article 549 du Code général des impôts, modifié par l'ordonnance n° 2024/001 du 20 juin 2024",
+      "title": "Droit de timbre sur les cartes nationales d'identité (10 000 FCFA)",
+      "source_refs": [1]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Le certificat de nationalité est exigé uniquement pour la première demande ; il n'apparaît pas dans la liste des pièces pour un renouvellement.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Gardez le récépissé remis après l'enrôlement : il sert de titre identitaire provisoire et doit être restitué au retrait de la carte.",
+      "source_refs": [0, 2]
+    },
+    {
+      "text": "L'ANTIC a signalé en 2024 de faux communiqués attribués à la DGSN au sujet de la nouvelle CNI : ne payez que sur le portail officiel idcam.cm.",
+      "source_refs": [4]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Tout sur vos titres identitaires : modalités d'établissement et de délivrance des titres identitaires (dépliant)",
+      "url": "https://www.dgsn.cm/wp-content/uploads/2020/01/Depliant-CNI.pdf",
+      "publisher": "Délégation Générale à la Sûreté Nationale (DGSN)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Ordonnance n° 2024/001 du 20 juin 2024 modifiant et complétant certaines dispositions de la loi de finances 2024 (articles 548 et 549 du CGI)",
+      "url": "https://www.prc.cm/files/41/5c/26/3621ac2603f3f0a3d2ebf7657b1202f3.pdf",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Cameroon: National identity cards, including requirements and procedures (CMR105627.FE)",
+      "url": "https://www.ecoi.net/en/document/1397225.html",
+      "publisher": "Immigration and Refugee Board of Canada (via ecoi.net)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "CNI en 48h au Cameroun : voici les trois étapes à suivre",
+      "url": "https://fr.journalducameroun.com/cni-en-48h-au-cameroun-voici-les-trois-etapes-a-suivre/",
+      "publisher": "Journal du Cameroun",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "ANTIC alerte sur un faux communiqué au sujet de la nouvelle CNI au Cameroun",
+      "url": "https://cybersecuritymag.africa/antic-alerte-sur-un-faux-communique-au-sujet-de-la-nouvelle-cni-au-cameroun",
+      "publisher": "Cybersecurity Mag Africa",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "La liste des pièces provient du dépliant officiel DGSN de 2020 (antérieur à la nouvelle CNI biométrique de 2025). Le portail idcam.cm n'a pas pu être consulté (HTTP 403) pour confirmer la liste actuelle."
+    },
+    {
+      "field": "delay",
+      "note": "Le délai de 48 heures est une annonce de la DGSN rapportée par la presse, pas un texte réglementaire ; aucun texte officiel consulté ne le garantit."
+    },
+    {
+      "field": "validity",
+      "note": "Des articles de presse évoquent une validité portée à 15 ans pour la nouvelle CNI ; aucun texte officiel consulté ne le confirme. La valeur retenue (10 ans) est celle du dépliant DGSN et du décret de 2016."
+    },
+    {
+      "field": "cost",
+      "note": "Montant issu de l'ordonnance n° 2024/001 ; une éventuelle modification par les lois de finances 2025 ou 2026 n'a pas été vérifiée."
+    }
+  ],
+  "language_versions": ["fr"]
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "carte-nationale-identite-renouvellement",
+  "title_fr": "Carte nationale d'identité (CNI) : renouvellement (carte périmée)",
+  "title_en": "National identity card (CNI): renewal of an expired card",
+  "category": "identite",
+  "keywords_fr": [
+    "renouveler ma CNI",
+    "renouvellement CNI",
+    "CNI expirée",
+    "CNI périmée",
+    "carte d'identité expirée",
+    "refaire ma carte d'identité",
+    "CNI",
+    "idcam"
+  ],
+  "keywords_en": ["renew ID card", "ID card renewal", "expired ID card", "CNI renewal Cameroon"],
+  "authority": {
+    "name": "Délégation Générale à la Sûreté Nationale (DGSN)",
+    "level": "national",
+    "source_refs": [0, 2]
+  },
+  "where": [
+    {
+      "text": "Pré-enrôlement en ligne sur le portail officiel www.idcam.cm.",
+      "source_refs": [3]
+    },
+    {
+      "text": "Enrôlement biométrique dans un centre d'enrôlement / poste d'identification de la police ; retrait au poste ou centre d'enrôlement.",
+      "source_refs": [0, 3]
+    }
+  ],
+  "who_can_apply": {
+    "text": "Titulaire camerounais d'une carte nationale d'identité arrivée à expiration (cas de « péremption »).",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "La carte nationale d'identité périmée.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une copie d'acte de mariage, pour les femmes mariées.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une pièce justificative de la profession, le cas échéant.",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Se pré-enrôler sur www.idcam.cm et renseigner ses informations.",
+      "source_refs": [3]
+    },
+    {
+      "order": 2,
+      "description": "Payer en ligne le droit de timbre de 10 000 FCFA et choisir le centre d'enrôlement.",
+      "source_refs": [1, 3]
+    },
+    {
+      "order": 3,
+      "description": "Se présenter au centre avec l'ancienne CNI et les pièces requises pour la capture biométrique.",
+      "source_refs": [0, 3]
+    },
+    {
+      "order": 4,
+      "description": "Retirer la nouvelle carte au centre d'enrôlement après réception du SMS, contre restitution du récépissé.",
+      "source_refs": [0, 3]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": 10000,
+    "description": "Droit de timbre sur la carte nationale d'identité (article 549 du CGI, modifié par l'ordonnance n° 2024/001 du 20 juin 2024).",
+    "source_refs": [1]
+  },
+  "delay": {
+    "text": "La DGSN a annoncé une délivrance en 48 heures après l'enrôlement physique (annonce de février 2025 rapportée par la presse).",
+    "source_refs": [3]
+  },
+  "validity": {
+    "text": "10 ans.",
+    "source_refs": [0, 2]
+  },
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Décret n° 2016/375 du 4 août 2016",
+      "title": "Décret fixant les caractéristiques et les modalités d'établissement et de délivrance de la carte nationale d'identité",
+      "source_refs": [2]
+    },
+    {
+      "sourceId": null,
+      "reference": "Article 549 du Code général des impôts, modifié par l'ordonnance n° 2024/001 du 20 juin 2024",
+      "title": "Droit de timbre sur les cartes nationales d'identité (10 000 FCFA)",
+      "source_refs": [1]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Une carte délivrée avant la nouvelle CNI reste valable jusqu'à sa date d'expiration, sauf si son titulaire choisit de la renouveler.",
+      "source_refs": [2]
+    },
+    {
+      "text": "Pour un renouvellement, le certificat de nationalité n'apparaît pas dans la liste officielle des pièces (il est exigé pour la première demande).",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Tout sur vos titres identitaires : modalités d'établissement et de délivrance des titres identitaires (dépliant)",
+      "url": "https://www.dgsn.cm/wp-content/uploads/2020/01/Depliant-CNI.pdf",
+      "publisher": "Délégation Générale à la Sûreté Nationale (DGSN)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Ordonnance n° 2024/001 du 20 juin 2024 modifiant et complétant certaines dispositions de la loi de finances 2024 (articles 548 et 549 du CGI)",
+      "url": "https://www.prc.cm/files/41/5c/26/3621ac2603f3f0a3d2ebf7657b1202f3.pdf",
+      "publisher": "Présidence de la République du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Cameroon: National identity cards, including requirements and procedures (CMR105627.FE)",
+      "url": "https://www.ecoi.net/en/document/1397225.html",
+      "publisher": "Immigration and Refugee Board of Canada (via ecoi.net)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "CNI en 48h au Cameroun : voici les trois étapes à suivre",
+      "url": "https://fr.journalducameroun.com/cni-en-48h-au-cameroun-voici-les-trois-etapes-a-suivre/",
+      "publisher": "Journal du Cameroun",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "Liste issue du dépliant officiel DGSN de 2020 (cas de péremption). Le portail idcam.cm n'a pas pu être consulté (HTTP 403) pour confirmer la liste en vigueur depuis la CNI biométrique de 2025."
+    },
+    {
+      "field": "delay",
+      "note": "Délai de 48 heures annoncé par la DGSN et rapporté par la presse ; non garanti par un texte."
+    },
+    {
+      "field": "validity",
+      "note": "Des articles de presse évoquent 15 ans pour la nouvelle CNI ; non confirmé par un texte officiel consulté."
+    },
+    {
+      "field": "cost",
+      "note": "Une éventuelle modification par les lois de finances 2025 ou 2026 n'a pas été vérifiée."
+    }
+  ],
+  "language_versions": ["fr"]
+}

@@ -1,0 +1,211 @@
+{
+  "$schema": "./procedure.schema.json",
+  "id": "carte-grise-immatriculation",
+  "title_fr": "Carte grise : enregistrement de la mutation d'un véhicule d'occasion et établissement de la carte grise",
+  "title_en": "Vehicle registration card (carte grise): registering the transfer of a used vehicle",
+  "category": "transport",
+  "keywords_fr": [
+    "carte grise",
+    "mutation carte grise",
+    "mutation véhicule",
+    "changer la carte grise à mon nom",
+    "immatriculation véhicule",
+    "immatriculer ma voiture",
+    "certificat d'immatriculation",
+    "achat voiture d'occasion",
+    "véhicule d'occasion importé",
+    "certificat de vente véhicule",
+    "droit de timbre carte grise",
+    "plaque d'immatriculation"
+  ],
+  "keywords_en": [
+    "vehicle registration",
+    "registration card",
+    "grey card",
+    "car ownership transfer",
+    "used car registration",
+    "imported used vehicle",
+    "logbook"
+  ],
+  "authority": {
+    "name": "Ministère des Transports (délégations régionales des transports) pour la carte grise ; Direction Générale des Impôts (Cellules d'enregistrement des Centres régionaux des impôts) pour l'enregistrement de la mutation",
+    "level": "national",
+    "source_refs": [0]
+  },
+  "where": [
+    {
+      "text": "Télédéclaration de la mutation sur le portail de la Direction Générale des Impôts (www.impots.cm, lien « télédéclaration »)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Cellules d'enregistrement logées dans les Centres régionaux des impôts (formalité d'enregistrement du certificat de vente)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Délégation régionale des transports (établissement de la carte grise)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Depuis le 2 décembre 2024, demande des titres de transport, dont la carte grise, sur la plateforme en ligne du ministère des Transports ssdtmint.cm",
+      "source_refs": [3, 4]
+    }
+  ],
+  "who_can_apply": {
+    "text": "L'acquéreur du véhicule d'occasion, qu'il s'agisse d'une acquisition locale ou d'une importation ; pour un véhicule importé, le déclarant en douane peut faire la télédéclaration pour le compte de son client.",
+    "source_refs": [0]
+  },
+  "documents": [
+    {
+      "text": "Trois (03) exemplaires du certificat de vente identifiant les parties et mentionnant leurs Numéros d'Identifiant Unique (NIU)",
+      "source_refs": [0]
+    },
+    {
+      "text": "Une copie certifiée de la carte nationale d'identité de l'acheteur et de celle du vendeur",
+      "source_refs": [0]
+    },
+    {
+      "text": "L'avis d'imposition édité depuis le site de la DGI, mentionnant la liquidation des droits dus",
+      "source_refs": [0]
+    },
+    {
+      "text": "L'attestation de virement délivrée par la banque",
+      "source_refs": [0]
+    },
+    {
+      "text": "Véhicule déjà immatriculé au Cameroun : une copie de l'ancienne carte grise",
+      "source_refs": [0, 2]
+    },
+    {
+      "text": "Véhicule importé : une copie de l'attestation de dédouanement, une copie du connaissement et une copie de la déclaration en détail",
+      "source_refs": [0]
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "description": "Disposer d'un Numéro d'Identifiant Unique (NIU) et créer un compte de télédéclaration sur www.impots.cm (type d'utilisateur « contribuable télé-déclaration »).",
+      "source_refs": [0]
+    },
+    {
+      "order": 2,
+      "description": "Télédéclarer la mutation : véhicule acheté localement, sur la base du numéro de châssis ; véhicule importé, sur la base du numéro de la fiche de contrôle d'identification (CIVIC). Le système calcule les droits et génère un avis d'imposition à imprimer.",
+      "source_refs": [0, 1]
+    },
+    {
+      "order": 3,
+      "description": "Payer les droits auprès d'une banque (virement ou versement) dans le compte du Receveur des impôts. Pour les véhicules d'occasion importés, depuis le 10 janvier 2024, les droits d'enregistrement et de timbre sont liquidés et payés dans le système douanier CAMCIS avec les droits de douane.",
+      "source_refs": [0, 5]
+    },
+    {
+      "order": 4,
+      "description": "Se présenter avec le reçu ou l'attestation de virement auprès du Receveur des impôts, qui délivre la quittance, et déposer le dossier complet à la Cellule d'enregistrement ; un récépissé de dépôt est remis.",
+      "source_refs": [0]
+    },
+    {
+      "order": 5,
+      "description": "Le certificat de vente revêtu de la mention d'enregistrement et les quittances sont transmis chaque jour par les impôts à la délégation régionale des transports, qui établit la carte grise. Les droits de timbre ayant été payés, aucun paiement supplémentaire de ces droits n'est fait à la délégation.",
+      "source_refs": [0]
+    }
+  ],
+  "cost": {
+    "amount_fcfa": null,
+    "description": "Montant variable : droits d'enregistrement de 5 % de la valeur du véhicule (valeur déclarée au certificat de vente, ou valeur de la mercuriale administrative si elle est plus élevée) ; droit de timbre sur carte grise de 3 000 FCFA par cheval vapeur (CV) ; taxe à l'essieu pour les véhicules de charge utile supérieure à 3 tonnes (selon la charge utile) ; timbre de dimension de 1 000 FCFA par page.",
+    "source_refs": [0, 1, 5]
+  },
+  "delay": null,
+  "validity": null,
+  "legal_basis": [
+    {
+      "sourceId": null,
+      "reference": "Articles 342, 543 (c) et 546 bis du Code général des impôts",
+      "title": "Code général des impôts du Cameroun (enregistrement des mutations de véhicules d'occasion, base d'imposition)",
+      "source_refs": [0]
+    }
+  ],
+  "tips": [
+    {
+      "text": "Faites figurer sur le certificat de vente les NIU de l'acheteur et du vendeur : ils sont exigés pour l'enregistrement.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Si le prix déclaré est inférieur à la valeur réelle, les impôts appliquent la valeur de la mercuriale administrative.",
+      "source_refs": [0]
+    },
+    {
+      "text": "Depuis août 2020, la carte grise sécurisée a un format proche de celui du permis de conduire ; les anciennes cartes restaient valables jusqu'à leur expiration.",
+      "source_refs": [2]
+    },
+    {
+      "text": "Vérifiez que votre dossier est complet avant le dépôt : un dossier incomplet est rejeté.",
+      "source_refs": [0]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Note explicative sur la réforme des procédures d'enregistrement des mutations des véhicules d'occasion (entrée en vigueur le 1er juin 2017)",
+      "url": "https://www.impots.cm/uploads/Telechargement/NOTE%20EXPLICATIVE%20SUR%20LA%20MUTATIO%20DES%20VEHICULE%20AUTO%20F.pdf",
+      "publisher": "Direction Générale des Impôts, Ministère des Finances",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Véhicules d'occasion : le Cameroun lance une nouvelle modalité d'enregistrement des mutations en ligne (communiqué DGI du 31 août 2022, effet au 15 septembre 2022)",
+      "url": "https://www.cncc.cm/fr/article/vehicules-d-occasion-le-cameroun-lance-une-nouvelle-modalite-d-enregistrement-des-mutations-en-ligne-379",
+      "publisher": "Conseil National des Chargeurs du Cameroun (CNCC)",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Titres de transports : la nouvelle carte grise est là (27 août 2020)",
+      "url": "https://www.cameroon-tribune.cm/article.html/34577/fr.html/titres-de-transports-la-nouvelle-carte-grise",
+      "publisher": "Cameroon Tribune (SOPECAM)",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Portail des services des transports (permis de conduire, carte grise, licences)",
+      "url": "https://ssdtmint.cm/",
+      "publisher": "Ministère des Transports du Cameroun",
+      "official": true,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Les Camerounais peuvent désormais demander un permis de conduire en ligne (communiqué du ministre des Transports du 14 novembre 2024)",
+      "url": "https://laminute.info/2024/11/15/les-camerounais-peuvent-desormais-demander-un-permis-de-conduire-en-ligne/",
+      "publisher": "La Minute",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    },
+    {
+      "title": "Véhicules d'occasion : les droits d'enregistrement et de timbre sur les mutations désormais payés dans Camcis (3 janvier 2024, communiqué MINFI du 2 janvier 2024)",
+      "url": "https://www.investiraucameroun.com/gestion-publique/0301-20155-vehicules-d-occasion-les-droits-d-enregistrement-et-de-timbre-sur-les-mutations-desormais-payes-dans-camcis",
+      "publisher": "Investir au Cameroun",
+      "official": false,
+      "accessed_at": "2026-10-23"
+    }
+  ],
+  "verified_at": "2026-10-23",
+  "unverified": [
+    {
+      "field": "documents",
+      "note": "La liste couvre la mutation d'un véhicule d'occasion (achat local ou importation). Les pièces pour la première immatriculation d'un véhicule neuf et pour un duplicata de carte grise n'ont pas été trouvées dans une source officielle."
+    },
+    {
+      "field": "cost",
+      "note": "Les frais d'établissement de la carte grise perçus par le ministère des Transports (recette non fiscale, payable en ligne selon des guides non officiels) n'ont pas pu être vérifiés ; seuls les droits fiscaux (DGI) sont indiqués."
+    },
+    {
+      "field": "delay",
+      "note": "Aucun délai officiel de délivrance de la carte grise n'a été trouvé."
+    },
+    {
+      "field": "validity",
+      "note": "Durée de validité de la carte grise non trouvée dans une source officielle."
+    },
+    {
+      "field": "steps",
+      "note": "L'articulation exacte entre la plateforme ssdtmint.cm (depuis décembre 2024) et la transmission impôts → délégation décrite par la note DGI de 2017 n'a pas pu être vérifiée ; la plateforme ne publie pas de guide accessible."
+    }
+  ],
+  "language_versions": ["fr"]
+}
