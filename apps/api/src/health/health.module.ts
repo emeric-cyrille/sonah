@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ChatModule } from '../chat/chat.module';
+import { LanguageModelModule } from '../chat/language-model.module';
 import { RagModule } from '../rag/rag.module';
 import { HealthController } from './health.controller';
 
 @Module({
-  imports: [RagModule, ChatModule],
+  imports: [RagModule, LanguageModelModule],
   controllers: [HealthController],
 })
 export class HealthModule {}
