@@ -1,10 +1,13 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
   const logger = new Logger('Bootstrap');
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // Derrière Traefik : l'adresse du client (limitation de débit) vient de X-Forwarded-For
+  app.set('trust proxy', 1);
 
   app.enableCors({
     origin: process.env.CORS_ORIGIN || process.env.FRONTEND_URL || 'http://localhost:3000',

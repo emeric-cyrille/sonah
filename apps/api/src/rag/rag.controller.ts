@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import type { SearchResult, StoredDocument, VectorStoreService } from '@sonah/rag';
 import { AdminTokenGuard } from '../common/admin-token.guard';
+import { RATE_LIMITS, RateLimit } from '../common/rate-limit.guard';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 import { rethrowAsUnavailable } from '../common/unavailable';
 import { VECTOR_STORE } from './rag.tokens';
@@ -31,6 +32,7 @@ export class RagController {
 
   /** Recherche sémantique dans les textes officiels. */
   @Post('search')
+  @RateLimit(RATE_LIMITS.search)
   @HttpCode(200)
   async search(
     @Body(new ZodValidationPipe(searchRequestSchema)) body: SearchRequest,
