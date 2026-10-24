@@ -8,6 +8,7 @@ import { StatusBadge, VerdictBadge, type Tone } from './badges';
 import { CitationDrawer } from './citation-drawer';
 import { FeedbackButtons } from './feedback-buttons';
 import { LightMarkdown, type CitationRenderer } from './light-markdown';
+import { useTypewriter } from './use-typewriter';
 
 const CHIP_STYLES: Readonly<Record<Tone, string>> = {
   dark: 'border-sun/50 bg-sun/15 text-sun-soft hover:bg-sun hover:text-ink',
@@ -27,6 +28,8 @@ export function AnswerBody({
   feedbackId,
   tone,
   attachment,
+  animate = false,
+  onTypingProgress,
 }: {
   readonly content: string;
   readonly verdict?: string | null;
@@ -37,8 +40,13 @@ export function AnswerBody({
   readonly tone: Tone;
   /** Bloc affiché juste sous le texte (fiche démarche, orientation). */
   readonly attachment?: ReactNode;
+  /** Écrit le texte progressivement (nouvelle réponse) ; le reste apparaît une fois le texte écrit. */
+  readonly animate?: boolean;
+  /** Appelé à chaque étape de l'écriture (défilement du fil de conversation). */
+  readonly onTypingProgress?: () => void;
 }): JSX.Element {
   const { dict } = useI18n();
+  const { visible, done } = useTypewriter(content, animate, onTypingProgress);
   const [open, setOpen] = useState<Citation | null>(null);
   const close = useCallback(() => setOpen(null), []);
 
@@ -86,110 +94,122 @@ export function AnswerBody({
         <VerdictBadge verdict={verdict} tone={tone} explain />
       )}
 
-      <LightMarkdown
-        text={content}
-        renderCitation={renderCitation}
-        className={`text-[16px] leading-relaxed ${tone === 'dark' ? 'text-paper/90' : 'text-ink'}`}
-      />
+      {/* Lecteurs d'écran : texte complet d'emblée, sans relire chaque mot ajouté */}
+      {!done && <p className="sr-only">{content}</p>}
+      <div aria-hidden={!done}>
+        <LightMarkdown
+          text={visible}
+          renderCitation={renderCitation}
+          className={`text-[16px] leading-relaxed ${tone === 'dark' ? 'text-paper/90' : 'text-ink'} ${
+            done ? '' : 'typing-caret'
+          }`}
+        />
+      </div>
 
-      {attachment}
+      {!done ? null : (
+        <div className={`space-y-4 ${animate ? 'animate-fade-up' : ''}`}>
+          {attachment}
 
-      {citations.length > 0 && (
-        <section aria-label={dict.chat.citationsHeading}>
-          <p className={`eyebrow ${tone === 'dark' ? 'text-paper/70' : ''}`}>
-            {dict.chat.citationsHeading}
-          </p>
-          <ul className="mt-2 grid gap-2 sm:grid-cols-2">
-            {citations.map((citation) => (
-              <li key={`${citation.index}-${citation.documentId}`}>
-                <button
-                  type="button"
-                  onClick={() => setOpen(citation)}
-                  className={`flex w-full items-start gap-3 rounded-2xl border px-3 py-2.5 text-left transition-colors ${cardStyle}`}
-                >
-                  <span
-                    className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold ${CHIP_STYLES[tone]}`}
-                    aria-hidden="true"
-                  >
-                    {citation.index}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-semibold">{citation.title}</span>
-                    {citation.reference && (
-                      <span className={`block truncate text-xs ${muted}`}>
-                        {citation.reference}
-                      </span>
-                    )}
-                  </span>
-                  {citation.status && citation.status !== 'in_force' && (
-                    <span className="shrink-0 rounded-full bg-paper">
-                      <StatusBadge status={citation.status} />
-                    </span>
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {extraSources.length > 0 && (
-        <section aria-label={dict.chat.sourcesHeading}>
-          <p className={`eyebrow ${tone === 'dark' ? 'text-paper/70' : ''}`}>
-            {dict.chat.sourcesHeading}
-          </p>
-          <ul className="mt-2 flex flex-wrap gap-2">
-            {extraSources.map((source) => {
-              const label = `${source.title}${source.reference ? ` · ${source.reference}` : ''}`;
-              const chip = `inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs ${
-                tone === 'dark' ? 'border-white/20 text-paper/80' : 'border-line text-ink-soft'
-              }`;
-              return (
-                <li key={label}>
-                  {source.url ? (
-                    <a
-                      href={source.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`${chip} hover:border-sun/60`}
+          {citations.length > 0 && (
+            <section aria-label={dict.chat.citationsHeading}>
+              <p className={`eyebrow ${tone === 'dark' ? 'text-paper/70' : ''}`}>
+                {dict.chat.citationsHeading}
+              </p>
+              <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+                {citations.map((citation) => (
+                  <li key={`${citation.index}-${citation.documentId}`}>
+                    <button
+                      type="button"
+                      onClick={() => setOpen(citation)}
+                      className={`flex w-full items-start gap-3 rounded-2xl border px-3 py-2.5 text-left transition-colors ${cardStyle}`}
                     >
-                      {label} <span aria-hidden="true">↗</span>
-                    </a>
-                  ) : (
-                    <span className={chip}>{label}</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      )}
-
-      {(traceId || feedbackId) && (
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          {traceId ? (
-            <Link
-              href={`/audit/${encodeURIComponent(traceId)}`}
-              className={`inline-flex items-center gap-1.5 text-sm font-semibold underline decoration-2 underline-offset-4 ${
-                tone === 'dark'
-                  ? 'text-sun-soft decoration-sun/40 hover:decoration-sun'
-                  : 'text-indigo decoration-indigo/30 hover:decoration-indigo'
-              }`}
-            >
-              <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
-                <path
-                  d="M4 5h12M4 10h8M4 15h10"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
-              </svg>
-              {dict.chat.viewTrace}
-            </Link>
-          ) : (
-            <span />
+                      <span
+                        className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold ${CHIP_STYLES[tone]}`}
+                        aria-hidden="true"
+                      >
+                        {citation.index}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-semibold">
+                          {citation.title}
+                        </span>
+                        {citation.reference && (
+                          <span className={`block truncate text-xs ${muted}`}>
+                            {citation.reference}
+                          </span>
+                        )}
+                      </span>
+                      {citation.status && citation.status !== 'in_force' && (
+                        <span className="shrink-0 rounded-full bg-paper">
+                          <StatusBadge status={citation.status} />
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
-          {feedbackId && <FeedbackButtons id={feedbackId} tone={tone} />}
+
+          {extraSources.length > 0 && (
+            <section aria-label={dict.chat.sourcesHeading}>
+              <p className={`eyebrow ${tone === 'dark' ? 'text-paper/70' : ''}`}>
+                {dict.chat.sourcesHeading}
+              </p>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {extraSources.map((source) => {
+                  const label = `${source.title}${source.reference ? ` · ${source.reference}` : ''}`;
+                  const chip = `inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs ${
+                    tone === 'dark' ? 'border-white/20 text-paper/80' : 'border-line text-ink-soft'
+                  }`;
+                  return (
+                    <li key={label}>
+                      {source.url ? (
+                        <a
+                          href={source.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`${chip} hover:border-sun/60`}
+                        >
+                          {label} <span aria-hidden="true">↗</span>
+                        </a>
+                      ) : (
+                        <span className={chip}>{label}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+
+          {(traceId || feedbackId) && (
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              {traceId ? (
+                <Link
+                  href={`/audit/${encodeURIComponent(traceId)}`}
+                  className={`inline-flex items-center gap-1.5 text-sm font-semibold underline decoration-2 underline-offset-4 ${
+                    tone === 'dark'
+                      ? 'text-sun-soft decoration-sun/40 hover:decoration-sun'
+                      : 'text-indigo decoration-indigo/30 hover:decoration-indigo'
+                  }`}
+                >
+                  <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
+                    <path
+                      d="M4 5h12M4 10h8M4 15h10"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  {dict.chat.viewTrace}
+                </Link>
+              ) : (
+                <span />
+              )}
+              {feedbackId && <FeedbackButtons id={feedbackId} tone={tone} />}
+            </div>
+          )}
         </div>
       )}
 
