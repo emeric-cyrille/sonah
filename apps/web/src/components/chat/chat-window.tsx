@@ -2,7 +2,14 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+} from 'react';
 import { AnswerBody } from '@/components/answer/answer-body';
 import { OrientationCard, ProcedureCard } from '@/components/answer/procedure-card';
 import { OrbAvatar } from '@/components/orb-avatar';
@@ -16,7 +23,15 @@ import { useChatStore, type ChatEntry } from '@/store/chat-store';
 const MAX_LENGTH = 2000;
 const MAX_TEXTAREA_HEIGHT = 180;
 
-function AssistantMessage({ message }: { readonly message: ChatEntry }): JSX.Element {
+function AssistantMessage({
+  message,
+  animate,
+  onTypingProgress,
+}: {
+  readonly message: ChatEntry;
+  readonly animate: boolean;
+  readonly onTypingProgress: () => void;
+}): JSX.Element {
   const { dict } = useI18n();
   const errorText = message.error
     ? message.error.kind === 'unavailable' || message.error.kind === 'not-found'
@@ -54,6 +69,8 @@ function AssistantMessage({ message }: { readonly message: ChatEntry }): JSX.Ele
               feedbackId={message.traceId ?? message.id}
               tone="dark"
               attachment={attachment}
+              animate={animate}
+              onTypingProgress={onTypingProgress}
             />
           )}
         </div>
@@ -70,6 +87,19 @@ export function ChatWindow(): JSX.Element {
   const initialQuestionSent = useRef<boolean>(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // Réponses déjà présentes à l'ouverture (retour sur la page) : affichées sans effet d'écriture
+  const [initialIds] = useState<ReadonlySet<string>>(
+    () => new Set(messages.map((message) => message.id)),
+  );
+
+  // Pendant l'écriture, suit le texte si la personne est restée en bas du fil
+  const followTyping = useCallback((): void => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const distance = container.scrollHeight - container.scrollTop - container.clientHeight;
+    if (distance < 160) container.scrollTop = container.scrollHeight;
+  }, []);
 
   // Démarre la conversation depuis un lien (?q=...)
   useEffect(() => {
@@ -119,7 +149,7 @@ export function ChatWindow(): JSX.Element {
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-[-20%] h-[60vmin] w-[60vmin] -translate-x-1/2 rounded-full bg-sun/15 blur-[120px]"
       />
-      <div className="relative flex-1 overflow-y-auto overscroll-contain">
+      <div ref={scrollRef} className="relative flex-1 overflow-y-auto overscroll-contain">
         <div className="container-page max-w-3xl py-8">
           {isEmpty ? (
             <div className="flex flex-col items-center pt-4 text-center sm:pt-8">
@@ -164,7 +194,11 @@ export function ChatWindow(): JSX.Element {
                         </p>
                       </div>
                     ) : (
-                      <AssistantMessage message={message} />
+                      <AssistantMessage
+                        message={message}
+                        animate={!initialIds.has(message.id)}
+                        onTypingProgress={followTyping}
+                      />
                     )}
                   </li>
                 ))}

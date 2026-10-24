@@ -205,6 +205,30 @@
   animation: typing 1.2s infinite;
 }
 
+/* Curseur de la réponse en cours d'écriture, à la fin du dernier paragraphe ou élément de liste */
+@keyframes caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typing-caret > p:last-child::after,
+.typing-caret > :is(ul, ol):last-child > li:last-child::after {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 1.05em;
+  margin-left: 0.15em;
+  vertical-align: -0.15em;
+  border-radius: 2px;
+  background: #e8a317;
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+
 .grain::before {
   content: '';
   position: absolute;
@@ -225,6 +249,8 @@
   .word,
   .marquee-track,
   .typing-dot,
+  .typing-caret > p:last-child::after,
+  .typing-caret > :is(ul, ol):last-child > li:last-child::after,
   .animate-fade-up {
     animation: none !important;
   }
