@@ -20,6 +20,7 @@ export const KNOWN_VERDICTS = [
   'REFER_TO_HUMAN',
   'OUT_OF_SCOPE',
   'PROCEDURE_GUIDANCE',
+  'CONVERSATION',
 ] as const;
 export type KnownVerdict = (typeof KNOWN_VERDICTS)[number];
 
@@ -53,7 +54,7 @@ export const sourceSchema = z.object({
 // ─── Fiche démarche (champs optionnels de /chat) ──────────────────
 // Tolérance : une fiche mal formée est ignorée (catch) au lieu de faire échouer toute la réponse.
 
-export const ANSWER_TYPES = ['procedure', 'legal', 'orientation'] as const;
+export const ANSWER_TYPES = ['procedure', 'legal', 'orientation', 'conversation'] as const;
 export type AnswerType = (typeof ANSWER_TYPES)[number];
 
 const stringList = z.array(z.string()).default([]);

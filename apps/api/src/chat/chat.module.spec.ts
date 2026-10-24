@@ -45,3 +45,17 @@ describe('choix du modèle de Sonah', () => {
     });
   });
 });
+
+describe('fournisseur imposé (LLM_PROVIDER)', () => {
+  it('utilise Gemini quand LLM_PROVIDER=gemini, même si une clé Groq existe', () => {
+    expect(
+      createLanguageModel(
+        config({ LLM_PROVIDER: 'gemini', GROQ_API_KEY: 'q', GEMINI_API_KEY: 'g' }),
+      )?.name,
+    ).toBe('gemini-3.8-flash');
+  });
+
+  it('aucun modèle si le fournisseur imposé n’a pas de clé', () => {
+    expect(createLanguageModel(config({ LLM_PROVIDER: 'gemini', GROQ_API_KEY: 'q' }))).toBeNull();
+  });
+});

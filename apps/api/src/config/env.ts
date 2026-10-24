@@ -13,6 +13,12 @@ export const envSchema = z.object({
   NEO4J_USER: z.string().default('neo4j'),
   NEO4J_PASSWORD: z.string().default(''),
 
+  /**
+   * Fournisseur du modèle de langage imposé (gemini, groq, openai). Absent : Groq, sinon Gemini,
+   * sinon OpenAI, selon les clés présentes.
+   */
+  LLM_PROVIDER: z.enum(['gemini', 'groq', 'openai']).optional(),
+
   /** Groq (palier gratuit, modèles ouverts) : prioritaire sur Gemini et OpenAI. */
   GROQ_API_KEY: z.string().optional(),
   GROQ_CHAT_MODEL: z.string().default('openai/gpt-oss-120b'),

@@ -328,6 +328,10 @@ export const fr = {
       label: 'Hors du champ couvert',
       explanation: 'Ce sujet ne fait pas encore partie des textes indexés par Sonah.',
     },
+    CONVERSATION: {
+      label: 'Conversation',
+      explanation: 'Échange de politesse : aucune information juridique n’est donnée.',
+    },
     PROCEDURE_GUIDANCE: {
       label: 'Fiche démarche',
       explanation:

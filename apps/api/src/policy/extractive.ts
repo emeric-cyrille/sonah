@@ -14,7 +14,7 @@ const TEMPLATES = {
     noEvidence:
       "Je n'ai pas trouvé de texte officiel correspondant à votre question dans ceux que je connais pour l'instant. Pour une démarche précise, rapprochez-vous de l’administration concernée.",
     outOfScope:
-      "Je suis Sonah, l'assistant administratif des citoyens camerounais : je ne peux pas vous aider sur ce sujet. Posez-moi une question sur une démarche administrative ou sur vos droits.",
+      "Ce sujet sort un peu de mon domaine 😊 Je suis Sonah, et je suis spécialisé dans les démarches administratives et vos droits au Cameroun : carte d'identité, passeport, état civil, création d'entreprise, droit du travail… Que puis-je faire pour vous sur ces sujets ?",
   },
   en: {
     intro: 'Here are the official texts closest to your question:',
@@ -24,7 +24,7 @@ const TEMPLATES = {
     noEvidence:
       'I could not find an official text matching your question among the texts I currently know. For a specific procedure, please contact the relevant administration.',
     outOfScope:
-      "I am Sonah, the administrative assistant for Cameroonian citizens: I can't help with this topic. Ask me about an administrative procedure or your rights.",
+      "That's a little outside my field 😊 I'm Sonah, and I specialise in administrative procedures and your rights in Cameroon: ID card, passport, civil status, starting a business, labour law… How can I help you with those?",
   },
 } as const;
 

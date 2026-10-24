@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { getAgent } from '../agents/agent-registry';
 import { AnswerEngine } from '../agents/answer-engine.service';
 import { AuditService } from '../audit/audit.service';
@@ -13,7 +13,9 @@ import { detectSensitiveSituation } from '../policy/situations';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProcedureService } from '../procedures/procedure.service';
 import type { AnswerType, ChatResponse, ChatSource } from './chat.schemas';
-import type { ChatTurn } from './language-model';
+import { LANGUAGE_MODEL, type ChatTurn, type LanguageModel } from './language-model';
+import { analyzeSmallTalk, smallTalkReply, type SmallTalkKind } from './small-talk';
+import { understandMessage, UNDERSTANDING_PROMPT_VERSION } from './understanding';
 
 /** Nombre de messages précédents repris pour garder le fil de la conversation. */
 const HISTORY_SIZE = 8;
@@ -88,6 +90,7 @@ export class ChatService {
     private readonly engine: AnswerEngine,
     private readonly audit: AuditService,
     private readonly procedures: ProcedureService,
+    @Optional() @Inject(LANGUAGE_MODEL) private readonly languageModel: LanguageModel | null = null,
   ) {}
 
   async reply(
@@ -115,8 +118,67 @@ export class ChatService {
     });
 
     const previousQuestion = [...history].reverse().find((turn) => turn.role === 'USER')?.content;
-    const retrieval = buildRetrievalQuery(pii.text, previousQuestion);
-    let intent = classifyIntent(pii.text);
+
+    // Politesse seule (« Bonjour », « merci », « qui es-tu ? ») : réponse humaine, sans recherche
+    const smallTalk = analyzeSmallTalk(pii.text);
+    if (smallTalk.onlySmallTalk) {
+      return this.finishConversationTurn(
+        conversation.id,
+        recorder,
+        language,
+        detection.source,
+        pii,
+        smallTalk.kinds,
+        'small_talk',
+      );
+    }
+    // « Bonjour, je veux… » : la salutation est retirée avant l'analyse de la demande
+    const request = smallTalk.rest || pii.text;
+    let retrieval = buildRetrievalQuery(request, previousQuestion);
+    let intent = classifyIntent(request);
+
+    // Demande que les règles ne savent pas classer : le modèle la comprend et la reformule
+    if (
+      this.languageModel &&
+      intent.intent === 'out_of_scope' &&
+      intent.signals.every((signal) => signal.startsWith('default:'))
+    ) {
+      const start = performance.now();
+      const understood = await understandMessage(this.languageModel, request, previousQuestion);
+      recorder.add({
+        type: 'llm',
+        agent: sonah.id,
+        summary: understood
+          ? `Demande comprise par le modèle : ${understood.kind}`
+          : 'Compréhension par le modèle indisponible : règles déterministes conservées',
+        data: {
+          model: this.languageModel.name,
+          promptVersion: UNDERSTANDING_PROMPT_VERSION,
+          kind: understood?.kind ?? null,
+          rewrittenQuery: understood?.query ?? null,
+        },
+        durationMs: performance.now() - start,
+      });
+      if (understood?.kind === 'smalltalk' || understood?.kind === 'vague') {
+        return this.finishConversationTurn(
+          conversation.id,
+          recorder,
+          language,
+          detection.source,
+          pii,
+          understood.kind === 'vague' ? ['help'] : ['greeting'],
+          `model_${understood.kind}`,
+        );
+      }
+      if (understood && (understood.kind === 'procedure' || understood.kind === 'rights')) {
+        retrieval = buildRetrievalQuery(understood.query, previousQuestion);
+        const reclassified = classifyIntent(understood.query);
+        intent = {
+          intent: reclassified.intent === 'out_of_scope' ? understood.kind : reclassified.intent,
+          signals: [`model:${understood.kind}`, ...reclassified.signals],
+        };
+      }
+    }
     // Relance elliptique sans indice propre (« et pour un mineur ? ») : intention de la question précédente
     if (retrieval.previousQuestionUsed && intent.signals.every((s) => s.startsWith('default:'))) {
       const previous = classifyIntent(retrieval.query);
@@ -142,7 +204,7 @@ export class ChatService {
       },
     });
 
-    const answer = await this.route(intent, pii.text, retrieval.query, language, recorder, history);
+    const answer = await this.route(intent, request, retrieval.query, language, recorder, history);
 
     const reply = pii.total > 0 ? `${piiNotice(language)}\n\n${answer.reply}` : answer.reply;
     recorder.add({
@@ -297,6 +359,68 @@ export class ChatService {
       promptVersion: orientation.promptVersion,
       answerType: 'orientation',
       evidenceCount: 0,
+    };
+  }
+
+  /**
+   * Échange de politesse ou demande à préciser : réponse humaine, sans recherche ni citation,
+   * tracée et historisée comme les autres réponses.
+   */
+  private async finishConversationTurn(
+    conversationId: string,
+    recorder: TraceRecorder,
+    language: Language,
+    languageSource: string,
+    pii: ReturnType<typeof maskPii>,
+    kinds: readonly SmallTalkKind[],
+    reason: string,
+  ): Promise<ChatResponse> {
+    const sonah = getAgent('sonah');
+    const reply = smallTalkReply(kinds, language);
+    recorder.add({
+      type: 'input',
+      agent: sonah.id,
+      summary: `Message reçu (${language}, ${languageSource}) : échange de politesse (${kinds.join(', ')})`,
+      data: { language, piiMasked: pii.findings, intent: 'conversation', smallTalk: kinds, reason },
+    });
+    recorder.add({
+      type: 'output',
+      agent: sonah.id,
+      summary: 'Réponse conversationnelle, sans recherche ni citation',
+      data: { verdict: 'CONVERSATION', answerType: 'conversation', replyLength: reply.length },
+    });
+    await this.audit.record(recorder, {
+      kind: 'chat',
+      verdict: 'CONVERSATION',
+      conversationId,
+      agentId: sonah.id,
+      promptVersion: 'small-talk-1.0',
+      model: 'deterministic',
+    });
+    await this.prisma.message.create({
+      data: {
+        conversationId,
+        role: 'ASSISTANT',
+        content: reply,
+        metadata: {
+          model: 'deterministic',
+          verdict: 'CONVERSATION',
+          answerType: 'conversation',
+          intent: 'conversation',
+          traceId: recorder.id,
+          language,
+        },
+      },
+    });
+    return {
+      conversationId,
+      reply,
+      language,
+      verdict: 'CONVERSATION',
+      citations: [],
+      sources: [],
+      traceId: recorder.id,
+      answerType: 'conversation',
     };
   }
 

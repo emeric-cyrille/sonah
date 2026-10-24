@@ -115,6 +115,7 @@ export interface MergeDecision {
 
 /** Gravité des verdicts, pour retenir le plus contraignant. */
 const SEVERITY: Record<Verdict, number> = {
+  CONVERSATION: 0,
   ANSWERED_WITH_CITATIONS: 0,
   OUT_OF_SCOPE: 1,
   INSUFFICIENT_EVIDENCE: 2,

@@ -23,8 +23,15 @@ export function createLanguageModel(
   const geminiKey = config.get('GEMINI_API_KEY', { infer: true });
   const openaiKey = config.get('OPENAI_API_KEY', { infer: true });
 
+  const forced = config.get('LLM_PROVIDER', { infer: true });
+  const provider =
+    forced ?? (groqKey ? 'groq' : geminiKey ? 'gemini' : openaiKey ? 'openai' : null);
+  if (forced && !{ groq: groqKey, gemini: geminiKey, openai: openaiKey }[forced]) {
+    logger.warn(`LLM_PROVIDER=${forced} sans clé correspondante : aucun modèle de rédaction`);
+  }
+
   let model: LanguageModel | null = null;
-  if (groqKey) {
+  if (provider === 'groq' && groqKey) {
     const primary = new OpenAICompatibleLanguageModel({
       apiKey: groqKey,
       model: config.get('GROQ_CHAT_MODEL', { infer: true }),
@@ -42,7 +49,7 @@ export function createLanguageModel(
           }),
         ])
       : primary;
-  } else if (geminiKey) {
+  } else if (provider === 'gemini' && geminiKey) {
     model = new OpenAICompatibleLanguageModel({
       apiKey: geminiKey,
       model: config.get('GEMINI_CHAT_MODEL', { infer: true }),
@@ -50,7 +57,7 @@ export function createLanguageModel(
       // La réflexion ne peut pas être désactivée sur Gemini 3 : niveau minimal pour la rapidité et le quota
       reasoningEffort: 'minimal',
     });
-  } else if (openaiKey) {
+  } else if (provider === 'openai' && openaiKey) {
     model = new OpenAICompatibleLanguageModel({
       apiKey: openaiKey,
       model: config.get('OPENAI_CHAT_MODEL', { infer: true }),

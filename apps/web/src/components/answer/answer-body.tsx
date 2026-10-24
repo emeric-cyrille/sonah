@@ -81,7 +81,10 @@ export function AnswerBody({
 
   return (
     <div className="space-y-4">
-      {verdict && <VerdictBadge verdict={verdict} tone={tone} explain />}
+      {/* Échange de politesse : pas de badge de vérification, il n'y a rien à vérifier */}
+      {verdict && verdict !== 'CONVERSATION' && (
+        <VerdictBadge verdict={verdict} tone={tone} explain />
+      )}
 
       <LightMarkdown
         text={content}

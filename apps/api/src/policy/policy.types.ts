@@ -9,6 +9,8 @@ export const VERDICTS = [
   'OUTDATED_TEXT',
   'REFER_TO_HUMAN',
   'OUT_OF_SCOPE',
+  // Échange de politesse ou demande à préciser : aucune information juridique fournie
+  'CONVERSATION',
 ] as const;
 export type Verdict = (typeof VERDICTS)[number];
 
