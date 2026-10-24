@@ -83,7 +83,13 @@ describe('démarches administratives (pipeline de conversation)', () => {
   });
 
   it('pas de fiche (« comment renouveler mon passeport ») → orientation honnête, aucune loi citée', async () => {
-    const { chat, calls } = createHarness(CORPUS, new RecordingModel('Selon la Constitution [1].'));
+    // Textes juridiques peu pertinents (sous le seuil + marge) : aucune loi ne doit être citée
+    const weakLaw = makeResult({ ...LABOUR_ARTICLE, id: 'faible', score: 0.16 });
+    const weakConstitution = makeResult({ ...CONSTITUTION_ART6, id: 'faible-c', score: 0.17 });
+    const { chat, calls } = createHarness(
+      [weakLaw, weakConstitution, MEDICAL_CERTIFICATE, LOST_ID_CARD, BIRTH_CERTIFICATE],
+      new RecordingModel('Selon la Constitution [1].'),
+    );
     const response = await chat.reply('comment renouveler mon passeport');
     expect(response.answerType).toBe('orientation');
     expect(response.verdict).toBe('INSUFFICIENT_EVIDENCE');
@@ -93,7 +99,23 @@ describe('démarches administratives (pipeline de conversation)', () => {
     expect(response.reply).toContain("Je n'ai pas encore la fiche officielle de cette démarche");
     expect(response.reply).toContain('commissariat');
     expect(response.reply).not.toMatch(/\d|Constitution/);
-    expect(calls.every((c) => c.types?.includes('PROCEDURE'))).toBe(true);
+    // Recherche des textes juridiques avec un seuil relevé (seuil + 0,03)
+    const legalSearches = calls.filter((c) => !c.types?.includes('PROCEDURE'));
+    expect(legalSearches.every((c) => (c.minScore ?? 0) >= 0.18 - 1e-9)).toBe(true);
+  });
+
+  it('question de droit formulée comme une démarche (« combien de jours de congé ») → loi citée si très pertinente', async () => {
+    const paidLeave = makeResult({
+      id: 'doc-travail-89',
+      reference: 'Article 89',
+      content:
+        "Le travailleur acquiert droit au congé payé, à la charge de l'employeur, à raison d'un jour et demi ouvrable par mois de service effectif.",
+      score: 0.9,
+    });
+    const { chat } = createHarness([...CORPUS, paidLeave], null);
+    const response = await chat.reply('Combien de jours de congé payé ai-je par an ?');
+    expect(response.answerType).toBe('legal');
+    expect(response.citations.some((c) => c.reference === 'Article 89')).toBe(true);
   });
 
   it('introduction du modèle : acceptée si fidèle, rejetée si elle invente un montant', async () => {
@@ -168,10 +190,12 @@ describe('démarches administratives (pipeline de conversation)', () => {
   });
 
   it('sans fiche indexée : orientation, aucune recherche vectorielle des fiches', async () => {
-    const { chat, calls } = createHarness([LABOUR_ARTICLE], null);
+    const weakLaw = makeResult({ ...LABOUR_ARTICLE, id: 'faible', score: 0.16 });
+    const { chat, calls } = createHarness([weakLaw], null);
     const response = await chat.reply('je veux faire mon certificat médical');
     expect(response.answerType).toBe('orientation');
     expect(response.reply).toContain('médecin agréé');
-    expect(calls).toEqual([]);
+    // Aucune recherche de fiche (aucune indexée) ; seule la vérification des textes juridiques
+    expect(calls.some((call) => call.types?.includes('PROCEDURE'))).toBe(false);
   });
 });

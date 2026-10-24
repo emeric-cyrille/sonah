@@ -23,6 +23,12 @@ const HISTORY_SIZE = 8;
  * sans fiche : seul un texte nettement pertinent est cité.
  */
 export const MIXED_LAW_MARGIN = 0.02;
+/**
+ * Demande classée « démarche » sans fiche correspondante : c'est parfois une question de droit
+ * formulée comme une démarche (« combien de jours de congé payé par an ? »). Les textes ne sont
+ * alors cités que s'ils sont très pertinents (seuil + 0,03) ; sinon, orientation honnête.
+ */
+export const PROCEDURE_LAW_MARGIN = 0.03;
 
 interface RoutedAnswer {
   readonly reply: string;
@@ -266,6 +272,12 @@ export class ChatService {
         procedure: outcome.procedure ?? undefined,
         evidenceCount: 1,
       };
+    }
+
+    if (intent.intent === 'procedure') {
+      const answer = await legal(PROCEDURE_LAW_MARGIN);
+      const grounded = !['INSUFFICIENT_EVIDENCE', 'OUT_OF_SCOPE'].includes(answer.verdict);
+      if (answer.evidenceCount > 0 && grounded) return answer;
     }
 
     const orientation = this.procedures.orientation(question, language, recorder, sonah.id);
