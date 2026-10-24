@@ -20,7 +20,7 @@ import { VECTOR_STORE } from '../rag/rag.tokens';
 /** Fiches examinées par la recherche vectorielle. */
 const PROCEDURE_CANDIDATES = 5;
 /** Version du prompt d'introduction des fiches (enregistrée dans la trace). */
-export const PROCEDURE_PROMPT_VERSION = 'sonah-procedure-intro-2026-10-23.1';
+export const PROCEDURE_PROMPT_VERSION = 'sonah-procedure-intro-2026-10-24.1';
 const EXTRACTIVE = 'extractive';
 
 export interface ProcedureCandidate {
@@ -281,7 +281,7 @@ export function procedureIntroTurns(
       content: [
         "Tu es Sonah, l'assistant administratif des citoyens camerounais.",
         'On te donne une FICHE DE DÉMARCHE vérifiée. Sa version complète (pièces, étapes, coût, délai, sources) sera affichée juste après ton texte.',
-        `Écris seulement une introduction de 1 à 3 phrases courtes, chaleureuses, en ${languageName} : reformule la situation de la personne et indique à quelle administration s'adresser, d'après la fiche.`,
+        `Écris seulement une introduction de 1 à 3 phrases courtes, chaleureuses, en ${languageName} : reformule la situation de la personne et indique à quelle administration s'adresser, d'après la fiche. Ne salue pas et ne te présente pas.`,
         "Interdits (vérifiés automatiquement) : aucun chiffre, montant, délai ou durée ; aucune liste de pièces ; aucun lien ; aucun numéro entre crochets ; aucun titre ni liste à puces. N'ajoute rien qui ne soit pas dans la fiche.",
       ].join('\n'),
     },

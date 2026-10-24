@@ -7,7 +7,7 @@ function config(values: Partial<Env>): Pick<ConfigService<Env, true>, 'get'> {
   const defaults: Partial<Env> = {
     GROQ_CHAT_MODEL: 'openai/gpt-oss-120b',
     GROQ_FALLBACK_MODEL: 'qwen/qwen3.8-27b',
-    GEMINI_CHAT_MODEL: 'gemini-3.8-flash',
+    GEMINI_CHAT_MODEL: 'gemini-3.1-flash-lite',
     OPENAI_CHAT_MODEL: 'gpt-4o',
     GEMINI_EMBEDDING_MODEL: 'gemini-embedding-2',
     OPENAI_EMBEDDING_MODEL: 'text-embedding-3-small',
@@ -26,7 +26,7 @@ describe('choix du modèle de Sonah', () => {
 
   it('utilise Gemini Flash quand la clé Gemini est présente, même avec une clé OpenAI', () => {
     expect(createLanguageModel(config({ GEMINI_API_KEY: 'g', OPENAI_API_KEY: 'o' }))?.name).toBe(
-      'gemini-3.8-flash',
+      'gemini-3.1-flash-lite',
     );
   });
 
@@ -52,7 +52,7 @@ describe('fournisseur imposé (LLM_PROVIDER)', () => {
       createLanguageModel(
         config({ LLM_PROVIDER: 'gemini', GROQ_API_KEY: 'q', GEMINI_API_KEY: 'g' }),
       )?.name,
-    ).toBe('gemini-3.8-flash');
+    ).toBe('gemini-3.1-flash-lite → openai/gpt-oss-120b → qwen/qwen3.8-27b');
   });
 
   it('aucun modèle si le fournisseur imposé n’a pas de clé', () => {

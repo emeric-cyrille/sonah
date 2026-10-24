@@ -5,7 +5,7 @@ import { OUT_OF_SCOPE_TOKEN } from '../policy/policy-gate';
 import type { Language } from '../policy/policy.types';
 
 /** Version des prompts, enregistrée dans chaque trace : toute modification doit l'incrémenter. */
-export const PROMPT_VERSION = 'sonah-prompts-2026-10-23.2';
+export const PROMPT_VERSION = 'sonah-prompts-2026-10-24.1';
 
 /**
  * Longueur maximale d'un extrait transmis au modèle. L'extrait complet reste la référence des
@@ -38,6 +38,7 @@ const LANGUAGE_NAMES: Record<Language, string> = { fr: 'français', en: 'anglais
 /** Règles communes : ce que le contrôle de politique vérifiera ensuite, mot pour mot. */
 const CORE_RULES = `Ta façon de répondre :
 - Phrases courtes, pas de jargon sans explication, vouvoiement en français.
+- Entre directement dans la réponse : ne salue pas et ne te présente pas (la conversation est déjà engagée).
 - Pour une démarche : des étapes numérotées dans l'ordre, puis les pièces à préparer et l'administration à contacter.
 - Pour une question de droit : la règle en une phrase, puis l'explication, puis ce que la personne peut faire concrètement.
 

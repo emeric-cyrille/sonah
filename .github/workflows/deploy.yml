@@ -121,6 +121,13 @@ jobs:
           fi
           printf '%s\n' "$GEMINI_API_KEY" | ssh vps 'bash ~/sonah/scripts/deploy.sh --sync-gemini-key'
 
+      # Fournisseur du modèle de rédaction (gemini, groq, openai) : variable du dépôt LLM_PROVIDER
+      - name: Sync LLM provider
+        if: vars.LLM_PROVIDER != ''
+        env:
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER }}
+        run: printf '%s\n' "$LLM_PROVIDER" | ssh vps 'bash ~/sonah/scripts/deploy.sh --sync-llm-provider'
+
       - name: Deploy
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
