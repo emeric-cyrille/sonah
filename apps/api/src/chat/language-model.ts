@@ -28,6 +28,21 @@ export interface ChatModelOptions {
   readonly reasoningEffort?: 'none' | 'minimal' | 'low' | 'medium' | 'high';
 }
 
+/**
+ * Regroupe toutes les consignes système en un seul message de tête, dans leur ordre.
+ * La couche de compatibilité OpenAI de Gemini ne garde que le dernier message système :
+ * sans regroupement, les règles de Sonah (citations, interdits) seraient ignorées.
+ */
+export function mergeSystemTurns(
+  turns: readonly ChatTurn[],
+): OpenAI.Chat.ChatCompletionMessageParam[] {
+  const system = turns.filter((turn) => turn.role === 'system').map((turn) => turn.content);
+  const others = turns
+    .filter((turn) => turn.role !== 'system')
+    .map((turn) => ({ role: turn.role as 'user' | 'assistant', content: turn.content }));
+  return system.length > 0 ? [{ role: 'system', content: system.join('\n\n') }, ...others] : others;
+}
+
 /** Modèle de chat via le SDK OpenAI : Groq, Gemini ou OpenAI selon l'adresse du serveur. */
 export class OpenAICompatibleLanguageModel implements LanguageModel {
   readonly name: string;
@@ -49,7 +64,7 @@ export class OpenAICompatibleLanguageModel implements LanguageModel {
   async complete(turns: readonly ChatTurn[]): Promise<string> {
     const params: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
       model: this.name,
-      messages: turns.map((turn) => ({ role: turn.role, content: turn.content })),
+      messages: mergeSystemTurns(turns),
       temperature: 0.2,
       // Marge pour les modèles de raisonnement (gpt-oss) : leur réflexion consomme aussi des tokens
       max_tokens: 2048,

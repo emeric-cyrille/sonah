@@ -1,6 +1,10 @@
 import { createServer, type IncomingMessage, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { FallbackLanguageModel, OpenAICompatibleLanguageModel } from './language-model';
+import {
+  FallbackLanguageModel,
+  mergeSystemTurns,
+  OpenAICompatibleLanguageModel,
+} from './language-model';
 
 interface Captured {
   url?: string;
@@ -128,5 +132,31 @@ describe('FallbackLanguageModel', () => {
     await expect(model.complete([{ role: 'user', content: 'q' }])).rejects.toThrow(
       'qwen indisponible',
     );
+  });
+});
+
+describe('mergeSystemTurns', () => {
+  it('regroupe les consignes système en un seul message de tête (Gemini ne garde que le dernier)', () => {
+    expect(
+      mergeSystemTurns([
+        { role: 'system', content: 'Règles' },
+        { role: 'system', content: 'Extraits' },
+        { role: 'user', content: 'Question 1' },
+        { role: 'assistant', content: 'Réponse 1' },
+        { role: 'system', content: 'Contexte' },
+        { role: 'user', content: 'Question 2' },
+      ]),
+    ).toEqual([
+      { role: 'system', content: 'Règles\n\nExtraits\n\nContexte' },
+      { role: 'user', content: 'Question 1' },
+      { role: 'assistant', content: 'Réponse 1' },
+      { role: 'user', content: 'Question 2' },
+    ]);
+  });
+
+  it('laisse inchangée une conversation sans consigne système', () => {
+    expect(mergeSystemTurns([{ role: 'user', content: 'Bonjour' }])).toEqual([
+      { role: 'user', content: 'Bonjour' },
+    ]);
   });
 });

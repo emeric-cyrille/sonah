@@ -25,15 +25,20 @@ cd "$APP_DIR"
 
 log() { printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
 
-# Met à jour une clé d'API (GROQ_API_KEY, GEMINI_API_KEY) dans .env.production depuis l'entrée standard.
-# La clé ne passe jamais en argument (invisible dans ps et dans les logs) ; vide : rien n'est modifié.
+# Met à jour une clé d'API (GROQ_API_KEY, GEMINI_API_KEY) ou LLM_PROVIDER dans .env.production
+# depuis l'entrée standard. La clé ne passe jamais en argument (invisible dans ps et dans les logs) ;
+# vide : rien n'est modifié. Second argument facultatif : expression régulière de validation.
 sync_key() {
-  local name="$1" key tmp
+  local name="$1" pattern="${2:-}" key tmp
   IFS= read -r key || true
   key="${key%$'\r'}"
   if [[ -z "$key" ]]; then
     log "$name vide : .env.production inchangé"
     return 0
+  fi
+  if [[ -n "$pattern" && ! "$key" =~ $pattern ]]; then
+    log "$name invalide : .env.production inchangé"
+    return 1
   fi
   [[ -f .env.production ]] || install -m 600 /dev/null .env.production
   tmp="$(mktemp .env.production.XXXXXX)"
@@ -53,9 +58,13 @@ case "${1:-}" in
     sync_key GEMINI_API_KEY
     exit 0
     ;;
+  --sync-llm-provider)
+    sync_key LLM_PROVIDER '^(gemini|groq|openai)$'
+    exit $?
+    ;;
 esac
 
-IMAGE_TAG="${1:?Usage: deploy.sh <image-tag> | --sync-groq-key | --sync-gemini-key}"
+IMAGE_TAG="${1:?Usage: deploy.sh <image-tag> | --sync-groq-key | --sync-gemini-key | --sync-llm-provider}"
 
 compose() { IMAGE_TAG="$1" docker compose -f "$COMPOSE_FILE" --env-file .env.production "${PROFILES[@]}" "${@:2}"; }
 
