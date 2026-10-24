@@ -55,6 +55,7 @@ export interface SearchCall {
   readonly query: string;
   readonly sourceIds?: readonly string[];
   readonly types?: readonly string[];
+  readonly minScore?: number;
 }
 
 /** Mots significatifs (au moins 5 lettres, sans accents) pour la recherche lexicale simulée. */
@@ -82,7 +83,12 @@ export function fakeVectorStore(
       topK: number,
       search?: { minScore?: number; sourceIds?: readonly string[]; types?: readonly string[] },
     ) => {
-      calls.push({ query, sourceIds: search?.sourceIds, types: search?.types });
+      calls.push({
+        query,
+        sourceIds: search?.sourceIds,
+        types: search?.types,
+        minScore: search?.minScore,
+      });
       const queryWords = significantWords(query);
       return results
         .filter(

@@ -124,6 +124,13 @@ const RIGHTS_RULES: readonly Rule[] = [
       /\b(am i entitled|do i have (the|a) right|my rights|is it (legal|illegal|allowed|lawful|mandatory)|can (my|an|the) (employer|boss|landlord|police|husband|wife|school|bank)|what does the law|under (the|cameroonian) law|which law|is .{0,30} (allowed|legal|illegal)|penalt(y|ies)|punish\w*|fired|dismiss\w*|severance)\b/,
   },
   {
+    // Notions de droit du travail ou constitutionnel : une question sur leur durée ou leur montant
+    // (« combien de temps dure la période d'essai ? ») est une question de droit, pas une démarche
+    name: 'notion',
+    pattern:
+      /\b(periode d essai|essai professionnel|conges? payes?|jours? de conges?|conges? de maternite|conges? maternite|heures? supplementaires?|duree (du|de) travail|duree legale|salaire minimum|smig|anciennete|greve|syndicats?|mandat (presidentiel|du president)|duree du mandat|probation(ary)? period|trial period|paid leave|annual leave|maternity leave|overtime|minimum wage|notice period|working hours|presidential term)\b/,
+  },
+  {
     name: 'en_can_i',
     pattern: /\bcan i\b(?!\s+(get|obtain|apply|renew|register|replace|make|request|pay)\b)/,
   },
@@ -150,6 +157,9 @@ export function classifyIntent(text: string): IntentResult {
   // Un objet de démarche seul (« certificat médical ? ») vaut demande de démarche, sauf question de droit
   const isProcedure = procedure.length > 0 || (object !== null && rights.length === 0);
   const isRights = rights.length > 0;
+
+  // Question sur une notion juridique sans document administratif visé : question de droit
+  if (rights.includes('rights:notion') && object === null) return { intent: 'rights', signals };
 
   if (isProcedure && isRights) {
     // « puis-je » ou « sanction » isolés, avec un verbe et un objet de démarche, restent une démarche

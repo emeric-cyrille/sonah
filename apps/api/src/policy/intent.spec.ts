@@ -1,6 +1,13 @@
 import { classifyIntent, type Intent } from './intent';
 
 const CASES: ReadonlyArray<[string, Intent]> = [
+  // Notions juridiques interrogées par « combien » : question de droit, pas démarche
+  ['Combien de temps dure la période d essai ?', 'rights'],
+  ['Combien de jours de congé payé par an ?', 'rights'],
+  ['Quel est le montant du SMIG ?', 'rights'],
+  ['How long is the probation period?', 'rights'],
+  ['How many days of paid leave do I get?', 'rights'],
+  ['Combien coûte un passeport ?', 'procedure'],
   // Démarches (français)
   ['je veux faire mon certificat médical', 'procedure'],
   ['Je voudrais obtenir un acte de naissance', 'procedure'],
