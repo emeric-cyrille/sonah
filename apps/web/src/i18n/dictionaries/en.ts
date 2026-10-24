@@ -305,6 +305,10 @@ export const en: Dictionary = {
       label: 'Outside covered scope',
       explanation: 'This topic is not yet part of the texts indexed by Sonah.',
     },
+    CONVERSATION: {
+      label: 'Conversation',
+      explanation: 'Small talk: no legal information is given.',
+    },
     PROCEDURE_GUIDANCE: {
       label: 'Procedure guide',
       explanation:

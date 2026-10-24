@@ -33,4 +33,4 @@ export interface ChatResponse {
   readonly procedure?: ProcedurePayload;
 }
 
-export type AnswerType = 'procedure' | 'legal' | 'orientation';
+export type AnswerType = 'procedure' | 'legal' | 'orientation' | 'conversation';

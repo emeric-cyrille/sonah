@@ -164,7 +164,7 @@ describe('applyPolicyGate', () => {
       draft: null,
     });
     expect(gate.verdict).toBe('OUT_OF_SCOPE');
-    expect(gate.reply).toContain('assistant administratif');
+    expect(gate.reply).toContain('démarches administratives');
   });
 
   it('sujet manifestement étranger : OUT_OF_SCOPE même avec des extraits (heuristique)', () => {

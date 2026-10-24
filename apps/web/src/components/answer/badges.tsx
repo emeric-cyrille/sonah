@@ -15,6 +15,11 @@ export function verdictKey(verdict: string | null | undefined): VerdictKey {
 
 // Couleurs par verdict : vert (sourcé), ocre (prudence), terre cuite (alerte), neutre
 const VERDICT_STYLES: Readonly<Record<VerdictKey, { dark: string; light: string; dot: string }>> = {
+  CONVERSATION: {
+    dark: 'border-paper/20 bg-paper/5 text-paper/80',
+    light: 'border-line bg-paper-deep text-ink-soft',
+    dot: 'bg-paper/60',
+  },
   ANSWERED_WITH_CITATIONS: {
     dark: 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100',
     light: 'border-leaf/30 bg-leaf/10 text-leaf-deep',
