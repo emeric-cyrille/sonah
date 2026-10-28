@@ -2,6 +2,7 @@ import { createServer, type IncomingMessage, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import {
   FallbackLanguageModel,
+  generateReply,
   mergeSystemTurns,
   OpenAICompatibleLanguageModel,
 } from './language-model';
@@ -132,6 +133,27 @@ describe('FallbackLanguageModel', () => {
     await expect(model.complete([{ role: 'user', content: 'q' }])).rejects.toThrow(
       'qwen indisponible',
     );
+  });
+
+  it('attribue la réponse au modèle qui l’a produite et liste les échecs (audit)', async () => {
+    const model = new FallbackLanguageModel([
+      ko('gemini'),
+      new FallbackLanguageModel([ko('gpt-oss'), ok('qwen', 'C')]),
+    ]);
+    await expect(generateReply(model, [{ role: 'user', content: 'q' }])).resolves.toEqual({
+      text: 'C',
+      model: 'qwen',
+      failures: [
+        { model: 'gemini', error: 'gemini indisponible' },
+        { model: 'gpt-oss', error: 'gpt-oss indisponible' },
+      ],
+    });
+  });
+
+  it('modèle simple : attribution à son propre nom', async () => {
+    await expect(
+      generateReply(ok('gemini', 'A'), [{ role: 'user', content: 'q' }]),
+    ).resolves.toEqual({ text: 'A', model: 'gemini', failures: [] });
   });
 });
 

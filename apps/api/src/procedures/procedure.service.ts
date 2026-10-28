@@ -9,7 +9,13 @@ import {
 } from '@sonah/rag';
 import { CORPUS_CATALOG, type CorpusCatalog } from '../agents/corpus-catalog';
 import type { TraceRecorder } from '../audit/trace-recorder';
-import { LANGUAGE_MODEL, type ChatTurn, type LanguageModel } from '../chat/language-model';
+import {
+  generateReply,
+  LANGUAGE_MODEL,
+  type ChatTurn,
+  type LanguageModel,
+  type ModelReply,
+} from '../chat/language-model';
 import { detectOrientationCategory, type OrientationCategory } from '../policy/orientation';
 import { POLICY_GATE_VERSION, type GateResult } from '../policy/policy-gate';
 import type { Language } from '../policy/policy.types';
@@ -157,7 +163,8 @@ export class ProcedureService {
     recorder: TraceRecorder,
     agentId: string,
   ): Promise<ProcedureOutcome> {
-    const draft = await this.draftIntro(candidate.sheet, question, language, recorder, agentId);
+    const reply = await this.draftIntro(candidate.sheet, question, language, recorder, agentId);
+    const draft = reply?.text ?? null;
     const gate = applyProcedureGate({
       sheet: candidate.sheet,
       document: candidate.document,
@@ -170,8 +177,7 @@ export class ProcedureService {
       gate,
       procedure: toProcedurePayload(candidate.sheet, language),
       category: null,
-      model:
-        gate.draftAccepted === true && this.languageModel ? this.languageModel.name : EXTRACTIVE,
+      model: gate.draftAccepted === true && reply ? reply.model : EXTRACTIVE,
       promptVersion: PROCEDURE_PROMPT_VERSION,
     };
   }
@@ -227,25 +233,27 @@ export class ProcedureService {
     language: Language,
     recorder: TraceRecorder,
     agentId: string,
-  ): Promise<string | null> {
+  ): Promise<ModelReply | null> {
     if (!this.languageModel) return null;
     const turns = procedureIntroTurns(sheet, question, language);
     const start = performance.now();
     try {
-      const draft = await this.languageModel.complete(turns);
+      const reply = await generateReply(this.languageModel, turns);
       recorder.add({
         type: 'llm',
         agent: agentId,
-        summary: `Introduction de la fiche rédigée par ${this.languageModel.name}`,
+        summary: `Introduction de la fiche rédigée par ${reply.model}`,
         data: {
-          model: this.languageModel.name,
+          model: reply.model,
+          chain: this.languageModel.name,
+          failedModels: reply.failures,
           promptVersion: PROCEDURE_PROMPT_VERSION,
           promptChars: turns.reduce((sum, turn) => sum + turn.content.length, 0),
-          draft: draft.slice(0, 2000),
+          draft: reply.text.slice(0, 2000),
         },
         durationMs: performance.now() - start,
       });
-      return draft;
+      return reply;
     } catch (error) {
       const reason = error instanceof Error ? error.message : String(error);
       this.logger.warn(`Modèle indisponible pour la fiche ${sheet.id} : ${reason}`);
