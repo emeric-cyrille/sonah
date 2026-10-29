@@ -50,8 +50,8 @@ export const SCENARIOS: readonly ScenarioDefinition[] = [
       en: 'Outdated law served to a citizen',
     },
     description: {
-      fr: "Sonah s'appuie sur l'article 6 de la Constitution de 1996, modifié en 2008. Le nœud de politique détecte le texte périmé, le conseiller juridique corrige, et l'exercice met au jour l'absence de textes consolidés lisibles par machine.",
-      en: 'Sonah relies on article 6 of the 1996 Constitution, amended in 2008. The policy node detects the outdated text, the legal adviser corrects it, and the exercise surfaces the lack of consolidated, machine-readable legal texts.',
+      fr: "L'article 6 de la Constitution de 1996 (« renouvelable une fois ») a été modifié par les révisions de 2008 et de 2026. Sonah doit citer la version en vigueur, le conseiller juridique signale le texte périmé, et l'exercice met au jour l'absence de textes consolidés lisibles par machine.",
+      en: 'Article 6 of the 1996 Constitution ("renewable once") was amended by the 2008 and 2026 revisions. Sonah must cite the version in force, the legal adviser flags the outdated text, and the exercise surfaces the lack of consolidated, machine-readable legal texts.',
     },
     steps: [
       {
@@ -60,8 +60,8 @@ export const SCENARIOS: readonly ScenarioDefinition[] = [
           en: 'A citizen asks Sonah about the presidential term',
         },
         description: {
-          fr: 'Question reçue en période électorale. Le seul texte indexé est la Constitution de 1996 : son article 6 a été modifié par la loi n° 2008-1 du 14 avril 2008.',
-          en: 'Question received during an election period. The only indexed text is the 1996 Constitution: its article 6 was amended by Law No. 2008-1 of 14 April 2008.',
+          fr: "Question reçue en période électorale. Le texte d'origine de 1996 (article 6, marqué « modifié ») est indexé à côté des lois de révision : le nœud de politique ne doit laisser passer que la version en vigueur.",
+          en: 'Question received during an election period. The original 1996 text (article 6, marked "amended") is indexed next to the revision laws: the policy node must only let the version in force through.',
         },
         actions: [
           {
@@ -509,20 +509,30 @@ export const SCENARIOS: readonly ScenarioDefinition[] = [
           en: 'Step 3 — Controversy: keeping traces for audit without reusing them',
         },
         description: {
-          fr: "Sonah doit conserver des traces vérifiables pour l'audit (chaîne de hachage), mais la loi limite la réutilisation. Le conseiller juridique cherche quelle autorisation encadre la conservation et l'éventuel entraînement d'un modèle.",
-          en: 'Sonah must keep verifiable traces for audit (hash chain), but the law limits reuse. The legal adviser looks for the authorisation that governs retention and any model training.',
+          fr: "Sonah doit conserver des traces vérifiables pour l'audit (chaîne de hachage), mais la loi limite la réutilisation. Le conseiller juridique cherche l'autorisation applicable ; l'autorité de protection des données vérifie si un texte encadre l'entraînement d'un modèle : une absence de preuve attendue (INSUFFICIENT_EVIDENCE) qui matérialise la lacune.",
+          en: 'Sonah must keep verifiable traces for audit (hash chain), but the law limits reuse. The legal adviser looks for the applicable authorisation; the data protection authority checks whether any text governs model training: an expected absence of evidence (INSUFFICIENT_EVIDENCE) that materialises the gap.',
         },
         actions: [
           {
             kind: 'agent',
             agentId: 'legal-adviser',
             question: {
-              fr: "Quelle autorisation préalable encadre un traitement de données personnelles, et la loi prévoit-elle des règles propres à l'entraînement de modèles d'IA ?",
-              en: 'Which prior authorisation governs the processing of personal data, and does the law provide specific rules for training AI models?',
+              fr: 'Quelle autorisation préalable encadre un traitement de données à caractère personnel ?',
+              en: 'Which prior authorisation governs the processing of personal data?',
             },
             retrievalQuery:
               'traitement soumis autorisation préalable Autorité de protection des données à caractère personnel',
             pinned: [{ sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 19' }],
+          },
+          {
+            kind: 'agent',
+            agentId: 'data-protection-authority',
+            question: {
+              fr: "La loi prévoit-elle des règles propres à l'entraînement de modèles d'IA sur les conversations d'un service public ?",
+              en: "Does the law provide specific rules for training AI models on a public service's conversations?",
+            },
+            retrievalQuery:
+              'entraînement modèle intelligence artificielle données conversations réutilisation service public',
           },
         ],
         gaps: [
