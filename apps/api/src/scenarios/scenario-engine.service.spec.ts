@@ -25,7 +25,7 @@ function setup(model: RecordingModel | null = null) {
 
 describe('ScenarioEngine', () => {
   it('définit 4 scénarios de 3 étapes, avec des lacunes sourcées', () => {
-    expect(SCENARIOS).toHaveLength(4);
+    expect(SCENARIOS).toHaveLength(6);
     for (const scenario of SCENARIOS) {
       expect(scenario.steps.length).toBeGreaterThanOrEqual(3);
       expect(scenario.steps.length).toBeLessThanOrEqual(4);
