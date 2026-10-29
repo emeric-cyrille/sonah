@@ -34,7 +34,7 @@ const MIN_QUOTE_WORDS = 4;
 /** Un fragment de citation (entre deux ellipses) n'est vérifié qu'à partir de ce nombre de mots. */
 const MIN_SEGMENT_WORDS = 3;
 
-export const POLICY_GATE_VERSION = 'policy-gate-1.3';
+export const POLICY_GATE_VERSION = 'policy-gate-1.4';
 
 // Démarches : réponses rendues depuis une fiche, ou orientation sans fiche (voir procedure-gate.ts)
 export {
@@ -299,10 +299,14 @@ export function applyPolicyGate(input: GateInput): GateResult {
   const administrative = isAdministrativeQuestion(input.question);
   const offTopic = sensitiveCategory ? null : detectOffTopic(input.question);
   const modelSaysOutOfScope = input.draft?.includes(OUT_OF_SCOPE_TOKEN) ?? false;
-  const modelSaysNoEvidence = input.draft?.includes(NO_EVIDENCE_TOKEN) ?? false;
   const draft =
     input.draft?.split(OUT_OF_SCOPE_TOKEN).join('').split(NO_EVIDENCE_TOKEN).join('').trim() ??
     null;
+  // Le marqueur ne vaut abstention que si le brouillon ne cite aucun extrait : un brouillon qui
+  // le porte tout en citant ses sources est une réponse (partielle), vérifiée normalement.
+  const modelSaysNoEvidence =
+    (input.draft?.includes(NO_EVIDENCE_TOKEN) ?? false) &&
+    extractCitationMarkers(draft ?? '').length === 0;
   const referral = sensitiveCategory ? referralText(sensitiveCategory, language) : null;
 
   const base = {

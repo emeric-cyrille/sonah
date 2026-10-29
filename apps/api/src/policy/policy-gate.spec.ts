@@ -207,6 +207,18 @@ describe('applyPolicyGate', () => {
     ]);
   });
 
+  it('marqueur accompagné de citations : réponse vérifiée normalement, pas une abstention', () => {
+    const gate = applyPolicyGate({
+      question: 'Le travail forcé est-il autorisé ?',
+      language: 'fr',
+      evidence: [LABOUR_ARTICLE],
+      draft: `${NO_EVIDENCE_TOKEN} Les extraits ne visent pas ce cas précis. Toutefois, « Le travail forcé est interdit » [1].`,
+    });
+    expect(gate.verdict).toBe('ANSWERED_WITH_CITATIONS');
+    expect(gate.draftAccepted).toBe(true);
+    expect(gate.reply).not.toContain(NO_EVIDENCE_TOKEN);
+  });
+
   it('sans marqueur, un brouillon sans citation reste rejeté (repli extractif)', () => {
     const gate = applyPolicyGate({
       question: 'Le travail forcé est-il autorisé ?',
