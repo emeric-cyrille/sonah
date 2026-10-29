@@ -211,6 +211,8 @@ describe('API SONAH (e2e)', () => {
       'personal-data-in-chat',
       'llm-outage',
       'conflicting-requirements',
+      'chat-logs-secondary-use',
+      'language-equity',
     ]);
 
     const started = await call('POST', '/scenarios/outdated-law/runs', {});

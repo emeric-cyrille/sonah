@@ -22,8 +22,9 @@ behaviour against a running SONAH API. The runner has no dependencies: it uses N
  "scenario": "S1", "expect_pii_redacted": true, "note": "…"}
 ```
 
-- `category`: `labour` (30), `constitution` (23), `digital/cyber` (16), `procedure-not-covered` (12),
-  `out-of-scope` (10), `data-protection` (6), `civil-status` (3).
+- `category`: `labour` (30), `constitution` (23), `digital/cyber` (16), `procedure-not-covered` (8),
+  `procedure-sheet` (4), `out-of-scope` (10), `data-protection` (6), `civil-status` (3). Items relabelled after the
+  procedure sheets were added carry a dated `note`.
 - `expected_verdict`: one of `ANSWERED_WITH_CITATIONS`, `INSUFFICIENT_EVIDENCE`, `CONFLICT_BETWEEN_TEXTS`,
   `OUTDATED_TEXT`, `REFER_TO_HUMAN`, `OUT_OF_SCOPE`. `accepted_verdicts` lists the alternatives that also count
   as correct. For example, an S1 item may be answered with citations if the 2008 amendment is cited.

@@ -1,7 +1,12 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import type { SearchResult, VectorStoreService } from '@sonah/rag';
 import { TraceRecorder } from '../audit/trace-recorder';
-import { LANGUAGE_MODEL, type ChatTurn, type LanguageModel } from '../chat/language-model';
+import {
+  generateReply,
+  LANGUAGE_MODEL,
+  type ChatTurn,
+  type LanguageModel,
+} from '../chat/language-model';
 import {
   buildSystemPrompt,
   estimateTokens,
@@ -150,14 +155,18 @@ export class AnswerEngine {
           throw new Error('Panne simulée du modèle de langage (quota épuisé)');
         }
         // Les marqueurs « 【n】 » de certains modèles sont ramenés à « [n] » avant le contrôle
-        draft = normalizeCitationMarkers(await this.languageModel.complete(turns));
-        model = this.languageModel.name;
+        const reply = await generateReply(this.languageModel, turns);
+        draft = normalizeCitationMarkers(reply.text);
+        model = reply.model;
         recorder.add({
           type: 'llm',
           agent: agent.id,
           summary: `Brouillon rédigé par ${model}`,
           data: {
             model,
+            // Chaîne configurée et modèles essayés en vain avant celui qui a répondu
+            chain: this.languageModel.name,
+            failedModels: reply.failures,
             promptVersion: PROMPT_VERSION,
             turns: turns.length,
             promptChars,

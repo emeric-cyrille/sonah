@@ -50,8 +50,8 @@ export const SCENARIOS: readonly ScenarioDefinition[] = [
       en: 'Outdated law served to a citizen',
     },
     description: {
-      fr: "Sonah s'appuie sur l'article 6 de la Constitution de 1996, modifié en 2008. Le nœud de politique détecte le texte périmé, le conseiller juridique corrige, et l'exercice met au jour l'absence de textes consolidés lisibles par machine.",
-      en: 'Sonah relies on article 6 of the 1996 Constitution, amended in 2008. The policy node detects the outdated text, the legal adviser corrects it, and the exercise surfaces the lack of consolidated, machine-readable legal texts.',
+      fr: "L'article 6 de la Constitution de 1996 (« renouvelable une fois ») a été modifié par les révisions de 2008 et de 2026. Sonah doit citer la version en vigueur, le conseiller juridique signale le texte périmé, et l'exercice met au jour l'absence de textes consolidés lisibles par machine.",
+      en: 'Article 6 of the 1996 Constitution ("renewable once") was amended by the 2008 and 2026 revisions. Sonah must cite the version in force, the legal adviser flags the outdated text, and the exercise surfaces the lack of consolidated, machine-readable legal texts.',
     },
     steps: [
       {
@@ -60,8 +60,8 @@ export const SCENARIOS: readonly ScenarioDefinition[] = [
           en: 'A citizen asks Sonah about the presidential term',
         },
         description: {
-          fr: 'Question reçue en période électorale. Le seul texte indexé est la Constitution de 1996 : son article 6 a été modifié par la loi n° 2008-1 du 14 avril 2008.',
-          en: 'Question received during an election period. The only indexed text is the 1996 Constitution: its article 6 was amended by Law No. 2008-1 of 14 April 2008.',
+          fr: "Question reçue en période électorale. Le texte d'origine de 1996 (article 6, marqué « modifié ») est indexé à côté des lois de révision : le nœud de politique ne doit laisser passer que la version en vigueur.",
+          en: 'Question received during an election period. The original 1996 text (article 6, marked "amended") is indexed next to the revision laws: the policy node must only let the version in force through.',
         },
         actions: [
           {
@@ -433,6 +433,227 @@ export const SCENARIOS: readonly ScenarioDefinition[] = [
               'https://eur-lex.europa.eu/eli/reg/2018/1724/oj',
               'https://eur-lex.europa.eu/eli/dir/2006/123/oj',
             ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'chat-logs-secondary-use',
+    domain: 'data-protection',
+    title: {
+      fr: 'Six mois après : réutiliser les conversations des citoyens',
+      en: 'Six months later: reusing citizens’ conversations',
+    },
+    description: {
+      fr: "Sonah est déployé et très utilisé. Six mois plus tard, l'exploitant veut réutiliser les conversations pour entraîner son modèle, puis un assureur propose de les acheter pour cibler sa publicité. Les agents tranchent à partir de la loi n° 2024/017 ; l'exercice révèle l'absence de règles sur la réutilisation des données d'un service public d'IA.",
+      en: 'Sonah is deployed and widely used. Six months later, the operator wants to reuse the conversations to train its model, then an insurer offers to buy them to target its advertising. The agents decide on the basis of Law No. 2024/017; the exercise reveals the lack of rules on reusing the data of a public AI service.',
+    },
+    steps: [
+      {
+        title: {
+          fr: 'Étape 1 — Déploiement : les conversations contiennent des questions de santé',
+          en: 'Step 1 — Deployment: conversations include health questions',
+        },
+        description: {
+          fr: "Six mois après le lancement, l'équipe produit constate que de nombreuses conversations portent sur la santé (certificat médical, maladie, congé maladie). Elle propose de les réutiliser pour entraîner un modèle plus performant. L'autorité de protection des données (simulée) est consultée.",
+          en: 'Six months after launch, the product team notices that many conversations concern health (medical certificate, illness, sick leave). It proposes to reuse them to train a better model. The data protection authority (simulated) is consulted.',
+        },
+        actions: [
+          {
+            kind: 'agent',
+            agentId: 'data-protection-authority',
+            question: {
+              fr: "L'exploitant d'un service public d'information peut-il réutiliser les conversations des citoyens pour entraîner son modèle d'IA, sans nouveau consentement ?",
+              en: "May the operator of a public information service reuse citizens' conversations to train its AI model without new consent?",
+            },
+            retrievalQuery:
+              'données à caractère personnel finalités déterminées explicites légitimes traitement ultérieur incompatible consentement préalable',
+            pinned: [
+              { sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 11' },
+              { sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 9' },
+            ],
+          },
+        ],
+      },
+      {
+        title: {
+          fr: 'Étape 2 — Rebondissement : un assureur veut les données pour sa publicité',
+          en: 'Step 2 — Twist: an insurer wants the data for advertising',
+        },
+        description: {
+          fr: "Un assureur privé propose d'acheter les conversations « pseudonymisées » liées à la santé pour proposer des contrats ciblés. Le cas passe d'une question de qualité de service à une question d'éthique et de données sensibles. Le coordinateur réunit l'autorité de protection des données, le conseiller juridique et Sonah.",
+          en: 'A private insurer offers to buy "pseudonymised" health-related conversations to offer targeted policies. The case moves from service quality to ethics and sensitive data. The coordinator convenes the data protection authority, the legal adviser and Sonah.',
+        },
+        actions: [
+          {
+            kind: 'coordinate',
+            agents: ['data-protection-authority', 'legal-adviser', 'sonah'],
+            question: {
+              fr: 'Les conversations des citoyens portant sur leur santé peuvent-elles être communiquées à un assureur à des fins de prospection commerciale ?',
+              en: "May citizens' health-related conversations be disclosed to an insurer for direct marketing?",
+            },
+            retrievalQuery:
+              'communication des données à des tiers prospection directe consentement préalable opposition données sensibles santé',
+            pinned: [
+              { sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 41' },
+              { sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 40' },
+              { sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 48' },
+            ],
+          },
+        ],
+      },
+      {
+        title: {
+          fr: 'Étape 3 — Controverse : garder les traces pour l’audit sans les réutiliser',
+          en: 'Step 3 — Controversy: keeping traces for audit without reusing them',
+        },
+        description: {
+          fr: "Sonah doit conserver des traces vérifiables pour l'audit (chaîne de hachage), mais la loi limite la réutilisation. Le conseiller juridique cherche l'autorisation applicable ; l'autorité de protection des données vérifie si un texte encadre l'entraînement d'un modèle : une absence de preuve attendue (INSUFFICIENT_EVIDENCE) qui matérialise la lacune.",
+          en: 'Sonah must keep verifiable traces for audit (hash chain), but the law limits reuse. The legal adviser looks for the applicable authorisation; the data protection authority checks whether any text governs model training: an expected absence of evidence (INSUFFICIENT_EVIDENCE) that materialises the gap.',
+        },
+        actions: [
+          {
+            kind: 'agent',
+            agentId: 'legal-adviser',
+            question: {
+              fr: 'Quelle autorisation préalable encadre un traitement de données à caractère personnel ?',
+              en: 'Which prior authorisation governs the processing of personal data?',
+            },
+            retrievalQuery:
+              'traitement soumis autorisation préalable Autorité de protection des données à caractère personnel',
+            pinned: [{ sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 19' }],
+          },
+          {
+            kind: 'agent',
+            agentId: 'data-protection-authority',
+            question: {
+              fr: "La loi prévoit-elle des règles propres à l'entraînement de modèles d'IA sur les conversations d'un service public ?",
+              en: "Does the law provide specific rules for training AI models on a public service's conversations?",
+            },
+            retrievalQuery:
+              'entraînement modèle intelligence artificielle données conversations réutilisation service public',
+          },
+        ],
+        gaps: [
+          {
+            id: 'public-ai-data-reuse',
+            title: {
+              fr: "Pas de règle sur la réutilisation des données d'un service public d'IA",
+              en: 'No rule on reusing the data of a public AI service',
+            },
+            description: {
+              fr: "La loi n° 2024/017 pose la limitation des finalités (art. 11), le consentement à la prospection (art. 41) et l'autorisation préalable (art. 19), mais aucun texte indexé ne précise si et comment les échanges avec un assistant public peuvent servir à entraîner un modèle, ni la durée de conservation des traces d'audit.",
+              en: 'Law No. 2024/017 sets purpose limitation (art. 11), consent for direct marketing (art. 41) and prior authorisation (art. 19), but no indexed text states whether and how exchanges with a public assistant may be used to train a model, nor how long audit traces may be kept.',
+            },
+            globalExample: {
+              fr: "Union européenne : le règlement sur l'IA (UE) 2024/1689 impose une gouvernance des données d'entraînement (art. 10) et la conservation des journaux des systèmes à haut risque (art. 12 et 19).",
+              en: 'European Union: the AI Act (Regulation (EU) 2024/1689) requires governance of training data (art. 10) and record-keeping of logs for high-risk systems (arts. 12 and 19).',
+            },
+            sources: ['https://eur-lex.europa.eu/eli/reg/2024/1689/oj'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'language-equity',
+    domain: 'inclusion',
+    title: {
+      fr: 'Six mois après : les anglophones moins bien servis',
+      en: 'Six months later: English speakers served less well',
+    },
+    description: {
+      fr: "Le suivi montre que les questions posées en anglais obtiennent plus souvent des fiches en français seulement. Pour mesurer l'écart, l'équipe veut enregistrer la langue et la région des usagers : la loi l'interdit. L'exercice oppose l'égalité des langues officielles et la protection des données.",
+      en: "Monitoring shows that questions asked in English more often receive French-only procedure sheets. To measure the gap, the team wants to record users' language and region: the law forbids it. The exercise pits the equality of official languages against data protection.",
+    },
+    steps: [
+      {
+        title: {
+          fr: 'Étape 1 — Déploiement : un écart entre français et anglais',
+          en: 'Step 1 — Deployment: a gap between French and English',
+        },
+        description: {
+          fr: 'Six mois après le lancement, des associations des régions anglophones signalent que Sonah répond souvent « détails disponibles en français seulement ». Le conseiller juridique vérifie ce que la Constitution exige.',
+          en: 'Six months after launch, associations from the English-speaking regions report that Sonah often answers "details only available in French". The legal adviser checks what the Constitution requires.',
+        },
+        actions: [
+          {
+            kind: 'agent',
+            agentId: 'legal-adviser',
+            question: {
+              fr: "La Constitution impose-t-elle que l'anglais et le français aient la même valeur, y compris pour l'information donnée aux citoyens ?",
+              en: 'Does the Constitution require English and French to have equal status, including for information given to citizens?',
+            },
+            retrievalQuery: 'anglais et français langues officielles égale valeur bilinguisme',
+            pinned: [{ sourceId: 'constitution-1996', reference: 'Article premier (partie 1/2)' }],
+          },
+        ],
+      },
+      {
+        title: {
+          fr: 'Étape 2 — Rebondissement : mesurer l’écart en profilant les usagers ?',
+          en: 'Step 2 — Twist: measuring the gap by profiling users?',
+        },
+        description: {
+          fr: "Pour prouver l'écart, l'équipe propose d'enregistrer la langue maternelle et la région de chaque usager. Le coordinateur consulte l'autorité de protection des données et le conseiller juridique.",
+          en: "To prove the gap, the team proposes to record each user's mother tongue and region. The coordinator consults the data protection authority and the legal adviser.",
+        },
+        actions: [
+          {
+            kind: 'coordinate',
+            agents: ['data-protection-authority', 'legal-adviser'],
+            question: {
+              fr: "Un service public peut-il enregistrer l'origine linguistique ou régionale de ses usagers pour mesurer une inégalité de traitement ?",
+              en: "May a public service record its users' linguistic or regional origin to measure unequal treatment?",
+            },
+            retrievalQuery:
+              'interdit traitement données origine raciale ethnique linguistique régionale données sensibles',
+            pinned: [
+              { sourceId: 'loi-2024-017-donnees-personnelles', reference: 'Article 48' },
+              { sourceId: 'constitution-1996', reference: 'Article premier (partie 1/2)' },
+            ],
+          },
+        ],
+      },
+      {
+        title: {
+          fr: 'Étape 3 — Décision : mesurer sans profiler',
+          en: 'Step 3 — Decision: measure without profiling',
+        },
+        description: {
+          fr: "Sonah mesure l'écart à partir de la langue de chaque message (comptage agrégé, sans identifiant ni profil) et publie la part de fiches disponibles dans chaque langue officielle. Reste à savoir qui doit fournir les fiches officielles en anglais.",
+          en: 'Sonah measures the gap from the language of each message (aggregate counts, no identifier or profile) and publishes the share of procedure sheets available in each official language. It remains to be seen who must supply official procedure sheets in English.',
+        },
+        actions: [
+          {
+            kind: 'agent',
+            agentId: 'sonah',
+            question: {
+              fr: 'Quelle garantie la Constitution donne-t-elle sur le bilinguisme dans tout le territoire ?',
+              en: 'What guarantee does the Constitution give on bilingualism throughout the territory?',
+            },
+            retrievalQuery:
+              'promotion du bilinguisme sur toute l’étendue du territoire langues officielles',
+            pinned: [{ sourceId: 'constitution-1996', reference: 'Article premier (partie 1/2)' }],
+          },
+        ],
+        gaps: [
+          {
+            id: 'bilingual-procedure-information',
+            title: {
+              fr: "Pas d'obligation outillée d'information administrative bilingue",
+              en: 'No operational duty to publish administrative information in both languages',
+            },
+            description: {
+              fr: "La Constitution (art. 1er, al. 3) pose l'égale valeur de l'anglais et du français, mais aucun texte indexé n'oblige les administrations à publier leurs procédures dans les deux langues, sous une forme lisible par machine. Mesurer l'inégalité est en outre limité par l'interdiction de traiter l'origine linguistique ou régionale (loi n° 2024/017, art. 48).",
+              en: 'The Constitution (art. 1(3)) gives English and French equal status, but no indexed text requires administrations to publish their procedures in both languages in machine-readable form. Measuring inequality is further limited by the ban on processing linguistic or regional origin (Law No. 2024/017, art. 48).',
+            },
+            globalExample: {
+              fr: 'Canada : la Loi sur les langues officielles (partie IV) oblige les institutions fédérales à communiquer avec le public et à lui offrir leurs services dans les deux langues officielles.',
+              en: 'Canada: the Official Languages Act (Part IV) requires federal institutions to communicate with and provide services to the public in both official languages.',
+            },
+            sources: ['https://laws-lois.justice.gc.ca/eng/acts/o-3.01/'],
           },
         ],
       },

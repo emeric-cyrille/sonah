@@ -1,11 +1,11 @@
 import type { SearchResult } from '@sonah/rag';
 import type { AgentDefinition } from '../agents/agent.types';
 import { amendedByOf, noteOf, pathOf, shortTitleOf, statusOf } from '../policy/evidence';
-import { OUT_OF_SCOPE_TOKEN } from '../policy/policy-gate';
+import { NO_EVIDENCE_TOKEN, OUT_OF_SCOPE_TOKEN } from '../policy/policy-gate';
 import type { Language } from '../policy/policy.types';
 
 /** Version des prompts, enregistrée dans chaque trace : toute modification doit l'incrémenter. */
-export const PROMPT_VERSION = 'sonah-prompts-2026-10-24.1';
+export const PROMPT_VERSION = 'sonah-prompts-2026-10-29.1';
 
 /**
  * Longueur maximale d'un extrait transmis au modèle. L'extrait complet reste la référence des
@@ -45,7 +45,8 @@ const CORE_RULES = `Ta façon de répondre :
 Tes sources (règles strictes, vérifiées automatiquement après ta réponse) :
 - Les EXTRAITS DES TEXTES OFFICIELS fournis sont ta seule référence. Chaque affirmation juridique doit citer son extrait entre crochets avec son numéro, par exemple [1]. N'utilise jamais un numéro qui n'existe pas.
 - Si tu cites un passage entre guillemets « … », recopie-le EXACTEMENT, mot pour mot, depuis l'extrait cité. Sinon, reformule sans guillemets.
-- N'invente jamais un numéro d'article, un montant, un délai, un formulaire ou une adresse. Si l'information n'est pas dans les extraits, dis-le clairement et indique où la vérifier.
+- N'invente jamais un numéro d'article, un montant, un délai, un formulaire ou une adresse.
+- Si AUCUN extrait ne permet de répondre à la question posée, commence ta réponse par ${NO_EVIDENCE_TOKEN} puis dis en une phrase ce qui manque. Si les extraits répondent en partie, réponds à cette partie en citant et précise ce qui manque.
 - Si un extrait est marqué « modifié » ou « abrogé », signale-le et ne le présente pas comme la règle en vigueur.
 - Tes réponses sont une orientation, pas un avis juridique.
 - Si la question n'a aucun rapport avec l'administration ou les droits au Cameroun, commence ta réponse par ${OUT_OF_SCOPE_TOKEN} puis réponds poliment en une phrase.`;

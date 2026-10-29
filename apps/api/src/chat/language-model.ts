@@ -9,6 +9,24 @@ export interface ChatTurn {
 export interface LanguageModel {
   readonly name: string;
   complete(turns: readonly ChatTurn[]): Promise<string>;
+  /** Comme `complete`, en indiquant le modèle qui a réellement répondu (chaîne de secours). */
+  generate?(turns: readonly ChatTurn[]): Promise<ModelReply>;
+}
+
+/** Réponse attribuée : texte, modèle qui l'a produite et modèles essayés en vain avant lui. */
+export interface ModelReply {
+  readonly text: string;
+  readonly model: string;
+  readonly failures: readonly { readonly model: string; readonly error: string }[];
+}
+
+/** Appelle le modèle et attribue la réponse au modèle qui l'a réellement produite (audit). */
+export async function generateReply(
+  model: LanguageModel,
+  turns: readonly ChatTurn[],
+): Promise<ModelReply> {
+  if (model.generate) return model.generate(turns);
+  return { text: await model.complete(turns), model: model.name, failures: [] };
 }
 
 /** Point d'accès de Groq compatible avec l'API OpenAI (palier gratuit, modèles ouverts). */
@@ -96,12 +114,22 @@ export class FallbackLanguageModel implements LanguageModel {
   }
 
   async complete(turns: readonly ChatTurn[]): Promise<string> {
+    return (await this.generate(turns)).text;
+  }
+
+  async generate(turns: readonly ChatTurn[]): Promise<ModelReply> {
+    const failures: { model: string; error: string }[] = [];
     let lastError: unknown;
     for (const model of this.models) {
       try {
-        return await model.complete(turns);
+        const reply = await generateReply(model, turns);
+        return { ...reply, failures: [...failures, ...reply.failures] };
       } catch (error) {
         lastError = error;
+        failures.push({
+          model: model.name,
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     }
     throw lastError instanceof Error ? lastError : new Error(String(lastError));

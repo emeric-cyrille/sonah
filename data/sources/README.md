@@ -10,7 +10,7 @@ Only texts downloaded from official or reputable hosts are listed. Nothing was t
 scanned originals were converted by OCR, and every correction applied to the extracted text is declared in the
 manifest (`replacements`, `noisePatterns`) so it can be reviewed.
 
-## Sources (accessed 23 October 2026)
+## Sources (accessed 23 October 2026; the six AI policy references after the EU AI Act on 29 October 2026)
 
 | id (`doc_id`) | Text | Version / status | Lang. | Units indexed | Redistribution |
 |---|---|---|---|---|---|
@@ -31,6 +31,12 @@ manifest (`replacements`, `noisePatterns`) so it can be reviewed.
 | `unesco-ethics-ai-2021` | UNESCO Recommendation on the Ethics of AI (2021) — [UNESDOC](https://unesdoc.unesco.org/ark:/48223/pf0000381137) | adopted 23 Nov 2021, advisory | EN | preamble + 141 paragraphs | committed (PDF, CC BY-NC-SA 3.0 IGO) |
 | `ocde-recommandation-ia` (`OECD-LEGAL-0449`) | OECD Recommendation of the Council on AI — [OECD](https://legalinstruments.oecd.org/fr/instruments/OECD-LEGAL-0449) | revised 3 May 2024, advisory | FR | 14 sections | committed (PDF, free unaltered redistribution) |
 | `eu-ai-act-2024-1689` | Regulation (EU) 2024/1689 (AI Act) — [EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=fr) | OJ version of 12 July 2024, not consolidated; recitals not indexed | FR | 113 articles + 13 annexes | fetched at seed time (Publications Office XHTML) |
+| `itu-ai-ready-report-2-0` | ITU, *AI Ready – Analysis Towards a Standardized Readiness Framework*, Report 2.0 — [itu.int](https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf) (fetched from the byte-identical copy in the ITU reference repository, itu.int rejects automated requests) | January 2026, advisory; defines the 13 dimensions used in `ituDimensions` | EN | 37 sections | fetched at seed time |
+| `rwanda-national-ai-policy-2023` | Rwanda, The National AI Policy (MINICT) — [minict.gov.rw](https://www.minict.gov.rw/ai-policy) | approved April 2023, advisory | EN | 9 sections | fetched at seed time |
+| `nigeria-national-ai-strategy-2025` | Nigeria, National Artificial Intelligence Strategy (FMCIDE / NITDA / NCAIR) — [ncair.nitda.gov.ng](https://ncair.nitda.gov.ng/wp-content/uploads/2025/09/National-Artificial-Intelligence-Strategy-19092025.pdf) | September 2025, advisory | EN | 68 sections | fetched at seed time |
+| `smart-africa-ai-blueprint-2021` | Smart Africa, *Artificial Intelligence for Africa Blueprint* — [smartafrica.org](https://smartafrica.org/project-post/artificial-intelligence-for-africa/) | First Edition 2021, advisory | EN | 49 sections | fetched at seed time |
+| `africa-declaration-ai-kigali-2025` | Africa Declaration on Artificial Intelligence, Kigali — [c4ir.rw](https://c4ir.rw/docs/Africa%20Declaration%20on%20Artificial%20Intelligences.pdf) | signed 4 April 2025 (Cameroon among signatories), advisory | EN + FR | 26 sections | fetched at seed time |
+| `singapore-mgf-genai-2024` | Singapore, Model AI Governance Framework for Generative AI (IMDA, AI Verify Foundation) — [aiverifyfoundation.sg](https://aiverifyfoundation.sg/resources/mgf-gen-ai/) | released 30 May 2024, advisory | EN | 11 sections | fetched at seed time |
 | `itu-t-y3172` | ITU-T Y.3172 (06/2019), ML architectural framework — [itu.int](https://www.itu.int/rec/T-REC-Y.3172-201906-I/en) | in force | EN | not indexed | metadata only |
 
 Counts are produced by `pnpm --filter @sonah/rag kb:report` and checked by `knowledge-base.spec.ts`.
@@ -40,7 +46,8 @@ Prime Minister's services or the telecom regulator (ART); they are redistributed
 (the authoritative version is the *Journal officiel*). The UNESCO PDF keeps its own CC BY-NC-SA 3.0 IGO licence
 and is not covered by the repository's MIT licence. The OECD PDF may be redistributed free of charge if not
 altered. Documents without an explicit redistribution licence (AU strategy, *Cameroun numérique 2020* mirror,
-ILO NATLEX HTML) and the large EU Regulation are **not committed**: only their metadata and SHA-256 are, and the
+ILO NATLEX HTML, ITU AI Ready report, Rwanda, Nigeria, Smart Africa, Kigali Declaration, Singapore framework) and
+the large EU Regulation are **not committed**: only their metadata and SHA-256 are, and the
 seed downloads them into `data/sources/.cache/` (git-ignored), verifying the hash.
 
 **OCR.** prc.cm and spm.gov.cm publish scanned certified copies. Their text was produced with Apple Vision
@@ -94,6 +101,9 @@ Seeding is idempotent: chunk keys are stable (`<source>:art-<n>:<part>`, `<sourc
   art.cm (an English translation of 2010/012 exists on third-party portals only).
 - **CFCE procedure**: the 2012 inter-ministerial circular on CFCE formalities was not found on an official host;
   only the 2017 decree is indexed.
+- **Kenya National AI Strategy 2025–2030**: ict.go.ke publishes only the *Implementation Roadmap* (December 2025)
+  and a 2026 draft AI policy, not the final strategy; the copy in the ITU reference repository cannot be parsed by
+  the PDF extractor (invalid page tree), so the strategy is not indexed (checked October 2026).
 - **ITU-T Y.3172**: freely downloadable from itu.int but cited by reference only (not redistributed).
 
 ## Adding a text
