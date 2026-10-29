@@ -1184,6 +1184,400 @@
       ]
     },
     {
+      "id": "itu-ai-ready-report-2-0",
+      "docId": "ITU-T-AI4G-AI-READY-REPORT-2.0",
+      "issuingBody": "International Telecommunication Union (ITU-T, AI for Good)",
+      "title": "AI Ready – Analysis Towards a Standardized Readiness Framework, Report 2.0",
+      "titleFr": "AI Ready – Analyse en vue d'un cadre normalisé de préparation à l'IA, rapport 2.0 (UIT, janvier 2026)",
+      "titleEn": "AI Ready – Analysis Towards a Standardized Readiness Framework, Report 2.0 (ITU, January 2026)",
+      "shortTitle": "ITU AI Readiness Framework 2.0",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "INT",
+      "binding": "advisory",
+      "language": "en",
+      "version": "Report 2.0, January 2026 (ISBN 978-92-61-41911-0, electronic version; information correct as of June 2025 per the disclaimer)",
+      "date": "2026-01-01",
+      "url": "https://www.itu.int/dms_pub/itu-t/opb/ai4g/T-AI4G-AI4GOOD-2025-6-PDF-E.pdf",
+      "accessedAt": "2026-10-29",
+      "sha256": "71191768d46b60778c15f8d62b162aff73a319785cfc31ebf76bb944b0c68273",
+      "license": "© ITU; no open licence stated (\"Requests to reproduce extracts of this publication may be submitted to jur@itu.int\"): not redistributed, fetched at indexing time. The official itu.int PDF (url) rejects automated requests (web application firewall), so fetch.url points to the byte-identical copy (same SHA-256, checked 2026-10-29) in the ITU AI Readiness reference repository (CrashingGuru/ITUAIReadiness, AI_Strategies folder).",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "gouvernance-ia", "strategie", "preparation-ia"],
+      "ituDimensions": [
+        "data_marketplace",
+        "generated_content",
+        "cross_domain",
+        "contextualization",
+        "ai_integration",
+        "human_interface",
+        "strategy_alignment",
+        "collaboration",
+        "human_impact",
+        "ai_policies",
+        "ai_inclusion",
+        "granular_priorities",
+        "digital_infrastructure"
+      ],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://raw.githubusercontent.com/CrashingGuru/ITUAIReadiness/main/simulation/server/knowledge/InputDocs/AI_Strategies/AI_Ready_Framework_2025.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^1\\. Introduction$",
+        "end": "^References$"
+      },
+      "replacements": [
+        {
+          "pattern": "\\uFFFD",
+          "replacement": ".",
+          "flags": "g"
+        }
+      ],
+      "noisePatterns": [
+        "^\\d{1,3}$",
+        "^[ivx]{1,4}$",
+        "^AI Ready – Analysis Towards a Standardized Readiness Framework$",
+        "^Chapter \\d$",
+        "^\\(continued\\)$"
+      ],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": null,
+        "unitPatterns": [
+          "^[1-6]\\. (Introduction|ITU AI Readiness Basic Framework|Structural Approach|AI Readiness Gap Analysis|AI Readiness Framework|Future work)$",
+          "^(Background|Insights from AI Readiness Study|Report Structure|Data|Digital Infrastructure|Digital Skills|Innovation Ecosystem|AI Policy|Factors|Dimensions|AI Readiness Toolkit|Usage scenarios|Requirements|Mapping between Toolkit Requirements and Framework)$",
+          "^Dimension \\d{1,2}: ",
+          "^Appendix: (Additional Information|FAQ)$"
+        ],
+        "maxChars": 1800
+      },
+      "note": "Defines the 13 ITU AI Readiness dimensions used in ituDimensions throughout this manifest. Footnote markers are removed but footnote text (ITU-T Recommendation titles) stays inline."
+    },
+    {
+      "id": "rwanda-national-ai-policy-2023",
+      "docId": "RW-MINICT-NATIONAL-AI-POLICY-2023",
+      "issuingBody": "Ministry of ICT and Innovation (MINICT), Republic of Rwanda",
+      "title": "The National AI Policy",
+      "titleFr": "Politique nationale de l'intelligence artificielle du Rwanda (MINICT, 2023)",
+      "titleEn": "The National AI Policy of the Republic of Rwanda (MINICT, 2023)",
+      "shortTitle": "Rwanda National AI Policy",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "RW",
+      "binding": "advisory",
+      "language": "en",
+      "version": "Policy summary and implementation plan published by MINICT (back cover: \"MINICT - 2022\"); approved by Cabinet on 20 April 2023 according to press and OECD.AI reports (the Cabinet communiqué itself was not retrieved; the MINICT page gives no date)",
+      "date": "2023-04-20",
+      "url": "https://www.minict.gov.rw/ai-policy",
+      "accessedAt": "2026-10-29",
+      "sha256": "7930abf6ada6af6cfac5402a4598b4909826364c3d4bf5b692f81fa4389251ca",
+      "license": "Government of Rwanda (MINICT) publication; no licence or redistribution terms stated: not redistributed, fetched at indexing time.",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "strategie", "politique-ia", "afrique"],
+      "ituDimensions": [
+        "strategy_alignment",
+        "ai_policies",
+        "digital_infrastructure",
+        "data_marketplace",
+        "human_impact"
+      ],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://www.minict.gov.rw/fileadmin/user_upload/minict_user_upload/Documents/Artificial_Intelligence_Policy__1_.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^Artificial Intelligence \\(AI\\) has the potential to dramatically improve lives"
+      },
+      "replacements": [
+        {
+          "pattern": "\u001c",
+          "replacement": "ff",
+          "flags": "g"
+        },
+        {
+          "pattern": "\u001f",
+          "replacement": "ff",
+          "flags": "g"
+        },
+        {
+          "pattern": "\u001e",
+          "replacement": "ffi",
+          "flags": "g"
+        }
+      ],
+      "noisePatterns": [
+        "^\\d{1,3}$",
+        "^N$",
+        "^o$",
+        "^FY \\d\\d/\\d\\d$",
+        "^(FY \\d\\d/\\d\\d)+$",
+        "^FY \\d\\d/\\d\\dFY \\d\\d/\\d\\d$"
+      ],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": "Executive Summary",
+        "unitPatterns": [
+          "^Key Policy Recommendations$",
+          "^Highlights$",
+          "^Implementation Plan Summary$",
+          "^Priority Area \\d: "
+        ],
+        "maxChars": 1800
+      },
+      "note": "Graphic layout: some headings are extracted after the text they introduce, and implementation-plan tables are flattened (activity, lead institution and fiscal-year columns are listed one after another). The PDF encodes ff/ffi ligatures as control characters, restored by the declared replacements."
+    },
+    {
+      "id": "nigeria-national-ai-strategy-2025",
+      "docId": "NG-FMCIDE-NATIONAL-AI-STRATEGY-2025",
+      "issuingBody": "Federal Ministry of Communication, Innovation and Digital Economy (FMCIDE), Nigeria, with NITDA and NCAIR",
+      "title": "National Artificial Intelligence Strategy",
+      "titleFr": "Stratégie nationale d'intelligence artificielle du Nigeria (septembre 2025)",
+      "titleEn": "National Artificial Intelligence Strategy of Nigeria (September 2025)",
+      "shortTitle": "Nigeria National AI Strategy",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "NG",
+      "binding": "advisory",
+      "language": "en",
+      "version": "September 2025 edition (cover date; file published by NCAIR/NITDA as National-Artificial-Intelligence-Strategy-19092025.pdf); supersedes the August 2024 draft",
+      "date": "2025-09-01",
+      "url": "https://ncair.nitda.gov.ng/wp-content/uploads/2025/09/National-Artificial-Intelligence-Strategy-19092025.pdf",
+      "accessedAt": "2026-10-29",
+      "sha256": "9682e8bb00c8fad1e1c65ef44e4d56f15105160b229240866481bd50d7a3c623",
+      "license": "Government of Nigeria (FMCIDE / NITDA) publication; no licence or redistribution terms stated: not redistributed, fetched at indexing time.",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "strategie", "gouvernance-ia", "afrique"],
+      "ituDimensions": [
+        "strategy_alignment",
+        "ai_policies",
+        "digital_infrastructure",
+        "collaboration",
+        "ai_inclusion"
+      ],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://ncair.nitda.gov.ng/wp-content/uploads/2025/09/National-Artificial-Intelligence-Strategy-19092025.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^The advent of Artificial Intelligence \\(AI\\) has precipitated",
+        "end": "^References and further reading$"
+      },
+      "replacements": [
+        {
+          "pattern": "\u001c",
+          "replacement": "ff",
+          "flags": "g"
+        },
+        {
+          "pattern": "\u001d",
+          "replacement": "ffi",
+          "flags": "g"
+        },
+        {
+          "pattern": "\u001e",
+          "replacement": "ffi",
+          "flags": "g"
+        },
+        {
+          "pattern": "\u001a",
+          "replacement": " ",
+          "flags": "g"
+        },
+        {
+          "pattern": "\u001f",
+          "replacement": "",
+          "flags": "g"
+        }
+      ],
+      "noisePatterns": [
+        "^NATIONAL ARTIFICIAL INTELLIGENCE STRATEGY$",
+        "^\\d ?\\d?\\.$",
+        "^\\d{1,3}$"
+      ],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": "Executive Summary",
+        "unitPatterns": [
+          "^(Foreword|Acronyms|Introduction|Vision and Guiding Principles|Strategic Objectives|Strategic Pillars|Risks and Mitigation Strategies|Conclusion|Appendices)$",
+          "^\\d\\.[1-9]\\d*(\\.\\d+){0,3}\\.? [A-Z][^.]{2,110}$"
+        ],
+        "maxChars": 1800
+      },
+      "note": "The PDF encodes ff/ffi ligatures as control characters, restored by the declared replacements (two isolated U+001F characters of unknown value are dropped). Infographic pages (pillar outcome tables) are flattened."
+    },
+    {
+      "id": "smart-africa-ai-blueprint-2021",
+      "docId": "SMART-AFRICA-AI-FOR-AFRICA-BLUEPRINT-2021",
+      "issuingBody": "Smart Africa Secretariat (with the Republic of South Africa, GIZ and GFA Consulting)",
+      "title": "Artificial Intelligence for Africa Blueprint",
+      "titleFr": "Schéma directeur « L'IA pour l'Afrique » de Smart Africa (1re édition, 2021)",
+      "titleEn": "Artificial Intelligence for Africa Blueprint (Smart Africa, First Edition 2021)",
+      "shortTitle": "Smart Africa AI for Africa Blueprint",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "AU",
+      "binding": "advisory",
+      "language": "en",
+      "version": "First Edition © 2021 (Kigali, Rwanda, 2021; no day or month stated)",
+      "date": "2021-01-01",
+      "url": "https://smartafrica.org/project-post/artificial-intelligence-for-africa/",
+      "accessedAt": "2026-10-29",
+      "sha256": "f3938ff0148f33e0f9746e81926d9d599868869c5df7accf0fb16e912ccf6f52",
+      "license": "© 2021 Smart Africa; no open licence stated: not redistributed, fetched at indexing time.",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "strategie", "gouvernance-ia", "afrique"],
+      "ituDimensions": [
+        "strategy_alignment",
+        "ai_policies",
+        "collaboration",
+        "contextualization",
+        "granular_priorities"
+      ],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://smartafrica.org/wp-content/uploads/2023/11/70029-eng_ai-for-africa-blueprint-min.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^The international debate on the adoption and use of Artificial Intelligence"
+      },
+      "noisePatterns": [
+        "^First Edition©2021 ''AI For Africa'' Blueprint$",
+        "^''AI For Africa'' Blueprint First Edition©2021$",
+        "^''AI For Africa'' Blueprint$",
+        "^First Edition©2021$",
+        "^Page \\d{1,3}$",
+        "^\\d{1,3}$",
+        "^(AI SYSTEMS: A|GENERAL-PURPOSE|TECHNOLOGY|LESSONS LEARNT|FOR SUCCESSFUL AI|STRATEGIES|GUIDELINES TO|DESIGN AI NATIONAL|STRATEGIES IN|AFRICA|GOVERNANCE|AND ETHICS AN|INCLUSIVE PATHWAY|USE CASES FOR AI|MADE IN AFRICA FOR|ROADMAP FOR AI|IN CONTINENTAL|CONCLUSIONS AND|RECOMMENDATIONS)$"
+      ],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": "Foreword",
+        "unitPatterns": [
+          "^EXECUTIVE SUMMARY$",
+          "^(AI Systems: A General-Purpose Technology|Lessons learnt for Successful AI Strategies|Guidelines to design AI national strategies in Africa|Governance and Ethics an inclusive pathway|Use cases for AI made in Africa for Africa|Roadmap for AI in continental Africa|Conclusions and Recommendations)$",
+          "^\\d\\.\\d\\. [A-Z0-9]",
+          "^(Conclusion|Recommendation) \\d ?[-–]"
+        ],
+        "maxChars": 1800
+      }
+    },
+    {
+      "id": "africa-declaration-ai-kigali-2025",
+      "docId": "AFRICA-DECLARATION-AI-KIGALI-2025",
+      "issuingBody": "Global AI Summit on Africa (Kigali): African Union, Smart Africa and African States signatories",
+      "title": "The Africa Declaration on Artificial Intelligence",
+      "titleFr": "Déclaration africaine sur l'intelligence artificielle (Kigali, 4 avril 2025)",
+      "titleEn": "The Africa Declaration on Artificial Intelligence (Kigali, 4 April 2025)",
+      "shortTitle": "Africa Declaration on AI (Kigali 2025)",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "AU",
+      "binding": "advisory",
+      "language": "en",
+      "version": "Signed at Kigali on 4 April 2025; bilingual English/French text; Cameroon is listed among the signatories",
+      "date": "2025-04-04",
+      "url": "https://c4ir.rw/docs/Africa%20Declaration%20on%20Artificial%20Intelligences.pdf",
+      "accessedAt": "2026-10-29",
+      "sha256": "813e90254a3fc632f12ae071e438e4626433601e3bf9f6cb5c56b89e229836a4",
+      "license": "Intergovernmental declaration published by the Centre for the Fourth Industrial Revolution Rwanda (C4IR), summit organiser; no licence stated: not redistributed, fetched at indexing time.",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "gouvernance-ia", "afrique", "cooperation"],
+      "ituDimensions": [
+        "strategy_alignment",
+        "collaboration",
+        "digital_infrastructure",
+        "data_marketplace",
+        "ai_policies"
+      ],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://c4ir.rw/docs/Africa%20Declaration%20on%20Artificial%20Intelligences.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^1\\. Preamble$",
+        "end": "^EN FOI DE QUOI"
+      },
+      "replacements": [
+        {
+          "pattern": "^Signatories:\\n[\\s\\S]*?(?=^Stratégie Continentale d'IA de l'Union)",
+          "replacement": "",
+          "flags": "gm"
+        }
+      ],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": null,
+        "unitPatterns": ["^\\d\\.(\\d\\.){0,2} ?[A-ZÀ-ÝÉ]", "^\\d\\. Pr[ée]amb"],
+        "maxChars": 1200
+      },
+      "note": "Two-column bilingual layout: on each page the English column is extracted before the French one, so English items are followed by their French counterparts, and the first lines of each column on a new page (continuation of an item started on the previous page) are attached to the last item of the other language. The English signatory list is removed by a declared replacement; the French text ends before its closing formula and signatory list."
+    },
+    {
+      "id": "singapore-mgf-genai-2024",
+      "docId": "SG-IMDA-AIVF-MGF-GENAI-2024",
+      "issuingBody": "Infocomm Media Development Authority (IMDA) and AI Verify Foundation, Singapore",
+      "title": "Model AI Governance Framework for Generative AI: Fostering a Trusted Ecosystem",
+      "titleFr": "Cadre modèle de gouvernance de l'IA générative (Singapour, IMDA et AI Verify Foundation, 2024)",
+      "titleEn": "Model AI Governance Framework for Generative AI (Singapore, IMDA and AI Verify Foundation, 2024)",
+      "shortTitle": "Singapore Model AI Governance (GenAI)",
+      "type": "INTERNATIONAL",
+      "category": "Référence internationale IA",
+      "jurisdiction": "SG",
+      "binding": "advisory",
+      "language": "en",
+      "version": "Final framework released 30 May 2024 (proposed version 16 January 2024); PDF dated 19 June 2024",
+      "date": "2024-05-30",
+      "url": "https://aiverifyfoundation.sg/resources/mgf-gen-ai/",
+      "accessedAt": "2026-10-29",
+      "sha256": "24656605edf3186e4a10aac59d1ff7fb712e7524368a14cf5f165e664dd31490",
+      "license": "© Copyright IMDA and AI Verify Foundation 2024. All rights reserved: not redistributed, fetched at indexing time.",
+      "redistribution": "fetch-only",
+      "domains": ["ia", "gouvernance-ia", "ia-generative", "ethique-ia"],
+      "ituDimensions": ["ai_policies", "generated_content", "collaboration", "human_impact"],
+      "ituFolder": "AI_Strategies",
+      "fetch": {
+        "url": "https://aiverifyfoundation.sg/wp-content/uploads/2026/06/Model-AI-Governance-Framework-for-Generative-AI-19-June-2024.pdf",
+        "format": "pdf"
+      },
+      "segment": {
+        "start": "^Generative AI has captured the world's imagination",
+        "end": "^ACKNOWLEDGEMENTS$"
+      },
+      "replacements": [
+        {
+          "pattern": "^FOSTERING A TRUSTED AI ECOSYSTEM\\n(?:[A-Z][A-Z &]+\\n){1,2}",
+          "replacement": "",
+          "flags": "gm"
+        },
+        {
+          "pattern": "^(As generative AI continues to develop and evolve, there is a need for global)$",
+          "replacement": "CONCLUSION\n$1",
+          "flags": "gm"
+        }
+      ],
+      "noisePatterns": [
+        "^MODEL AI GOVERNANCE FRAMEWORK FOR GENERATIVE AI$",
+        "^EXECUTIVE SUMMARY$",
+        "^CONCLUSION$",
+        "^\\d{1,3}$"
+      ],
+      "chunking": {
+        "mode": "sections",
+        "preambleLabel": "Executive Summary",
+        "unitPatterns": [
+          "^(ACCOUNTABILITY|DATA|TRUSTED|DEVELOPMENT AND|DEPLOYMENT|INCIDENT|REPORTING|TESTING AND|ASSURANCE|SECURITY|CONTENT|PROVENANCE|SAFETY AND|ALIGNMENT R&D|AI FOR PUBLIC GOOD|CONCLUSION)$"
+        ],
+        "maxChars": 1800
+      },
+      "note": "Each of the nine dimensions opens on a title page; the running footer repeating the dimension name is removed by a declared replacement and the Conclusion heading (printed after its text) is moved before it. Footnote text stays inline."
+    },
+    {
       "id": "itu-t-y3172",
       "docId": "ITU-T-Y.3172-201906",
       "issuingBody": "ITU-T (Study Group 13)",
