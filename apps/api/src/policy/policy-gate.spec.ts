@@ -6,6 +6,7 @@ import {
   extractQuotes,
   isVerbatim,
   normalizeCitationMarkers,
+  NO_EVIDENCE_TOKEN,
   OUT_OF_SCOPE_TOKEN,
   validateAnswer,
 } from './policy-gate';
@@ -188,6 +189,33 @@ describe('applyPolicyGate', () => {
     });
     expect(gate.verdict).toBe('OUT_OF_SCOPE');
     expect(gate.rule).toBe('out_of_scope:model_hint');
+  });
+
+  it('le modèle signale que les extraits ne répondent pas : INSUFFICIENT_EVIDENCE, sans extraits voisins', () => {
+    const gate = applyPolicyGate({
+      question: "Quel est le taux de cotisation CNPS à la charge de l'employeur ?",
+      language: 'fr',
+      evidence: [LABOUR_ARTICLE],
+      draft: `${NO_EVIDENCE_TOKEN} Les extraits ne donnent pas ce taux.`,
+    });
+    expect(gate.verdict).toBe('INSUFFICIENT_EVIDENCE');
+    expect(gate.rule).toBe('insufficient_evidence:model_hint');
+    expect(gate.citations).toEqual([]);
+    expect(gate.reply).not.toContain('travail forcé');
+    expect(gate.rejectionReasons).toEqual([
+      'le modèle indique que les extraits ne répondent pas à la question',
+    ]);
+  });
+
+  it('sans marqueur, un brouillon sans citation reste rejeté (repli extractif)', () => {
+    const gate = applyPolicyGate({
+      question: 'Le travail forcé est-il autorisé ?',
+      language: 'fr',
+      evidence: [LABOUR_ARTICLE],
+      draft: 'Je ne sais pas.',
+    });
+    expect(gate.draftAccepted).toBe(false);
+    expect(gate.rule).toBe('answered:extractive_after_rejection');
   });
 
   it('texte cité modifié sans version en vigueur : OUTDATED_TEXT avec avertissement', () => {

@@ -12,9 +12,20 @@
     "carte d'identité expirée",
     "refaire ma carte d'identité",
     "CNI",
-    "idcam"
+    "idcam",
+    "renouveler ma carte d'identité",
+    "renouveler ma carte nationale d'identité",
+    "renouvellement de la carte nationale d'identité",
+    "renouvellement de la carte d'identité"
   ],
-  "keywords_en": ["renew ID card", "ID card renewal", "expired ID card", "CNI renewal Cameroon"],
+  "keywords_en": [
+    "renew ID card",
+    "ID card renewal",
+    "expired ID card",
+    "CNI renewal Cameroon",
+    "renew my national ID card",
+    "national ID card renewal"
+  ],
   "authority": {
     "name": "Délégation Générale à la Sûreté Nationale (DGSN)",
     "level": "national",

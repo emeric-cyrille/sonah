@@ -22,13 +22,19 @@ import { normalizeForMatch } from './text';
 
 /** Jeton que le modèle est invité à émettre pour une question hors sujet. */
 export const OUT_OF_SCOPE_TOKEN = '[OUT_OF_SCOPE]';
+/**
+ * Marqueur par lequel le modèle signale qu'aucun extrait ne répond à la question. Le nœud de
+ * politique en fait un verdict INSUFFICIENT_EVIDENCE : sans lui, un aveu honnête (sans citation)
+ * était rejeté et remplacé par des extraits voisins présentés comme une réponse sourcée.
+ */
+export const NO_EVIDENCE_TOKEN = '[NO_EVIDENCE]';
 
 /** Une citation entre guillemets de moins de mots est un terme (« SARL »), pas un extrait. */
 const MIN_QUOTE_WORDS = 4;
 /** Un fragment de citation (entre deux ellipses) n'est vérifié qu'à partir de ce nombre de mots. */
 const MIN_SEGMENT_WORDS = 3;
 
-export const POLICY_GATE_VERSION = 'policy-gate-1.2';
+export const POLICY_GATE_VERSION = 'policy-gate-1.3';
 
 // Démarches : réponses rendues depuis une fiche, ou orientation sans fiche (voir procedure-gate.ts)
 export {
@@ -293,7 +299,10 @@ export function applyPolicyGate(input: GateInput): GateResult {
   const administrative = isAdministrativeQuestion(input.question);
   const offTopic = sensitiveCategory ? null : detectOffTopic(input.question);
   const modelSaysOutOfScope = input.draft?.includes(OUT_OF_SCOPE_TOKEN) ?? false;
-  const draft = input.draft?.split(OUT_OF_SCOPE_TOKEN).join('').trim() ?? null;
+  const modelSaysNoEvidence = input.draft?.includes(NO_EVIDENCE_TOKEN) ?? false;
+  const draft =
+    input.draft?.split(OUT_OF_SCOPE_TOKEN).join('').split(NO_EVIDENCE_TOKEN).join('').trim() ??
+    null;
   const referral = sensitiveCategory ? referralText(sensitiveCategory, language) : null;
 
   const base = {
@@ -325,8 +334,9 @@ export function applyPolicyGate(input: GateInput): GateResult {
     };
   }
 
-  // Aucun extrait pertinent : on ne laisse pas le modèle répondre de mémoire
-  if (evidence.length === 0) {
+  // Aucun extrait pertinent (ou le modèle signale que les extraits ne répondent pas) : on ne
+  // laisse pas le modèle répondre de mémoire, ni des extraits voisins passer pour une réponse
+  if (evidence.length === 0 || modelSaysNoEvidence) {
     const reply = referral
       ? `${referral}\n\n${noEvidenceReply(language)}`
       : noEvidenceReply(language);
@@ -337,9 +347,17 @@ export function applyPolicyGate(input: GateInput): GateResult {
       citations: [],
       draftAccepted: draft === null ? null : false,
       rejectionReasons:
-        draft === null ? [] : ['aucun extrait pertinent : brouillon non vérifiable'],
+        draft === null
+          ? []
+          : modelSaysNoEvidence
+            ? ['le modèle indique que les extraits ne répondent pas à la question']
+            : ['aucun extrait pertinent : brouillon non vérifiable'],
       checks: [],
-      rule: referral ? `refer_to_human:${sensitiveCategory}` : 'insufficient_evidence:no_result',
+      rule: referral
+        ? `refer_to_human:${sensitiveCategory}`
+        : evidence.length > 0
+          ? 'insufficient_evidence:model_hint'
+          : 'insufficient_evidence:no_result',
     };
   }
 
