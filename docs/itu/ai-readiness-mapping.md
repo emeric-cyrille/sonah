@@ -63,11 +63,11 @@ The report's text:
 
 | Report metric | SONAH evidence | How a judge verifies it |
 |---|---|---|
-| Policies for nodes in AI pipelines (Y.3172) | A blocking P node with typed verdicts (`ANSWERED_WITH_CITATIONS`, `INSUFFICIENT_EVIDENCE`, `CONFLICT_BETWEEN_TEXTS`, `OUTDATED_TEXT`, `REFER_TO_HUMAN`, `OUT_OF_SCOPE`) and a live relevance threshold | `docs/itu/y3172-mapping.md`; `apps/api/src/chat/chat.service.ts` (`minScore`); gate in `apps/api/src/policy/` (in progress); `POST /api/v1/chat` returns `verdict` |
-| Vertical sandbox + domain-specific evaluation mechanism | Colab sandbox notebook with a P-node threshold; 100-item FR/EN gold set; runner with Wilson CIs | `sandbox/notebooks/sonah-agentic-rag-reference/`; `eval/run-eval.ts`; `eval/README.md` |
-| Policy inputs from case briefs (operational lessons → governance lessons) | Policy-gap register. Each gap comes from an observed scenario (S1–S4) and is paired with verified global examples | `docs/itu/policy-gap-register.md`, `docs/itu/policy-gaps.json` |
-| Accountability of final decisions remains with humans | `REFER_TO_HUMAN` verdict; answers framed as orientation, not legal advice (system prompt) | `apps/api/src/chat/sonah-prompt.ts`; gold items `PRO-11`, `PRO-12` |
-| Explainability / audits | Article-level citations in every grounded answer; hash-chained audit trail with `traceId` (in progress); citation-validity metric | `eval/run-eval.ts` ("citation validity", "traceId returned"); `apps/api/src/audit/` (in progress) |
+| Policies for nodes in AI pipelines (Y.3172) | A blocking P node: relevance threshold, then a deterministic policy gate with typed verdicts (`ANSWERED_WITH_CITATIONS`, `INSUFFICIENT_EVIDENCE`, `CONFLICT_BETWEEN_TEXTS`, `OUTDATED_TEXT`, `REFER_TO_HUMAN`, `OUT_OF_SCOPE`, plus `CONVERSATION` for small talk). It checks citation indices and verbatim quotes, and replaces a failing draft with an extractive answer. A procedure gate rejects any number or document absent from the procedure sheet. PII is masked at the PP node. | `docs/itu/y3172-mapping.md`; `apps/api/src/policy/policy-gate.ts` (`POLICY_GATE_VERSION`), `apps/api/src/policy/procedure-gate.ts`, `apps/api/src/policy/pii.ts`, `apps/api/src/agents/answer-engine.service.ts` (`minScore`); `POST /api/v1/chat` returns `verdict` and `traceId` |
+| Vertical sandbox + domain-specific evaluation mechanism | Colab sandbox notebook with a P-node threshold; 100-item FR/EN gold set; runner with Wilson CIs. Latest run on a local API with `gemini-3.1-flash-lite` (97 of 100 items run): retrieval hit@1 0.643, hit@5 0.843, MRR@10 0.735, verdict accuracy 0.866 (84/97), citation validity 0.915 (140/153), out-of-scope refusal 10/10, chat availability 97/97. Six progressive error scenarios run step by step through the API (four are deployed; two are on branch `feat/submission-prep`, pending deploy). | `sandbox/notebooks/sonah-agentic-rag-reference/`; `eval/run-eval.ts`; `eval/README.md`; `eval/results/2026-10-29T01-47-53-637Z.md`; `apps/api/src/scenarios/scenario-definitions.ts`; `eval/run-scenarios.ts`; `GET /api/v1/scenarios` |
+| Policy inputs from case briefs (operational lessons → governance lessons) | Policy-gap register (8 gaps) paired with verified global examples. Each error scenario also ends with a domain-level gap returned by the API (for example `consolidated-legal-texts`, `ai-chat-retention`, `public-ai-data-reuse`). | `docs/itu/policy-gap-register.md`, `docs/itu/policy-gaps.json`; `gaps` in `apps/api/src/scenarios/scenario-definitions.ts` |
+| Accountability of final decisions remains with humans | `REFER_TO_HUMAN` verdict for sensitive situations; coordinator escalation to a human when positions or verdicts conflict; answers framed as orientation, not legal advice (system prompt) | `apps/api/src/policy/situations.ts`; `apps/api/src/agents/coordinator.ts`; `apps/api/src/chat/sonah-prompt.ts`; gold items `PRO-11`, `PRO-12` |
+| Explainability / audits | Article-level citations in every grounded answer. Hash-chained, append-only audit trail: one trace per answer, with input, retrieval scores, gate checks, rule fired, verdict and model. Updates and deletes are refused by a database trigger. Citation-validity metric. | `apps/api/src/audit/hash-chain.ts`, `apps/api/src/audit/audit.controller.ts`; migration `packages/database/prisma/migrations/20261025000000_audit_traces_scenarios/`; `GET /api/v1/audit/traces/:id`, `GET /api/v1/audit/verify`; web page `/audit`; `eval/run-eval.ts` ("citation validity", "traceId returned") |
 
 ### Dimension 4 – Contextualization and Regional Impact
 
@@ -77,8 +77,8 @@ applications"; "Representation of sub-groups in the dataset for fine-tuning, pro
 
 | Report metric | SONAH evidence | How a judge verifies it |
 |---|---|---|
-| Structured, accessible local datasets | Cameroonian legal texts turned into an article-level, citable index. Each article has a stable key and its hierarchy path. The manifest records the official source URL and a version note. | `data/sources/manifest.json`; `packages/rag/src/chunking/legal-chunker.ts` (+ `legal-chunker.spec.ts`) |
-| Customization for regional applications | Parser handles Cameroonian drafting conventions ("Article premier", "Art. 2.-", "47 bis"). Droit-Afrique header/footer patterns are stripped. The prompt is written for Cameroonian administration. | `packages/rag/src/chunking/legal-chunker.ts`; `apps/api/src/chat/sonah-prompt.ts` |
+| Structured, accessible local datasets | 20 sources in the manifest (Cameroonian laws in French and, for the Constitution and Labour Code, English; international AI references), turned into an article-level, citable index. Each article has a stable key and its hierarchy path. The manifest records the official source URL and a version note. 26 structured procedure sheets validated against a JSON schema. | `data/sources/manifest.json`; `data/procedures/*.json`, `data/procedures/procedure.schema.json`; `packages/rag/src/chunking/legal-chunker.ts` (+ `legal-chunker.spec.ts`) |
+| Customization for regional applications | Parser handles Cameroonian drafting conventions ("Article premier", "Art. 2.-", "47 bis"). Droit-Afrique header/footer patterns are stripped. PII masking recognises Cameroonian phone numbers and identity documents (CNI, NIU). The prompt is written for Cameroonian administration. | `packages/rag/src/chunking/legal-chunker.ts`; `apps/api/src/policy/pii.ts`; `apps/api/src/chat/sonah-prompt.ts` |
 | Representation of sub-groups in evaluation | Gold set covers both official languages (54 FR / 46 EN items), plus labour, constitutional, digital and civil-status needs | `eval/questions.jsonl` |
 
 ### Dimension 6 – Human Interface
@@ -89,19 +89,21 @@ safeguards on destructive practices and steps while applying the inference or di
 
 | Report metric | SONAH evidence | How a judge verifies it |
 |---|---|---|
-| Local-language availability | French and English, the official languages of Cameroon (Constitution Art. 1(3)). The API accepts `language`. | `eval/questions.jsonl` (FR/EN pairs); live demo https://sonah.fokamemeric.com |
+| Local-language availability | French and English, the official languages of Cameroon (Constitution Art. 1(3)). Language is detected per message, and the API accepts a `language` override. Embeddings use the multilingual local model `multilingual-e5-small`, and the Constitution, its amendments and the Labour Code are also indexed in English. National languages are not supported. | `apps/api/src/policy/language.ts`; `apps/api/src/chat/chat.schemas.ts`; `packages/rag/src/embeddings/local-embedder.ts`; `eval/questions.jsonl` (54 FR / 46 EN); live demo https://sonah.fokamemeric.com |
 | Interaction channels / devices | Installable mobile-first PWA | `apps/web/src/app/manifest.ts`; `apps/web/src/app/chat/page.tsx` |
-| Safety at different pipeline nodes | PII redaction at PP (S2), gate at P, no-LLM fallback (S3). Verdict and citations are shown to the citizen. | `docs/itu/y3172-mapping.md` §Error scenarios |
+| Safety at different pipeline nodes | PII masking at PP before storage or any model call (S2), policy and procedure gates at P, model fallback chain then extractive answer (S3). Verdict and citations are shown to the citizen. | `apps/api/src/policy/pii.ts`; `apps/api/src/policy/policy-gate.ts`; `apps/api/src/chat/language-model.ts` (`FallbackLanguageModel`); `docs/itu/y3172-mapping.md` §Error scenarios |
 
 ### Dimension 9 – Impacts of Humans in AI Integration (partial claim)
 
 The report says: "There are scenarios when AI decisions are referred back to domain experts to guarantee the
 accountability of the decision" (p. 26). It lists "inference-to-action latency" among the metrics.
 
-SONAH evidence: `REFER_TO_HUMAN` and the planned coordinator routing to authority agents (`regulator-minpostel`,
-`data-protection-authority`, `ministry-business`) in `apps/api/src/agents/` (in progress), plus latency measured by
-`eval/run-eval.ts`. **This claim is partial:** no domain expert has reviewed the gold set yet, and no
-skills/awareness programme is measured.
+SONAH evidence: the `REFER_TO_HUMAN` verdict, and the deterministic coordinator that routes scenario events to
+simulated authority agents (`regulator-minpostel`, `data-protection-authority`, `ministry-business`) and escalates
+to a human on conflict (`apps/api/src/agents/coordinator.ts`, `apps/api/src/agents/agent-registry.ts`,
+`GET /api/v1/agents`). Chat latency is measured by `eval/run-eval.ts` (p50 3.3 s, p95 15.3 s in
+`eval/results/2026-10-29T01-47-53-637Z.md`). **This claim is partial:** the authorities are simulated, no domain
+expert has reviewed the gold set yet, and no skills/awareness programme is measured.
 
 ## 3. Factors
 
@@ -110,8 +112,8 @@ skills/awareness programme is measured.
 | Data | Public FAOLEX sources, manifest with URLs and version notes, gold set |
 | Standards | Y.3172 node mapping (`y3172-pipeline.yaml`); gap register cross-referenced to ITU-T and other standards |
 | Open source and Code | Public repository https://github.com/emeric-cyrille/sonah; sandbox agent and notebook in Sandbox_Training format |
-| Sandbox Environments | `sandbox/` (Colab, no key), `eval/`, `docker-compose.yml` |
-| Research, Deployment Support | Not claimed beyond the live deployment |
+| Sandbox Environments | `sandbox/` (Colab, no key), `eval/` (gold set, `run-eval.ts`, `run-scenarios.ts`), interactive error scenarios (`/lab` page, `/api/v1/scenarios`), `docker-compose.yml` |
+| Research, Deployment Support | Not claimed beyond the live deployment (https://sonah.fokamemeric.com, CI/CD in `.github/workflows/`) |
 
 ## 4. Not claimed
 

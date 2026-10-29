@@ -1,7 +1,8 @@
 # SONAH mapped onto the ITU-T Y.3172 (06/2019) machine-learning pipeline.
 # Human-readable version: docs/itu/y3172-mapping.md
-# status: live = on main / deployed; branch = on an unmerged feature branch;
-#         in_progress = designed, being implemented in parallel (planned path, verify after merge)
+# status (checked 2026-10-29): live = on main and deployed at https://sonah.fokamemeric.com;
+#         pending_deploy = implemented and tested on branch feat/submission-prep, not yet merged;
+#         not_implemented = future work
 standard:
   id: ITU-T Y.3172
   title: Architectural framework for machine learning in future networks including IMT-2020
@@ -19,38 +20,37 @@ pipeline:
   - node: SRC
     definition: 'the source of data that can be used as input to the ML pipeline'
     sonah:
-      - component: Official legal texts + manifest (id, url, version note, noise patterns)
-        paths:
-          [
-            data/sources/manifest.json,
-            data/sources/constitution-1996.pdf,
-            data/sources/code-du-travail-1992.pdf,
-          ]
+      - component: 20 official and reference texts (Constitution 1996 and its 2008/2026 amendments, Labour Code, laws 2010/012, 2010/013, 2015/006, 2024/016, 2024/017, decree 2017/0877/PM, Cameroun numerique 2020, AU/UNESCO/OECD/EU AI Act/ITU-T Y.3172 references), manifest with id, url, version note
+        paths: [data/sources/manifest.json]
         status: live
-      - component: Additional texts (Law 2008/001, 2010/012, 2010/013, 2024/017, civil status, AU/UNESCO/OECD/EU AI Act)
-        paths: [data/sources/]
-        status: in_progress
-      - component: Citizen question (PWA)
+      - component: 26 structured procedure sheets validated against a JSON schema
+        paths: [data/procedures/, data/procedures/procedure.schema.json]
+        status: live
+      - component: Citizen message (PWA)
         paths: [apps/web/src/components/chat/chat-window.tsx, apps/web/src/components/ask-box.tsx]
         status: live
   - node: C
     definition: 'responsible for collecting data from one or more SRC nodes'
     sonah:
-      - component: Manifest loader (zod-validated), per-page PDF extraction, idempotent seeding
+      - component: Manifest loader (zod-validated), PDF/HTML extraction, legal status, idempotent seeding of texts and procedure sheets
         paths:
           [
             packages/rag/src/ingestion/sources.ts,
             packages/rag/src/ingestion/pdf.ts,
+            packages/rag/src/ingestion/html.ts,
+            packages/rag/src/ingestion/legal-status.ts,
             packages/rag/src/ingestion/seed-legal.ts,
+            packages/rag/src/procedures/seed-procedures.ts,
             apps/api/src/scripts/seed.ts,
           ]
         status: live
-      - component: API intake (chat, search, admin-guarded document upsert)
+      - component: API intake (chat, search, admin-guarded document upsert, rate limits)
         paths:
           [
             apps/api/src/chat/chat.controller.ts,
             apps/api/src/rag/rag.controller.ts,
             apps/api/src/common/admin-token.guard.ts,
+            apps/api/src/common/rate-limit.guard.ts,
           ]
         status: live
   - node: PP
@@ -60,38 +60,56 @@ pipeline:
         paths:
           [packages/rag/src/chunking/text-normalizer.ts, packages/rag/src/chunking/legal-chunker.ts]
         status: live
-      - component: Embeddings (OpenAI | offline hashing; Gemini on branch)
+      - component: Embeddings - local Xenova/multilingual-e5-small (production); Gemini, OpenAI, hashing selectable
         paths:
           [
+            packages/rag/src/embeddings/create-embedder.ts,
+            packages/rag/src/embeddings/local-embedder.ts,
+            packages/rag/src/embeddings/gemini-embedder.ts,
             packages/rag/src/embeddings/openai-embedder.ts,
             packages/rag/src/embeddings/hashing-embedder.ts,
-            packages/rag/src/embeddings/gemini-embedder.ts,
           ]
-        status: live / branch (feat/gemini)
-      - component: Follow-up query rewriting
-        paths: [apps/api/src/chat/chat.service.ts]
         status: live
-      - component: PII redaction of citizen messages (scenario S2)
-        paths: [apps/api/src/policy/]
-        status: in_progress
+      - component: PII masking (e-mail, phone, identity numbers) before storage or any model call (scenario S2)
+        paths: [apps/api/src/policy/pii.ts]
+        status: live
+      - component: Language detection, small talk, intent routing, LLM understanding of unclassified messages, follow-up rewriting
+        paths:
+          [
+            apps/api/src/policy/language.ts,
+            apps/api/src/chat/small-talk.ts,
+            apps/api/src/policy/intent.ts,
+            apps/api/src/chat/understanding.ts,
+            apps/api/src/policy/follow-up.ts,
+          ]
+        status: live
   - node: M
     definition: 'a machine learning model, in a form which is usable in a machine learning pipeline'
     sonah:
       - component: Retriever - pgvector cosine (HNSW), filtered by embedding model
         paths: [packages/rag/src/vector-store.service.ts, packages/database/prisma/schema.prisma]
         status: live
-      - component: Hybrid lexical retrieval (Postgres full-text search)
-        paths: [packages/rag/src/vector-store.service.ts]
-        status: in_progress
-      - component: Legal / procedure graph (Neo4j; REQUIRES, PRECEDES, RELATED_TO, GOVERNED_BY)
-        paths: [packages/rag/src/graph-store.service.ts]
+      - component: Postgres full-text search fused by Reciprocal Rank Fusion, only for queries citing an explicit reference
+        paths:
+          [
+            packages/rag/src/vector-store.service.ts,
+            packages/database/prisma/migrations/20261024000000_documents_full_text_search/,
+          ]
         status: live
-      - component: LLM writer (OpenAI; Gemini on branch) with citation-only prompt; deterministic extractive fallback
+      - component: Procedure-sheet matching
+        paths: [packages/rag/src/procedures/match.ts, apps/api/src/procedures/procedure.service.ts]
+        status: live
+      - component: Legal / procedure graph (Neo4j) - optional, filled by the seed, not used to answer
+        paths: [packages/rag/src/graph-store.service.ts]
+        status: disabled in production
+      - component: LLM writer chain gemini-3.1-flash-lite -> Groq openai/gpt-oss-120b -> qwen/qwen3.8-27b, citation-only prompt; deterministic extractive fallback
         paths:
           [
             apps/api/src/chat/language-model.ts,
+            apps/api/src/chat/language-model.module.ts,
             apps/api/src/chat/sonah-prompt.ts,
-            apps/api/src/chat/chat.service.ts,
+            apps/api/src/agents/answer-engine.service.ts,
+            apps/api/src/policy/extractive.ts,
           ]
         status: live
   - node: P
@@ -99,9 +117,11 @@ pipeline:
     blocking: true
     sonah:
       - component: Relevance threshold (drops off-topic extracts before generation)
-        paths: [apps/api/src/chat/chat.service.ts, packages/rag/src/embeddings/embedder.ts]
+        paths:
+          [apps/api/src/agents/answer-engine.service.ts, packages/rag/src/embeddings/embedder.ts]
         status: live
       - component: Deterministic citation & policy gate with typed verdicts
+        version: policy-gate-1.3 (pending_deploy; policy-gate-1.2 live)
         verdicts:
           [
             ANSWERED_WITH_CITATIONS,
@@ -110,53 +130,80 @@ pipeline:
             OUTDATED_TEXT,
             REFER_TO_HUMAN,
             OUT_OF_SCOPE,
+            CONVERSATION,
           ]
         rules:
-          - every cited reference must belong to the retrieved set
-          - a source with a version note / known amendment yields OUTDATED_TEXT
-          - contradictory retrieved sources yield CONFLICT_BETWEEN_TEXTS
-          - no evidence above threshold yields INSUFFICIENT_EVIDENCE
-          - high-stakes or personal-danger cases yield REFER_TO_HUMAN
-          - off-domain requests yield OUT_OF_SCOPE
-          - any failing check downgrades the verdict; never fails open
-        paths: [apps/api/src/policy/]
-        status: in_progress
+          - citation markers are normalised, and every [n] must point to a retrieved extract
+          - a grounded answer must cite at least one extract
+          - every quoted passage must appear verbatim in the cited extract
+          - a failing draft is replaced by the extractive answer and the rejection is traced
+          - a cited text amended or repealed, with no in-force version among the extracts, yields OUTDATED_TEXT
+          - conflict metadata or a coordinator hint yields CONFLICT_BETWEEN_TEXTS
+          - no evidence, or the model token [NO_EVIDENCE] (pending_deploy), yields INSUFFICIENT_EVIDENCE
+          - sensitive situations yield REFER_TO_HUMAN
+          - off-topic requests, or the model token [OUT_OF_SCOPE], yield OUT_OF_SCOPE
+          - small talk with no legal content yields CONVERSATION
+        paths: [apps/api/src/policy/policy-gate.ts, apps/api/src/policy/policy.types.ts]
+        status: live
+      - component: Procedure gate (numbers, supporting documents and links must appear in the sheet)
+        paths: [apps/api/src/policy/procedure-gate.ts]
+        status: live
   - node: D
     definition: 'identifying the SINK(s) and distributing the output of the M node to the corresponding SINK nodes'
     sonah:
-      - component: Response assembly {reply, verdict, citations[], traceId}
+      - component: Response assembly {reply, verdict, citations[], traceId, answerType, procedure?}; intent routing to sheet, orientation or legal pipeline
         paths: [apps/api/src/chat/chat.service.ts]
-        status: live (legacy contract {reply, sources}); gated contract in_progress
-      - component: Coordinator agent routing to sonah, legal-adviser, regulator-minpostel, data-protection-authority, ministry-business
-        paths: [apps/api/src/agents/]
-        status: in_progress
+        status: live
+      - component: Agent registry (sonah, legal-adviser, regulator-minpostel, data-protection-authority, ministry-business, coordinator) and deterministic coordinator used by the error scenarios; authorities are simulated
+        paths:
+          [
+            apps/api/src/agents/agent-registry.ts,
+            apps/api/src/agents/coordinator.ts,
+            apps/api/src/agents/agents.controller.ts,
+          ]
+        status: live
   - node: SINK
     definition: 'the target of the ML output on which it takes action'
     sonah:
-      - component: Citizen PWA (answer, citations, verdict)
-        paths: [apps/web/src/components/chat/chat-window.tsx, apps/web/src/store/chat-store.ts]
+      - component: Citizen PWA (answer, citations, verdict) and audit viewer
+        paths:
+          [
+            apps/web/src/components/chat/chat-window.tsx,
+            apps/web/src/store/chat-store.ts,
+            apps/web/src/app/audit/,
+          ]
         status: live
-      - component: Conversation persistence (model, embedding model, sources in Message.metadata)
+      - component: Conversation persistence, masked text only (model, verdict, intent, citations, traceId in Message.metadata)
         paths: [packages/database/prisma/schema.prisma, apps/api/src/chat/chat.service.ts]
         status: live
-      - component: Hash-chained audit trail with per-step traces (traceId)
-        paths: [apps/api/src/audit/]
-        status: in_progress
-      - component: Referral to a human / competent authority
-        paths: [apps/api/src/agents/]
-        status: in_progress
+      - component: Hash-chained, append-only audit trail (GET /audit/traces/:id, GET /audit/verify)
+        paths:
+          [
+            apps/api/src/audit/,
+            packages/database/prisma/migrations/20261025000000_audit_traces_scenarios/migration.sql,
+          ]
+        status: live
+      - component: Referral to a human / competent authority (REFER_TO_HUMAN, coordinator escalation)
+        paths: [apps/api/src/policy/situations.ts, apps/api/src/agents/coordinator.ts]
+        status: live
 mlfo:
   definition: 'manage and orchestrate the nodes of ML pipelines based on ML Intent and/or dynamic network conditions'
   sonah:
-    - component: Config-driven selection of embedder and LLM, fallback on LLM failure/quota (S3), readiness probe
+    - component: Config-driven selection of embedder and LLM chain (LLM_PROVIDER), model fallback on failure or quota then extractive answer (S3), readiness probe
       paths:
         [
           apps/api/src/config/env.ts,
           packages/rag/src/embeddings/create-embedder.ts,
-          apps/api/src/chat/chat.module.ts,
+          apps/api/src/chat/language-model.module.ts,
+          apps/api/src/chat/language-model.ts,
           apps/api/src/health/health.controller.ts,
         ]
-      status: live; LLM-failure fallback on branch feat/gemini
+      status: live
+    - component: Record of the model that actually answered after a fallback
+      paths: [apps/api/src/chat/language-model.ts]
+      status: pending_deploy
+    - component: Orchestration driven by a formal ML Intent
+      status: not_implemented
 sandbox:
   definition: 'an isolated domain which allows the hosting of separate ML pipelines to train, test and evaluate them before deploying them'
   sonah:
@@ -166,38 +213,57 @@ sandbox:
     - component: Packaged agent (retrieve / answer / refuse)
       paths: [sandbox/agents/sonah-legal-agent/agent/agent.py]
       status: live
-    - component: Gold set + runner + scenarios S1-S4
+    - component: 100-item FR/EN gold set + runner
       paths: [eval/questions.jsonl, eval/run-eval.ts]
       status: live
+    - component: Progressive error scenarios released step by step (API and /lab page)
+      paths:
+        [
+          apps/api/src/scenarios/scenario-definitions.ts,
+          apps/api/src/scenarios/scenarios.controller.ts,
+          apps/web/src/app/lab/,
+        ]
+      status: live (S1-S4); S5-S6 pending_deploy
+    - component: One-command scenario replay with audit-chain verification
+      paths: [eval/run-scenarios.ts]
+      status: pending_deploy
     - component: Local stack
       paths: [docker-compose.yml]
       status: live
 scenarios:
-  - {
-      id: S1,
-      name: outdated law served to citizen,
-      injected_at: SRC,
-      caught_by: P,
-      expected: OUTDATED_TEXT,
-    }
-  - {
-      id: S2,
-      name: citizen shares personal data,
-      injected_at: SRC,
-      caught_by: PP,
-      expected: answer without PII echo/storage,
-    }
-  - {
-      id: S3,
-      name: LLM outage / quota exhaustion,
-      injected_at: M,
-      caught_by: [MLFO, P],
-      expected: extractive answer or INSUFFICIENT_EVIDENCE,
-    }
-  - {
-      id: S4,
-      name: conflicting ministry requirements (restaurant),
-      injected_at: M,
-      caught_by: [P, D],
-      expected: CONFLICT_BETWEEN_TEXTS or REFER_TO_HUMAN,
-    }
+  - id: S1
+    scenario: outdated-law
+    injected_at: SRC
+    caught_by: P
+    expected: OUTDATED_TEXT
+    status: live
+  - id: S2
+    scenario: personal-data-in-chat
+    injected_at: SRC
+    caught_by: PP
+    expected: answer without PII echo, storage or model transmission
+    status: live
+  - id: S3
+    scenario: llm-outage
+    injected_at: M
+    caught_by: [MLFO, P]
+    expected: extractive answer or INSUFFICIENT_EVIDENCE
+    status: live
+  - id: S4
+    scenario: conflicting-requirements
+    injected_at: [M, D]
+    caught_by: [D, P]
+    expected: CONFLICT_BETWEEN_TEXTS and escalation to a human
+    status: live
+  - id: S5
+    scenario: chat-logs-secondary-use
+    injected_at: SINK
+    caught_by: D
+    expected: answers grounded in Law No. 2024/017; gap public-ai-data-reuse
+    status: pending_deploy
+  - id: S6
+    scenario: language-equity
+    injected_at: [SRC, PP]
+    caught_by: [D, P]
+    expected: answers grounded in Constitution Art. 1 and Law No. 2024/017 Art. 48; gap bilingual-procedure-information
+    status: pending_deploy
