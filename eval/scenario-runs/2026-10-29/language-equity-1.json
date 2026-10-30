@@ -1,0 +1,34 @@
+{
+  "runId": "26f3d4af-ace5-44ba-a67a-d917a0d85aa4",
+  "step": 1,
+  "totalSteps": 3,
+  "event": {
+    "title": "Step 1 — Deployment: a gap between French and English",
+    "description": "Six months after launch, associations from the English-speaking regions report that Sonah often answers \"details only available in French\". The legal adviser checks what the Constitution requires.",
+    "injectedAt": "2026-10-29T07:45:37.578Z"
+  },
+  "responses": [
+    {
+      "agentId": "legal-adviser",
+      "agentName": "Policy and legal adviser",
+      "role": "Policy and legal adviser",
+      "message": "Yes, the Constitution mandates that English and French have equal status and value.\n\nThe rule is that the Republic of Cameroon adopts English and French as official languages of equal value [1]. This implies that citizens have the right to access information in either language, as the State is required to guarantee the promotion of bilingualism throughout the territory [1].\n\n**Legal Gap:**\nWhile the Constitution establishes the principle of equal value for both languages, it does not explicitly detail the enforcement mechanisms or penalties for public services that fail to provide information in both languages. This creates a gap between the constitutional principle and the practical implementation by administrative bodies.\n\n**What you can do:**\n1.  Document specific instances where information was provided only in French.\n2.  File a formal complaint or request for information in English with the relevant administrative authority, citing Article 1(3) of the Constitution.\n3.  If the issue persists, you may escalate the matter to the National Commission on Bilingualism and Multiculturalism, which is tasked with monitoring the implementation of bilingualism in the country.",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "citations": [
+        {
+          "index": 1,
+          "documentId": "c29b0bc4-4e88-4f07-93ea-52fd07c9c50e",
+          "sourceId": "constitution-1996",
+          "title": "Constitution",
+          "reference": "Article premier (partie 1/2)",
+          "excerpt": "(1) La République Unie du Cameroun prend, à compter de l'entrée en vigueur de la présente loi, la dénomination de REPUBLIQUE DU CAMEROUN (loi n° 84/1 du 4 février 1984). (2) La République du Cameroun est un État unitaire décentralisé. Elle est une et indivisible, laïque, démocratique et sociale. Elle reconnaît et…",
+          "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+          "status": "in_force"
+        }
+      ],
+      "traceId": "8d5aebb2-5ea4-4c53-869b-e04ba36e4a2f"
+    }
+  ],
+  "gaps": [],
+  "done": false
+}

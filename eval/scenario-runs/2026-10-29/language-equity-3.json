@@ -1,0 +1,44 @@
+{
+  "runId": "26f3d4af-ace5-44ba-a67a-d917a0d85aa4",
+  "step": 3,
+  "totalSteps": 3,
+  "event": {
+    "title": "Step 3 — Decision: measure without profiling",
+    "description": "Sonah measures the gap from the language of each message (aggregate counts, no identifier or profile) and publishes the share of procedure sheets available in each official language. It remains to be seen who must supply official procedure sheets in English.",
+    "injectedAt": "2026-10-29T07:58:32.947Z"
+  },
+  "responses": [
+    {
+      "agentId": "sonah",
+      "agentName": "Sonah",
+      "role": "Innovative AI solution",
+      "message": "The Constitution guarantees the promotion of bilingualism across the entire country.\n\nSpecifically, it states that the Republic of Cameroon « adopte l'anglais et le français comme langues officielles d'égale valeur » and « garantit la promotion du bilinguisme sur toute l'étendue du territoire » [1].\n\nThis means that both English and French have equal status and the state is committed to ensuring they are both used and supported throughout Cameroon.",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "citations": [
+        {
+          "index": 1,
+          "documentId": "c29b0bc4-4e88-4f07-93ea-52fd07c9c50e",
+          "sourceId": "constitution-1996",
+          "title": "Constitution",
+          "reference": "Article premier (partie 1/2)",
+          "excerpt": "(1) La République Unie du Cameroun prend, à compter de l'entrée en vigueur de la présente loi, la dénomination de REPUBLIQUE DU CAMEROUN (loi n° 84/1 du 4 février 1984). (2) La République du Cameroun est un État unitaire décentralisé. Elle est une et indivisible, laïque, démocratique et sociale. Elle reconnaît et…",
+          "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+          "status": "in_force"
+        }
+      ],
+      "traceId": "5b47c6f0-6fce-4b9b-a458-1a6c2815a539"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "bilingual-procedure-information",
+      "title": "No operational duty to publish administrative information in both languages",
+      "description": "The Constitution (art. 1(3)) gives English and French equal status, but no indexed text requires administrations to publish their procedures in both languages in machine-readable form. Measuring inequality is further limited by the ban on processing linguistic or regional origin (Law No. 2024/017, art. 48).",
+      "globalExample": "Canada: the Official Languages Act (Part IV) requires federal institutions to communicate with and provide services to the public in both official languages.",
+      "sources": [
+        "https://laws-lois.justice.gc.ca/eng/acts/o-3.01/"
+      ]
+    }
+  ],
+  "done": true
+}
