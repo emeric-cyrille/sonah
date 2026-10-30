@@ -509,8 +509,8 @@ export const SCENARIOS: readonly ScenarioDefinition[] = [
           en: 'Step 3 — Controversy: keeping traces for audit without reusing them',
         },
         description: {
-          fr: "Sonah doit conserver des traces vérifiables pour l'audit (chaîne de hachage), mais la loi limite la réutilisation. Le conseiller juridique cherche l'autorisation applicable ; l'autorité de protection des données vérifie si un texte encadre l'entraînement d'un modèle : une absence de preuve attendue (INSUFFICIENT_EVIDENCE) qui matérialise la lacune.",
-          en: 'Sonah must keep verifiable traces for audit (hash chain), but the law limits reuse. The legal adviser looks for the applicable authorisation; the data protection authority checks whether any text governs model training: an expected absence of evidence (INSUFFICIENT_EVIDENCE) that materialises the gap.',
+          fr: "Sonah doit conserver des traces vérifiables pour l'audit (chaîne de hachage), mais la loi limite la réutilisation. Le conseiller juridique cherche l'autorisation applicable ; l'autorité de protection des données vérifie si un texte encadre l'entraînement d'un modèle : aucun ne le fait, seule la définition générale du traitement s'applique, ce qui matérialise la lacune.",
+          en: 'Sonah must keep verifiable traces for audit (hash chain), but the law limits reuse. The legal adviser looks for the applicable authorisation; the data protection authority checks whether any text governs model training: none does, only the general definition of processing applies, which materialises the gap.',
         },
         actions: [
           {

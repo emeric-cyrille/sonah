@@ -8,7 +8,9 @@ SONAH stands for _Système d'Orientation Nationale et d'Accompagnement Harmonis�
 [![Deploy](https://github.com/emeric-cyrille/sonah/actions/workflows/deploy.yml/badge.svg)](https://github.com/emeric-cyrille/sonah/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-**Live demo:** https://sonah.fokamemeric.com
+**Live demo:** https://sonah.fokamemeric.com · **Hackathon submission:** [SUBMISSION.md](SUBMISSION.md) · **User guide:** [English](docs/guide/USER_GUIDE.md) · [Français](docs/guide/GUIDE_UTILISATEUR.md)
+
+![SONAH: a sourced answer and its audit trace](report/figures/answer.jpg)
 
 > SONAH is an independent prototype. It is not an official government service, and its answers give guidance only. They are not legal advice.
 
@@ -194,7 +196,7 @@ scripts/deploy.sh   VPS deployment with health checks and rollback
 
 ## Team
 
-Fokam Emeric Cyrille and associate. This is an independent prototype: it is not endorsed by, or affiliated with, any Cameroonian ministry or public body.
+Kenmegne Fokam Emeric Cyrille (team leader) and Chignheng Tchitchi Chirol, Université de Yaoundé I. This is an independent prototype: it is not endorsed by, or affiliated with, any Cameroonian ministry or public body.
 
 Contact: fokamemeric@gmail.com · GitHub [@emeric-cyrille](https://github.com/emeric-cyrille)
 
