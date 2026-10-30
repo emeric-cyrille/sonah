@@ -11,6 +11,7 @@ Supported Markdown (deliberately small):
   paragraph text             justified body paragraph, `**bold**`, `*italic*`, `` `code` ``
   `- item`                   bullet (template list numId 3)
   `| a | b |` tables         first row is the header; a `|---|` separator line is skipped
+  `!! figure: a.jpg | b.jpg | Caption`  side-by-side images (paths relative to report/) with a caption
   `<!-- comment -->`         ignored
 
 Usage: python3 report/build_report.py [--out report/SONAH-technical-report.docx]
@@ -133,11 +134,86 @@ def table(rows: list[list[str]]) -> str:
     )
 
 
+EMU_PER_INCH = 914400
+
+
+def jpeg_size(data: bytes) -> tuple[int, int]:
+    """Width and height of a JPEG, read from its SOF marker."""
+    index = 2
+    while index < len(data):
+        marker, length = data[index + 1], int.from_bytes(data[index + 2 : index + 4], "big")
+        if marker in (0xC0, 0xC1, 0xC2):
+            height = int.from_bytes(data[index + 5 : index + 7], "big")
+            width = int.from_bytes(data[index + 7 : index + 9], "big")
+            return width, height
+        index += 2 + length
+    raise ValueError("not a JPEG with a SOF marker")
+
+
+class Media:
+    """Images embedded in the document (word/media) and their relationships."""
+
+    def __init__(self) -> None:
+        self.items: list[tuple[str, str, bytes]] = []  # (rId, target, data)
+
+    def add(self, path: Path) -> tuple[str, int, int]:
+        data = path.read_bytes()
+        rid = f"rIdSonahImg{len(self.items) + 1}"
+        self.items.append((rid, f"media/sonah-figure-{len(self.items) + 1}.jpeg", data))
+        width, height = jpeg_size(data)
+        return rid, width, height
+
+
+def image_run(rid: str, width_px: int, height_px: int, width_in: float, number: int) -> str:
+    cx = int(width_in * EMU_PER_INCH)
+    cy = int(cx * height_px / width_px)
+    return (
+        "<w:r><w:drawing>"
+        f'<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{cx}" cy="{cy}"/>'
+        f'<wp:docPr id="{1000 + number}" name="Figure {number}"/>'
+        '<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
+        '<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">'
+        '<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">'
+        f'<pic:nvPicPr><pic:cNvPr id="{1000 + number}" name="figure-{number}.jpeg"/><pic:cNvPicPr/></pic:nvPicPr>'
+        f'<pic:blipFill><a:blip r:embed="{rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+        f'<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="{cx}" cy="{cy}"/></a:xfrm>'
+        '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
+        '<a:ln w="6350"><a:solidFill><a:srgbClr val="BFBFBF"/></a:solidFill></a:ln></pic:spPr>'
+        "</pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>"
+    )
+
+
+def figure(spec: str, media: Media) -> str:
+    *paths, caption = [part.strip() for part in spec.split("|")]
+    gap = 0.15
+    width_in = (TABLE_WIDTH / 1440 - gap * (len(paths) - 1)) / len(paths)
+    cell_width = TABLE_WIDTH // len(paths)
+    cells = []
+    for path in paths:
+        rid, width_px, height_px = media.add(ROOT / path)
+        cells.append(
+            f'<w:tc><w:tcPr><w:tcW w:w="{cell_width}" w:type="dxa"/><w:vAlign w:val="top"/></w:tcPr>'
+            '<w:p><w:pPr><w:spacing w:before="0" w:after="0"/><w:jc w:val="center"/></w:pPr>'
+            f"{image_run(rid, width_px, height_px, width_in, len(media.items))}</w:p></w:tc>"
+        )
+    none = "".join(
+        f'<w:{side} w:val="nil"/>' for side in ("top", "left", "bottom", "right", "insideH", "insideV")
+    )
+    grid = "".join(f'<w:gridCol w:w="{cell_width}"/>' for _ in paths)
+    return (
+        f'<w:tbl><w:tblPr><w:tblW w:w="{TABLE_WIDTH}" w:type="dxa"/><w:tblBorders>{none}</w:tblBorders>'
+        '<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="40" w:type="dxa"/>'
+        '<w:right w:w="40" w:type="dxa"/></w:tblCellMar></w:tblPr>'
+        f"<w:tblGrid>{grid}</w:tblGrid><w:tr><w:trPr><w:cantSplit/></w:trPr>{''.join(cells)}</w:tr></w:tbl>"
+        + paragraph(inline_runs(caption, TABLE_SIZE + 2), justify="center", after=100)
+    )
+
+
 def split_row(line: str) -> list[str]:
     return [cell.strip() for cell in line.strip().strip("|").split("|")]
 
 
-def convert(markdown: str) -> str:
+def convert(markdown: str, media: Media) -> str:
     markdown = re.sub(r"<!--.*?-->", "", markdown, flags=re.S)
     parts: list[str] = []
     lines = markdown.splitlines()
@@ -154,6 +230,9 @@ def convert(markdown: str) -> str:
         stripped = line.strip()
         if not stripped:
             flush()
+        elif stripped.startswith("!! figure:"):
+            flush()
+            parts.append(figure(stripped[len("!! figure:") :], media))
         elif stripped.startswith("%% "):
             flush()
             label, _, value = stripped[3:].partition(":")
@@ -204,18 +283,41 @@ def convert(markdown: str) -> str:
 
 
 def build(out: Path) -> None:
+    media = Media()
     with zipfile.ZipFile(TEMPLATE) as source:
         document = source.read("word/document.xml").decode("utf-8")
         body_start = document.index("<w:body>") + len("<w:body>")
         sect = re.search(r"<w:sectPr\b.*?</w:sectPr>\s*</w:body>", document, re.S)
         if not sect:
             raise SystemExit("Template without a final section properties block")
-        new_document = document[:body_start] + convert(SOURCE.read_text("utf-8")) + document[sect.start() :]
+        body = convert(SOURCE.read_text("utf-8"), media)
+        new_document = document[:body_start] + body + document[sect.start() :]
+        for prefix, uri in (
+            ("wp", "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"),
+            ("r", "http://schemas.openxmlformats.org/officeDocument/2006/relationships"),
+        ):
+            if f"xmlns:{prefix}=" not in new_document[:3000]:
+                new_document = new_document.replace("<w:document ", f'<w:document xmlns:{prefix}="{uri}" ', 1)
+        rels = source.read("word/_rels/document.xml.rels").decode("utf-8")
+        rels = rels.replace(
+            "</Relationships>",
+            "".join(
+                f'<Relationship Id="{rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="{target}"/>'
+                for rid, target, _ in media.items
+            )
+            + "</Relationships>",
+        )
+        types = source.read("[Content_Types].xml").decode("utf-8")
+        if 'Extension="jpeg"' not in types:
+            types = types.replace("<Default ", '<Default Extension="jpeg" ContentType="image/jpeg"/><Default ', 1)
+        replaced = {"word/document.xml": new_document, "word/_rels/document.xml.rels": rels, "[Content_Types].xml": types}
         with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as target:
             for item in source.infolist():
-                data = new_document.encode("utf-8") if item.filename == "word/document.xml" else source.read(item.filename)
+                data = replaced[item.filename].encode("utf-8") if item.filename in replaced else source.read(item.filename)
                 target.writestr(item, data)
-    print(f"Written {out}")
+            for _, name, data in media.items:
+                target.writestr(f"word/{name}", data)
+    print(f"Written {out} ({len(media.items)} image(s))")
 
 
 if __name__ == "__main__":
