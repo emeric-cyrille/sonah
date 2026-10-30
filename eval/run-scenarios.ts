@@ -109,13 +109,27 @@ function parseOptions(argv: string[]): Options {
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function api<T>(options: Options, method: string, route: string, body?: unknown): Promise<T> {
+async function api<T>(
+  options: Options,
+  method: string,
+  route: string,
+  body?: unknown,
+  { retryNetwork = true }: { retryNetwork?: boolean } = {},
+): Promise<T> {
   for (let attempt = 0; ; attempt += 1) {
-    const response = await fetch(`${options.baseUrl}${route}`, {
-      method,
-      headers: { 'content-type': 'application/json', 'accept-language': options.language },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
+    let response: Response;
+    try {
+      response = await fetch(`${options.baseUrl}${route}`, {
+        method,
+        headers: { 'content-type': 'application/json', 'accept-language': options.language },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    } catch (error) {
+      // Network failure (sleep, flaky link): retry only requests that are safe to repeat
+      if (!retryNetwork || attempt >= 8) throw error;
+      await sleep(Math.min(60_000, 5_000 * 2 ** attempt));
+      continue;
+    }
     // Rate limiter of the API itself: wait and retry
     if (response.status === 429 && attempt < 5) {
       const retryAfter = Number(response.headers.get('retry-after') ?? '10');
@@ -126,6 +140,30 @@ async function api<T>(options: Options, method: string, route: string, body?: un
       throw new Error(`${method} ${route} → HTTP ${response.status}: ${await response.text()}`);
     }
     return (await response.json()) as T;
+  }
+}
+
+/**
+ * Releases the next step. Not retried blindly: after a network failure the run is read back, and a
+ * step the server already released is reused instead of releasing (and skipping) another one.
+ */
+async function releaseNext(
+  options: Options,
+  runId: string,
+  released: number,
+): Promise<ReleasedStep> {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await api<ReleasedStep>(options, 'POST', `/scenarios/runs/${runId}/next`, undefined, {
+        retryNetwork: false,
+      });
+    } catch (error) {
+      if (attempt >= 8 || (error instanceof Error && error.message.includes('→ HTTP'))) throw error;
+      await sleep(Math.min(60_000, 5_000 * 2 ** attempt));
+      const run = await api<{ steps: ReleasedStep[] }>(options, 'GET', `/scenarios/runs/${runId}`);
+      const step = run.steps[released];
+      if (step) return step;
+    }
   }
 }
 
@@ -173,7 +211,7 @@ async function main(): Promise<void> {
     const steps: (typeof summary)[number]['steps'] = [];
     let done = false;
     while (!done) {
-      const released = await api<ReleasedStep>(options, 'POST', `/scenarios/runs/${runId}/next`);
+      const released = await releaseNext(options, runId, steps.length);
       writeFileSync(
         path.join(options.out, `${scenario.id}-${released.step}.json`),
         `${JSON.stringify(released, null, 2)}\n`,

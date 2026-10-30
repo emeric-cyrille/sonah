@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useId, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useI18n } from '@/i18n/provider';
 import type { Citation } from '@/lib/api-client';
 import { StatusBadge, statusKey } from './badges';
@@ -39,7 +40,9 @@ export function CitationDrawer({
   if (!citation) return null;
   const status = statusKey(citation.status);
 
-  return (
+  // Rendu dans <body> : l'animation d'apparition du message (transform) piégerait sinon le
+  // panneau « fixed » dans la bulle de réponse au lieu de couvrir l'écran
+  return createPortal(
     <div className="fixed inset-0 z-50 flex justify-end">
       <button
         type="button"
@@ -126,6 +129,7 @@ export function CitationDrawer({
           </div>
         </div>
       </aside>
-    </div>
+    </div>,
+    document.body,
   );
 }

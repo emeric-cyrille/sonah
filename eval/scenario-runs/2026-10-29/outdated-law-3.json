@@ -1,0 +1,85 @@
+{
+  "runId": "9e6c0430-0d6a-4a63-8431-31ed5da03583",
+  "step": 3,
+  "totalSteps": 3,
+  "event": {
+    "title": "Root cause: no consolidated version",
+    "description": "The corpus only holds the original version: amendments are published as separate laws and no consolidated, machine-readable version is available.",
+    "injectedAt": "2026-10-29T06:34:52.476Z"
+  },
+  "responses": [
+    {
+      "agentId": "legal-adviser",
+      "agentName": "Policy and legal adviser",
+      "role": "Policy and legal adviser",
+      "message": "There is no official consolidated version of the Constitution available in the provided texts.\n\nThe legal framework currently consists of the original 1996 text and subsequent amendment laws, such as Law n° 2008/001 [2]. The provided texts explicitly note that they are \"non consolidé\" (not consolidated) [1, 3, 4, 5].\n\n**Legal Status and Gap:**\n*   **Status:** The Constitution of 1996 remains the base text, but it has been modified by specific laws (e.g., Law n° 2008/001 and Law n° 2026/002) [1, 2].\n*   **Gap:** The lack of a single, consolidated official document creates a risk of misinterpretation, as one must cross-reference the original text with the amending laws to determine the current legal status of specific articles.",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "citations": [
+        {
+          "index": 1,
+          "documentId": "d3d064b2-44b1-415d-8e5c-8f6f29041b44",
+          "sourceId": "constitution-1996",
+          "title": "Constitution",
+          "reference": "Article 63",
+          "excerpt": "(1) L'initiative de la révision de la Constitution appartient concurremment au Président de la République et au Parlement. ) (2) Toute proposition de révision émanant des membres du Parlement doit être signée par un tiers au moins des membres de l'une ou de l'autre chambre. (3) Le Parlement se réunit en congrès,…",
+          "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+          "status": "in_force"
+        },
+        {
+          "index": 2,
+          "documentId": "3d1bea49-41fa-4e77-95dc-817d7317419a",
+          "sourceId": "constitution-2008-amendment",
+          "title": "Loi constitutionnelle n° 2008/001",
+          "reference": "Article premier",
+          "excerpt": "Les dispositions des articles 6(2) et (4), 14(3)a, 15(4), 51(1), 53 et 67(6) de la loi n° 96/06 du 18 janvier 1996 portant révision de la constitution du 02 juin 1972 sont modifiées et complétées ainsi qu'il suit :",
+          "url": "https://www.prc.cm/fr/multimedia/documents/6284-loi-n-2008-001-du-14-04-2008-modifian-constitution-1972-fr",
+          "status": "in_force"
+        },
+        {
+          "index": 3,
+          "documentId": "24db96c9-bc3f-4646-b769-7f0fc6e86af6",
+          "sourceId": "constitution-1996",
+          "title": "Constitution",
+          "reference": "Article 26 (partie 1/2)",
+          "excerpt": "(1) La loi est votée par le Parlement. Sont du domaine de la loi : a) les droits, garanties et obligations fondamentaux du citoyen : 1- la sauvegarde de la liberté et de la sécurité individuelles ; 2- le régime des libertés publiques ; 3- le droit du travail, le droit syndical, le régime de la protection sociale ; 4…",
+          "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+          "status": "in_force"
+        },
+        {
+          "index": 4,
+          "documentId": "b48df837-7043-48f4-9b53-86be21ba46ea",
+          "sourceId": "constitution-1996",
+          "title": "Constitution",
+          "reference": "Préambule (partie 3/4)",
+          "excerpt": "Elle doit etre traitée en toute circonstance avec humanité. En aucun cas, elle ne peut être soumise à la torture, à des peines ou traitements cruels, inhumains ou dégradants ; -nul ne peut être inquiété en raison de ses origines, de ses opinions ou croyances en matière religieuse, philosophique ou politique sous…",
+          "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+          "status": "in_force"
+        },
+        {
+          "index": 5,
+          "documentId": "5fe7f57c-7c29-4cd8-b1f0-4d8b4ec0d562",
+          "sourceId": "constitution-1996",
+          "title": "Constitution",
+          "reference": "Article 47",
+          "excerpt": "(1) Le Conseil Constitutionnel statue souverainement sur : -La constitutionnalité des lois, des traités et accords internationaux ; -Les règlements intérieurs de l'Assemblée Nationale et du Sénat, avant leur mise en application, quant à leur conformité à la Constitution ; -Les conflits d'attribution :entre les…",
+          "url": "https://www.prc.cm/fr/multimedia/documents/6283-loi-n-96-06-du-18-01-1996-revision-constitution-1972-fr",
+          "status": "in_force"
+        }
+      ],
+      "traceId": "7f499cc8-7f73-40bc-9c4b-457b5372de4b"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "consolidated-legal-texts",
+      "title": "No consolidated, machine-readable legal texts",
+      "description": "Amendments are published as separate acts; there is no official consolidated version of each article with its validity dates, in an open format. Neither a citizen nor an AI assistant can reliably tell which version is in force.",
+      "globalExample": "France: Légifrance publishes consolidated versions of codes and laws with their validity dates, also as open data (DILA). European Union: EUR-Lex publishes consolidated versions of legal acts.",
+      "sources": [
+        "https://www.legifrance.gouv.fr",
+        "https://eur-lex.europa.eu"
+      ]
+    }
+  ],
+  "done": true
+}

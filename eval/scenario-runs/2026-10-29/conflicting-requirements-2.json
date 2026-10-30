@@ -1,0 +1,73 @@
+{
+  "runId": "a372f837-52b5-448a-a08c-b8af8f5a0899",
+  "step": 2,
+  "totalSteps": 3,
+  "event": {
+    "title": "Two contradictory requirements",
+    "description": "The (simulated) ministry requires registration at the one-stop shop before the hygiene certificate; the (simulated) city council requires the hygiene certificate before registration.",
+    "injectedAt": "2026-10-29T07:06:58.887Z"
+  },
+  "responses": [
+    {
+      "agentId": "ministry-business",
+      "agentName": "Ministry for business creation and public administration (simulated view)",
+      "role": "Institutional participant",
+      "message": "The provided official texts do not specify the order of precedence between business registration and the hygiene certificate for a restaurant.\n\nTo resolve this conflict, please note the following:\n\n1.  The Centre de Formalités de Création d'Entreprises (CFCE) is the competent authority for the authentication of statutes for a SARL [1].\n2.  The CFCE is mandated to process authentication requests within twenty-four (24) hours [1].\n3.  For specific operational authorizations like a hygiene certificate, you should consult the local municipal authority or the relevant sectoral ministry, as these requirements are distinct from the initial business registration process.\n\nYou may wish to contact the nearest CFCE office to clarify if your specific business activity requires the hygiene certificate as a prerequisite for the registration file or as a post-registration operational permit.\n\n⚠️ The following texts or positions contradict each other; human review is needed before you act:\n- Ministry for business creation (simulated) : « Register the business at the one-stop shop first, then apply for the hygiene certificate. » ↔ City council (simulated) : « The hygiene certificate is required before any registration. » (restaurant-opening-sequence)",
+      "verdict": "CONFLICT_BETWEEN_TEXTS",
+      "citations": [
+        {
+          "index": 1,
+          "documentId": "68af2844-f739-434d-9398-aecbb45ba28b",
+          "sourceId": "decret-2017-0877-pm-cfce",
+          "title": "Décret CFCE 2017/0877/PM",
+          "reference": "Article 2",
+          "excerpt": "L'authentification des statuts de la SARL visée à l'article 1 ci-dessus est assurée par le Chef du Centre de Formalités de Création d'Entreprises, dans un délai de vingtquatre (24) heures à compter du dépôt de la demande d'authentification.",
+          "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+          "status": "in_force"
+        }
+      ],
+      "traceId": "cfc8cf6a-68e2-4847-ace0-debdefd4a745"
+    },
+    {
+      "agentId": "legal-adviser",
+      "agentName": "Policy and legal adviser",
+      "role": "Policy and legal adviser",
+      "message": "The provided legal texts do not establish a specific chronological order between the business registration process and the acquisition of a hygiene certificate for a restaurant.\n\n### Legal Status and Analysis\nThe current legal framework is incomplete regarding the coordination between these two administrative requirements.\n\n*   **Business Registration:** The authentication of statutes for a Limited Liability Company (SARL) is handled by the Centre de Formalités de Création d'Entreprises (CFCE) within 24 hours of filing [2].\n*   **Hygiene and Safety:** The Labor Code mandates that hygiene and safety conditions at the workplace are defined by an order from the Ministry in charge of Labor [1]. However, the provided texts do not specify the procedural sequence for obtaining a hygiene certificate relative to business registration.\n\n### Legal Gap\nThere is a clear lacuna in the regulatory framework. The texts provided do not contain a provision that resolves the conflict between the Ministry's requirements and the City Council's requirements. This creates legal uncertainty for entrepreneurs.\n\n### Recommended Steps\nSince the law does not explicitly dictate the sequence, you are in a situation of administrative conflict. You should proceed as follows:\n\n1.  **Request Written Clarification:** Submit a formal written inquiry to the local CFCE office and the City Council (Mairie) requesting the legal basis for their respective requirements.\n2.  **Seek Mediation:** If the conflict persists, contact the regional delegation of the Ministry of Small and Medium-Sized Enterprises, Social Economy and Handicrafts (MINPMEESA), which oversees the CFCE, to request an arbitration of the procedure.\n3.  **Document Everything:** Keep copies of all correspondence and rejection notices. This will be essential if you need to challenge the administrative blockage.\n\n*Disclaimer: This response is for informational purposes only and does not constitute formal legal advice.*\n\n⚠️ The following texts or positions contradict each other; human review is needed before you act:\n- Ministry for business creation (simulated) : « Register the business at the one-stop shop first, then apply for the hygiene certificate. » ↔ City council (simulated) : « The hygiene certificate is required before any registration. » (restaurant-opening-sequence)",
+      "verdict": "CONFLICT_BETWEEN_TEXTS",
+      "citations": [
+        {
+          "index": 1,
+          "documentId": "a3c57d4a-cb96-4d07-bf6e-974db56d150e",
+          "sourceId": "code-du-travail-1992",
+          "title": "Code du travail",
+          "reference": "Article 95",
+          "excerpt": "1) Les conditions d'hygiène et de sécurité sur le lieu du travail sont définies par arrêté du ministère chargé du Travail, pris après avis de la Commission nationale de santé et de sécurité au travail. 2) Ces arrêtés tendent à assurer aux travailleurs, tout en prenant en considération les conditions et contingences…",
+          "url": "https://faolex.fao.org/docs/pdf/cmr198304.pdf",
+          "status": "in_force"
+        },
+        {
+          "index": 2,
+          "documentId": "68af2844-f739-434d-9398-aecbb45ba28b",
+          "sourceId": "decret-2017-0877-pm-cfce",
+          "title": "Décret CFCE 2017/0877/PM",
+          "reference": "Article 2",
+          "excerpt": "L'authentification des statuts de la SARL visée à l'article 1 ci-dessus est assurée par le Chef du Centre de Formalités de Création d'Entreprises, dans un délai de vingtquatre (24) heures à compter du dépôt de la demande d'authentification.",
+          "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+          "status": "in_force"
+        }
+      ],
+      "traceId": "a3958429-f384-48fb-b277-c21526059d07"
+    },
+    {
+      "agentId": "coordinator",
+      "agentName": "Multi-agent coordinator",
+      "role": "Multi-agent coordination",
+      "message": "Agents consulted by mandate: Ministry for business creation and public administration (simulated view), Policy and legal adviser.\nVerdicts:\n- Ministry for business creation and public administration (simulated view): CONFLICT_BETWEEN_TEXTS\n- Policy and legal adviser: CONFLICT_BETWEEN_TEXTS\nContradictions detected:\n- Ministry for business creation (simulated) : « Register the business at the one-stop shop first, then apply for the hygiene certificate. » ↔ City council (simulated) : « The hygiene certificate is required before any registration. » (restaurant-opening-sequence)\nDecision: escalate to a human officer (contradictory institutional positions).",
+      "verdict": "CONFLICT_BETWEEN_TEXTS",
+      "citations": [],
+      "traceId": "33bb4a6b-28ba-4b77-acd1-0d74aea95a6c"
+    }
+  ],
+  "gaps": [],
+  "done": false
+}

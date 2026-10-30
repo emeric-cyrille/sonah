@@ -1,0 +1,52 @@
+{
+  "runId": "a372f837-52b5-448a-a08c-b8af8f5a0899",
+  "step": 3,
+  "totalSteps": 3,
+  "event": {
+    "title": "Which rule prevails?",
+    "injectedAt": "2026-10-29T07:07:34.324Z",
+    "description": "No indexed text settles the order of formalities or the competent authority. Sonah must say so to the citizen and refer her to a human."
+  },
+  "responses": [
+    {
+      "role": "Innovative AI solution",
+      "agentId": "sonah",
+      "message": "I could not find an official text matching your question among the texts I currently know. For a specific procedure, please contact the relevant administration.",
+      "traceId": "630df50f-c45d-4ba6-825c-1e03177727de",
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "agentName": "Sonah",
+      "citations": []
+    },
+    {
+      "role": "Institutional participant",
+      "agentId": "ministry-business",
+      "message": "I could not find an official text matching your question among the texts I currently know. For a specific procedure, please contact the relevant administration.",
+      "traceId": "83e10f38-3c57-4bc4-b9f1-2006ffed83d8",
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "agentName": "Ministry for business creation and public administration (simulated view)",
+      "citations": []
+    },
+    {
+      "role": "Multi-agent coordination",
+      "agentId": "coordinator",
+      "message": "Agents consulted by mandate: Sonah, Ministry for business creation and public administration (simulated view).\nVerdicts:\n- Sonah: INSUFFICIENT_EVIDENCE\n- Ministry for business creation and public administration (simulated view): INSUFFICIENT_EVIDENCE\nContradictions detected:\n- Ministry for business creation (simulated) : « Register the business at the one-stop shop first, then apply for the hygiene certificate. » ↔ City council (simulated) : « The hygiene certificate is required before any registration. » (restaurant-opening-sequence)\nDecision: escalate to a human officer (contradictory institutional positions; no agent holds an applicable text).",
+      "traceId": "ad7f4d75-3c6d-431d-95fb-83d781c88f92",
+      "verdict": "CONFLICT_BETWEEN_TEXTS",
+      "agentName": "Multi-agent coordinator",
+      "citations": []
+    }
+  ],
+  "gaps": [
+    {
+      "id": "single-procedure-registry",
+      "title": "No single authoritative registry of administrative procedures",
+      "sources": [
+        "https://eur-lex.europa.eu/eli/reg/2018/1724/oj",
+        "https://eur-lex.europa.eu/eli/dir/2006/123/oj"
+      ],
+      "description": "Responsibilities between ministries and local councils are not clearly allocated, and there is no single, authoritative, machine-readable source describing each procedure (steps, order, documents, fees, competent authority).",
+      "globalExample": "European Union: Single Digital Gateway (Regulation (EU) 2018/1724) and the Points of Single Contact of the Services Directive 2006/123/EC."
+    }
+  ],
+  "done": true
+}

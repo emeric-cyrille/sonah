@@ -1,0 +1,114 @@
+{
+  "runId": "b6265182-6384-4a63-a34d-4dec616da875",
+  "step": 3,
+  "totalSteps": 3,
+  "event": {
+    "title": "Step 3 — Controversy: keeping traces for audit without reusing them",
+    "injectedAt": "2026-10-29T07:26:51.565Z",
+    "description": "Sonah must keep verifiable traces for audit (hash chain), but the law limits reuse. The legal adviser looks for the applicable authorisation; the data protection authority checks whether any text governs model training: an expected absence of evidence (INSUFFICIENT_EVIDENCE) that materialises the gap."
+  },
+  "responses": [
+    {
+      "role": "Policy and legal adviser",
+      "agentId": "legal-adviser",
+      "message": "**Rule:** Processing personal data requires prior authorization from the Data Protection Authority [1].\n\n**Explanation:** Under the law in force (Loi 2024/017), any processing of personal data must be authorized by the Data Protection Authority [1]. This requirement also applies to the interconnection of sensitive files or data concerning minors [1], as well as the transfer of data to foreign countries or international organizations [2].\n\n**Gap:**  The provided texts do not contain specific provisions regarding the retention of audit traces or the training of models, which constitutes a gap in the current legal framework.\n\n**Action:**\n1. Identify the nature of your data processing (standard, sensitive, or international transfer).\n2. Prepare a formal request for authorization addressed to the Data Protection Authority.\n3. Submit the request and wait for the official authorization before commencing the processing.\n4. Ensure you are compliant with the general obligations of data controllers, such as implementing security measures like encryption [3].\n\n**Administration to contact:** The Data Protection Authority.",
+      "traceId": "7479926a-f117-4538-ad5e-60321e4f36b4",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "agentName": "Policy and legal adviser",
+      "citations": [
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "index": 1,
+          "title": "Loi données personnelles 2024/017",
+          "status": "in_force",
+          "excerpt": "(1) Le traitement des données à caractère personnel est soumis à l'obtention préalable d'une autorisation délivrée par l'Autorité de protection des données à Caractère personnel. 2) Tout processus d'interconnexion et d'interopérabilité des fichiers de données sensibles, relatives aux mineurs, est soumis à l'obtention…",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "reference": "Article 19",
+          "documentId": "f1a59039-0ac4-4a65-88ee-f09f5d0970d3"
+        },
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "index": 2,
+          "title": "Loi données personnelles 2024/017",
+          "status": "in_force",
+          "excerpt": "(1) Le transfert de données à caractère personnel vers un Etat étranger, ou à une organisation internationale, est subordonné à l'obtention d'une autorisation préalable délivrée par l'Autorité de protection des données à caractère personnel dans les conditions permettant de garantir l'exercice des droits de la…",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "reference": "Article 32",
+          "documentId": "b10bbdc3-6b9b-403c-bc1c-222117f7c5ca"
+        },
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "index": 3,
+          "title": "Loi données personnelles 2024/017",
+          "status": "in_force",
+          "excerpt": "(1) Dès connaissance de toute violation des données à caractère personnel, le responsable du traitement ou le sous-traitant est tenu d'informer sans delai, l'Autorité de protection des données à caractère personnel et la personne concernée. (2) En tout état de cause, et sans préjudice des dispositions de Talinea 1…",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "reference": "Article 22",
+          "documentId": "81f1bf84-2e3b-4831-b6a1-8500d7a16e9c"
+        }
+      ]
+    },
+    {
+      "role": "Institutional participant",
+      "agentId": "data-protection-authority",
+      "message": "The provided texts do not contain specific regulations regarding the training of artificial intelligence models.\n\nHowever, the law defines \"Traitement\" (processing) as any operation or set of operations applied to personal data, including collection, recording, organization, or use [1]. Consequently, any activity involving the use of personal data for AI training falls under the general legal framework for data processing [1].\n\n**Legal Principle**\nRule: All processing of personal data must be carried out with respect for the privacy of the individual [4].\nExplanation: Because AI training involves processing data, you must ensure that this activity does not violate the privacy rights of the individuals whose data is used [4].\nAction: You must implement technical and organizational measures to protect this data, as the Authority is responsible for defining these standards [5].\n\n**Steps to follow**\n1. Determine if the data used for training can be anonymized to prevent identification [2].\n2. Evaluate if your processing operations comply with the privacy requirements [4].\n3. Contact the Authority for the Protection of Personal Data to request guidance or necessary authorizations [5].\n\n**Documents to prepare**\n- A detailed description of the processing operations [1].\n- Documentation on the technical measures used to secure the data, such as encryption [2].\n- A justification of the necessity of the data for the intended purpose.\n\n**Administration to contact**\n- The Authority for the Protection of Personal Data [5].",
+      "traceId": "a10f91d3-aff9-4629-96e3-0876b6b1925b",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "agentName": "Personal data protection authority (simulated view)",
+      "citations": [
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "index": 1,
+          "title": "Loi données personnelles 2024/017",
+          "status": "in_force",
+          "excerpt": "toute personne physique ou morale qui traite des données à caractère personnel pour le compte du responsable du traitement et sous ses instructions. Système d'information : ensemble de ressources et de dispositifs, interconnectés ou isolés, permettant de traiter les informations nécessaires au fonctionnement d'une…",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "reference": "Article 5 (partie 5/5)",
+          "documentId": "13d3b94a-c182-433d-9e03-0646fa638a08"
+        },
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "index": 2,
+          "title": "Loi données personnelles 2024/017",
+          "status": "in_force",
+          "excerpt": "Au sens de la présente loi et des textes réglementaires pris pour son application, les définitions ci-après sont admises : Anonymisation : processus de modification ou de suppression d'informations à caractère personnel identifiables dans un ensemble de données, afin de rendre ces données non attribuables à des…",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "reference": "Article 5 (partie 1/5)",
+          "documentId": "dd3b228d-c2cf-4d4b-81fe-837fed5030ce"
+        },
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "index": 4,
+          "title": "Loi données personnelles 2024/017",
+          "status": "in_force",
+          "excerpt": "Tout traitement des données à caractère personnel s'effectue dans le respect de la vie privée de la personne.",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "reference": "Article 6",
+          "documentId": "7ffe56ba-e81e-4022-9de6-2e4be0984e9b"
+        },
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "index": 5,
+          "title": "Loi données personnelles 2024/017",
+          "status": "in_force",
+          "excerpt": "(1) L'Autorité de protection des données à caractère personnel est un organisme public indépendant chargé, notamment : - de veiller a l'application de la présente loi, des textes pris pour son application ainsi que des conventions internationales en la matière ; - de délivrer les autorisations prévues par la présente…",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "reference": "Article 53",
+          "documentId": "ea4cab52-40f3-407b-8218-6a717c79d685"
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "id": "public-ai-data-reuse",
+      "title": "No rule on reusing the data of a public AI service",
+      "sources": [
+        "https://eur-lex.europa.eu/eli/reg/2024/1689/oj"
+      ],
+      "description": "Law No. 2024/017 sets purpose limitation (art. 11), consent for direct marketing (art. 41) and prior authorisation (art. 19), but no indexed text states whether and how exchanges with a public assistant may be used to train a model, nor how long audit traces may be kept.",
+      "globalExample": "European Union: the AI Act (Regulation (EU) 2024/1689) requires governance of training data (art. 10) and record-keeping of logs for high-risk systems (arts. 12 and 19)."
+    }
+  ],
+  "done": true
+}

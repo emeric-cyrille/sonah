@@ -1,0 +1,44 @@
+{
+  "runId": "9e6c0430-0d6a-4a63-8431-31ed5da03583",
+  "step": 1,
+  "totalSteps": 3,
+  "event": {
+    "title": "A citizen asks Sonah about the presidential term",
+    "injectedAt": "2026-10-29T06:15:51.918Z",
+    "description": "Question received during an election period. The original 1996 text (article 6, marked \"amended\") is indexed next to the revision laws: the policy node must only let the version in force through."
+  },
+  "responses": [
+    {
+      "role": "Innovative AI solution",
+      "agentId": "sonah",
+      "message": "The President of the Republic is eligible for re-election without a specific limit on the number of terms.\n\nAccording to the current law, the President is elected for a seven-year term and \"Il est rééligible\" [3], [5].",
+      "traceId": "c2370962-8f58-4c81-87f8-76169b205675",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "agentName": "Sonah",
+      "citations": [
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/8244-loi-n-2026-002-du-14-avril-2026-modifiant-et-completant-certaines-dispositions-de-la-constitution-du-02-juin-1972-modifiee-et-completee-par-la-loi-n-96-06-du-18-janvier-1996-et-la-loi-n-2008-001-du-14-avril-2008",
+          "index": 3,
+          "title": "Loi constitutionnelle n° 2026/002",
+          "status": "in_force",
+          "excerpt": "(nouveau) (1) Le Président de la République est élu au suffrage universel direct, égal et secret, a la majorité des suffrages exprimés. (2) Le Président de la République est élu pour un mandat de sept (07) ans. Il est rééligible. (3) L'élection a lieu vingt (20) jours au moins et cinquante (50) jours au plus avant…",
+          "sourceId": "constitution-2026-amendment",
+          "reference": "Article 6 (nouveau) (partie 1/2)",
+          "documentId": "14543a60-a1fa-4cbd-b306-5ab0e4c1db81"
+        },
+        {
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/8244-loi-n-2026-002-du-14-avril-2026-modifiant-et-completant-certaines-dispositions-de-la-constitution-du-02-juin-1972-modifiee-et-completee-par-la-loi-n-96-06-du-18-janvier-1996-et-la-loi-n-2008-001-du-14-avril-2008",
+          "index": 5,
+          "title": "Loi constitutionnelle n° 2026/002",
+          "status": "in_force",
+          "excerpt": "(9) Les candidats aux fonctions de Président de la République doivent être des citoyens camerounais d'origine, jouir de leurs droits civiques et politiques et avoir trente cinq (35) ans révolus à la date de l'élection. (10) Le régime de l'élection à la Présidence de la République est fixé par la loi.",
+          "sourceId": "constitution-2026-amendment",
+          "reference": "Article 6 (nouveau) (partie 2/2)",
+          "documentId": "08dfc0d5-74cd-457b-baca-7668fd7ae29d"
+        }
+      ]
+    }
+  ],
+  "gaps": [],
+  "done": false
+}

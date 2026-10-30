@@ -1,0 +1,73 @@
+{
+  "runId": "7430aec4-bc66-4ac8-9df8-6ba2e33090f4",
+  "step": 3,
+  "totalSteps": 3,
+  "event": {
+    "title": "Retention of chat transcripts",
+    "description": "Audit question: how long may a public service keep AI assistant transcripts, and who may access them?",
+    "injectedAt": "2026-10-29T06:44:05.476Z"
+  },
+  "responses": [
+    {
+      "agentId": "data-protection-authority",
+      "agentName": "Personal data protection authority (simulated view)",
+      "role": "Institutional participant",
+      "message": "Here are the official texts closest to your question:\n\n[1] Loi données personnelles 2024/017, Article 13 : « (1) Les données à caractère personnel doivent être conservées pendant une durée qui n'excède pas la période nécessaire à leur traitement. (2) La période de conservation des données à caractère personnel visée à l'alinéa 1 ci-dessus est précisée dans l'autorisation de traitement des données et suivant les modalités… »\n[2] Loi données personnelles 2024/017, Article 54 : « (1) Lorsque l'Autorité de protection des données à caractère personnel constate le non-respect des obligations mises à la charge du responsable du traitement ou de son sous-traitant, celui-ci est mis en demeure de s'y conformer dans un délai maximum de dix (10) jours. (2) Passé le délai prévu à l'alinéa 1 ci-dessus,… »\n[3] Loi données personnelles 2024/017, Article 46 : « (1) Toute personne concernée a le droit d'obtenir du responsable du traitement la limitation du traitement lorsque l'exactitude des données à caractere personnel ou la finalité du traitement est contestée. (2) Lorsque le traitement a été limité en vertu de l'alinéa 1 ci-dessus, les données à caractère personnel ne… »\n\n⚠️ Loi données personnelles 2024/017 : Article 73 : les responsables de traitement disposent de dix-huit mois à compter de la promulgation (23 décembre 2024) pour se mettre en conformité. Texte obtenu par OCR : vérifier les chiffres sur le PDF officiel.\n\nI quote them as they are. For a specific procedure (documents, fees, timelines), check with the relevant administration.",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "citations": [
+        {
+          "index": 1,
+          "documentId": "ed20f641-a9a5-4b81-ac3c-6db02486dd01",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "title": "Loi données personnelles 2024/017",
+          "reference": "Article 13",
+          "excerpt": "(1) Les données à caractère personnel doivent être conservées pendant une durée qui n'excède pas la période nécessaire à leur traitement. (2) La période de conservation des données à caractère personnel visée à l'alinéa 1 ci-dessus est précisée dans l'autorisation de traitement des données et suivant les modalités…",
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "status": "in_force"
+        },
+        {
+          "index": 2,
+          "documentId": "29b2c518-407d-4b7c-9dbe-48c7b7af95a1",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "title": "Loi données personnelles 2024/017",
+          "reference": "Article 54",
+          "excerpt": "(1) Lorsque l'Autorité de protection des données à caractère personnel constate le non-respect des obligations mises à la charge du responsable du traitement ou de son sous-traitant, celui-ci est mis en demeure de s'y conformer dans un délai maximum de dix (10) jours. (2) Passé le délai prévu à l'alinéa 1 ci-dessus,…",
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "status": "in_force"
+        },
+        {
+          "index": 3,
+          "documentId": "61c5366d-2e75-48ce-9a11-88bcdba80a13",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "title": "Loi données personnelles 2024/017",
+          "reference": "Article 46",
+          "excerpt": "(1) Toute personne concernée a le droit d'obtenir du responsable du traitement la limitation du traitement lorsque l'exactitude des données à caractere personnel ou la finalité du traitement est contestée. (2) Lorsque le traitement a été limité en vertu de l'alinéa 1 ci-dessus, les données à caractère personnel ne…",
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "status": "in_force"
+        }
+      ],
+      "traceId": "7aad50a1-209a-49a1-852e-e081ae085c17"
+    },
+    {
+      "agentId": "coordinator",
+      "agentName": "Multi-agent coordinator",
+      "role": "Multi-agent coordination",
+      "message": "Agents consulted by mandate: Personal data protection authority (simulated view).\nVerdicts:\n- Personal data protection authority (simulated view): ANSWERED_WITH_CITATIONS\nDecision: consistent, cited answers; no escalation.",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "citations": [],
+      "traceId": "ae838fb9-bed0-43a4-87a6-a58fe86db47a"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "ai-chat-retention",
+      "title": "No retention rules for public AI assistant transcripts",
+      "description": "The retention period, purpose and access rules for transcripts of a public-service AI assistant are not specified. Whether Cameroon’s 2024 personal data protection law covers these logs is to be verified. SONAH applies masking and minimisation by default.",
+      "globalExample": "European Union: GDPR Article 5(1)(e) (storage limitation) and Article 25 (data protection by design and by default).",
+      "sources": [
+        "https://eur-lex.europa.eu/eli/reg/2016/679/oj"
+      ]
+    }
+  ],
+  "done": true
+}

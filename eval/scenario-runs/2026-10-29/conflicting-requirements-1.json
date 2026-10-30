@@ -1,0 +1,54 @@
+{
+  "runId": "a372f837-52b5-448a-a08c-b8af8f5a0899",
+  "step": 1,
+  "totalSteps": 3,
+  "event": {
+    "title": "A citizen wants to open a restaurant",
+    "injectedAt": "2026-10-29T06:44:25.702Z",
+    "description": "She asks Sonah for the steps to open a restaurant in Douala."
+  },
+  "responses": [
+    {
+      "role": "Innovative AI solution",
+      "agentId": "sonah",
+      "message": "I do not have specific information regarding the general steps to open a restaurant in Douala, as my current documents only cover the authentication of statutes for a Limited Liability Company (SARL) at the Business Creation Formalities Centers (CFCE).\n\nHowever, if you are creating a Limited Liability Company (SARL) for your restaurant, here is how to get your statutes authenticated at the CFCE:\n\n1.  **Prepare your statutes:** Draft your company statutes under private seal (sous seing privé).\n2.  **Submit your request:** Deposit your statutes at the Business Creation Formalities Center (CFCE) [5].\n3.  **Wait for authentication:** The Head of the CFCE will authenticate your statutes within twenty-four (24) hours of your request [2].\n4.  **Receive the documents:** The Head of the CFCE will sign the bottom of your statutes and stamp each page with a seal marked « Authentifié par le CFCE » [1].\n\nFor other specific licenses or permits required for a restaurant (such as health or hygiene permits), please contact your local council or the relevant municipal authority in Douala.",
+      "traceId": "540b8430-49f8-4bd7-909c-655f5e27c384",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "agentName": "Sonah",
+      "citations": [
+        {
+          "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+          "index": 1,
+          "title": "Décret CFCE 2017/0877/PM",
+          "status": "in_force",
+          "excerpt": "le Chef du Centre de Formalités de Création d'Entreprises procède à l'authentification des statuts établis sous seing privé par signature au bas desdits statuts et par apposition sur chaque page d'un cachet portant la mention « Authentifié par le CFCE ».",
+          "sourceId": "decret-2017-0877-pm-cfce",
+          "reference": "Article 3",
+          "documentId": "31046a1b-127b-407d-9618-04cc12485f79"
+        },
+        {
+          "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+          "index": 2,
+          "title": "Décret CFCE 2017/0877/PM",
+          "status": "in_force",
+          "excerpt": "L'authentification des statuts de la SARL visée à l'article 1 ci-dessus est assurée par le Chef du Centre de Formalités de Création d'Entreprises, dans un délai de vingtquatre (24) heures à compter du dépôt de la demande d'authentification.",
+          "sourceId": "decret-2017-0877-pm-cfce",
+          "reference": "Article 2",
+          "documentId": "68af2844-f739-434d-9398-aecbb45ba28b"
+        },
+        {
+          "url": "https://spm.gov.cm/site/sites/default/files/PM%20%2822%29.pdf",
+          "index": 5,
+          "title": "Décret CFCE 2017/0877/PM",
+          "status": "in_force",
+          "excerpt": "Le présent décret fixe, en application des dispositions de l'article 3(3) de la loi n° 2016/014 susvisée, les modalités d'authentification des statuts de la Société à Responsabilité Limitée(SARL) établis sous seing privé au sein des Centres de Formalités de Création d'Entreprises(CFCE).",
+          "sourceId": "decret-2017-0877-pm-cfce",
+          "reference": "Article premier",
+          "documentId": "8b4cf3dd-a167-4b3d-b0f0-b566268f6495"
+        }
+      ]
+    }
+  ],
+  "gaps": [],
+  "done": false
+}

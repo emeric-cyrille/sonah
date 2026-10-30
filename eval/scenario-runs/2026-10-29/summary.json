@@ -1,0 +1,486 @@
+{
+  "generatedAt": "2026-10-29T07:58:35.580Z",
+  "baseUrl": "https://sonah.fokamemeric.com/api/v1",
+  "language": "en",
+  "languageModel": "gemini-3.1-flash-lite → openai/gpt-oss-120b → qwen/qwen3.8-27b",
+  "scenarios": [
+    {
+      "scenario": "outdated-law",
+      "title": "Outdated law served to a citizen",
+      "runId": "9e6c0430-0d6a-4a63-8431-31ed5da03583",
+      "steps": [
+        {
+          "step": 1,
+          "event": "A citizen asks Sonah about the presidential term",
+          "responses": [
+            {
+              "agent": "sonah",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "constitution-2026-amendment › Article 6 (nouveau) (partie 1/2)",
+                "constitution-2026-amendment › Article 6 (nouveau) (partie 2/2)"
+              ],
+              "traceId": "c2370962-8f58-4c81-87f8-76169b205675"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 2,
+          "event": "The legal adviser is consulted",
+          "responses": [
+            {
+              "agent": "legal-adviser",
+              "verdict": "OUTDATED_TEXT",
+              "citations": [
+                "constitution-1996 › Article 6",
+                "constitution-2026-amendment › Article 6 (nouveau) (partie 1/2)",
+                "constitution-2008-amendment › Article 6 (nouveau)"
+              ],
+              "traceId": "afb0db56-7030-4671-8c73-759c19192cfd"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "OUTDATED_TEXT",
+              "citations": [],
+              "traceId": "5ea97a21-f420-45fd-a5ee-327926f3c31c"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 3,
+          "event": "Root cause: no consolidated version",
+          "responses": [
+            {
+              "agent": "legal-adviser",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "constitution-1996 › Article 63",
+                "constitution-2008-amendment › Article premier",
+                "constitution-1996 › Article 26 (partie 1/2)",
+                "constitution-1996 › Préambule (partie 3/4)",
+                "constitution-1996 › Article 47"
+              ],
+              "traceId": "7f499cc8-7f73-40bc-9c4b-457b5372de4b"
+            }
+          ],
+          "gaps": [
+            "consolidated-legal-texts: No consolidated, machine-readable legal texts"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "personal-data-in-chat",
+      "title": "Citizen shares personal data in chat",
+      "runId": "7430aec4-bc66-4ac8-9df8-6ba2e33090f4",
+      "steps": [
+        {
+          "step": 1,
+          "event": "Message containing personal data",
+          "responses": [
+            {
+              "agent": "sonah",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "code-du-travail-1992 › Article 80"
+              ],
+              "traceId": "dee5a280-3486-4d59-a014-055e53761e00"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 2,
+          "event": "The data protection authority assesses the incident",
+          "responses": [
+            {
+              "agent": "data-protection-authority",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 46",
+                "loi-2024-017-donnees-personnelles › Article 13",
+                "loi-2024-017-donnees-personnelles › Article 9",
+                "loi-2024-017-donnees-personnelles › Article 38"
+              ],
+              "traceId": "c7cae176-430e-4e9a-a730-ba3cbe072816"
+            },
+            {
+              "agent": "legal-adviser",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 46",
+                "loi-2024-017-donnees-personnelles › Article 13",
+                "loi-2024-017-donnees-personnelles › Article 9",
+                "loi-2024-017-donnees-personnelles › Article 45",
+                "loi-2024-017-donnees-personnelles › Article 38"
+              ],
+              "traceId": "aab5e496-0e4a-4e6a-b536-4ea94222a10b"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [],
+              "traceId": "749bad6e-ac9d-46cd-ac03-3c497b7ee3ba"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 3,
+          "event": "Retention of chat transcripts",
+          "responses": [
+            {
+              "agent": "data-protection-authority",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 13",
+                "loi-2024-017-donnees-personnelles › Article 54",
+                "loi-2024-017-donnees-personnelles › Article 46"
+              ],
+              "traceId": "7aad50a1-209a-49a1-852e-e081ae085c17"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [],
+              "traceId": "ae838fb9-bed0-43a4-87a6-a58fe86db47a"
+            }
+          ],
+          "gaps": [
+            "ai-chat-retention: No retention rules for public AI assistant transcripts"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "llm-outage",
+      "title": "LLM outage / quota exhausted during peak",
+      "runId": "c321974d-346d-40f9-b461-7d68947ea8f4",
+      "steps": [
+        {
+          "step": 1,
+          "event": "Model quota exhausted",
+          "responses": [
+            {
+              "agent": "sonah",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "code-du-travail-1992 › Article 80",
+                "code-du-travail-1992 › Article 88",
+                "code-du-travail-1992 › Article 84"
+              ],
+              "traceId": "9054f4ae-8719-4ee6-ac15-19ef0aaca88e"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 2,
+          "event": "The regulator is asked about service continuity",
+          "responses": [
+            {
+              "agent": "regulator-minpostel",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2010-012-cybersecurite › Article 25",
+                "loi-2010-013-communications-electroniques › Article 42 (partie 1/2)",
+                "loi-2010-013-communications-electroniques › Article 28"
+              ],
+              "traceId": "b5d22201-3882-4bac-ae6e-f505892c5f5c"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [],
+              "traceId": "f7e5ea0b-46fb-407e-b350-3d054f0e47f5"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 3,
+          "event": "Incident review",
+          "responses": [
+            {
+              "agent": "regulator-minpostel",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2010-013-communications-electroniques › Article 69 (partie 3/3)",
+                "loi-2010-013-communications-electroniques › Article 28",
+                "loi-2010-013-communications-electroniques › Article 30"
+              ],
+              "traceId": "07f3ddae-2b1f-4974-bb2c-ca6d0595fba3"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [],
+              "traceId": "21b4e12c-b2db-4359-8127-a821af1de762"
+            }
+          ],
+          "gaps": [
+            "public-ai-service-level: No service-level standard for public AI services"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "conflicting-requirements",
+      "title": "Conflicting requirements for opening a restaurant",
+      "runId": "a372f837-52b5-448a-a08c-b8af8f5a0899",
+      "steps": [
+        {
+          "step": 1,
+          "event": "A citizen wants to open a restaurant",
+          "responses": [
+            {
+              "agent": "sonah",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "decret-2017-0877-pm-cfce › Article 3",
+                "decret-2017-0877-pm-cfce › Article 2",
+                "decret-2017-0877-pm-cfce › Article premier"
+              ],
+              "traceId": "540b8430-49f8-4bd7-909c-655f5e27c384"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 2,
+          "event": "Two contradictory requirements",
+          "responses": [
+            {
+              "agent": "ministry-business",
+              "verdict": "CONFLICT_BETWEEN_TEXTS",
+              "citations": [
+                "decret-2017-0877-pm-cfce › Article 2"
+              ],
+              "traceId": "cfc8cf6a-68e2-4847-ace0-debdefd4a745"
+            },
+            {
+              "agent": "legal-adviser",
+              "verdict": "CONFLICT_BETWEEN_TEXTS",
+              "citations": [
+                "code-du-travail-1992 › Article 95",
+                "decret-2017-0877-pm-cfce › Article 2"
+              ],
+              "traceId": "a3958429-f384-48fb-b277-c21526059d07"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "CONFLICT_BETWEEN_TEXTS",
+              "citations": [],
+              "traceId": "33bb4a6b-28ba-4b77-acd1-0d74aea95a6c"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 3,
+          "event": "Which rule prevails?",
+          "responses": [
+            {
+              "agent": "sonah",
+              "verdict": "INSUFFICIENT_EVIDENCE",
+              "citations": [],
+              "traceId": "630df50f-c45d-4ba6-825c-1e03177727de"
+            },
+            {
+              "agent": "ministry-business",
+              "verdict": "INSUFFICIENT_EVIDENCE",
+              "citations": [],
+              "traceId": "83e10f38-3c57-4bc4-b9f1-2006ffed83d8"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "CONFLICT_BETWEEN_TEXTS",
+              "citations": [],
+              "traceId": "ad7f4d75-3c6d-431d-95fb-83d781c88f92"
+            }
+          ],
+          "gaps": [
+            "single-procedure-registry: No single authoritative registry of administrative procedures"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "chat-logs-secondary-use",
+      "title": "Six months later: reusing citizens’ conversations",
+      "runId": "b6265182-6384-4a63-a34d-4dec616da875",
+      "steps": [
+        {
+          "step": 1,
+          "event": "Step 1 — Deployment: conversations include health questions",
+          "responses": [
+            {
+              "agent": "data-protection-authority",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 9",
+                "loi-2024-017-donnees-personnelles › Article 11",
+                "loi-2024-017-donnees-personnelles › Article 19"
+              ],
+              "traceId": "8eb42236-2e93-4e80-8fb7-de2154200964"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 2,
+          "event": "Step 2 — Twist: an insurer wants the data for advertising",
+          "responses": [
+            {
+              "agent": "data-protection-authority",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 48",
+                "loi-2024-017-donnees-personnelles › Article 41",
+                "loi-2024-017-donnees-personnelles › Article 19"
+              ],
+              "traceId": "f9f78ece-f709-4035-803c-36f056d29fb7"
+            },
+            {
+              "agent": "legal-adviser",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 48",
+                "loi-2024-017-donnees-personnelles › Article 41",
+                "loi-2024-017-donnees-personnelles › Article 19"
+              ],
+              "traceId": "7d829c20-4323-441e-adfc-a10249364467"
+            },
+            {
+              "agent": "sonah",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 48",
+                "loi-2024-017-donnees-personnelles › Article 40",
+                "loi-2024-017-donnees-personnelles › Article 41",
+                "loi-2024-017-donnees-personnelles › Article 9",
+                "loi-2024-017-donnees-personnelles › Article 19"
+              ],
+              "traceId": "360121bf-47be-47e6-9b4e-b9e07b23174e"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [],
+              "traceId": "01dbe99d-c55c-448a-8bea-eb3e13eac1d5"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 3,
+          "event": "Step 3 — Controversy: keeping traces for audit without reusing them",
+          "responses": [
+            {
+              "agent": "legal-adviser",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 19",
+                "loi-2024-017-donnees-personnelles › Article 32",
+                "loi-2024-017-donnees-personnelles › Article 22"
+              ],
+              "traceId": "7479926a-f117-4538-ad5e-60321e4f36b4"
+            },
+            {
+              "agent": "data-protection-authority",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 5 (partie 5/5)",
+                "loi-2024-017-donnees-personnelles › Article 5 (partie 1/5)",
+                "loi-2024-017-donnees-personnelles › Article 6",
+                "loi-2024-017-donnees-personnelles › Article 53"
+              ],
+              "traceId": "a10f91d3-aff9-4629-96e3-0876b6b1925b"
+            }
+          ],
+          "gaps": [
+            "public-ai-data-reuse: No rule on reusing the data of a public AI service"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "language-equity",
+      "title": "Six months later: English speakers served less well",
+      "runId": "26f3d4af-ace5-44ba-a67a-d917a0d85aa4",
+      "steps": [
+        {
+          "step": 1,
+          "event": "Step 1 — Deployment: a gap between French and English",
+          "responses": [
+            {
+              "agent": "legal-adviser",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "constitution-1996 › Article premier (partie 1/2)"
+              ],
+              "traceId": "8d5aebb2-5ea4-4c53-869b-e04ba36e4a2f"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 2,
+          "event": "Step 2 — Twist: measuring the gap by profiling users?",
+          "responses": [
+            {
+              "agent": "data-protection-authority",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 48",
+                "loi-2024-017-donnees-personnelles › Article 17"
+              ],
+              "traceId": "58af310a-096c-4f0c-ab70-cf6d5ba2e781"
+            },
+            {
+              "agent": "legal-adviser",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "loi-2024-017-donnees-personnelles › Article 48",
+                "loi-2024-017-donnees-personnelles › Article 51",
+                "loi-2024-017-donnees-personnelles › Article 5 (partie 2/5)",
+                "loi-2024-017-donnees-personnelles › Article 17"
+              ],
+              "traceId": "b617cbda-4205-44ad-9040-7fe1a24abe85"
+            },
+            {
+              "agent": "coordinator",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [],
+              "traceId": "a23edf3e-8e5f-4b81-86f7-0df9de7b9946"
+            }
+          ],
+          "gaps": []
+        },
+        {
+          "step": 3,
+          "event": "Step 3 — Decision: measure without profiling",
+          "responses": [
+            {
+              "agent": "sonah",
+              "verdict": "ANSWERED_WITH_CITATIONS",
+              "citations": [
+                "constitution-1996 › Article premier (partie 1/2)"
+              ],
+              "traceId": "5b47c6f0-6fce-4b9b-a458-1a6c2815a539"
+            }
+          ],
+          "gaps": [
+            "bilingual-procedure-information: No operational duty to publish administrative information in both languages"
+          ]
+        }
+      ]
+    }
+  ],
+  "auditVerification": {
+    "valid": true,
+    "count": 126
+  }
+}

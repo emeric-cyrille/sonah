@@ -1,0 +1,54 @@
+{
+  "runId": "b6265182-6384-4a63-a34d-4dec616da875",
+  "step": 1,
+  "totalSteps": 3,
+  "event": {
+    "title": "Step 1 — Deployment: conversations include health questions",
+    "description": "Six months after launch, the product team notices that many conversations concern health (medical certificate, illness, sick leave). It proposes to reuse them to train a better model. The data protection authority (simulated) is consulted.",
+    "injectedAt": "2026-10-29T07:26:20.331Z"
+  },
+  "responses": [
+    {
+      "agentId": "data-protection-authority",
+      "agentName": "Personal data protection authority (simulated view)",
+      "role": "Institutional participant",
+      "message": "The reuse of citizens' conversations to train an AI model without new consent is generally not permitted if the initial purpose of the collection did not include this specific use.\n\n### Legal Rule\nData must be collected for specific, explicit, and legitimate purposes and cannot be processed later in a way that is incompatible with those purposes [2].\n\n### Explanation\nWhen you collect data for a public information service, you define the purpose at the start. Training an AI model is a new, distinct purpose. Because the initial consent was likely given for receiving information or assistance, using that data for machine learning constitutes a \"subsequent processing\" that is incompatible with the original purpose [2]. Furthermore, processing health-related data requires strict adherence to consent rules, unless a specific legal exemption applies [1]. Training an AI model does not automatically fall under the exemptions for legal obligations or public interest missions [1].\n\n### Steps to take\n1.  **Stop the training process:** Immediately halt the use of existing conversation logs for AI training until a compliance review is completed.\n2.  **Conduct a Data Protection Impact Assessment (DPIA):** Evaluate the risks to citizens, especially since the data includes sensitive health information.\n3.  **Obtain new consent:** If you wish to proceed, you must inform the users of this new purpose and obtain their \"consentement préalable, libre, éclairé, spécifique et univoque\" [1].\n4.  **Apply for authorization:** Since this involves processing sensitive data (health information), you must obtain prior authorization from the Data Protection Authority [5].\n\n### Documents to prepare\n*   A detailed description of the new processing purpose (AI training).\n*   A privacy notice explaining the new use to citizens.\n*   A mechanism to collect and record the new, specific consent.\n*   A technical plan demonstrating how you will ensure data minimization (e.g., anonymization or pseudonymization) before training.\n\n### Administration to contact\nYou must submit your request for authorization to the **Autorité de protection des données à caractère personnel** [5].",
+      "verdict": "ANSWERED_WITH_CITATIONS",
+      "citations": [
+        {
+          "index": 1,
+          "documentId": "96a85dd1-ea8f-424b-9141-9cf27cee1107",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "title": "Loi données personnelles 2024/017",
+          "reference": "Article 9",
+          "excerpt": "(1) Le traitement des données à caractère personnel est subordonné au consentement préalable, libre, éclairé, spécifique et univoque de la personne concernée. (2) Toutefois, il peut être dérogé à cette exigence du consentement préalable lorsque le traitement est nécessaire : - au respect d'une obligation légale à…",
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "status": "in_force"
+        },
+        {
+          "index": 2,
+          "documentId": "e90c211a-a2d1-438f-b73b-4a84707a77fc",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "title": "Loi données personnelles 2024/017",
+          "reference": "Article 11",
+          "excerpt": "Les données à caractère personnel doivent être collectées pour des finalités déterminées, explicites et légitimes. Elles ne peuvent pas être ultérieurement traitées de manière incompatible avec ces finalités.",
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "status": "in_force"
+        },
+        {
+          "index": 5,
+          "documentId": "f1a59039-0ac4-4a65-88ee-f09f5d0970d3",
+          "sourceId": "loi-2024-017-donnees-personnelles",
+          "title": "Loi données personnelles 2024/017",
+          "reference": "Article 19",
+          "excerpt": "(1) Le traitement des données à caractère personnel est soumis à l'obtention préalable d'une autorisation délivrée par l'Autorité de protection des données à Caractère personnel. 2) Tout processus d'interconnexion et d'interopérabilité des fichiers de données sensibles, relatives aux mineurs, est soumis à l'obtention…",
+          "url": "https://www.prc.cm/fr/actualites/actes/lois/7588-loi-n-2024-017-du-23-decembre-2024-autorisant-le-president-de-la-republique-a-ratifier-le-traite-de-beijing-sur-les-interpretations-et-executions-audiovisuelles-adopte-le-24-juin-2012-a-beijing-chine-9",
+          "status": "in_force"
+        }
+      ],
+      "traceId": "8eb42236-2e93-4e80-8fb7-de2154200964"
+    }
+  ],
+  "gaps": [],
+  "done": false
+}
